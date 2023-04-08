@@ -1,0 +1,135 @@
+import Util from './utils.js';
+const util = new Util();
+
+export default function Map() {
+
+    let game = window.game;
+
+    function clickTile(elem) {
+
+        const $mapInnerDivs = $('.map-inner div');
+    
+        $mapInnerDivs.removeClass('clickable current');
+    
+        const $currentDiv = elem.addClass('current visited');
+    
+        const currentIndex = $currentDiv.index();
+        const isOddRow = $currentDiv.hasClass('odd-row');
+        const isEvenRow = $currentDiv.hasClass('even-row');
+        const isFirstRow = $currentDiv.hasClass('first-row');
+        const isLastRow = $currentDiv.hasClass('last-row');
+        const isFirstCol = $currentDiv.hasClass('first-col');
+        const isLastCol = $currentDiv.hasClass('last-col');
+    
+        const prevIndex = isOddRow ? 11 : 10;
+        const nextIndex = isOddRow ? 8 : 9;
+    
+        if (!isFirstRow) {
+        if (isOddRow || !isLastCol) {
+            if (isOddRow && isFirstCol) {
+            $currentDiv.siblings().eq(currentIndex - prevIndex + 1).addClass('clickable');
+            } else {
+            $currentDiv.siblings().eq(currentIndex - prevIndex + 1).addClass('clickable');
+            $currentDiv.siblings().eq(currentIndex - prevIndex).addClass('clickable');
+            }
+        } else if (isEvenRow) {
+            $currentDiv.siblings().eq(currentIndex - prevIndex).addClass('clickable');
+        }
+        }
+    
+        if (!isLastRow) {
+        if (isOddRow || !isLastCol) {
+            if (isOddRow && isFirstCol) {
+            $currentDiv.siblings().eq(currentIndex + nextIndex + 1).addClass('clickable');
+            } else {
+            $currentDiv.siblings().eq(currentIndex + nextIndex + 1).addClass('clickable');
+            $currentDiv.siblings().eq(currentIndex + nextIndex).addClass('clickable');
+            }
+        } else if (isEvenRow) {
+            $currentDiv.siblings().eq(currentIndex + nextIndex).addClass('clickable');
+        }
+        }
+    
+        if (!isFirstCol) {
+            $currentDiv.prev().addClass('clickable');
+        }
+    
+        if (!isLastCol) {
+            $currentDiv.next().addClass('clickable');
+        }
+    
+    }
+    
+    function buildMap() {
+    
+        let i = 0;
+        let j = Math.round(util.randDecimal() * 100);
+        let k = Math.round(util.randDecimal() * 100);
+        let l = Math.round(util.randDecimal() * 100);
+        let excludedTilesFountain = [1, 2, 3, 11, 12, 21, 22];
+        let excludedTilesQuest = [1, 2, 3, 4, 11, 12, 13, 21, 22, 23, 31, 32];
+        //excludedTilesQuest = [];
+        let excludedTilesArena = [1, 2, 3, 4, 5, 11, 12, 13, 14, 21, 22, 23, 24, 31, 32, 33, 41, 42, 43];
+        let fountainChance = 0;
+        let questChance = 0;
+        let iceGateTiles = [20, 40, 60, 80];
+        let fireGateTiles = [92, 94, 96, 98];
+        let iceGateTile = util.randArrayIndex(iceGateTiles);
+        let fireGateTile = util.randArrayIndex(fireGateTiles);
+        while(excludedTilesArena.indexOf(j) >= 0) {
+            j = Math.round(util.randDecimal() * 100);
+        }
+        while(excludedTilesArena.indexOf(k) >= 0) {
+            k = Math.round(util.randDecimal() * 100);
+        }
+        while(excludedTilesArena.indexOf(l) >= 0) {
+            l = Math.round(util.randDecimal() * 100);
+        }
+        $('.tile div').each(function(e) { i++;
+            // gates
+            if (i == iceGateTiles[iceGateTile]) {
+                $(this).html('<span class="icon"></span>');
+                $(this).parent().addClass('gate ice-gate');
+            } else if(i == fireGateTiles[fireGateTile]) {
+                $(this).html('<span class="icon"></span>');
+                $(this).parent().addClass('gate fire-gate');
+            } else {
+                // arenas
+                if (i == j | i == k || i == l) {
+                    $(this).html('<span class="icon"></span>');
+                    $(this).parent().addClass('arena');
+                } else {
+                    fountainChance++;
+                    // fountains
+                    if(util.chance(fountainChance) && excludedTilesFountain.indexOf(i) < 0) {
+                        $(this).html('<span class="icon"></span>');
+                        $(this).parent().addClass('fountain');
+                        fountainChance = 0;
+                    } else {
+                        questChance++;
+                        // quests
+                        if(util.chance(questChance) && excludedTilesQuest.indexOf(i) < 0) {
+                            $(this).html('<span class="icon"></span>');
+                            $(this).parent().addClass('quest');
+                            questChance = 0;
+                        } else {
+                            // normal fights
+                            let essence = util.randFromArray(game.essences);
+                            let desc = "<span class='" + essence + "' style='text-transform:capitalize'>" + essence + "</span> essence";
+                            $(this).html('<span class="icon tooltip" data-powertip="' + desc + '"></span>');
+                            $(this).parent().attr('data-essence', essence);
+                            $(this).parent().attr('data-amount', 1);
+                            $(this).parent().addClass(essence);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    return {
+        clickTile,
+        buildMap
+    };
+
+}

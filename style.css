@@ -1,0 +1,3755 @@
+:root {
+	--sparkle_color: hsl(221, 50%, 48%, 1);
+	--shimmer_color: hsl(290, 33%, 52%, 1);
+	--aura_color: hsl(8, 100%, 60%, 1);
+	--aggro_color: hsl(300, 100%, 61%, 1);
+	--crit_color: hsl(26, 100%, 56%, 1);
+	--block_color: rgba(61, 151, 242, 1);
+	--frost_color: hsl(221, 84%, 50%);
+	--flame_color: hsl(339, 87%, 46%);
+	--both_color: hsl(282, 87%, 46%);
+}
+
+body {
+	margin:50px 0 0 0;
+	padding:0;
+	font-family: 'Concert One', sans-serif;
+	color:#FFF;
+	font-weight:300;
+	font-size:16px;
+	background:#000;
+	cursor:url('./images/cursor.png') 3 1, auto;
+	text-shadow: 
+		1px 1px 0px rgba(0, 0, 0, 1), 
+		1px -1px 0px rgba(0, 0, 0, 1), 
+		-1px 1px 0px rgba(0, 0, 0, 1), 
+		-1px -1px 0px rgba(0, 0, 0, 1), 
+		0px 0px 5px rgba(0, 0, 0, .7);
+	background-size:cover;
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-image:url('./images/map1.png');
+	position:relative;
+	text-transform:capitalize;
+	image-rendering: pixelated;
+}
+body::-webkit-scrollbar {
+	display:none;
+}
+* {
+	box-sizing:border-box;
+}
+a, a:link, a:visited, a:active { color:#2e73ff; text-decoration:none; transition:all .3s; cursor:url('./images/cursor.png') 3 1, auto; }
+a:active {transition:none!important;}
+a:hover { text-decoration:none; }
+img {border:none;}
+h1, h2, h3, h4, h5, h6 {font-weight:300; margin:0px; padding:0px 0px; text-transform:capitalize; }
+
+/* global elements */
+.overlay {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	z-index:-1;
+	background:rgba(0,0,0,.4);
+}
+.rewards .overlay, .loot-screen .overlay {
+	background:rgba(0,0,0,.4);
+}
+#canvas {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: calc(100vh - 50px);
+	pointer-events: none;
+	z-index:99;
+}
+#canvas #arrow {
+	display:none;
+	fill: hsl(353, 83%, 50%);
+}
+#canvas #curve {
+	display:none;
+	stroke: hsl(353, 83%, 50%);
+	stroke-width: 15px;
+	stroke-dasharray: 28;
+	animation: dash 5s linear infinite;
+}
+@keyframes dash {
+	0% {
+	  stroke-dashoffset: 0;
+	}
+	100% {
+		stroke-dashoffset: -100%;
+	}
+  }
+#canvas #curve.shown {
+	display:block;
+}
+#canvas #arrow.shown {
+	display:block;
+}
+.icon-button {
+	display:flex;
+	align-items:center;
+	transition:all .3s;
+	padding:5px 5px;
+	height:50px;
+	position:relative;
+}
+.counter {
+	position:absolute;
+	bottom:7px;
+	right:5px;
+	font-size:9px;
+	z-index:3;
+}
+.buttons-wrapper {
+	display:flex;
+	gap:7px;
+	flex-wrap:wrap;
+	align-items:center;
+	flex-direction:row;
+	align-content:center;
+	justify-content:center;
+	position:relative;
+	padding:0 50px;
+	margin-top:20px;
+}
+.button {
+	display:flex;
+	justify-content:center;
+	font-size:20px;
+	height:calc(21px * 3);
+	background-image:url('./images/button-middle-sprites.png');
+	background-size:calc(3px * 3) calc(63px * 3);
+	background-repeat:repeat-x;
+	background-position:0 calc(-21px * 3);
+	position:relative;
+	z-index:2;
+	padding:14px 0;
+	margin:0 calc(18px * 3 - 1px);
+	text-align:center;
+	text-transform:capitalize;
+}
+.button::before {
+	position:absolute;
+	z-index:-1;
+	top:0;
+	left:calc(-18px * 3);
+	width:calc(18px * 3);
+	height:calc(21px * 3);
+	content: ' ';
+	background-image:url('./images/button-left-sprites.png');
+	background-size:calc(18px * 3) calc(63px * 3);
+	background-repeat:no-repeat;
+	background-position:0 calc(-21px * 3);
+}
+.button::after {
+	position:absolute;
+	z-index:-1;
+	top:0;
+	right:calc(-18px * 3);
+	width:calc(18px * 3);
+	height:calc(21px * 3);
+	content: ' ';
+	background-image:url('./images/button-right-sprites.png');
+	background-size:calc(18px * 3) calc(63px * 3);
+	background-repeat:no-repeat;
+	background-position:0 calc(-21px * 3);
+}
+.button:hover {
+	background-position:0 0;
+}
+.button:hover::before {
+	background-position:0 0;
+}
+.button:hover::after {
+	background-position:0 0;
+}
+.button:active {
+	background-position:0 calc(-42px * 3);
+	padding:17px 0 11px 0;
+}
+.button:active::before {
+	background-position:0 calc(-42px * 3);
+}
+.button:active::after {
+	background-position:0 calc(-42px * 3);
+}
+h2 {
+	font-size:30px;
+	height:calc(19px * 3);
+	background-image:url('./images/banner-middle.png');
+	background-size:calc(11px * 3) calc(18px * 3);
+	background-repeat:repeat-x;
+	background-position:top center;
+	position:relative;
+	z-index:2;
+	padding:5px 0px 10px 0;
+	text-align:center;
+	display:inline-block;
+	margin-bottom:20px;
+}
+h2::before {
+	position:absolute;
+	z-index:-1;
+	top:0;
+	left:calc(-30px * 3 + 5px);
+	width:calc(30px * 3);
+	height:calc(19px * 3);
+	content: ' ';
+	background-image:url('./images/banner-left.png');
+	background-size:calc(30px * 3) calc(19px * 3);
+	background-repeat:no-repeat;
+	background-position:top left;
+}
+h2::after {
+	position:absolute;
+	z-index:-1;
+	top:0;
+	right:calc(-30px * 3 + 5px);
+	width:calc(30px * 3);
+	height:calc(19px * 3);
+	content: ' ';
+	background-image:url('./images/banner-right.png');
+	background-size:calc(30px * 3) calc(19px * 3);
+	background-repeat:no-repeat;
+	background-position:top right;
+}
+.panel {
+	position:relative;
+	background-color:#4A4942;
+	background-image:url('./images/panel-bg.png');
+	background-repeat:repeat;
+	background-position:center center;
+	background-size:calc(16px * 3) calc(12px * 3);
+	padding:50px 60px;
+	display:flex;
+	align-items:center;
+	align-content:center;
+	justify-content:center;
+	flex-wrap:wrap;
+	max-width:calc(100vw - 200px);
+}
+.panel .panel-part {
+	background-image:url('./images/ui_spritesheet1.png');
+	background-repeat:no-repeat;
+	background-size:calc(512px * 3) calc(256px * 3);
+	position:absolute;
+	pointer-events:none;
+}
+.panel .panel-top-left {
+	top:-3px;
+	left:-3px;
+	width:calc(15px * 3);
+	height:calc(16px * 3);
+	background-position:calc(-437px * 3) calc(-89px * 3);
+}
+.panel .panel-top-right {
+	top:-3px;
+	right:-3px;
+	width:calc(16px * 3);
+	height:calc(13px * 3);
+	background-position:calc(-463px * 3) calc(-89px * 3);
+}
+.panel .panel-bottom-left {
+	bottom:-3px;
+	left:-3px;
+	width:calc(15px * 3);
+	height:calc(13px * 3);
+	background-position:calc(-437px * 3) calc(-113px * 3);
+}
+.panel .panel-bottom-right {
+	bottom:-3px;
+	right:-3px;
+	width:calc(16px * 3);
+	height:calc(13px * 3);
+	background-position:calc(-463px * 3) calc(-113px * 3);
+}
+.panel .panel-top-middle {
+	top:-3px;
+	left:calc(15px * 3 - 3px);
+	width:calc(100% - (15px * 3) - (16px * 3) + 6px);
+	height:calc(9px * 3);
+	background-repeat:repeat-x;
+	background-size:calc(28px * 3) calc(11px * 3);
+	background-image:url('./images/panel-top-middle.png');
+}
+.panel .panel-bottom-middle {
+	bottom:0;
+	left:calc(15px * 3 - 3px);
+	width:calc(100% - (15px * 3) - (16px * 3) + 6px);
+	height:calc(13px * 3);
+	background-repeat:repeat-x;
+	background-size:calc(28px * 3) calc(13px * 3);
+	background-image:url('./images/panel-bottom-middle.png');
+}
+.panel .panel-middle-left {
+	top:calc(16px * 3 - 3px);
+	left:-3px;
+	width:calc(20px * 3);
+	height:calc(100% - (16px * 3) - (13px * 3) + 3px);
+	background-repeat:repeat-y;
+	background-size:calc(20px * 3) calc(16px * 3);
+	background-image:url('./images/panel-middle-left.png');
+}
+.panel .panel-middle-right {
+	top:calc(13px * 3 - 3px);
+	right:-3px;
+	width:calc(19px * 3);
+	height:calc(100% - (13px * 3) - (13px * 3) + 3px);
+	background-repeat:repeat-y;
+	background-size:calc(19px * 3) calc(16px * 3);
+	background-image:url('./images/panel-middle-right.png');
+}
+
+/* UI Layout */
+.game {
+	display:flex;
+	align-items:center;
+	width:1092px;
+	height:calc(100vh - 50px);
+	min-height:1034px;
+	min-width:1092px;
+	margin:auto auto;
+	padding-bottom:50px;
+}
+
+/* top bar */
+.top-bar {
+	display:flex;
+	align-items:center;
+	align-content:center;
+	justify-content:space-between;
+	position:fixed;
+	z-index:100;
+	top:0;
+	left:0;
+	width:100vw;
+	height:50px;
+	padding-bottom:5px;
+}
+.game-logo {
+	padding:10px 10px;
+	position:relative;
+}
+.game-logo .logo {
+
+}
+.game-seed {
+	font-size:12px;
+	position:absolute;
+	top:15px;
+	right:15px;
+}
+.game-info {
+	position: absolute;
+    top: 210px;
+    left: 7px;
+	width:45px;
+	display:flex;
+	flex-direction:column;
+	align-items:flex-start;
+	text-transform:capitalize;
+	font-size:11px;
+	line-height:11px;
+	gap:23px;
+}
+.game-info span {
+	display:block;
+}
+.game-floor span, .game-round span {
+	font-size:20px;
+	line-height:22px;
+}
+.booster-pack span {
+	background-image:url('./images/cards_spritesheet.png');
+	background-repeat:no-repeat;
+	background-size:calc(1620px * .6) calc(5702px * .6);
+	width:calc(50px * .6);
+	height:calc(50px * .6);
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	background-position:calc(-1496px * .6) calc(-880px * .6);
+	margin-top:4px;
+}
+.booster-pack span.cycle-pack {
+	background-position:calc(-1438px * .6) calc(-932px * .6);
+}
+.booster-pack span.combine-pack {
+	background-position:calc(-1492px * .6) calc(-932px * .6);
+}
+.booster-pack span.magic-pack {
+	background-position:calc(-1541px * .6) calc(-932px * .6);
+}
+.game-courage {
+	display:flex;
+	align-items:center;
+	position:absolute;
+	top:17px;
+	left:265px;
+}
+.game-courage div {
+	width:32px;
+	height:32px;
+	position:relative;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:512px 15968px;
+	background-position:-256px -14976px;
+}
+.game-courage span {
+	font-size:18px;
+	line-height:18px;
+}
+.essence-bars, .game-aggro {
+	position:absolute;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	align-content:center;
+	justify-content:center;
+	gap:7px;
+}
+.essence-bars {
+	left: 517px;
+    top: 11px;
+}
+.game-aggro {
+	gap:14px;
+    top: 13px;
+    left: 693px;
+}
+.essence-bar, .aggro-bar, .crit-bar {
+	position:relative;
+	width:100px;
+	height:4px;
+	background:#000;
+	border-radius:2px;
+	transition:all .5s;
+}
+.essence-bar-inner, .aggro-bar-inner, .crit-bar-inner {
+	width:100%;
+	transition:all .5s;
+	position:absolute;
+	left:0;
+	top:0;
+	height:4px;
+	border-radius:2px;
+	opacity:1;
+}
+.aggro-bar-inner {
+	background:var(--aggro_color);
+}
+.crit-bar-inner {
+	background:var(--crit_color);
+}
+.essence-bar span.icon, .game-aggro span.icon {
+	display:block;
+	position:absolute;
+	left:-17px;
+	top:-5px;
+	width:16px;
+	height:16px;
+	position:relative;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:256px 7984px;
+	background-position:0px 0px;
+}
+.game-aggro span.icon {
+	top:-6px;
+}
+.essence-bar.shimmer span.icon {
+	background-position:-48px -512px;
+}
+.essence-bar.sparkle span.icon {
+	background-position:-48px -448px;
+}
+.essence-bar.aura span.icon {
+	background-position:-48px -496px;
+}
+.aggro-bar span.icon {
+	background-position:-80px -3312px;
+}
+.crit-bar span.icon {
+	background-position:-241px -2496px;
+}
+.essence-bar span.level, .aggro-bar span.level, .crit-bar span.level {
+	position:absolute;
+	right:-25px;
+	width:20px;
+	top:-4px;
+	font-size:11px;
+	line-height:10px;
+	transition:all 1.2s;
+}
+.essence-bar.level-up, .aggro-bar.level-up {
+	scale:1;
+	animation: essencethrob 1.2s ease-in-out infinite;
+}
+.essence-bar.level-up span.level, .aggro-bar.level-up span.level {
+	font-size:15px;
+	scale: 1;
+	animation: levelthrob 1.2s ease-in-out infinite;
+}
+.essence-bar.level-up .essence-bar-inner, .aggro-bar.level-up .aggro-bar-inner {
+	width:100%!important;
+}
+.essence-bar.sparkle.level-up .essence-bar-inner {
+	animation: sparklethrob 1.2s ease-in-out infinite;
+}
+.essence-bar.shimmer.level-up .essence-bar-inner {
+	animation: shimmerthrob 1.2s ease-in-out infinite;
+}
+.essence-bar.aura.level-up .essence-bar-inner {
+	animation: aurathrob 1.2s ease-in-out infinite;
+}
+.aggro-bar.level-up .aggro-bar-inner {
+	animation: aggrothrob 1.2s ease-in-out infinite;
+}
+@keyframes essencethrob {
+	0%, 60% {scale:.9;}
+	2% {scale:1.5;}
+	100% {scale:1;}
+}
+@keyframes sparklethrob {
+	0%, 20%, 40%, 60%, 80% {background:#FFF;}
+	20%, 30%, 50%, 70%, 90% {background:var(--sparkle_color);}
+}
+@keyframes shimmerthrob {
+	0%, 20%, 40%, 60%, 80% {background:#FFF;}
+	20%, 30%, 50%, 70%, 90% {background:var(--shimmer_color);}
+}
+@keyframes aurathrob {
+	0%, 20%, 40%, 60%, 80% {background:#FFF;}
+	20%, 30%, 50%, 70%, 90% {background:var(--aura_color);}
+}
+@keyframes aggrothrob {
+	0%, 20%, 40%, 60%, 80% {background:#FFF;}
+	20%, 30%, 50%, 70%, 90% {background:var(--aggro_color);}
+}
+@keyframes levelthrob {
+	0%, 60% {scale:.9;}
+	10% {scale:2.5;}
+	100% {scale:1;}
+}
+.essence-bar.capped.sparkle span.label {
+	color:var(--sparkle_color);
+}
+.essence-bar.capped.shimmer span.label {
+	color:var(--shimmer_color);
+}
+.essence-bar.capped.aura span.label {
+	color:var(--aura_color);
+}
+.candies {
+	display:flex;
+	gap:4px;
+}
+.top-bar .candies {
+	gap:15px;
+	position:absolute;
+	right:181px;
+	top:-14px;
+}
+.top-bar .candies .candy-slot {
+	margin-top:30px;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+.top-bar .candy {
+	left:0px;
+	top:0;
+}
+.candies .candy-slot {
+	width:42px;
+	height:42px;
+	position:relative;
+	z-index:1;
+	margin-top:3px;
+}
+.candy {
+	width:40px;
+	height:40px;
+	position:relative;
+	z-index:10;
+	top:1px;
+	left:1px;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:640px 19960px;
+	background-position:0px 0px;
+	transition:.3s;
+}
+.candy:hover {
+	scale:1.2;
+}
+.candy.selected {
+	animation: candythrob .5s ease-in-out infinite;
+}
+@keyframes candythrob {
+	0%, 100% {scale:..9;}
+	50% {scale:1.2;}
+}
+
+.top-bar .icon-button {
+	transition:.3s;
+	position:absolute;
+}
+.top-bar .icon-button:hover {
+	scale:1.2;
+}
+.top-bar .icon-button span.icon {
+	width:32px;
+	height:32px;
+	position:relative;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:512px 15968px;
+	background-position:0px 0px;
+}
+.top-bar .all-cards {
+	top:201px;
+	right:5px;
+}
+.top-bar .library {
+	top:264px;
+	right:5px;
+}
+.top-bar .settings {
+	top:329px;
+	right:5px;
+}
+.top-bar .all-cards span.icon {
+	background-position:-96px -15296px;
+}
+.top-bar .library span.icon {
+	background-position:-160px -4640px;
+}
+.top-bar .settings span.icon {
+	background-position:-192px -0px;
+}
+.top-bar span.counter {
+	font-size:12px;
+}
+
+/* bottom bar */
+.bottom-bar {
+	display:flex;
+	align-items:center;
+	align-content:center;
+	justify-content:space-between;
+	position:fixed;
+	z-index:100;
+	bottom:0;
+	left:0;
+	width:100vw;
+	height:50px;
+	text-transform:capitalize;
+}
+.bottom-bar .icon-button {
+	position:absolute;
+	padding:0;
+	transition:.3s;
+}
+.bottom-bar .icon-button:hover {
+	scale:1.2;
+}
+.bottom-bar .icon-button div.icon {
+	width:48px;
+	height:48px;
+	position:relative;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:calc(512px * 1.5) calc(15968px * 1.5);
+	background-position:0px 0px;
+}
+.bottom-bar .icon-button span.counter {
+	font-size:24px;
+	bottom:-3px;
+	right:0;
+}
+.bottom-bar .draw-cards span.counter {
+	text-shadow: 
+		2px 2px 0px rgba(2, 89, 52, 1), 
+		2px -2px 0px rgba(2, 89, 52, 1), 
+		-2px 2px 0px rgba(2, 89, 52, 1), 
+		-2px -2px 0px rgba(2, 89, 52, 1), 
+		0px 0px 8px rgba(2, 89, 52, 1),
+		0px 0px 15px rgba(2, 89, 52, 1),
+		0px 0px 20px rgba(2, 89, 52, 1),
+		0px 0px 25px rgba(2, 89, 52, 1),
+		0px 0px 30px rgba(2, 89, 52, 1);
+}
+.bottom-bar .discard-cards span.counter {
+	text-shadow: 
+		2px 2px 0px rgba(14, 51, 128, 1), 
+		2px -2px 0px rgba(14, 51, 128, 1), 
+		-2px 2px 0px rgba(14, 51, 128, 1), 
+		-2px -2px 0px rgba(14, 51, 128, 1), 
+		0px 0px 8px rgba(14, 51, 128, 1),
+		0px 0px 15px rgba(14, 51, 128, 1),
+		0px 0px 20px rgba(14, 51, 128, 1),
+		0px 0px 25px rgba(14, 51, 128, 1),
+		0px 0px 30px rgba(14, 51, 128, 1);
+}
+.bottom-bar .dead-cards span.counter {
+	text-shadow: 
+		2px 2px 0px rgba(120, 14, 14, 1), 
+		2px -2px 0px rgba(120, 14, 14, 1), 
+		-2px 2px 0px rgba(120, 14, 14, 1), 
+		-2px -2px 0px rgba(120, 14, 14, 1), 
+		0px 0px 8px rgba(120, 14, 14, 1),
+		0px 0px 15px rgba(120, 14, 14, 1),
+		0px 0px 20px rgba(120, 14, 14, 1),
+		0px 0px 25px rgba(120, 14, 14, 1),
+		0px 0px 30px rgba(120, 14, 14, 1);
+}
+.bottom-bar .draw-cards div.icon {
+	background-position:calc(-96px * 1.5) calc(-15200px * 1.5);
+}
+.bottom-bar .discard-cards div.icon {
+	background-position:calc(-96px * 1.5) calc(-15104px * 1.5);
+}
+.bottom-bar .dead-cards div.icon {
+	background-position:calc(-96px * 1.5) calc(-15168px * 1.5);
+}
+.bottom-bar-left {
+	display:flex;
+	gap:5px;
+	flex-direction:column;
+	padding-left:10px;
+	position: absolute;
+    left: 200px;
+    bottom: 10px;
+}
+.bottom-bar .player-health .icon-health, .bottom-bar .player-health .icon-armor {
+	width:28px;
+	height:28px;
+	position:absolute;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:448px 13972px;
+	background-position:-56px -4060px;
+	right:3px;
+	top:1px;
+	z-index:2;
+}
+.bottom-bar .player-health .icon-armor {
+	background-position:-0px -11844px;
+}
+.mana-speed {
+	display:flex;
+	gap:10px;
+	padding:0 10px;
+	position:absolute;
+	font-size:44px;
+}
+.mana-speed.mana {
+	right:-23px;
+	bottom:-15px;
+}
+.mana-speed.speed {
+	left:-23px;
+	bottom:-15px;
+}
+.mana-speed .icon {
+	width:120px;
+	height:120px;
+	background-repeat:no-repeat;
+	background-size:120px 120px;
+	background-position:0 0;
+	position:relative;
+	z-index:1;
+}
+.mana-speed span {
+	position:absolute;
+	top:50%;
+	left:50%;
+	transform:translateX(-50%) translateY(-50%);
+	z-index:2;
+}
+.mana-speed.mana span {
+	text-shadow: 
+		2px 2px 0px rgba(0, 67, 142, 1), 
+		2px -2px 0px rgba(0, 67, 142, 1), 
+		-2px 2px 0px rgba(0, 67, 142, 1), 
+		-2px -2px 0px rgba(0, 67, 142, 1), 
+		0px 0px 8px rgba(0, 67, 142, 1),
+		0px 0px 15px rgba(0, 67, 142, 1),
+		0px 0px 20px rgba(0, 67, 142, 1),
+		0px 0px 25px rgba(0, 67, 142, 1),
+		0px 0px 30px rgba(0, 67, 142, 1),
+		0px 0px 35px rgba(0, 67, 142, 1),
+		0px 0px 40px rgba(0, 67, 142, 1);
+}
+.mana-speed.speed span {
+	text-shadow: 
+		2px 2px 0px rgba(0, 95, 62, 1), 
+		2px -2px 0px rgba(0, 95, 62, 1), 
+		-2px 2px 0px rgba(0, 95, 62, 1), 
+		-2px -2px 0px rgba(0, 95, 62, 1), 
+		0px 0px 8px rgba(0, 95, 62, 1),
+		0px 0px 15px rgba(0, 95, 62, 1),
+		0px 0px 20px rgba(0, 95, 62, 1),
+		0px 0px 25px rgba(0, 95, 62, 1),
+		0px 0px 30px rgba(0, 95, 62, 1),
+		0px 0px 35px rgba(0, 95, 62, 1),
+		0px 0px 40px rgba(0, 95, 62, 1);
+}
+.mana-speed.mana div.icon {
+	background-image:url('images/mana.png');
+}
+.mana-speed.speed div.icon {
+	background-image:url('images/speed.png');
+}
+.draw-card.icon-button, .end-turn.icon-button {
+	width:120px;
+	height:120px;
+	padding:0 25px;
+	background-repeat:no-repeat;
+	background-size:120px 120px;
+	background-position:0 0;
+	position:relative;
+	z-index:4;
+	bottom:5px;
+	justify-content:center;
+	align-content:center;
+	text-align:center;
+	line-height:20px;
+	font-size:20px;
+	text-transform:uppercase;
+	text-shadow: 
+		2px 2px 0px rgba(0, 0, 0, .5), 
+		2px -2px 0px rgba(0, 0, 0, .5), 
+		-2px 2px 0px rgba(0, 0, 0, .5), 
+		-2px -2px 0px rgba(0, 0, 0, .5), 
+		0px 0px 8px rgba(0, 0, 0, 1),
+		0px 0px 15px rgba(0, 0, 0, 1);
+}
+.draw-card.icon-button {
+	background-image:url('images/draw.png');
+	left:90px;
+	padding:0 20px 20px 32px;
+}
+.draw-card.icon-button.disabled {
+	background-image:url('images/draw-disabled.png');
+}
+.icon-button, .button {
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.end-turn.icon-button {
+	background-image:url('images/end-turn.png');
+	right:85px;
+	padding:0 32px 20px 20px;
+}
+.bottom-bar .draw-cards, .bottom-bar .discard-cards, .bottom-bar .dead-cards, .draw-card, .end-turn {
+	opacity:.3;
+	pointer-events:none;
+}
+body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-cards, body.combating .bottom-bar .dead-cards, body.combating .draw-card, body.combating .end-turn {
+	opacity:1;
+	pointer-events:auto;
+}
+
+.stance {
+	font-size:22px;
+	padding:0 10px;
+	display:flex;
+	position:absolute;
+	bottom: 12px;
+    right: 356px;
+}
+.stance div {
+	width:28px;
+	height:32px;
+	position:relative;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:512px 15968px;
+	background-position:0px 0px;
+}
+.stance div.icon-label {
+	background-position:-322px -4416px;
+}
+.stance div[data-stance="none"] {
+	background-position:-96px -1056px;
+}
+.stance div[data-stance="sparkle"] {
+	background-position:-96px -896px;
+}
+.stance div[data-stance="shimmer"] {
+	background-position:-96px -1024px;
+}
+.stance div[data-stance="aura"] {
+	background-position:-96px -992px;
+}
+
+
+
+.chances {
+	display:block;
+	text-transform:capitalize;
+	font-size:11px;
+	line-height:11px;
+	position:absolute;
+	right:267px;
+	bottom:12px;
+	text-align:right;
+}
+.highest-damage-roll {
+	padding:0 7px;
+	display:flex;
+	align-items:center;
+	gap:5px;
+	position: absolute;
+    bottom: 10px;
+    right: 190px;
+}
+.highest-damage-roll span {
+	display:block;
+	font-size:18px;
+	line-height:18px;
+	position:relative;
+	top:-10px;
+	right:10px;
+}
+.highest-damage-roll div.icon {
+	width:32px;
+	height:32px;
+	position:relative;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:512px 15968px;
+	background-position:-224px -5826px;
+}
+
+/* map */
+.map {
+	display:flex;
+	--s: 100px;  /* size  */
+	--m: 2px;    /* margin */
+	--f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);
+	width:1092px;
+	height:934px;
+	position:relative;
+	z-index:1;
+}
+.map-inner {
+	font-size: 0; /*disable white space between inline block element */
+}
+.tile {
+	width: var(--s);
+	margin: var(--m);
+	height: calc(var(--s)*1.1547); 
+	display: inline-block;
+	font-size:initial;
+	clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+	background: rgba(0,0,0,.7);
+	margin-bottom: calc(var(--m) - var(--s)*0.2885); 
+	transition:all .2s;
+	position:relative;
+	z-index:1;
+}
+.tile div {
+	display:flex;
+	position:absolute;
+	align-items:center;
+	justify-content:center;
+	height:100%;
+	width:100%;
+}
+.map-inner::before {
+	content: "";
+	width: calc(var(--s)/2 + var(--m));
+	float: left;
+	height: 100%;
+	shape-outside: repeating-linear-gradient(#0000 0 calc(var(--f) - 3px), #000  0 var(--f));
+}
+
+/* grid customization */
+.tile span.icon {
+	display:block;
+	position:absolute;
+	left:0;
+	top:0;
+	width:48px;
+	height:48px;
+	position:relative;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:768px 23952px;
+	background-position:0px 0px;
+}
+
+/* tile icons */
+.tile.shimmer span.icon {
+	background-position:-144px -1536px;
+}
+.tile.sparkle span.icon {
+	background-position:-144px -1344px;
+}
+.tile.aura span.icon {
+	background-position:-144px -1488px;
+}
+.tile.fountain span.icon {
+	background-position:-720px -240px;
+}
+.tile.quest span.icon {
+	background-position:-624px -528px;
+}
+.tile.arena span.icon {
+	background-position:-192px -48px;
+}
+.tile.ice-gate span.icon {
+	background-position:-240px -9696px;
+}
+.tile.fire-gate span.icon {
+	background-position:-240px -9648px;
+}
+
+/* tile colors */
+.tile.sparkle {
+	background:hsl(221 50% 48% / .4);
+}
+.tile.shimmer {
+	background:hsl(290 33% 52% / .4);
+}
+.tile.aura {
+	background:hsl(8 100% 60% / .4);
+}
+.tile.fountain {
+	background:hsl(111 60% 55% / .4);
+}
+.tile.quest {
+	background:hsl(60 90% 55% / .4);
+}
+.tile.arena {
+	background:hsl(330 95% 40% / .6);
+}
+.tile.fire-gate {
+	background:hsl(22 100% 55%);
+}
+.tile.ice-gate {
+	background:hsl(198 100% 55%);
+}
+.tile.sparkle.clickable, .tile.sparkle:hover {
+	background:hsl(221 50% 48% / 1);
+}
+.tile.shimmer.clickable, .tile.shimmer:hover {
+	background:hsl(290 33% 52% / 1);
+}
+.tile.aura.clickable, .tile.aura:hover {
+	background:hsl(8 100% 60% / 1);
+}
+.tile.fountain.clickable, .tile.fountain:hover {
+	background:hsl(111 60% 55% / 1);
+}
+.tile.quest.clickable, .tile.quest:hover {
+	background:hsl(60 90% 55% / 1);
+}
+.tile.arena.clickable, .tile.arena:hover {
+	background:hsl(330 95% 40% / 1);
+}
+.tile.gate:hover {
+	scale:1.4;
+}
+
+/* visited */
+.tile.sparkle.visited:not(.current) {
+	background:rgba(0,0,0,.5);
+}
+.tile.shimmer.visited:not(.current) {
+	background:rgba(0,0,0,.5);
+}
+.tile.aura.visited:not(.current) {
+	background:rgba(0,0,0,.5);
+}
+.tile.fountain.visited:not(.current) {
+	background:rgba(0,0,0,.5);
+}
+.tile.quest.visited:not(.current) {
+	background:rgba(0,0,0,.5);
+}
+.tile.arena.visited:not(.current) {
+	background:rgba(0,0,0,.5);
+}
+.tile.sparkle.visited:not(.current) span.icon {
+	filter: grayscale(100%);
+}
+.tile.shimmer.visited:not(.current) span.icon {
+	filter: grayscale(100%);
+}
+.tile.aura.visited:not(.current) span.icon {
+	filter: grayscale(100%);
+}
+.tile.fountain.visited:not(.current) {
+	filter: grayscale(100%);
+}
+.tile.quest.visited:not(.current) {
+	filter: grayscale(100%);
+}
+.tile.arena.visited:not(.current) {
+	filter: grayscale(100%);
+}
+.tile.sparkle.visited:not(.current):hover {
+	background:rgba(255,255,255,.4);
+}
+.tile.shimmer.visited:not(.current):hover {
+	background:rgba(255,255,255,.4);
+}
+.tile.aura.visited:not(.current):hover {
+	background:rgba(255,255,255,.4);
+}
+.tile.fountain.visited:not(.current):hover {
+	background:rgba(255,255,255,.4);
+}
+.tile.quest.visited:not(.current):hover {
+	background:rgba(255,255,255,.4);
+}
+.tile.arena.visited:not(.current):hover {
+	background:rgba(255,255,255,.4);
+}
+
+.tile.clickable {
+	z-index:2;
+}
+.tile.clickable:hover {
+	scale:.97;
+	animation: hexthrob .4s ease-in-out infinite;
+}
+.tile.sparkle.clickable:hover, .tile.shimmer.clickable:hover, .tile.aura.clickable:hover {
+	background:#FFF;
+}
+
+.tile.gate {
+	scale:1.3;
+	z-index:0;
+}
+
+.tile.current {
+	z-index:2;
+	background:#FFF;
+	color:#FFF;
+	animation: hexthrob 1.2s ease-in-out infinite;
+	scale:.97;
+}
+.tile.current span.icon {
+	filter: grayscale(100%);
+}
+@keyframes hexthrob {
+	0%, 60% {scale:.97;}
+	4% {scale:1.04;}
+}
+
+
+/* status */
+.status {
+	position:fixed;
+	top:60px;
+	transform:translateX(-200px);
+	left:0;
+	width:200px;
+	max-height:calc(100vh - 110px);
+	padding:10px 10px;
+	display:flex;
+	flex-direction:column;
+	z-index:30;
+	font-size:14px;
+	background:rgba(0,0,0,.7);
+	border:1px solid white;
+	transition:all .3s;
+}
+.status-inner {
+	overflow:auto;
+	height:100%;
+}
+.status-inner::-webkit-scrollbar {
+	display:none;
+}
+.status div {
+	padding:1px 0px;
+}
+.status.shown {
+	transform:translateX(-1px);
+}
+.status-toggle {
+	z-index:31;
+	position:absolute;
+	display:flex;
+	right:-70px;
+	top:-1px;
+	padding:15px 15px;
+	width:70px;
+	text-align:center;
+	border:1px solid white;
+	background:rgba(0,0,0,.7);
+	display:none;
+}
+
+/* debug log */
+.debug-log {
+	position:fixed;
+	top:118px;
+	transform:translateX(-300px);
+	left:0;
+	width:300px;
+	max-height:calc(100vh - 110px);
+	padding:10px 10px;
+	display:flex;
+	flex-direction:column;
+	z-index:30;
+	font-size:14px;
+	background:rgba(0,0,0,.7);
+	border:1px solid white;
+	transition:all .3s;
+}
+.debug-inner {
+	overflow:auto;
+	height:100%;
+}
+.debug-inner::-webkit-scrollbar {
+	display:none;
+}
+.debug-log span {
+	display:block;
+	padding:1px 0px;
+}
+.debug-log.shown {
+	transform:translateX(-1px);
+}
+.debug-toggle {
+	z-index:31;
+	position:absolute;
+	display:flex;
+	right:-70px;
+	top:-1px;
+	padding:15px 15px;
+	width:70px;
+	text-align:center;
+	border:1px solid white;
+	background:rgba(0,0,0,.7);
+	display:none;
+}
+
+/* treasures */
+.treasures {
+	position:fixed;
+	top:20px;
+	right:20px;
+	display:flex;
+	flex-direction:column;
+	z-index:20;
+}
+.treasures div {
+	padding:1px 0;
+}
+
+.view-map-done-wrapper {
+	display:flex;
+	align-items:center;
+	justify-content:flex-end;
+	align-content:center;
+	flex-direction:column;
+	position:absolute;
+	height:calc(100vh + 100px);
+	width:100vw;
+	transform:translateY(calc(-100vh - 150px));
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	z-index:40;
+	opacity:0;
+	transition:opacity .5s;
+	background:rgba(0,0,0,0);
+	gap:30px;
+	margin:50px 0;
+}
+.view-map-done-wrapper.shown {
+	transform:translateY(0);
+	opacity:1;
+}
+
+/* game panels */
+.game-panel {
+	display:flex;
+	overflow:auto;
+	align-items:center;
+	padding:150px 0 100px 0;
+	justify-content:flex-start;
+	align-content:center;
+	flex-direction:column;
+	position:fixed;
+	height:100vh;
+	width:100vw;
+	transform:translateY(-100vh);
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	z-index:10;
+	opacity:1;
+	transition:all .5s ease-in-out;
+	gap:0;
+	background-size:cover;
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-image:url('./images/start1.png');
+}
+.game-panel::-webkit-scrollbar {
+	display:none;
+}
+.game-panel.shown {
+	transform:translateY(0);
+	opacity:1;
+}
+.game-panel .panel .buttons-wrapper {
+	flex-direction:column;
+	margin-top:0;
+}
+.game-panel .panel .button {
+	width:100%;
+}
+.game-panel .message {
+	display:flex;
+	justify-content:center;
+	font-size:17px;
+	height:calc(24px * 3);
+	background-image:url('./images/message.png');
+	background-size:calc(77px * 3) calc(48px * 3);
+	background-repeat:repeat-x;
+	background-position:0 calc(-24px * 3);
+	position:relative;
+	z-index:2;
+	padding:26px 10px;
+	margin:0 calc(18px * 3 - 1px);
+	text-align:center;
+}
+.game-panel .message::before {
+	position:absolute;
+	z-index:-1;
+	top:0;
+	left:calc(-12px * 3);
+	width:calc(12px * 3);
+	height:calc(24px * 3);
+	content: ' ';
+	background-image:url('./images/message.png');
+	background-size:calc(77px * 3) calc(48px * 3);
+	background-repeat:no-repeat;
+	background-position:0 0;
+}
+.game-panel .message::after {
+	position:absolute;
+	z-index:-1;
+	top:0;
+	right:calc(-13px * 3);
+	width:calc(13px * 3);
+	height:calc(24px * 3);
+	content: ' ';
+	background-image:url('./images/message.png');
+	background-size:calc(77px * 3) calc(48px * 3);
+	background-repeat:no-repeat;
+	background-position:calc(-64px * 3) 0;
+}
+.choose-booster-pack {
+	background-image:url('./images/booster1.png');
+}
+.courage-screen {
+	background-image:url('./images/courage1.png');
+}
+
+/* fountain screen */
+.fountain-options {
+	display:none;
+	align-items:center;
+	justify-content:center;
+	align-content:center;
+	gap:5px;
+}
+.fountain-options.shown {
+	display:flex;
+}
+.magic-fountain .button {
+	position:relative;
+}
+.magic-fountain .fountain-visited {
+	display:none;
+}
+.magic-fountain .fountain-visited.shown {
+	display:block;
+}
+
+/* quest screen */
+.quest-options {
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	align-content:center;
+	gap:5px;
+}
+.quest-screen .button {
+	position:relative;
+}
+.quest-description {
+	
+}
+
+/* courage screen */
+.courage-item-wrapper {
+	display:flex;
+	flex-wrap:wrap;
+	align-content:center;
+	align-items:center;
+	justify-content:center;
+	flex-direction:column;
+	gap:0;
+}
+.courage-item-wrapper .panel:last-child {
+	margin-top:20px;
+}
+.courage-items,
+.courage-cards {
+	display:flex;
+	flex-wrap:wrap;
+	align-items:center;
+	justify-content:center;
+	align-content:center;
+	gap:10px;
+}
+.courage-items {
+	padding-bottom:30px;
+}
+.courage-items .treasure-courage,
+.courage-items .candy-courage,
+.remove-courage,
+.courage-cards .card-courage {
+	display:block;
+	position:absolute;
+	bottom:-33px;
+	font-size:26px;
+	width:100%;
+	text-align:center;
+}
+.remove-courage {
+	bottom:-28px;
+}
+.courage-screen .button.courage-remove {
+	display:none;
+	margin:20px 80px;
+	width:auto;
+}
+.courage-screen .courage-remove.shown {
+	display:block;
+}
+.courage-screen .courage-remove.too-expensive {
+	border-color:red;
+}
+.courage-items .treasure.too-expensive .treasure-courage,
+.courage-items .candy.too-expensive .candy-courage,
+.courage-cards .card.too-expensive .card-courage {
+	color:red;
+}
+.courage-cards .card-wrapper {
+	margin-bottom:40px;
+}
+
+/* loot screen */
+.loot-screen {
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	align-content:center;
+	flex-direction:column;
+	position:fixed;
+	height:100vh;
+	width:100vw;
+	transform:translateY(-100vh);
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	z-index:10;
+	opacity:1;
+	gap:0;
+	transition:all .5s ease-in-out;
+	padding:0 100px;
+	background-size:cover;
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-image:url('./images/treasure1.png');
+}
+.loot-screen h2 {
+	margin-bottom:20px;
+}
+.loot-screen.shown {
+	transform:translateY(0);
+	opacity:1;
+}
+.loot-screen .panel {
+	margin-bottom:20px;
+}
+.loot-items {
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	align-content:center;
+	flex-wrap:wrap;
+	gap:5px;
+}
+.loot-items .treasure, .loot-items .essence, .loot-items .shard,
+.courage-items .treasure, .courage-items .essence, .courage-items .shard {
+	transition:all .3s;
+}
+.loot-items .treasure:hover, .loot-items .essence:hover, .loot-items .shard:hover,
+.courage-items .treasure:hover, .courage-items .essence:hover, .courage-items .shard:hover {
+	scale:1.2;
+}
+.loot-screen .button {
+	position:relative;
+}
+
+/* combat screen */
+.combat {
+	display:flex;
+	flex-direction:column;
+	align-items:stretch;
+	position:fixed;
+	height:calc(100vh - 50px);
+	width:100vw;
+	transform:translateY(-100vh);
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	z-index:10;
+	opacity:1;
+	transition:all .5s ease-in-out;
+	background:#000;
+}
+body.selecting .combat .overlay {
+	display:block;
+	z-index:12;
+	background:rgba(0,0,0,.8);
+}
+.combat.shown {
+	transform:translateY(50px);
+	opacity:1;
+}
+.monster-panel {
+	flex-basis:calc(100% - 300px);
+}
+.player-panel {
+	flex-basis:350px;
+}
+.monster-panel, .player-panel {
+	align-content:center;
+	align-items:center;
+	justify-content:space-around;
+	display:flex;
+	position:relative;
+}
+.monster-panel {
+	display:flex;
+	gap:10px;
+	align-items:center;
+	justify-content:center;
+	background-size:cover;
+	background-position:bottom center;
+	background-repeat:no-repeat;
+	margin:0 auto;
+	width:calc(100vw - 100px);
+}
+.creature-health {
+	position:relative;
+	width:310px;
+	height:36px;
+	background:#333;
+}
+.player-panel .creature-health {
+	border:3px solid transparent;
+}
+.creature-health.blocked {
+	border:3px solid var(--block_color);
+	height:36px;
+}
+.creature-health .health-amount {
+	display:flex;
+	justify-content:center;
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background:rgba(252, 28, 3, 1);
+	z-index:1;
+	transition:width .5s;
+}
+.creature-health .health-number {
+	position:absolute;
+	right:-14px;
+	top:-10px;
+	width:20px;
+	font-size:13px;
+}
+.creature-health .armor-amount {
+	display:flex;
+	justify-content:center;
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background:rgba(99, 1, 68, .6);
+	z-index:2;
+	transition:width .5s;
+}
+.creature-health .armor-number {
+	position:absolute;
+	right:-14px;
+	bottom:-8px;
+	width:20px;
+	font-size:13px;
+}
+.creature-health .block-amount {
+	position:absolute;
+	top:-3px;
+	right:-36px;
+	width:36px;
+	height:36px;
+	background:var(--block_color);
+	display:none;
+	justify-content:center;
+	align-items:center;
+}
+.creature-health .block-amount.shown {
+	display:flex;
+}
+.creature-health .block-number {
+	font-size:20px;
+}
+/* monster-specific health bar */
+.monster-health {
+	width:220px;
+	height:20px;
+	margin:10px 0;
+	z-index:7;
+	box-shadow:0 0 10px 3px rgba(0, 0, 0, .3);
+	position:absolute;
+	bottom:0;
+}
+.monster-health.blocked {
+	border:2px solid var(--block_color);
+	height:24px;
+}
+.monster-health .block-amount {
+	right:-24px;
+	width:24px;
+	height:24px;
+	top:-2px;
+}
+.monster-health .block-number {
+	font-size:15px;
+}
+.monster-health .health-number {
+	right:-11px;
+}
+.monster-health .armor-number {
+	right:-11px;
+}
+
+.monster {
+	width:300px;
+	height:400px;
+	text-align:center;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	flex-direction:column;
+	position:relative;
+	transition:all .2s;
+	border-radius:20px;
+}
+.monster .monster-stats {
+	position:absolute;
+	top:0;
+	z-index:8;
+}
+.monster .status-bar {
+	position:absolute;
+	bottom:-30px;
+	z-index:9;
+}
+.monster .sprite {
+	background-image:url('./images/monsters_spritesheet.png');
+	background-repeat:no-repeat;
+	background-size:calc(1200px * 1) calc(4950px * 1);
+	position:absolute;
+	z-index:2;
+	transition:all .3s;
+}
+.monster.damaged .sprite {
+	animation: rumble .1s infinite linear;
+}
+.monster:hover .sprite {
+	filter:
+		drop-shadow(1px 1px 0 red)
+		drop-shadow(1px -1px 0 red)
+		drop-shadow(-1px 1px 0 red)
+		drop-shadow(-1px -1px 0 red)
+		drop-shadow(0 0 20px red);
+}
+@keyframes rumble {
+	0% {transform: rotate(0deg);}
+    25% {transform: translate(2px, 0px) rotate(-3deg);}
+    50% {transform: translate(0px, -2px) rotate(0deg);}
+    75% {transform: translate(-2px, 0px) rotate(3deg);}
+    100% {transform: translate(0px, 2px) rotate(0deg);} 
+}
+
+.monster.pixie .sprite {
+	background-position:0 0;
+	width:calc(149px * 1);
+	height:calc(180px * 1);
+}
+.monster.mummy .sprite {
+	background-position:calc(-149px * 1) 0;
+	width:calc(121px * 1);
+	height:calc(219px * 1);
+}
+.monster.stone_walker .sprite {
+	background-position:calc(-270px * 1) 0;
+	width:calc(364px * 1);
+	height:calc(216px * 1);
+}
+.monster.sludge .sprite {
+	background-position:calc(-634px * 1) 0;
+	width:calc(194px * 1);
+	height:calc(192px * 1);
+}
+.monster.imp .sprite {
+	background-position:calc(-828px * 1) 0;
+	width:calc(322px * 1);
+	height:calc(220px * 1);
+}
+.monster.shatter .sprite {
+	background-position:0 calc(-219px * 1);
+	width:calc(267px * 1);
+	height:calc(245px * 1);
+}
+.monster.void_fairy .sprite {
+	background-position:calc(-270px * 1) calc(-219px * 1);
+	width:calc(164px * 1);
+	height:calc(250px * 1);
+}
+.monster.enchantress .sprite {
+	background-position:calc(-459px * 1) calc(-219px * 1);
+	width:calc(391px * 1);
+	height:calc(254px * 1);
+}
+.monster.power_liche .sprite {
+	background-position:calc(-858px * 1) calc(-220px * 1);
+	width:calc(343px * 1);
+	height:calc(295px * 1);
+}
+.monster.iron_walker .sprite {
+	background-position:0 calc(-479px * 1);
+	width:calc(358px * 1);
+	height:calc(319px * 1);
+}
+.monster.swarm .sprite {
+	background-position:calc(-370px * 1) calc(-486px * 1);
+	width:calc(322px * 1);
+	height:calc(274px * 1);
+}
+.monster.sorcerer .sprite {
+	background-position:calc(-700px * 1) calc(-516px * 1);
+	width:calc(408px * 1);
+	height:calc(311px * 1);
+}
+.monster.red_dragon .sprite {
+	background-position:0 calc(-793px * 1);
+	width:calc(420px * 1);
+	height:calc(407px * 1);
+}
+.monster.green_dragon .sprite {
+	background-position:calc(-413px * 1) calc(-827px * 1);
+	width:calc(445px * 1);
+	height:calc(340px * 1);
+}
+.monster.cyberskull .sprite {
+	background-position:calc(-852px * 1) calc(-840px * 1);
+	width:calc(348px * 1);
+	height:calc(320px * 1);
+}
+.monster.transfigurer .sprite {
+	background-position:0 calc(-1200px * 1);
+	width:calc(640px * 1);
+	height:calc(434px * 1);
+}
+.monster.gold_dragon .sprite {
+	background-position:calc(-647px * 1) calc(-1167px * 1);
+	width:calc(435px * 1);
+	height:calc(605px * 1);
+}
+.monster.black_dragon .sprite {
+	background-position:0 calc(-1636px * 1);
+	width:calc(630px * 1);
+	height:calc(473px * 1);
+}
+.monster.obsidian_walker .sprite {
+	background-position:calc(-630px * 1) calc(-1772px * 1);
+	width:calc(557px * 1);
+	height:calc(381px * 1);
+}
+.monster.seething_entity .sprite {
+	background-position:0 calc(-2117px * 1);
+	width:calc(599px * 1);
+	height:calc(325px * 1);
+}
+.monster.seething_entity .sprite {
+	background-position:0 calc(-2117px * 1);
+	width:calc(599px * 1);
+	height:calc(325px * 1);
+}
+.monster.ultramaton .sprite {
+	background-position:calc(-690px * 1) calc(-2163px * 1);
+	width:calc(553px * 1);
+	height:calc(522px * 1);
+}
+.monster.unmaker .sprite {
+	background-position:0 calc(-2442px * 1);
+	width:calc(690px * 1);
+	height:calc(546px * 1);
+}
+.monster.arch_summoner .sprite {
+	background-position:0 calc(-3000px * 1);
+	width:calc(742px * 1);
+	height:calc(598px * 1);
+}
+.monster.frost_guardian .sprite {
+	background-position:0 calc(-3610px * 1);
+	width:calc(742px * 1);
+	height:calc(655px * 1);
+}
+.monster.flame_guardian .sprite {
+	background-position:0 calc(-4271px * 1);
+	width:calc(895px * 1);
+	height:calc(655px * 1);
+}
+
+.monster .monster-name {
+	font-size:25px;
+}
+.monster.dead {
+	opacity:.2;
+}
+.monster .meter {
+	position:absolute;
+	width:100%;
+	bottom:0;
+	height:100%;
+	left:0;
+	transition:height .5s;
+}
+.monster .monster-inner {
+	position:relative;
+	z-index:4;
+}
+.monster .combat-log {
+	position:absolute;
+	top:50px;
+}
+.player .combat-log {
+	position:absolute;
+	bottom:135px;
+	left:240px;
+}
+.combat-log {
+	z-index:3;
+	font-size:40px;
+	width:80px;
+	position:relative;
+}
+.combat-log > div {
+	position:relative;
+}
+.combat-log span {
+	display:inline-block;
+	padding:0 15px;
+	scale:1;
+	opacity:1;
+	position:absolute;
+	transition:all 3s;
+	
+}
+.combat-log .dmg-taken {
+	color:#FFF;
+}
+.combat-log .armor-lost {
+	color:rgba(199, 0, 136, 1);
+}
+.combat-log .health-lost {
+	color:rgba(252, 28, 3, 1);
+}
+
+/* player panel */
+.player-panel {
+	flex-direction:column;
+	background-image:url('./images/player_bg.png');
+	background-repeat:repeat;
+	background-position:center center;
+	z-index:12;
+}
+.player-panel img.sprite {
+	width:460px;
+	bottom:-45px;
+	left:-130px;
+	height:auto;
+	position:absolute;
+	z-index:-1;
+	transition:all .3s;
+}
+.player-panel.damaged img.sprite {
+	animation: rumble .1s infinite linear;
+}
+.frame {
+	background-image:url('./images/ui_spritesheet1.png');
+	background-repeat:no-repeat;
+	background-size:calc(512px * 1.9) calc(256px * 1.9);
+	background-position:0px 0px;
+	position:absolute;
+	pointer-events:none;
+}
+.top-bar .frame {
+	background-image:url('./images/ui_spritesheet2.png');
+	background-size:calc(320px * 3) calc(320px * 3);
+	z-index:0;
+}
+.frame-left {
+	top:0;
+	left:0;
+	height:350px;
+	width:63px;
+}
+.frame-right {
+	top:0;
+	right:0;
+	height:350px;
+	width:63px;
+	background-position:calc(-32px * 1.9) 0px;
+}
+.player-panel .frame-top-left {
+	top:0;
+	left:63px;
+	width:calc(130px * 1.9);
+	height:50px;
+	background-size:calc(130px * 1.9) calc(16px * 1.9);
+	background-image:url('./images/frame-top-left.png');
+}
+.top-bar .frame-top-left {
+	background-image:url('./images/frame-top-left-top.png');
+	background-size:calc(133px * 3) calc(144px * 3);
+	height:calc(144px * 3);
+	width:calc(133px * 3);
+	left:0;
+	top:0;
+}
+.player-panel .frame-top-right {
+	top:0;
+	right:63px;
+	width:calc(126px * 1.9);
+	height:50px;
+	background-size:calc(126px * 1.9) calc(16px * 1.9);
+	background-image:url('./images/frame-top-right.png');
+}
+.top-bar .frame-top-right {
+	background-image:url('./images/frame-top-right-top.png');
+	background-size:calc(146px * 3) calc(144px * 3);
+	height:calc(144px * 3);
+	width:calc(146px * 3);
+	right:0;
+	top:0;
+}
+.player-panel .frame-top-middle {
+	top:0;
+	left:calc(130px * 1.9 + 63px);
+	width:calc(100% - calc(130px * 1.9) - calc(126px * 1.9) - 63px - 63px);
+	height:50px;
+	background-repeat:repeat-x;
+	background-size:calc(26px * 1.9) calc(16px * 1.9);
+	background-image:url('./images/frame-top-middle.png');
+}
+.top-bar .frame-top-middle {
+	top:0;
+	left:calc(133px * 3);
+	width:calc(100% - calc(133px * 3) - calc(146px * 3));
+	height:calc(17px * 3);
+	background-repeat:repeat-x;
+	background-size:calc(57px * 3) calc(17px * 3);
+	background-image:url('./images/frame-top-middle-top.png');
+}
+.frame-bottom-left {
+	bottom:0;
+	left:0;
+	width:calc(300px * 1.9);
+	height:61px;
+	background-size:calc(300px * 1.9) calc(32px * 1.9);
+	background-image:url('./images/frame-bottom-left.png');
+}
+.frame-bottom-right {
+	bottom:0;
+	right:0;
+	width:calc(320px * 1.9);
+	height:61px;
+	background-size:calc(320px * 1.9) calc(32px * 1.9);
+	background-image:url('./images/frame-bottom-right.png');
+}
+.frame-bottom-middle {
+	bottom:0;
+	left:calc(300px * 1.9);
+	width:calc(100% - calc(300px * 1.9) - calc(320px * 1.9));
+	height:34px;
+	background-repeat:repeat-x;
+	background-size:calc(28px * 1.9) calc(18px * 1.9);
+	background-image:url('./images/frame-bottom-middle.png');
+}
+.player-panel .crit {
+	position:absolute;
+	top:20px;
+	right:20px;
+	font-size:40px;
+	color:red;
+	display:none;
+}
+.player-panel .crit.shown {
+	display:block;
+}
+.player-panel .message {
+	position:absolute;
+	top:-170px;
+	font-size:28px;
+	z-index:9;
+	display:none;
+}
+.player-panel .message.shown {
+	display:block;
+}
+.player-panel .player {
+	display:flex;
+	gap:10px;
+	height:calc(414px * .92);
+}
+.player-panel .player-cards {
+	display:flex;
+	gap:10px;
+	align-items:center;
+	justify-content:center;
+	position:relative;
+	right:-20px;
+	max-width:1000px;
+}
+.player-panel .status-bar {
+	position:absolute;
+	top:40px;
+	z-index:2;
+	margin:0 70px 0 70px;
+}
+
+.status-bar {
+	display:flex;
+	justify-content:flex-start;
+	flex-wrap:wrap;
+	gap:6px;
+}
+.status-bar .single-status {
+	width:32px;
+	height:32px;
+	position:relative;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:512px 15968px;
+	background-position:0px 0px;
+}
+.status-bar .single-status span.turns, .status-bar .single-status span.amount {
+	position:absolute;
+	bottom:-5px;
+	right:0;
+	font-size:12px;
+}
+.status-bar .single-status span.amount {
+	right:auto;
+	left:0;
+	top:-5px;
+	bottom:auto;
+}
+
+/* magic rainbow */
+.magic-rainbow {
+	position:absolute;
+	left:-13px;
+	top:-122px;
+	width:238px;
+	height:115px;
+	display:flex;
+	align-items:center;
+	justify-content:end;
+	flex-direction:column;
+	gap:2px;
+}
+.magic-rainbow .magic-type {
+	position:relative;
+	z-index:9;
+}
+.magic-rainbow .rainbow-power {
+	position:absolute;
+	z-index:1;
+	height:100%;
+	width:0%;
+	left:0;
+	top:0;
+}
+.magic-rainbow .rainbow-power-amount {
+	position:relative;
+	font-size:25px;
+	color:yellow;
+	z-index:9;
+}
+.magic-rainbow .mask {
+	position: relative;
+	overflow: hidden;
+	display: block;
+	width: 12.5rem;
+	height: 6.25rem;
+	margin: 1.25rem;
+}
+.magic-rainbow .semi-circle {
+	position: relative;
+	display: block;
+	width: 12.5rem;
+	height: 6.25rem;
+	border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
+	background: linear-gradient(
+        90deg,
+        rgba(255, 0, 0, 1) 0%,
+        rgba(255, 154, 0, 1) 10%,
+        rgba(208, 222, 33, 1) 20%,
+        rgba(79, 220, 74, 1) 30%,
+        rgba(63, 218, 216, 1) 40%,
+        rgba(47, 201, 226, 1) 50%,
+        rgba(28, 127, 238, 1) 60%,
+        rgba(95, 21, 242, 1) 70%,
+        rgba(186, 12, 248, 1) 80%,
+        rgba(251, 7, 217, 1) 90%,
+        rgba(255, 0, 0, 1) 100%
+    );
+	background-size:100% 100%;
+}
+.magic-rainbow .rainbow-power .semi-circle::before {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	z-index: 2;
+	display: block;
+	width: 8.75rem;
+	height: 4.375rem;
+	margin-left: -4.375rem;
+	background: #000000;
+	border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
+}
+.magic-rainbow .semi-circle--mask {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 12.5rem;
+	height: 12.5rem;
+	background: transparent;
+	transform: rotate(0deg) translate3d(0, 0, 0);
+	transform-origin: center center;
+	backface-visibility: hidden;
+	transition: all 0.3s ease-in-out;
+}
+.magic-rainbow .semi-circle--mask::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0%;
+	z-index: 2;
+	display: block;
+	width: 12.625rem;
+	height: 6.375rem;
+	margin: -1px 0 0 -1px;
+	background: #222222;
+	border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
+}
+.magic-rainbow.unavailable .semi-circle--mask {
+	transition:none;
+}
+.magic-rainbow.activated .semi-circle {
+	animation: rainbow-activated .8s ease infinite;
+	background-size: 400% 400% !important;
+}
+.magic-rainbow.activated .semi-circle--mask {
+	transform: rotate(180deg) translate3d(0, 0, 0) !important;
+}
+.magic-rainbow.empty .semi-circle--mask {
+	transform: rotate(0deg) translate3d(0, 0, 0) !important;
+}
+.magic-rainbow.muddled .semi-circle {
+	background: linear-gradient(90deg, rgba(38,148,214,1) 0%, rgba(0,195,160,1) 100%);
+}
+.magic-rainbow.muddled.activated .semi-circle {
+	background: linear-gradient(90deg, rgba(38,148,214,1) 0%, rgba(137,116,254,1) 18%, rgba(24,172,179,1) 34%, rgba(18,116,226,1) 49%, rgba(158,74,247,1) 63%, rgba(37,216,227,1) 81%, rgba(0,195,160,1) 100%);
+}
+.magic-rainbow.dark .semi-circle {
+	background: linear-gradient(90deg, rgba(70,28,168,1) 0%, rgba(160,23,198,1) 100%);
+}
+.magic-rainbow.dark.activated .semi-circle {
+	background: linear-gradient(90deg, rgba(106,4,139,1) 0%, rgba(0,8,144,1) 21%, rgba(99,22,116,1) 37%, rgba(41,8,88,1) 53%, rgba(79,22,203,1) 71%, rgba(145,52,147,1) 85%, rgba(75,0,167,1) 100%);
+}
+.magic-rainbow.elemental .semi-circle {
+	background: linear-gradient(90deg, rgba(3,194,144,1) 0%, rgba(147,210,4,1) 100%);
+}
+.magic-rainbow.elemental.activated .semi-circle {
+	background: linear-gradient(90deg, rgba(1,205,111,1) 0%, rgba(113,246,40,1) 18%, rgba(23,159,91,1) 34%, rgba(5,175,87,1) 49%, rgba(103,167,11,1) 63%, rgba(48,255,201,1) 81%, rgba(145,195,0,1) 100%);
+}
+.magic-rainbow.chaos .semi-circle {
+	background: linear-gradient(90deg, rgba(218,30,103,1) 0%, rgba(237,60,16,1) 100%);
+}
+.magic-rainbow.chaos.activated .semi-circle {
+	background: linear-gradient(90deg, rgba(218,30,103,1) 0%, rgba(224,15,230,1) 14%, rgba(186,13,153,1) 28%, rgba(245,13,13,1) 44%, rgba(148,33,2,1) 59%, rgba(162,1,93,1) 79%, rgba(237,60,16,1) 100%);
+}
+@keyframes rainbow-activated {
+	0%, 100% {
+		background-position: 0% 100%;
+	}
+	50% {
+		background-position: -100% 100%;
+	}
+	75% {
+		background-position: -200% 100%;
+	}
+	99% {
+		background-position: -300% 100%;
+	}
+}
+
+/* disable clicking when in selecting mode */
+body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, body.selecting .monster, body.selecting .draw-card {
+	pointer-events:none;
+}
+
+
+/* player cards */
+.card {
+	background-image:url('./images/cards_spritesheet.png');
+	background-repeat:no-repeat;
+	background-size:calc(1620px * .92) calc(5702px * .92);
+	background-position:0 calc(-414px * .92);
+	width:calc(270px * .92);
+	height:calc(414px * .92);
+	scale:1;
+	transition:all 1s;
+	display:flex;
+	align-content:center;
+	align-items:center;
+	justify-content:flex-start;
+	text-align:center;
+	flex-wrap:wrap;
+	flex-direction:column;
+	position:relative;
+}
+.card:hover {
+	transition:all .2s;
+}
+.card .card-image {
+	width:calc(195px * .92);
+	height:calc(157px * .92);
+	background-image:url('./images/cards_spritesheet.png');
+	background-repeat:no-repeat;
+	background-size:calc(1620px * .92) calc(5702px * .92);
+	background-position:calc(-1364px * .92) calc(-5545px * .92);
+	position:absolute;
+	top:68px;
+	left:36px;
+}
+.card .card-frame {
+	width:calc(200px * .92);
+	height:calc(164px * .92);
+	background-image:url('./images/cards_spritesheet.png');
+	background-repeat:no-repeat;
+	background-size:calc(1620px * .92) calc(5702px * .92);
+	background-position:0 calc(-828px * .92);
+	position:absolute;
+	top:66px;
+	left:32px;
+}
+.card .card-type {
+	position:absolute;
+	top:208px;
+	font-size:9px;
+	border-radius:3px;
+	padding:3px 6px;
+	display:flex;
+}
+.card .card-rarity {
+	width:calc(22px * 1);
+	height:calc(33px * 1);
+	background-image:url('./images/cards_spritesheet.png');
+	background-repeat:no-repeat;
+	background-size:calc(1620px * 1) calc(5702px * 1);
+	background-position:calc(-800px * 1) calc(-828px * 1);
+	position:absolute;
+	top:321px;
+	left:114px;
+}
+
+/* ATTACK */
+#card-jab .card-image {
+	background-position:0 calc(-992px * .92);
+}
+#card-stomp .card-image {
+	background-position:calc(-195px * .92) calc(-992px * .92);
+}
+#card-quick_buck .card-image {
+	background-position:calc(-390px * .92) calc(-992px * .92);
+}
+#card-hind_kick .card-image {
+	background-position:calc(-585px * .92) calc(-992px * .92);
+}
+#card-quick_stab .card-image {
+	background-position:calc(-780px * .92) calc(-992px * .92);
+}
+#card-hammer_thrust .card-image {
+	background-position:calc(-975px * .92) calc(-992px * .92);
+}
+#card-clever_trick .card-image {
+	background-position:calc(-1170px * .92) calc(-992px * .92);
+}
+#card-stampede .card-image {
+	background-position:calc(-1365px * .92) calc(-992px * .92);
+}
+#card-spin_kick .card-image {
+	background-position:0 calc(-1148px * .92);
+}
+#card-exposed_strike .card-image {
+	background-position:calc(-195px * .92) calc(-1148px * .92);
+}
+#card-familiar_strike .card-image {
+	background-position:calc(-390px * .92) calc(-1148px * .92);
+}
+#card-frenzied_charge .card-image {
+	background-position:calc(-585px * .92) calc(-1148px * .92);
+}
+#card-rainbow_thrust .card-image {
+	background-position:calc(-780px * .92) calc(-1148px * .92);
+}
+#card-chaos_thrust .card-image {
+	background-position:calc(-975px * .92) calc(-1148px * .92);
+}
+#card-elemental_thrust .card-image {
+	background-position:calc(-1170px * .92) calc(-1148px * .92);
+}
+#card-dark_thrust .card-image {
+	background-position:calc(-1365px * .92) calc(-1148px * .92);
+}
+#card-arsenal .card-image {
+	background-position:0 calc(-1464px * .92);
+}
+#card-smash_and_grab .card-image {
+	background-position:calc(-195px * .92) calc(-1306px * .92);
+}
+#card-fury .card-image {
+	background-position:calc(-390px * .92) calc(-1306px * .92);
+}
+#card-premeditated_slash .card-image {
+	background-position:calc(-585px * .92) calc(-1306px * .92);
+}
+#card-collateral_damage .card-image {
+	background-position:calc(-780px * .92) calc(-1306px * .92);
+}
+#card-surprise_attack .card-image {
+	background-position:calc(-975px * .92) calc(-1306px * .92);
+}
+#card-auto_attack .card-image {
+	background-position:calc(-1170px * .92) calc(-1306px * .92);
+}
+#card-devastator .card-image {
+	background-position:calc(-1365px * .92) calc(-1306px * .92);
+}
+#card-weaponry .card-image {
+	background-position:0 calc(-1464px * .92);
+}
+#card-amass .card-image {
+	background-position:calc(-195px * .92) calc(-1464px * .92);
+}
+#card-berserk .card-image {
+	background-position:calc(-390px * .92) calc(-1464px * .92);
+}
+#card-clever_barrage .card-image {
+	background-position:calc(-585px * .92) calc(-1464px * .92);
+}
+#card-freeze .card-image {
+	background-position:calc(-780px * .92) calc(-1464px * .92);
+}
+#card-scorch .card-image {
+	background-position:calc(-975px * .92) calc(-1464px * .92);
+}
+#card-ultra_kill .card-image {
+	background-position:calc(-1170px * .92) calc(-1464px * .92);
+}
+#card-auxiliary_kill .card-image {
+	background-position:calc(-1365px * .92) calc(-1464px * .92);
+}
+#card-mega_kill .card-image {
+	background-position:0 calc(-1620px * .92);
+}
+#card-disintegrate .card-image {
+	background-position:calc(-195px * .92) calc(-1620px * .92);
+}
+#card-familiar_agony .card-image {
+	background-position:calc(-390px * .92) calc(-1620px * .92);
+}
+#card-slash .card-image {
+	background-position:calc(-585px * .92) calc(-1620px * .92);
+}
+#card-battle_move .card-image {
+	background-position:calc(-780px * .92) calc(-1620px * .92);
+}
+#card-battle_finisher .card-image {
+	background-position:calc(-975px * .92) calc(-1620px * .92);
+}
+
+/* TOOL */
+#card-shield .card-image {
+	background-position:0 calc(-1934px * .92);
+}
+#card-leather_armor .card-image {
+	background-position:calc(-195px * .92) calc(-1934px * .92);
+}
+#card-stun .card-image {
+	background-position:calc(-390px * .92) calc(-1934px * .92);
+}
+#card-parry .card-image {
+	background-position:calc(-585px * .92) calc(-1934px * .92);
+}
+#card-divert .card-image {
+	background-position:calc(-780px * .92) calc(-1934px * .92);
+}
+#card-recoil .card-image {
+	background-position:calc(-975px * .92) calc(-1934px * .92);
+}
+#card-repel .card-image {
+	background-position:calc(-1170px * .92) calc(-1934px * .92);
+}
+#card-thwart .card-image {
+	background-position:calc(-1365px * .92) calc(-1934px * .92);
+}
+#card-chain_mail_armor .card-image {
+	background-position:0 calc(-2090px * .92);
+}
+#card-cleanse .card-image {
+	background-position:calc(-195px * .92) calc(-2090px * .92);
+}
+#card-remember .card-image {
+	background-position:calc(-390px * .92) calc(-2090px * .92);
+}
+#card-glowing_orb .card-image {
+	background-position:calc(-585px * .92) calc(-2090px * .92);
+}
+#card-fractured_orb .card-image {
+	background-position:calc(-780px * .92) calc(-2090px * .92);
+}
+#card-plate_armor .card-image {
+	background-position:calc(-975px * .92) calc(-2090px * .92);
+}
+#card-fortress .card-image {
+	background-position:calc(-1170px * .92) calc(-2090px * .92);
+}
+#card-safeguard .card-image {
+	background-position:calc(-1365px * .92) calc(-2090px * .92);
+}
+#card-fleeting_shelter .card-image {
+	background-position:0 calc(-2248px * .92);
+}
+#card-fleeting_shield .card-image {
+	background-position:calc(-195px * .92) calc(-2248px * .92);
+}
+#card-gallop .card-image {
+	background-position:calc(-390px * .92) calc(-2248px * .92);
+}
+#card-sprint .card-image {
+	background-position:calc(-585px * .92) calc(-2248px * .92);
+}
+#card-gift .card-image {
+	background-position:calc(-780px * .92) calc(-2248px * .92);
+}
+#card-sacrifice .card-image {
+	background-position:calc(-975px * .92) calc(-2248px * .92);
+}
+#card-purge .card-image {
+	background-position:calc(-1170px * .92) calc(-2248px * .92);
+}
+#card-scavenge .card-image {
+	background-position:calc(-1365px * .92) calc(-2248px * .92);
+}
+#card-gears_of_war .card-image {
+	background-position:0 calc(-2404px * .92);
+}
+#card-seeing_ring .card-image {
+	background-position:calc(-195px * .92) calc(-2404px * .92);
+}
+#card-beautiful .card-image {
+	background-position:calc(-390px * .92) calc(-2404px * .92);
+}
+#card-delightful .card-image {
+	background-position:calc(-585px * .92) calc(-2404px * .92);
+}
+#card-wonderful .card-image {
+	background-position:calc(-780px * .92) calc(-2404px * .92);
+}
+#card-bravery .card-image {
+	background-position:calc(-975px * .92) calc(-2404px * .92);
+}
+#card-clever_maneuver .card-image {
+	background-position:calc(-1170px * .92) calc(-2404px * .92);
+}
+#card-riffle .card-image {
+	background-position:calc(-1365px * .92) calc(-2404px * .92);
+}
+#card-collect .card-image {
+	background-position:0 calc(-2560px * .92);
+}
+#card-entity .card-image {
+	background-position:calc(-195px * .92) calc(-2560px * .92);
+}
+#card-unstable_field .card-image {
+	background-position:calc(-390px * .92) calc(-2560px * .92);
+}
+#card-disavow .card-image {
+	background-position:calc(-585px * .92) calc(-2560px * .92);
+}
+#card-ruin .card-image {
+	background-position:calc(-780px * .92) calc(-2560px * .92);
+}
+#card-make_ready .card-image {
+	background-position:calc(-975px * .92) calc(-2560px * .92);
+}
+#card-cutting_ring .card-image {
+	background-position:calc(-1170px * .92) calc(-2560px * .92);
+}
+#card-distracting_ring .card-image {
+	background-position:calc(-1365px * .92) calc(-2560px * .92);
+}
+#card-frost_armor .card-image {
+	background-position:0 calc(-2716px * .92);
+}
+#card-flame_armor .card-image {
+	background-position:calc(-195px * .92) calc(-2716px * .92);
+}
+#card-bulwark .card-image {
+	background-position:calc(-390px * .92) calc(-2716px * .92);
+}
+#card-steel_hide .card-image {
+	background-position:calc(-585px * .92) calc(-2716px * .92);
+}
+#card-reactor .card-image {
+	background-position:calc(-780px * .92) calc(-2716px * .92);
+}
+#card-power_surge .card-image {
+	background-position:calc(-975px * .92) calc(-2716px * .92);
+}
+#card-enrich .card-image {
+	background-position:calc(-1170px * .92) calc(-2716px * .92);
+}
+#card-trade_up .card-image {
+	background-position:calc(-1365px * .92) calc(-2716px * .92);
+}
+#card-tactics .card-image {
+	background-position:0 calc(-2874px * .92);
+}
+#card-unearth .card-image {
+	background-position:calc(-195px * .92) calc(-2874px * .92);
+}
+#card-blockade .card-image {
+	background-position:calc(-390px * .92) calc(-2874px * .92);
+}
+#card-mezmerize .card-image {
+	background-position:calc(-585px * .92) calc(-2874px * .92);
+}
+#card-elite_maneuver .card-image {
+	background-position:calc(-780px * .92) calc(-2874px * .92);
+}
+#card-expunge .card-image {
+	background-position:calc(-975px * .92) calc(-2874px * .92);
+}
+#card-mysterious_fissure .card-image {
+	background-position:calc(-1170px * .92) calc(-2874px * .92);
+}
+#card-aura_stance .card-image {
+	background-position:calc(-1365px * .92) calc(-2874px * .92);
+}
+#card-sparkle_stance .card-image {
+	background-position:0 calc(-3030px * .92);
+}
+#card-shimmer_stance .card-image {
+	background-position:calc(-195px * .92) calc(-3030px * .92);
+}
+#card-shimmer .card-image {
+	background-position:calc(-390px * .92) calc(-3030px * .92);
+}
+#card-sparkle .card-image {
+	background-position:calc(-585px * .92) calc(-3030px * .92);
+}
+#card-aura .card-image {
+	background-position:calc(-780px * .92) calc(-3030px * .92);
+}
+#card-courage .card-image {
+	background-position:calc(-975px * .92) calc(-3030px * .92);
+}
+#card-safety .card-image {
+	background-position:calc(-1170px * .92) calc(-3030px * .92);
+}
+#card-energize .card-image {
+	background-position:calc(-1365px * .92) calc(-3030px * .92);
+}
+#card-boost .card-image {
+	background-position:0 calc(-3190px * .92);
+}
+#card-auxiliary .card-image {
+	background-position:calc(-195px * .92) calc(-3190px * .92);
+}
+#card-battle_combo .card-image {
+	background-position:calc(-390px * .92) calc(-3190px * .92);
+}
+#card-battle_sequence .card-image {
+	background-position:calc(-585px * .92) calc(-3190px * .92);
+}
+#card-self_enhance .card-image {
+	background-position:calc(-780px * .92) calc(-3190px * .92);
+}
+#card-self_advance .card-image {
+	background-position:calc(-975px * .92) calc(-3190px * .92);
+}
+#card-self_fulfill .card-image {
+	background-position:calc(-1170px * .92) calc(-3190px * .92);
+}
+#card-release .card-image {
+	background-position:calc(-1365px * .92) calc(-3190px * .92);
+}
+#card-acquire .card-image {
+	background-position:0 calc(-3346px * .92);
+}
+#card-dismantle .card-image {
+	background-position:calc(-195px * .92) calc(-3346px * .92);
+}
+#card-spewnicorn_spray .card-image {
+	background-position:calc(-390px * .92) calc(-3346px * .92);
+}
+#card-bottled_speed .card-image {
+	background-position:calc(-585px * .92) calc(-3346px * .92);
+}
+#card-bottled_energy .card-image {
+	background-position:calc(-780px * .92) calc(-3346px * .92);
+}
+#card-bottled_armor .card-image {
+	background-position:calc(-975px * .92) calc(-3346px * .92);
+}
+#card-bottled_block .card-image {
+	background-position:calc(-1170px * .92) calc(-3346px * .92);
+}
+#card-bottled_attack .card-image {
+	background-position:calc(-1365px * .92) calc(-3346px * .92);
+}
+#card-bottled_cards .card-image {
+	background-position:0 calc(-3502px * .92);
+}
+#card-bottled_magic .card-image {
+	background-position:calc(-195px * .92) calc(-3502px * .92);
+}
+
+/* ABILITY */
+#card-forethought .card-image {
+	background-position:0 calc(-3658px * .92);
+}
+#card-midas_touch .card-image {
+	background-position:calc(-195px * .92) calc(-3658px * .92);
+}
+#card-metalwork .card-image {
+	background-position:calc(-390px * .92) calc(-3658px * .92);
+}
+#card-healing_salve .card-image {
+	background-position:calc(-585px * .92) calc(-3658px * .92);
+}
+#card-stamina .card-image {
+	background-position:calc(-780px * .92) calc(-3658px * .92);
+}
+#card-enigma_form .card-image {
+	background-position:calc(-975px * .92) calc(-3658px * .92);
+}
+#card-robustness .card-image {
+	background-position:calc(-1170px * .92) calc(-3658px * .92);
+}
+#card-masterwork .card-image {
+	background-position:calc(-1365px * .92) calc(-3658px * .92);
+}
+#card-violent_rage .card-image {
+	background-position:0 calc(-3816px * .92);
+}
+#card-repurpose .card-image {
+	background-position:calc(-195px * .92) calc(-3816px * .92);
+}
+#card-shield_form .card-image {
+	background-position:calc(-390px * .92) calc(-3816px * .92);
+}
+#card-flywheel .card-image {
+	background-position:calc(-585px * .92) calc(-3816px * .92);
+}
+#card-vengeance .card-image {
+	background-position:calc(-780px * .92) calc(-3816px * .92);
+}
+#card-short_temper .card-image {
+	background-position:calc(-975px * .92) calc(-3816px * .92);
+}
+#card-explosivity .card-image {
+	background-position:calc(-1170px * .92) calc(-3816px * .92);
+}
+#card-bastion .card-image {
+	background-position:calc(-1365px * .92) calc(-3816px * .92);
+}
+#card-bodiless_form .card-image {
+	background-position:0 calc(-3974px * .92);
+}
+#card-overpowered .card-image {
+	background-position:calc(-195px * .92) calc(-3974px * .92);
+}
+#card-guzzle .card-image {
+	background-position:calc(-390px * .92) calc(-3974px * .92);
+}
+#card-prescience .card-image {
+	background-position:calc(-585px * .92) calc(-3974px * .92);
+}
+#card-acuity .card-image {
+	background-position:calc(-780px * .92) calc(-3974px * .92);
+}
+
+/* MAGIC */
+#card-rainbow_charge .card-image {
+	background-position:0 calc(-4288px * .92);
+}
+#card-chaos_charge .card-image {
+	background-position:calc(-195px * .92) calc(-4288px * .92);
+}
+#card-dark_charge .card-image {
+	background-position:calc(-390px * .92) calc(-4288px * .92);
+}
+#card-elemental_charge .card-image {
+	background-position:calc(-585px * .92) calc(-4288px * .92);
+}
+#card-risky_charge .card-image {
+	background-position:calc(-780px * .92) calc(-4288px * .92);
+}
+#card-aligned_charge .card-image {
+	background-position:calc(-975px * .92) calc(-4288px * .92);
+}
+#card-delayed_charge .card-image {
+	background-position:calc(-1170px * .92) calc(-4288px * .92);
+}
+#card-sacrificial_charge .card-image {
+	background-position:calc(-1365px * .92) calc(-4288px * .92);
+}
+#card-rainbow_charm .card-image {
+	background-position:0 calc(-4446px * .92);
+}
+#card-chaos_charm .card-image {
+	background-position:calc(-195px * .92) calc(-4446px * .92);
+}
+#card-dark_charm .card-image {
+	background-position:calc(-390px * .92) calc(-4446px * .92);
+}
+#card-elemental_charm .card-image {
+	background-position:calc(-585px * .92) calc(-4446px * .92);
+}
+#card-aligned_charm .card-image {
+	background-position:calc(-780px * .92) calc(-4446px * .92);
+}
+#card-risky_charm .card-image {
+	background-position:calc(-975px * .92) calc(-4446px * .92);
+}
+#card-grow .card-image {
+	background-position:calc(-1170px * .92) calc(-4446px * .92);
+}
+#card-focus .card-image {
+	background-position:calc(-1365px * .92) calc(-4446px * .92);
+}
+#card-mystical_protection .card-image {
+	background-position:0 calc(-4602px * .92);
+}
+#card-metamorphose .card-image {
+	background-position:calc(-195px * .92) calc(-4602px * .92);
+}
+#card-cryptic_rune .card-image {
+	background-position:calc(-390px * .92) calc(-4602px * .92);
+}
+#card-magical_maneuver .card-image {
+	background-position:calc(-585px * .92) calc(-4602px * .92);
+}
+#card-recaster .card-image {
+	background-position:calc(-780px * .92) calc(-4602px * .92);
+}
+#card-bloom .card-image {
+	background-position:calc(-975px * .92) calc(-4602px * .92);
+}
+#card-fire_spell .card-image {
+	background-position:calc(-1170px * .92) calc(-4602px * .92);
+}
+#card-ice_spell .card-image {
+	background-position:calc(-1365px * .92) calc(-4602px * .92);
+}
+#card-delayed_spell .card-image {
+	background-position:0 calc(-4760px * .92);
+}
+#card-sacrificial_spell .card-image {
+	background-position:calc(-195px * .92) calc(-4760px * .92);
+}
+#card-rainbow_orb .card-image {
+	background-position:calc(-390px * .92) calc(-4760px * .92);
+}
+#card-risky_incantation .card-image {
+	background-position:calc(-585px * .92) calc(-4760px * .92);
+}
+#card-maelstrom .card-image {
+	background-position:calc(-780px * .92) calc(-4760px * .92);
+}
+#card-master_summoner .card-image {
+	background-position:calc(-975px * .92) calc(-4760px * .92);
+}
+#card-master_sorcerer .card-image {
+	background-position:calc(-1170px * .92) calc(-4760px * .92);
+}
+#card-master_conjurer .card-image {
+	background-position:calc(-1365px * .92) calc(-4760px * .92);
+}
+#card-secret_arts .card-image {
+	background-position:0 calc(-4916px * .92);
+}
+#card-dazzle .card-image {
+	background-position:calc(-195px * .92) calc(-4916px * .92);
+}
+#card-razzle .card-image {
+	background-position:calc(-390px * .92) calc(-4916px * .92);
+}
+#card-master_of_all .card-image {
+	background-position:calc(-585px * .92) calc(-4916px * .92);
+}
+#card-mystical_energy .card-image {
+	background-position:calc(-780px * .92) calc(-4916px * .92);
+}
+#card-mystical_maneuver .card-image {
+	background-position:calc(-975px * .92) calc(-4916px * .92);
+}
+#card-vortex .card-image {
+	background-position:calc(-1170px * .92) calc(-4916px * .92);
+}
+#card-ancient_runestone .card-image {
+	background-position:calc(-1365px * .92) calc(-4916px * .92);
+}
+#card-fleeting_incantation .card-image {
+	background-position:0 calc(-5074px * .92);
+}
+#card-obelisk .card-image {
+	background-position:calc(-195px * .92) calc(-5074px * .92);
+}
+#card-impresa .card-image {
+	background-position:calc(-390px * .92) calc(-5074px * .92);
+}
+#card-ouroboros .card-image {
+	background-position:calc(-585px * .92) calc(-5074px * .92);
+}
+#card-tesseract .card-image {
+	background-position:calc(-780px * .92) calc(-5074px * .92);
+}
+#card-sparks .card-image {
+	background-position:calc(-975px * .92) calc(-5074px * .92);
+}
+#card-rainbow_converter .card-image {
+	background-position:calc(-1170px * .92) calc(-5074px * .92);
+}
+#card-chaos_converter .card-image {
+	background-position:calc(-1365px * .92) calc(-5074px * .92);
+}
+#card-dark_converter .card-image {
+	background-position:0 calc(-5232px * .92);
+}
+#card-elemental_converter .card-image {
+	background-position:calc(-195px * .92) calc(-5232px * .92);
+}
+
+/* CLUTTER */
+#card-junk .card-image {
+	background-position:0 calc(-5388px * .92);
+}
+#card-debris .card-image {
+	background-position:calc(-195px * .92) calc(-5388px * .92);
+}
+#card-chaff .card-image {
+	background-position:calc(-390px * .92) calc(-5388px * .92);
+}
+#card-execrate .card-image {
+	background-position:calc(-585px * .92) calc(-5388px * .92);
+}
+#card-flay .card-image {
+	background-position:calc(-780px * .92) calc(-5388px * .92);
+}
+#card-curse .card-image {
+	background-position:calc(-975px * .92) calc(-5388px * .92);
+}
+#card-timid .card-image {
+	background-position:calc(-1170px * .92) calc(-5388px * .92);
+}
+#card-lethargy .card-image {
+	background-position:calc(-1365px * .92) calc(-5388px * .92);
+}
+#card-briars .card-image {
+	background-position:0 calc(-5544px * .92);
+}
+#card-broken .card-image {
+	background-position:calc(-195px * .92) calc(-5544px * .92);
+}
+
+
+.card .play-card {
+	position:absolute;
+	top:-60px;
+	left:6px;
+}
+.card .name {
+	position: absolute;
+    top: 20px;
+    padding: 0 55px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    line-height: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+}
+.card.attack {
+	background-position:calc(-810px * .92) calc(-414px * .92);
+}
+.card.tool, .card.bottled {
+	background-position:calc(-1350px * .92) calc(-414px * .92);
+}
+.card.ability {
+	background-position:calc(-270px * .92) calc(-414px * .92);
+}
+.card.magic, .card.converter {
+	background-position:calc(-1080px * .92) calc(-414px * .92);
+}
+.card.clutter {
+	background-position:0 calc(-414px * .92);
+}
+.card.attack .card-type {
+	background:#E91D1D;
+}
+.card.tool .card-type, .card.bottled .card-type {
+	background:#23AD99;
+}
+.card.ability .card-type {
+	background:#6A4BE7;
+}
+.card.magic .card-type, .card.converter .card-type {
+	background:#301140;
+}
+.card.clutter .card-type {
+	background:#9E9D98;
+}
+.card-mana {
+	position:absolute;
+	display:flex;
+	justify-content:center;
+	top:1px;
+	left:-9px;
+	font-size:28px;
+	background-image:url('./images/cards_spritesheet.png');
+	background-repeat:no-repeat;
+	background-size:calc(1620px * .92) calc(5702px * .92);
+	background-position:calc(-800px * .92) calc(-861px * .92);
+	width:calc(74px * .92);
+	height:calc(102px * .92);
+}
+
+.card.unplayable .card-mana {
+	display:none;
+}
+.card.uncommon .card-mana {
+	background-position:calc(-874px * .92) calc(-861px * .92);
+}
+.card.rare .card-mana {
+	background-position:calc(-948px * .92) calc(-861px * .92);
+}
+.card.legendary .card-mana {
+	background-position:calc(-1022px * .92) calc(-861px * .92);
+}
+.card.uncommon .card-frame {
+	background-position:calc(-200px * .92) calc(-828px * .92);
+}
+.card.rare .card-frame {
+	background-position:calc(-400px * .92) calc(-828px * .92);
+}
+.card.legendary .card-frame {
+	background-position:calc(-600px * .92) calc(-828px * .92);
+}
+.card.uncommon .card-rarity {
+	background-position:calc(-822px * 1) calc(-828px * 1);
+}
+.card.rare .card-rarity {
+	background-position:calc(-844px * 1) calc(-828px * 1);
+}
+.card.legendary .card-rarity {
+	background-position:calc(-866px * 1) calc(-828px * 1);
+}
+
+
+.card-mana .mana {
+	position:absolute;
+	top:17px;
+	text-shadow: 
+		2px 2px 0px rgba(0, 0, 0, 1), 
+		2px -2px 0px rgba(0, 0, 0, 1), 
+		-2px 2px 0px rgba(0, 0, 0, 1), 
+		-2px -2px 0px rgba(0, 0, 0, 1), 
+		0px 0px 8px rgba(0, 0, 0, 1),
+		0px 0px 15px rgba(0, 0, 0, 1);
+}
+.card-age {
+	position:absolute;
+	top:67px;
+	left:21px;
+	font-size:15px;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+.card.unplayable .card-age {
+	background-image:url('./images/cards_spritesheet.png');
+	background-repeat:no-repeat;
+	background-size:calc(1620px * .6) calc(5702px * .6);
+	background-position:calc(-1096px * .6) calc(-861px * .6);
+	width:calc(50px * .6);
+	height:calc(50px * .6);
+	top:62px;
+	left:14px;
+}
+.card .bubbles-left {
+	position:absolute;
+	width:calc(50px * .8);
+	bottom: 146px;
+    left: 6px;
+	display:flex;
+	flex-wrap:wrap;
+	gap:1px;
+}
+.card .bubbles-right {
+	position:absolute;
+	width:calc(50px * .8);
+	bottom:146px;
+	right:6px;
+	display:flex;
+	flex-wrap:wrap;
+	gap:1px;
+}
+.card .bubbles-bottom-left {
+	position:absolute;
+	width:calc(66px * .9);
+	bottom:17px;
+	left:2px;
+	display:flex;
+	flex-wrap:wrap;
+	gap:1px;
+}
+.card .pack {
+	background-image:url('./images/cards_spritesheet.png');
+	background-repeat:no-repeat;
+	background-size:calc(1620px * .9) calc(5702px * .9);
+	width:calc(66px * .9);
+	height:calc(69px * .9);
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+.card.combine-pack .pack {
+	background-position:calc(-1296px * .9) calc(-930px * .9);
+}
+.card.magic-pack .pack {
+	background-position:calc(-1296px * .9) calc(-861px * .9);
+}
+.card.cycle-pack .pack {
+	background-position:calc(-1362px * .9) calc(-861px * .9);
+}
+.card .linger, .card .use, .card .expire {
+	background-image:url('./images/cards_spritesheet.png');
+	background-repeat:no-repeat;
+	background-size:calc(1620px * .8) calc(5702px * .8);
+	width:calc(50px * .8);
+	height:calc(50px * .8);
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+.card .linger {
+    background-position:calc(-1196px * .8) calc(-861px * .8);
+}
+.card .use {
+	background-position:calc(-1196px * .8) calc(-911px * .8);
+}
+.card .expire {
+	background-position:calc(-1096px * .8) calc(-911px * .8);
+}
+.card .vanish, .card .retain, .card .ephemeral, .card .breakable {
+	background-image:url('./images/cards_spritesheet.png');
+	background-repeat:no-repeat;
+	background-size:calc(1620px * .8) calc(5702px * .8);
+	width:calc(50px * .8);
+	height:calc(50px * .8);
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+.card .vanish {
+	background-position:calc(-1096px * .8) calc(-861px * .8);
+}
+.card .retain {
+	background-position:calc(-1096px * .8) calc(-861px * .8);
+}
+.card .ephemeral {
+	background-position:calc(-1096px * .8) calc(-861px * .8);
+}
+.card .breakable {
+	background-position:calc(-1096px * .8) calc(-861px * .8);
+}
+.card .vanish span, .card .retain span, .card .ephemeral span, .card .breakable span {
+	width:calc(32px * .8);
+	height:calc(32px * .8);
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:calc(512px * .8) calc(15968px * .8);
+	position:relative;
+	top:1px;
+	left:1px;
+}
+.card .vanish span {
+	background-position:calc(-384px * .8) calc(-5696px * .8);
+}
+.card .retain span {
+	background-position:calc(-32px * .8) calc(-5954px * .8);
+}
+.card .ephemeral span {
+	background-position:calc(-384px * .8) calc(-5761px * .8);
+}
+.card .breakable span {
+	background-position:calc(-256px * .8) calc(-6048px * .8);
+}
+
+.card .slots {
+	position:absolute;
+	top:31px;
+	right:17px;
+	display:flex;
+	gap:0;
+}
+.card .slots .slot {
+	width:calc(28px * 1);
+	height:calc(32px * 1);
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:calc(512px * 1) calc(15968px * 1);
+	background-position:calc(0px * 1) calc(-768px * 1);
+	position:relative;
+	filter: grayscale(1) brightness(60%);
+}
+.card .slots .slot.filled {
+	filter:none;
+}
+.card .slots .slot.multiple:first-child {
+	right:-13px;
+	top:-6px;
+}
+/* border colors */
+.player-cards .card {
+	filter: 
+		drop-shadow(1px 1px 0 red) 
+		drop-shadow(1px -1px 0 red)
+		drop-shadow(-1px 1px 0 red)
+		drop-shadow(-1px -1px 0 red)
+		drop-shadow(0 0 15px red);
+}
+.player-cards .card.playable {
+	filter: 
+		drop-shadow(1px 1px 0 white) 
+		drop-shadow(1px -1px 0 white)
+		drop-shadow(-1px 1px 0 white)
+		drop-shadow(-1px -1px 0 white)
+		drop-shadow(0 0 7px black)
+		drop-shadow(0 0 15px black);
+}
+.player-cards .card.selected {
+	filter: 
+		drop-shadow(1px 1px 0 blue) 
+		drop-shadow(1px -1px 0 blue)
+		drop-shadow(-1px 1px 0 blue)
+		drop-shadow(-1px -1px 0 blue)
+		drop-shadow(0 0 15px blue);
+}
+.player-cards .card.discardable,
+.player-cards .card.destroyable,
+.player-cards .card.retainable {
+	filter: 
+		drop-shadow(1px 1px 0 white) 
+		drop-shadow(1px -1px 0 white)
+		drop-shadow(-1px 1px 0 white)
+		drop-shadow(-1px -1px 0 white)
+		drop-shadow(0 0 7px white)
+		drop-shadow(0 0 15px white);
+}
+.player-cards .card.retain {
+	filter: 
+		drop-shadow(1px 1px 0 green) 
+		drop-shadow(1px -1px 0 green)
+		drop-shadow(-1px 1px 0 green)
+		drop-shadow(-1px -1px 0 green)
+		drop-shadow(0 0 15px green);
+}
+.player-cards .card.discard,
+.player-cards .card.destroy {
+	filter: 
+		drop-shadow(1px 1px 0 yellow) 
+		drop-shadow(1px -1px 0 yellow)
+		drop-shadow(-1px 1px 0 yellow)
+		drop-shadow(-1px -1px 0 yellow)
+		drop-shadow(0 0 15px yellow);
+}
+
+.player-cards .card-wrapper {
+	overflow:visible;
+	width:calc(270px * .92);
+	height:calc(414px * .92);
+	position:relative;
+}
+.player-cards .card {
+	scale:.8;
+	/*transition:all 1s;*/
+	transform:translateY(84px);
+	bottom:0;
+	position:absolute;
+}
+.player-cards .card.selected,
+.player-cards .card.retain,
+.player-cards .card.discard,
+.player-cards .card.destroy {
+	transform:translateY(10px);
+	z-index:2;
+}
+.player-cards .card:hover,
+.player-cards .card:focus-visible,
+.player-cards .card.selected:hover,
+.player-cards .card.retain:hover,
+.player-cards .card.discard:hover,
+.player-cards .card.destroy:hover {
+	scale:1;
+	transform:translateY(-38px);
+	z-index:2;
+	/*transition:all .2s;*/
+}
+
+.card .desc {
+	overflow-y:scroll;
+	position: absolute;
+    top: 224px;
+    width: 172px;
+    height: 99px;
+    left: 38px;
+	display:flex;
+	flex-wrap:wrap;
+	justify-content:center;
+	align-items:center;
+	align-content:center;
+	gap:0;
+}
+.card .desc .desc-inner {
+	color:black;
+	font-size:15px;
+	letter-spacing:-.5px;
+	line-height:15px;
+	min-height:99px;
+	position: absolute;
+    top: 0;
+    gap: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+	flex-direction:column;
+	text-shadow: 
+		0px 0px 3px rgba(255, 255, 255, 1);
+}
+.card .desc .desc-behavior {
+	color:blue;
+}
+.card .desc .whatname {
+	font-style:italic;
+}
+.card .desc::-webkit-scrollbar {
+	display:none;
+}
+.card .amount.better {
+	color:lime;
+	text-shadow: 
+		1px 1px 0px rgba(0, 0, 0, 1), 
+		1px -1px 0px rgba(0, 0, 0, 1), 
+		-1px 1px 0px rgba(0, 0, 0, 1), 
+		-1px -1px 0px rgba(0, 0, 0, 1), 
+		0px 0px 5px rgba(255, 255, 255, .7);
+}
+.card .amount.worse {
+	color:red;
+	text-shadow: 
+		1px 1px 0px rgba(0, 0, 0, 1), 
+		1px -1px 0px rgba(0, 0, 0, 1), 
+		-1px 1px 0px rgba(0, 0, 0, 1), 
+		-1px -1px 0px rgba(0, 0, 0, 1), 
+		0px 0px 5px rgba(255, 255, 255, .7);
+}
+.card .slots {
+	font-size:11px;
+}
+.card .shard {
+	width:100%;
+	height:100%;
+	border:none;
+	display:block;
+	position:relative;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:calc(512px * 1) calc(15968px * 1);
+	background-position:0px 0px;
+}
+.card .shard.flame {
+	background-position:cal(-450px * 1) calc(-736px * 1);
+}
+.card .shard.frost {
+	background-position:calc(-482px * 1) calc(-736px * 1);
+}
+
+.button-done {
+	display:none;
+	position:absolute;
+	top:-130px;
+}
+.button-done.shown {
+	display:block;
+}
+
+.end-combat {
+	display:none;
+	position: fixed;
+    bottom: 383px;
+    right: 7px;
+}
+.combat.shown .end-combat {
+	display:block;
+}
+.draw-cards {
+	right:553px;
+	bottom:4px;
+}
+.discard-cards {
+	right:495px;
+	bottom:4px;
+}
+.dead-cards {
+	right:436px;
+	bottom:4px;
+	color:red;
+}
+
+/* choose cards */
+.choose-cards-panel .card.selected {
+	border-color:blue;
+}
+
+/* booster pack cards */
+.choose-booster-pack .panel {
+	padding:130px 60px 90px 60px;
+}
+.starting-booster-packs {
+	display:flex;
+	flex-wrap:wrap;
+	align-items:center;
+	justify-content:center;
+	align-content:center;
+	text-align:center;
+	gap:20px;
+	position:relative;
+	z-index:2;
+}
+.pack-button {
+	background-image:url('./images/cards_spritesheet.png');
+	background-repeat:no-repeat;
+	background-size:calc(1620px * .92) calc(5702px * .92);
+	width:calc(270px * .92);
+	height:calc(414px * .92);
+	scale:1;
+	transition:all .3s;
+}
+.pack-button span {
+	font-size:22px;
+	display:block;
+	position:relative;
+	top:-24px;
+	margin-left:10px;
+}
+.pack-button:hover {
+	scale:1.3;
+}
+.pack-button[data-pack="combine"] {
+	background-position:0 0px;
+}
+.pack-button[data-pack="magic"] {
+	background-position:calc(-1080px * .92) 0px;
+}
+.pack-button[data-pack="cycle"] {
+	background-position:calc(-1350px * .92) 0px;
+}
+.pack-cards-panel h2 span {
+	color:yellow;
+}
+
+/* rewards screen */
+.rewards {
+	display:flex;
+	align-content:center;
+	align-items:center;
+	justify-content:center;
+	flex-direction:column;
+	position:fixed;
+	height:100vh;
+	width:100vw;
+	transform:translateY(-100vh);
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	z-index:10;
+	opacity:1;
+	transition:all .5s ease-in-out;
+	text-align:center;
+}
+.rewards.cards-panel {
+	background-size:cover;
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-image:url('./images/rewards1.png');
+}
+.rewards.shown {
+	transform:translateY(0);
+	opacity:1;
+}
+.rewards.cards-panel .buttons-wrapper {
+	position:relative;
+	transform:none;
+	margin-left:0;
+	bottom:0;
+}
+
+.rewards-cards {
+	display:flex;
+	align-content:center;
+	align-items:center;
+	justify-content:center;
+	gap:10px;
+	position:relative;
+	z-index:2;
+}
+.rewards-loot-wrapper {
+	display:none;
+	margin-top:20px;x
+}
+.rewards-loot-wrapper.shown {
+	display:block;
+}
+.rewards-loot {
+	display:flex;
+	align-content:center;
+	align-items:center;
+	justify-content:center;
+	gap:10px;
+}
+.rewards-skip {
+	position:relative;
+}
+.treasures {
+	display:flex;
+	flex-direction:row;
+	flex-wrap:wrap;
+	position:fixed;
+	top:64px;
+	width:calc(100vw - 20px);
+	left:10px;
+	z-index:101;
+	gap:4px;
+}
+.treasures::-webkit-scrollbar {
+	display:none;
+}
+.treasure {
+	width:48px;
+	height:48px;
+	position:relative;
+	z-index:10;
+	top:1px;
+	left:1px;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:calc(512px * 1.5) calc(15968px * 1.5);
+	background-position:0px 0px;
+}
+.treasure .counter {
+	font-size:15px;
+	line-height:15px;
+	bottom:4px;
+	right:4px;
+}
+.treasure-courage, .candy-courage, .card-courage {
+	display:none;
+}
+.trash-candy-confirm {
+	display:none;
+	position: fixed;
+    z-index: 103;
+    top: 74px;
+    right: 175px;
+}
+.trash-candy-confirm.shown {
+	display:block;
+}
+.trash-candy-confirm .button {
+	position:relative;
+}
+.trash-candy-confirm .eat-candy.disabled {
+	pointer-events:none;
+	opacity:.4;
+}
+.shards {
+	display:flex;
+	gap:2px;
+}
+.shard {
+	width:48px;
+	height:48px;
+	position:relative;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:calc(512px * 1.5) calc(15968px * 1.5);
+	background-position:0px 0px;
+}
+.shard.flame {
+	background-position:calc(-450px * 1.5) calc(-736px * 1.5);
+}
+.shard.frost {
+	background-position:calc(-482px * 1.5) calc(-736px * 1.5);
+}
+.essence {
+	width:48px;
+	height:48px;
+	position:relative;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:calc(512px * 1.5) calc(15968px * 1.5);
+	background-position:0px 0px;
+}
+.essence.sparkle {
+	background-position:calc(-96px * 1.5) calc(-896px * 1.5);
+}
+.essence.shimmer {
+	background-position:calc(-96px * 1.5) calc(-1024px * 1.5);
+}
+.essence.aura {
+	background-position:calc(-96px * 1.5) calc(-992px * 1.5);
+}
+.essence-bar.sparkle .essence-bar-inner {
+	background:var(--sparkle_color);
+}
+.essence-bar.shimmer .essence-bar-inner {
+	background:var(--shimmer_color);
+}
+.essence-bar.aura .essence-bar-inner {
+	background:var(--aura_color);
+}
+
+/* end game screen */
+.end-game {
+	display:flex;
+	align-items:center;
+	align-content:center;
+	justify-content:center;
+	position:fixed;
+	height:100vh;
+	width:100vw;
+	transform:translateY(-100vh);
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	z-index:10;
+	opacity:1;
+	transition:all .5s ease-in-out;
+	background:#111;
+}
+.end-game.shown {
+	transform:translateY(0);
+	opacity:1;
+}
+.victory {
+	color:green;
+}
+.loss {
+	color:red;
+}
+
+/* deck panels */
+.cards-panel {
+	position:fixed;
+	overflow:auto;
+	height:calc(100vh - 30px);
+	width:100vw;
+	transform:translateY(-100vh);
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	z-index:20;
+	opacity:1;
+	transition:all .5s ease-in-out;
+	background:rgba(0,0,0,.8);
+	text-align:center;
+	padding:90px 30px 110px 30px;
+}
+.cards-panel::-webkit-scrollbar {
+	display:none;
+}
+.cards-panel .done {
+	display:none;
+}
+.cards-panel.shown .done {
+	display:block;
+}
+.cards-panel .cards {
+	display:grid;
+	flex-wrap:wrap;
+	align-items:center;
+	align-content:flex-start;
+	justify-content:center;
+	gap:0;
+	grid-template-areas: "a a a a a";
+	grid-auto-rows: calc(414px * .92);
+	padding:30px 0 0 0;
+}
+.cards-panel.shown {
+	transform:translateY(0);
+	opacity:1;
+}
+.cards-panel .buttons-wrapper, .view-map-done-wrapper .buttons-wrapper {
+	position:fixed;
+	display:none;
+	transform: translateX(-50%);
+    margin-left: calc(50% + 3px);
+	bottom:74px;
+	left:0;
+}
+.cards-panel.shown .buttons-wrapper, .view-map-done-wrapper.shown .buttons-wrapper {
+	display:flex;
+}
+.button.view-map-done,
+.cards-panel .done {
+	pointer-events:none;
+}
+.view-map-done-wrapper.shown .button.view-map-done,
+.cards-panel.shown .done {
+	pointer-events:auto;
+}
+
+
+/**
+ * PowerTip
+ * https://stevenbenner.github.io/jquery-powertip/
+ *
+ * Stylesheet for the dark monochrome theme.
+ */
+
+ #powerTip {
+	background-color: #222222;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4), 0 2px 1px rgba(255, 255, 255, 0.3) inset, 0 -2px 2px #000000 inset;
+	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4), 0 2px 1px rgba(255, 255, 255, 0.3) inset, 0 -2px 2px #000000 inset;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4), 0 2px 1px rgba(255, 255, 255, 0.3) inset, 0 -2px 2px #000000 inset;
+	border: 1px solid #000000;
+	border-radius: 6px;
+	color: #ffffff;
+	display: none;
+	padding: 10px;
+	position: absolute;
+	/*white-space: nowrap;*/
+	z-index: 2147483647;
+	text-transform:none;
+	font-size:15px;
+	max-width:280px;
+	min-width:150px;
+}
+.tooltip-bottom-bar, .tooltip-top-bar {
+	max-width:280px;
+}
+#powerTip span.highlight {
+	color:yellow;
+	text-transform:capitalize;
+}
+#powerTip span.aggro {
+	color:var(--aggro_color);
+}
+#powerTip span.crit {
+	color:var(--crit_color);
+}
+#powerTip span.sparkle {
+	color:var(--sparkle_color);
+}
+#powerTip span.shimmer {
+	color:var(--shimmer_color);
+}
+#powerTip span.aura {
+	color:var(--aura_color);
+}
+#powerTip span.either {
+	color:yellow;
+}
+#powerTip span.frost {
+	color:var(--frost_color);
+}
+#powerTip span.flame {
+	color:var(--flame_color);
+}
+#powerTip span.both {
+	color:var(--both_color);
+}
