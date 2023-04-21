@@ -117,6 +117,7 @@ h1, h2, h3, h4, h5, h6 {font-weight:300; margin:0px; padding:0px 0px; text-trans
 	align-content:center;
 	justify-content:center;
 	position:relative;
+	z-index:999;
 	padding:0 50px;
 	margin-top:20px;
 }
@@ -162,13 +163,13 @@ h1, h2, h3, h4, h5, h6 {font-weight:300; margin:0px; padding:0px 0px; text-trans
 	background-repeat:no-repeat;
 	background-position:0 calc(-21px * 3);
 }
-.button:hover {
+.button:hover, .button.toggled-on {
 	background-position:0 0;
 }
-.button:hover::before {
+.button:hover::before, .button.toggled-on::before {
 	background-position:0 0;
 }
-.button:hover::after {
+.button:hover::after, .button.toggled-on::after {
 	background-position:0 0;
 }
 .button:active {
@@ -180,6 +181,10 @@ h1, h2, h3, h4, h5, h6 {font-weight:300; margin:0px; padding:0px 0px; text-trans
 }
 .button:active::after {
 	background-position:0 calc(-42px * 3);
+}
+.button span {
+	margin-left:10px;
+	color:yellow;
 }
 h2 {
 	font-size:30px;
@@ -307,6 +312,132 @@ h2::after {
 	background-size:calc(19px * 3) calc(16px * 3);
 	background-image:url('./images/panel-middle-right.png');
 }
+.unavailable {
+	pointer-events:none;
+}
+
+
+/* splash */
+#splash,
+#game-loading,
+#settings-panel {
+	position:fixed;
+	top:0;
+	left:0;
+	height:100vh;
+	width:100vw;
+	background:#000;
+	z-index:9999999;
+	opacity:1;
+	display:flex;
+	flex-wrap:wrap;
+	align-content:center;
+	align-items:center;
+	justify-content:center;
+	flex-direction:column;
+	gap:20px;
+}
+#game-loading {
+	transition:all 3s;
+	z-index:99999999;
+}
+#splash {
+	background-size:cover;
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-image:url('./images/map1.png');
+	transition:all 1s;
+	gap:0;
+	transform:translateY(-100vh);
+	z-index:-1;
+	pointer-events:none;
+}
+#splash .begin {
+	margin-top:20px;
+}
+#splash.shown {
+	transform:translateY(0);
+	z-index:9999999;
+	pointer-events:auto;
+}
+#splash .message {
+	text-transform:none;
+}
+#splash .panel {
+	gap:30px;
+	width:100%;
+}
+#splash .panel .button {
+	width:auto;
+	flex-basis:30%;
+}
+body.game-started #splash .panel .tutorial,
+body.game-started #splash .panel .difficulty {
+	pointer-events:none;
+	filter:grayscale(1);
+}
+#game-loading.hidden {
+	opacity:0;
+	pointer-events:none;
+}
+.game-loading-bar {
+	position:absolute;
+	left:50%;
+	top:50%;
+	height:3px;
+	width:80%;
+	margin-top:-1px;
+	margin-left:-40%;
+	border-radius:2px;
+	background:hsl(8, 100%, 60%, .3);
+}
+.game-loading-progress {
+	position:absolute;
+	top:0;
+	height:3px;
+	width:0;
+	left:0;
+	background:hsl(8, 100%, 60%, 1);
+	transition:2s ease-in-out;
+}
+.game-loading-progress.loaded {
+	width:100%;
+}
+.game-loading-progress .glow {
+    width:150px;
+    max-width:100%;
+    height:100%;
+    float:right;
+}
+.game-loading-progress .glow::before,
+.game-loading-progress .glow::after {
+	content:'';
+	display:block;
+	position:relative;
+	border-radius:0px 2px 2px 0px;
+}
+.game-loading-progress .glow::before {
+	background:transparent;
+	height:100%;
+	box-shadow:0px 0px 35px 2px hsl(8, 100%, 60%, 1), 0px 0px 25px 1px hsl(8, 100%, 60%, 1), 0px 0px 15px 0 hsl(8, 100%, 60%, 1), 0 0 7px 0 hsl(8, 100%, 60%, 1);
+	z-index:-5;
+}
+.game-loading-progress .glow::after {
+	background: linear-gradient(to right, #000 0%, transparent 100%);
+	height: calc(100% + 40px + 40px);
+	width: calc(100% + 40px);
+	top: -40px;
+	left: -40px;
+	z-index: -3;
+}
+#settings-panel {
+	transform:translateY(-100vh);
+	transition:all .5s;
+}
+#settings-panel.shown {
+	transform:translateY(0);
+}
+
 
 /* UI Layout */
 .game {
@@ -945,6 +1076,27 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 	position:relative;
 	z-index:1;
 }
+.start-arrow {
+	position:absolute;
+	z-index:10;
+	top:-10px;
+	left:-70px;
+	width:100px;
+	height:100px;
+	scale:1;
+	animation:start-arrow .8s infinite;
+	pointer-events:none;
+}
+.start-arrow svg {
+	stroke:#FFF;
+	fill:#FFF;
+	width:100px;
+	height:100px;
+}
+@keyframes start-arrow {
+	0%, 100% {scale:1;}
+	50% {scale:1.3;}
+}
 .map-inner {
 	font-size: 0; /*disable white space between inline block element */
 }
@@ -1164,7 +1316,7 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 	padding:10px 10px;
 	display:flex;
 	flex-direction:column;
-	z-index:30;
+	z-index:9999;
 	font-size:14px;
 	background:rgba(0,0,0,.7);
 	border:1px solid white;
@@ -1186,9 +1338,8 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 .status-toggle {
 	z-index:31;
 	position:absolute;
-	display:flex;
 	right:-70px;
-	top:-1px;
+	top:370px;
 	padding:15px 15px;
 	width:70px;
 	text-align:center;
@@ -1208,7 +1359,7 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 	padding:10px 10px;
 	display:flex;
 	flex-direction:column;
-	z-index:30;
+	z-index:9999;
 	font-size:14px;
 	background:rgba(0,0,0,.7);
 	border:1px solid white;
@@ -1231,15 +1382,22 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 .debug-toggle {
 	z-index:31;
 	position:absolute;
-	display:flex;
 	right:-70px;
-	top:-1px;
+	top:260px;
 	padding:15px 15px;
 	width:70px;
 	text-align:center;
 	border:1px solid white;
 	background:rgba(0,0,0,.7);
 	display:none;
+}
+
+/* debug */
+body.debug .debug-toggle {
+	display:flex;
+}
+body.debug .status-toggle {
+	display:flex;
 }
 
 /* treasures */
@@ -1280,6 +1438,10 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 	transform:translateY(0);
 	opacity:1;
 }
+.view-map-done-wrapper .buttons-wrapper {
+	position:sticky;
+	bottom:40px;
+}
 
 /* game panels */
 .game-panel {
@@ -1306,6 +1468,9 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 	background-position:center center;
 	background-repeat:no-repeat;
 	background-image:url('./images/start1.png');
+}
+.game-panel.magic-fountain {
+	background-image:url('./images/fountain.png');
 }
 .game-panel::-webkit-scrollbar {
 	display:none;
@@ -1402,8 +1567,10 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 	position:relative;
 }
 .quest-description {
-	
+	text-transform:none;
 }
+
+
 
 /* courage screen */
 .courage-item-wrapper {
@@ -1452,12 +1619,10 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 .courage-screen .courage-remove.shown {
 	display:block;
 }
-.courage-screen .courage-remove.too-expensive {
-	border-color:red;
-}
 .courage-items .treasure.too-expensive .treasure-courage,
 .courage-items .candy.too-expensive .candy-courage,
-.courage-cards .card.too-expensive .card-courage {
+.courage-cards .card.too-expensive .card-courage,
+.courage-screen .courage-remove.too-expensive span.remove-courage {
 	color:red;
 }
 .courage-cards .card-wrapper {
@@ -1519,6 +1684,42 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 	position:relative;
 }
 
+/* gate screen */
+.gate-screen {
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	align-content:center;
+	flex-direction:column;
+	position:fixed;
+	height:100vh;
+	width:100vw;
+	transform:translateY(-100vh);
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	z-index:10;
+	opacity:1;
+	gap:0;
+	transition:all .5s ease-in-out;
+	padding:0 100px;
+	background-size:cover;
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-image:url('./images/victory.png');
+}
+.gate-screen h2 {
+	margin-bottom:20px;
+}
+.gate-screen.shown {
+	transform:translateY(0);
+	opacity:1;
+}
+.gate-screen .button {
+	position:relative;
+}
+
 /* combat screen */
 .combat {
 	display:flex;
@@ -1568,7 +1769,11 @@ body.selecting .combat .overlay {
 	background-position:bottom center;
 	background-repeat:no-repeat;
 	margin:0 auto;
-	width:calc(100vw - 100px);
+	padding:0 50px;
+	width:100vw;
+}
+body.arena .monster-panel {
+	background-position:center center;
 }
 .creature-health {
 	position:relative;
@@ -1684,6 +1889,14 @@ body.selecting .combat .overlay {
 	position:absolute;
 	top:0;
 	z-index:8;
+	text-shadow: 
+		2px 2px 0px rgba(0, 0, 0, 1), 
+		2px -2px 0px rgba(0, 0, 0, 1), 
+		-2px 2px 0px rgba(0, 0, 0, 1), 
+		-2px -2px 0px rgba(0, 0, 0, 1), 
+		0px 0px 5px rgba(0, 0, 0, 1),
+		0px 0px 10px rgba(0, 0, 0, 1),
+		0px 0px 20px rgba(0, 0, 0, 1);
 }
 .monster .status-bar {
 	position:absolute;
@@ -1693,7 +1906,7 @@ body.selecting .combat .overlay {
 .monster .sprite {
 	background-image:url('./images/monsters_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1200px * 1) calc(4950px * 1);
+	background-size:calc(1250px * 1) calc(4950px * 1);
 	position:absolute;
 	z-index:2;
 	transition:all .3s;
@@ -2062,7 +2275,7 @@ body.selecting .combat .overlay {
 .player-panel .status-bar {
 	position:absolute;
 	top:40px;
-	z-index:2;
+	z-index:10;
 	margin:0 70px 0 70px;
 }
 
@@ -2097,8 +2310,8 @@ body.selecting .combat .overlay {
 /* magic rainbow */
 .magic-rainbow {
 	position:absolute;
-	left:-13px;
-	top:-122px;
+	left:0px;
+	top:-120px;
 	width:238px;
 	height:115px;
 	display:flex;
@@ -3246,11 +3459,31 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .player-cards .card-wrapper {
 	overflow:visible;
 	width:calc(270px * .92);
-	height:calc(414px * .92);
+	height:calc(260px * .92);
 	position:relative;
+	transform:translate(0, 80px);
+	transition:all .3s linear;
+	opacity:1;
+}
+.player-cards .card-wrapper:hover {
+	z-index:11;
+}
+.player-cards .card-wrapper.drawing {
+	transform:translate(-1500px, 500px);
+}
+.player-cards .card-wrapper.discarding {
+	transform:scale(1.4) translate(0, -300px);
+}
+.player-cards .card-wrapper.discarded {
+	transform:scale(1) translate(1500px, 400px);
+}
+.player-cards .card-wrapper.destroying {
+	transform:scale(.8) translate(0, -100px);
+	opacity:0;
+	transition:all 1s linear;
 }
 .player-cards .card {
-	scale:.8;
+	scale:.8;	
 	/*transition:all 1s;*/
 	transform:translateY(84px);
 	bottom:0;
@@ -3263,12 +3496,17 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	transform:translateY(10px);
 	z-index:2;
 }
+.player-cards .card:hover {
+	scale:1.2;
+	z-index:12;
+}
 .player-cards .card:hover,
 .player-cards .card:focus-visible,
 .player-cards .card.selected:hover,
 .player-cards .card.retain:hover,
 .player-cards .card.discard:hover,
-.player-cards .card.destroy:hover {
+.player-cards .card.destroy:hover,
+.player-cards .card.playing {
 	scale:1;
 	transform:translateY(-38px);
 	z-index:2;
@@ -3421,7 +3659,6 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	display:block;
 	position:relative;
 	top:-24px;
-	margin-left:10px;
 }
 .pack-button:hover {
 	scale:1.3;
@@ -3605,8 +3842,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .end-game {
 	display:flex;
 	align-items:center;
-	align-content:center;
 	justify-content:center;
+	align-content:center;
+	flex-direction:column;
 	position:fixed;
 	height:100vh;
 	width:100vw;
@@ -3617,18 +3855,28 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	bottom:0;
 	z-index:10;
 	opacity:1;
+	gap:0;
 	transition:all .5s ease-in-out;
-	background:#111;
+	padding:0 100px;
+	background-size:cover;
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+.end-game h2 {
+	margin-bottom:20px;
 }
 .end-game.shown {
 	transform:translateY(0);
 	opacity:1;
 }
-.victory {
-	color:green;
+.end-game .button {
+	position:relative;
 }
-.loss {
-	color:red;
+.end-game.victory {
+	background-image:url('./images/victory.png');
+}
+.end-game.loss {
+	background-image:url('./images/defeat.jpg');
 }
 
 /* deck panels */
@@ -3673,12 +3921,12 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	transform:translateY(0);
 	opacity:1;
 }
-.cards-panel .buttons-wrapper, .view-map-done-wrapper .buttons-wrapper {
-	position:fixed;
+.cards-panel .buttons-wrapper {
+	position:sticky;
 	display:none;
 	transform: translateX(-50%);
     margin-left: calc(50% + 3px);
-	bottom:74px;
+	bottom:-70px;
 	left:0;
 }
 .cards-panel.shown .buttons-wrapper, .view-map-done-wrapper.shown .buttons-wrapper {
@@ -3691,6 +3939,27 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .view-map-done-wrapper.shown .button.view-map-done,
 .cards-panel.shown .done {
 	pointer-events:auto;
+}
+
+/* show cards */
+.show-cards.game-panel {
+	z-index:99999;
+	justify-content:center;
+}
+.show-cards .card {
+	scale:1.6;
+	opacity:1;
+	transition:all 1s;
+}
+.show-cards .card.disappearing {
+	scale:.8;
+	opacity:0;
+}
+.rewards-cards .card.disappearing, .courage-screen .card.disappearing, .all-cards-panel .card.disappearing, .courage-items .treasure.disappearing, .disappearing {
+	scale:2;
+	opacity:0;
+	transform:translateY(-50px);
+	transition:all 1s;
 }
 
 

@@ -45,6 +45,7 @@
  * PHASE III: BALANCE PHASE - CREATE MAP/MONSTERS/TREASURES/CARDS/CANDY
  * PHASE IV: UI PHASE - INTERACTIONS & ANIMATIONS ARE CREATED AND REFINED 
  * PHASE V: LAUNCH PHASE - TESTING, TUTORIAL, LOADING, SAVING, HIGH SCORES
+ * PHASE VI: QOL IMPROVEMENTS AND SMALL BUG FIXES
  * 
  * 
  * PHASE I:
@@ -75,15 +76,13 @@
  * 
  * PHASE IV:
  * 
- * Graphics
- * TODO: can't repeat monsters in consecutive screens
- * TODO: monster name/intent darker text outline
- * -battle screen backgrounds
- * -map backgrounds
+ * Graphics - DONE
+ * UI Animations - DONE
+ * Music
+ * -treasure screen
+ * SFX
  * 
- * UI Animations
  * 
- * Sound effects & music - howler.js (https://youtu.be/hn7MhPt24L4)
  * 
  * 
  * PHASE V:
@@ -93,11 +92,20 @@
  * Play test
  * -debug email report
  * 
- * Tutorial
+ * Tutorial			
  * 
  * Save progress
  * 
  * Record results
+ * 
+ * 
+ * 
+ * PHASE VI:
+ * 
+ * Monster hexes punch down but player buffs punch up. New damage amount is larger than original but damage amount color is red - should be green.
+ * 
+ * 
+ * 
  * 
  * 
  * 
@@ -131,16 +139,135 @@ import Quests from './quests.js';
 let quests = Quests();
 window.quests = quests;
 
+// audio
+var musicOverworld = util.music('overworld.mp3');
+var musicFountain = util.music('fountain.mp3');
+var musicVictory = util.music('victory.wav');
+var musicLoss = util.music('loss.wav');
+var musicCourage = util.music('courage.wav');
+var musicArena = util.music('arena.wav');
+var musicIceGate = util.music('ice-gate.wav');
+var musicFireGate = util.music('fire-gate.wav');
+var musicBattles = [
+	util.music('battle1.mp3'),
+	util.music('battle2.mp3'),
+	util.music('battle3.wav'),
+	util.music('battle4.wav'),
+	util.music('battle5.wav'),
+	util.music('battle6.wav'),
+	util.music('battle7.wav'),
+	util.music('battle8.wav'),
+	util.music('battle9.wav'),
+	util.music('battle10.wav'),
+	util.music('battle11.mp3'),
+];
+var musicQuests = [
+	util.music('quest1.wav'),
+	util.music('quest2.wav'),
+	util.music('quest3.wav'),
+	util.music('quest4.mp3'),
+	util.music('quest5.mp3'),
+	util.music('quest6.mp3'),
+	util.music('quest7.mp3'),
+];
+var sounds = util.sound('soundsprite.mp3');
+
+function stopMusic() {
+	musicOverworld.pause();
+	musicFountain.stop();
+	musicVictory.stop();
+	musicLoss.stop();
+	musicCourage.stop();
+	musicArena.stop();
+	musicIceGate.stop();
+	musicFireGate.stop();
+	for(let i = 0; i < musicBattles.length; i++) {
+		musicBattles[i].stop();
+	}
+	for(let i = 0; i < musicQuests.length; i++) {
+		musicQuests[i].stop();
+	}
+}
 
 jQuery(window).on('load', function() {
 
-	// window.load stuff
+	
 
 });
 
 jQuery(document).ready(function($) {
 
-	init();
+	$('.game-loading-progress').addClass('loaded');
+
+	setTimeout(function() {
+		jQuery('#game-loading').addClass('hidden');
+		stopMusic();
+	}, 3000);
+
+	setTimeout(function() {
+		jQuery('#game-loading').remove();
+	}, 6000);
+
+	$('#splash .begin').click(function(e) {
+		
+		if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
+
+		$('#splash').removeClass('shown');
+
+		if(!$('body').hasClass('game-started')) {
+
+			init();
+			
+		}
+
+		$('body').addClass('game-started');
+
+	});
+
+	$('.settings-panel .button').click(function() {
+		$(this).toggleClass('toggled-on');
+		if($(this).hasClass('toggled-on')) {
+			$(this).find('span').html('on');
+		} else {
+			$(this).find('span').html('off');
+		}
+	});
+	$('.music').click(function() {
+		if($(this).hasClass('toggled-on')) {
+			// play which music?
+			game.playmusic = true;
+		} else {
+			stopMusic();
+			game.playmusic = false;
+		}
+	});
+	$('.sound').click(function() {
+		if($(this).hasClass('toggled-on')) {
+			game.playsounds = true;
+		} else {
+			game.playsounds = false;
+		}
+	});
+	$('.tutorial').click(function() {
+		if($(this).hasClass('toggled-on')) {
+			game.tutorial = true;
+		} else {
+			game.tutorial = false;
+		}
+	});
+	$('.difficulty').click(function() {
+		if($(this).hasClass('toggled-on')) {
+			game.difficulty = 'easy';
+		} else {
+			game.difficulty = 'hard';
+		}
+	});
+
+	$('.settings').click(function(e) {
+		$('#splash').toggleClass('shown');
+		$('#splash .begin').html('Resume Game');
+	});
+
 
 	$(document).on('click', '.status-toggle', function(e) {
 		$('.status').toggleClass('shown');
@@ -227,7 +354,10 @@ jQuery(document).ready(function($) {
 
 		map.clickTile($(this));
 
-		$('.map-inner div').addClass('clickable'); // TODO: remove this line after dev
+		$('.tile.arena.visited').removeClass('clickable');
+		if(game.arenasComplete < 2) $('.tile.gate').removeClass('clickable');
+
+		if(game.debug) $('.map-inner div').addClass('clickable');
 		
 	});
 
@@ -246,8 +376,13 @@ jQuery(document).ready(function($) {
 	$(document).on('click', '.rewards-cards .card', function(e) {
 	
 		addCardToDeck($(this).data('id'));
-
-		$('.rewards-cards').empty();
+		$('.rewards-cards').addClass('unavailable');
+		
+		$(this).addClass('disappearing')
+			.delay(1000)
+			.queue(function() {
+				$('.rewards-cards').removeClass('unavailable').empty().dequeue();
+			});
 
 	});
 
@@ -262,7 +397,11 @@ jQuery(document).ready(function($) {
 	$(document).on('click', '.rewards-loot .treasure, .loot-screen .treasure', function(e) {
 
 		addTreasure($(this).data('id'));
-		$(this).remove();
+		$(this).addClass('disappearing')
+			.delay(1000)
+			.queue(function() {
+				$(this).remove().dequeue();
+			});
 
 	});
 
@@ -271,21 +410,33 @@ jQuery(document).ready(function($) {
 		game.toPick = 1;
 		game.toPile = 'allCards';
 		chooseShardCard($(this).data('id'));
-		$(this).remove();
+		$(this).addClass('disappearing')
+			.delay(1000)
+			.queue(function() {
+				$(this).remove().dequeue();
+			});
 
 	});
 
 	$(document).on('click', '.rewards-loot .candy.clickable, .loot-screen .candy.clickable', function(e) {
 
 		addCandy($(this).data('id'));
-		$(this).remove();
+		$(this).addClass('disappearing')
+			.delay(1000)
+			.queue(function() {
+				$(this).remove().dequeue();
+			});
 
 	});
 
 	$(document).on('click', '.loot-screen .essence', function(e) {
 
 		updateEssenceLevels($(this).data('id'), 1);
-		$(this).remove();
+		$(this).addClass('disappearing')
+			.delay(1000)
+			.queue(function() {
+				$(this).remove().dequeue();
+			});
 
 	});
 
@@ -661,7 +812,11 @@ jQuery(document).ready(function($) {
 
 		let id = $(this).attr('data-id');
 		buyTreasure(id);
-		$(this).remove();
+		$(this).addClass('disappearing')
+			.delay(1000)
+			.queue(function() {
+				$(this).remove().dequeue();
+			});
 
 	});
 
@@ -669,7 +824,13 @@ jQuery(document).ready(function($) {
 
 		let id = $(this).attr('data-id');
 		let bought = buyCandy(id);
-		if(bought) $(this).remove();
+		if(bought) {
+			$(this).addClass('disappearing')
+			.delay(1000)
+			.queue(function() {
+				$(this).remove().dequeue();
+			});
+		}
 
 	});
 
@@ -677,7 +838,11 @@ jQuery(document).ready(function($) {
 
 		let id = $(this).attr('data-id');
 		buyCard(id);
-		$(this).parent().remove();
+		$(this).addClass('disappearing')
+			.delay(1000)
+			.queue(function() {
+				$(this).parent().remove().dequeue();
+			});
 
 	});
 
@@ -693,9 +858,13 @@ jQuery(document).ready(function($) {
 		let guid = $(this).attr('data-guid');
 		let cost = 2;
 		removeCardFromDeck(guid, cost);
-		$(this).parent().remove();
-		$('.all-cards-panel').removeClass('shown');
-		$('.courage-remove').removeClass('shown');
+		$(this).addClass('disappearing')
+			.delay(1000)
+			.queue(function() {
+				$('.all-cards-panel').removeClass('shown');
+				$('.courage-remove').removeClass('shown');
+				$(this).parent().remove().dequeue();
+			});
 
 	});
 
@@ -713,6 +882,22 @@ jQuery(document).ready(function($) {
 		$('.magic-fountain').removeClass('shown');
 		$('.loot-items').empty();
 
+		if(game.mapType == 'ice_gate' || game.mapType == 'fire_gate') {
+			gateScreen();
+		}
+
+	});
+
+	$(document).on('click', '.gate-done', function(e) {
+
+		location.reload();
+
+	});
+
+	$(document).on('click', '.play-again', function(e) {
+
+		location.reload();
+
 	});
 
 });
@@ -721,10 +906,12 @@ function init() {
 
 	console.clear();
 
+	if(game.debug) $('body').addClass('debug');
+
 	util.setInitialTooltips();
 
 	map.buildMap();
-	$('.map-inner div').addClass('clickable'); // TODO: remove this line after dev
+	if(game.debug) $('.map-inner div').addClass('clickable');
 
 	util.setTooltips('.tile');
 	util.setTooltips('.buttons-wrapper');
@@ -744,8 +931,6 @@ function init() {
 	updateAggro();
 	updateEssenceLevels();
 	setStatus();
-
-	treasureScreen();
 
 }
 
@@ -1028,20 +1213,46 @@ function startCombat(tile) {
 
 	game.combatEndedFlag = false;
 
-	if(tile.hasClass('arena')) {
-		game.mapType = 'arena';
-	} else if(tile.hasClass('ice-gate')) {
-		game.mapType = 'ice_gate';
-	} else if(tile.hasClass('fire-gate')) {
-		game.mapType = 'fire_gate';
-	} else {
-		game.mapType = 'normal';
-	}
-
 	game.floor += 1;
+	game.combat += 1;
 	game.round = 0;
 
-	let backgroundImage = './images/floor' + game.floor + '.png';
+	stopMusic();
+
+	let backgroundImage = './images/floor' + game.combat + '.png';
+
+	$('body').removeClass('arena ice_gate fire_gate');
+	$('.start-arrow').hide();
+
+	if(tile.hasClass('arena')) {
+		game.mapType = 'arena';
+		backgroundImage = './images/arena' + (game.arenasComplete + 1) + '.png';
+		$('body').addClass('arena');
+		game.arenasComplete += 1;
+		setTimeout(function() {
+			if(!musicArena.playing() && game.playmusic) musicArena.play();
+		}, 200);
+	} else if(tile.hasClass('ice-gate')) {
+		game.mapType = 'ice_gate';
+		backgroundImage = './images/ice_gate.png';
+		$('body').addClass('ige-gate');
+		setTimeout(function() {
+			if(!musicIceGate.playing() && game.playmusic) musicIceGate.play();
+		}, 200);
+	} else if(tile.hasClass('fire-gate')) {
+		game.mapType = 'fire_gate';
+		backgroundImage = './images/fire_gate.png';
+		$('body').addClass('fire-gate');
+		setTimeout(function() {
+			if(!musicFireGate.playing() && game.playmusic) musicFireGate.play();
+		}, 200);
+	} else {
+		game.mapType = 'normal';
+		setTimeout(function() {
+			if(!musicBattles[game.floor % musicBattles.length].playing() && game.playmusic) musicBattles[game.floor % musicBattles.length].play();
+		}, 200);
+	}
+
 	$('.monster-panel').css('background-image', 'url(' + backgroundImage + ')');
 	$('.combat').addClass('shown');
 	$('.candy').removeClass('trashable').addClass('clickable');
@@ -1142,6 +1353,9 @@ function startingBoosterPack(elem) {
 
 function visitFountain(visited) {
 
+	stopMusic();
+	if(!musicFountain.playing() && game.playmusic) musicFountain.play();
+
 	game.mapType = 'fountain';
 	if(visited) {
 		$('.fountain-visited').addClass('shown');
@@ -1152,11 +1366,17 @@ function visitFountain(visited) {
 		$('.magic-fountain').addClass('shown');
 		$('.magic-fountain .fountain-options').addClass('shown');
 		game.floor += 1;
+		setStatus();
 	}
 	
 }
 
 function visitQuest() {
+
+	stopMusic();
+	setTimeout(function() {
+		if(!musicQuests[game.floor % musicQuests.length].playing() && game.playmusic) musicQuests[game.floor % musicQuests.length].play();
+	}, 200);
 
 	game.mapType = 'quest';
 	$('.quest-screen').addClass('shown');
@@ -1172,7 +1392,10 @@ function visitQuest() {
 
 		$('.quest-screen h2').html(quest.name);
 		$('.quest-description').html(quest.desc);
-		
+		let backgroundImage = './images/quest-' + quest.id + '.png';
+		$('.quest-screen').css('background-image', 'url(' + backgroundImage + ')');
+		$('.quest-options').empty();
+
 		for(let i = 0; i < quest.options.length; i++) {
 			util.appendOption(quest.options[i], '.quest-options', quest.id);
 		}
@@ -1221,10 +1444,6 @@ async function updateEssenceLevels(essence, amount) {
 }
 
 function beginTurn() {
-
-	// clear effects after x turns
-	clearTurnEffects(player);
-	clearTurnAbilities(player);
 
 	updateCardDescriptions('allCards');
 
@@ -1502,15 +1721,19 @@ async function monsterAction(action = 'perform') {
 
 		for (var key in attack) {
 			if (attack.hasOwnProperty(key)) {
+
+				// apply aggro
+				let attackAmount = ((player.aggro.level / 2) + 1) * attack[key];
+
 				if(action == 'query') {
-					intent += Math.round((attack[key] + thisMonster.might.current) * thisMonster.punch.current) + ' attack, ';
+					intent += Math.round((attackAmount + thisMonster.might.current) * thisMonster.punch.current) + ' attack, ';
 				} else {
 
 					// check for hypnotize
 					if(game.targetedMonster.guid == thisMonster.guid) {
-						await attackMonster(thisMonster, attack[key]);
+						await attackMonster(thisMonster, attackAmount);
 					} else {
-						await attackPlayer(thisMonster, attack[key]);
+						await attackPlayer(thisMonster, attackAmount);
 					}
 					if(monsters.allDead()) {
 						await util.wait(800);
@@ -1624,6 +1847,10 @@ async function monsterAction(action = 'perform') {
 
 function endTurn(checkRetain = true) {
 
+	// clear effects after x turns
+	clearTurnEffects(player);
+	clearTurnAbilities(player);
+
 	$('body').addClass('selecting retaining');
 
 	game.message('End player turn ' + game.round);
@@ -1660,7 +1887,7 @@ function endTurn(checkRetain = true) {
 	}
 
 	// if rainbow is activated and kills all monsters it will still be activated at start of next combat
-	$('.magic-rainbow .semi-circle').removeClass('activated');
+	$('.magic-rainbow').removeClass('activated');
 
 }
 
@@ -1809,6 +2036,7 @@ function applyEffect(effect, to, turns = -1) {
 		if(effect.effect == 'rainbow') {
 			updateRainbowDom(to);
 		}
+		setStatus();
 	}
 }
 
@@ -1836,7 +2064,7 @@ function clearCombatAbilities() {
 
 function applyAbility(ability, to, turns = -1) {
 	to[ability.ability].enabled = ability.enabled;
-	//to[ability.ability].baseTurns += turns;
+	to[ability.ability].baseTurns += turns;
 	if(ability.hex) {
 		to[ability.ability].turns = turns;
 	} else {
@@ -1848,11 +2076,24 @@ function applyAbility(ability, to, turns = -1) {
 		to[ability.ability].persist = ability.persist;
 	}
 	if(to.type == 'monster') monsters.updateStatusBar();
+	setStatus();
 }
 
 function endCombat() {
 
 	if(!game.combatEndedFlag) {
+
+		stopMusic();
+
+		if(game.mapType == 'arena') {
+			if(!sounds.playing('arenaRewards') && game.playsounds) sounds.play('arenaRewards');
+		} else {
+			if(!sounds.playing('rewards') && game.playsounds) sounds.play('rewards');
+		}
+		
+		setTimeout(function() {
+			if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
+		}, 3000);
 
 		game.combatEndedFlag = true;
 
@@ -1883,6 +2124,9 @@ function endCombat() {
 		courageScreen();
 
 		treasureScreen();
+
+		// if rainbow is activated and kills all monsters it will still be activated at start of next combat
+		$('.magic-rainbow').removeClass('activated');
 
 	}
 
@@ -1950,6 +2194,14 @@ async function updateAggro(amount) {
 
 function loot(type, tier = 3) {
 
+	stopMusic();
+
+	if(!sounds.playing('loot') && game.playsounds) sounds.play('loot');
+
+	setTimeout(function() {
+		if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
+	}, 2000);
+
 	$('.loot-screen').addClass('shown');
 	// for normal treasure screens, any tier 1 - 3
 	let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier <= tier);
@@ -1970,12 +2222,9 @@ function loot(type, tier = 3) {
 		break;
 		case 'treasure':
 			if(possibleTreasures.length > 0) {
-				for(let i = 0; i < 69; i++) { //TODO: get rid of this loop, should just be one treasure
-					//let treasure = util.weightedRandom(possibleTreasures);
-					let treasure = treasures.treasures[i];
-					treasure.desc = Deck().buildDescription(treasure);
-					util.appendTreasure(treasure, '.loot-items');
-				}
+				let treasure = util.weightedRandom(possibleTreasures);
+				treasure.desc = Deck().buildDescription(treasure);
+				util.appendTreasure(treasure, '.loot-items');
 			}
 			var numEssences = util.randFromRange(1, 3);
 			for(let i = 0; i < numEssences; i++) {
@@ -2012,11 +2261,16 @@ function loot(type, tier = 3) {
 
 function endGame(result) {
 
+	stopMusic();
+
 	$('.combat').removeClass('shown');
+	$('body').removeClass('combating');
 	if(result == 'victory') {
 		$('.victory').addClass('shown');
+		if(!musicVictory.playing() && game.playmusic) musicVictory.play();
 	} else {
 		$('.loss').addClass('shown');
+		if(!musicLoss.playing() && game.playmusic) musicLoss.play();
 	}
 
 }
@@ -2038,6 +2292,7 @@ function rewardsScreen() {
 		if(game.candyChance < 0) game.candyChance = 0;
 		let candy = util.weightedRandom(treasures.candies);
 		let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
+		copiedCandy.desc = Deck().buildDescription(copiedCandy);
 		let clickable = player.candies.length < game.candySlots ? true : false;
 		util.appendCandy(copiedCandy, '.rewards-loot', clickable);
 		$('.rewards-loot-wrapper').addClass('shown');
@@ -2073,6 +2328,12 @@ function treasureScreen() {
 		game.treasureChance = 0;
 		
 	}
+
+}
+
+function gateScreen() {
+
+	$('.gate-screen').addClass('shown');
 
 }
 
@@ -2596,10 +2857,11 @@ function combineCards(elem) {
 async function playCard(elem, monster = undefined, type = false) {
 
 	$('.monster').removeClass('clickable');
-	elem.removeClass('selected playable');
+	elem.removeClass('selected playable').addClass('playing');
 	removeArrow();
 
 	let card = util.getCardByGuid(elem.data('guid'), combatDeck.handCards);
+	let deckCard = util.getCardByGuid(elem.data('guid'), deck.cards);
 
 	if(card == undefined) return false;
 
@@ -2642,9 +2904,14 @@ async function playCard(elem, monster = undefined, type = false) {
 	if(player.mana.current <= 0) player.mana.current = 0;
 
 	let use = util.getCardAttribute(card, 'use');
+	let breakable = util.getCardAttribute(card, 'breakable');
 	if(use > 0) {
 		use -= 1;
 		card.use -= 1;
+		if(breakable) {
+			// use needs to be permanently decreased
+			deckCard.use -= 1;
+		}
 	}
 
 	let linger = util.getCardAttribute(card, 'linger');
@@ -2653,7 +2920,7 @@ async function playCard(elem, monster = undefined, type = false) {
 	if(shouldDestroyCard(card)) {
 		// check for breakable
 		let skipDead = false;
-		if(card.breakable) {
+		if(breakable) {
 			removeCardFromDeck(elem.data('guid'));
 			skipDead = true;
 		}
@@ -2662,7 +2929,7 @@ async function playCard(elem, monster = undefined, type = false) {
 	} else if(activateCard(card)) {
 		combatDeck.activateCard(card, combatDeck);
 	} else if(linger == 0) {
-		combatDeck.discardCard(card, combatDeck);
+		combatDeck.discardCard(card, combatDeck, 'played');
 	}
 
 	if(linger > 0) {
@@ -2681,6 +2948,8 @@ async function playCard(elem, monster = undefined, type = false) {
 	}
 
 	combatDeck.updateCardPlayability(player, combatDeck);
+
+	elem.removeClass('playing');
 
 	if(card.type == 'attack') updateTreasureTriggers('attackCardsPlayed');
 	if(card.type == 'tool') updateTreasureTriggers('toolCardsPlayed');
@@ -2828,7 +3097,6 @@ async function processEffects(effects, currentMonster = false, multiply = 1, car
 				let turns = effects[e].turns == undefined ? -1 : effects[e].turns;
 				applyEffect(effects[e], to, turns);
 				await util.wait(game.animationGap);
-				setStatus();
 			}
 		}
 	}
@@ -2849,7 +3117,6 @@ async function processAbilities(abilities, currentMonster, card = false) {
 			}
 			applyAbility(abilities[e], to, turns);
 			await util.wait(game.animationGap);
-			setStatus();
 		}
 	}
 }
@@ -3362,16 +3629,20 @@ async function processQuest(elem) {
 		break;
 		case 'bakery':
 			if(option == 'buy_1_candy') {
-				gainCourage(-2);
-				loot('candy', 1);
+				if(player.courage > 1) {
+					gainCourage(-2);
+					loot('candy', 1);
+				}
 			} else if(option == 'buy_2_candies') {
-				candyAmount = 2;
-				gainCourage(-3);
-				loot('candy', 2);
+				if(player.courage > 2) {
+					gainCourage(-3);
+					loot('candy', 2);
+				}
 			} else if(option == 'buy_3_candies') {
-				candyAmount = 3;
-				gainCourage(-4);
-				loot('candy', 3);
+				if(player.courage > 3) {
+					gainCourage(-4);
+					loot('candy', 3);
+				}
 			}		
 			$('.quest-screen').removeClass('shown');
 			$('.quest-options').empty();
@@ -3749,6 +4020,7 @@ async function applyMagic(magic, to) {
 function updateRainbowDom(to) {
 	let magicPower = util.getStatPercentage(to.rainbow.current, to.rainbow.max);
 	if(magicPower > 100) magicPower = 100;
+	if(magicPower < 0) magicPower = 0;
 	magicPower = magicPower * 1.8;
 	let amount = to.rainbow.current <= to.rainbow.max ? to.rainbow.current : to.rainbow.max;
 	$('.magic-rainbow .semi-circle--mask').css('transform', 'rotate(' + magicPower + 'deg) translate3d(0, 0, 0)').removeClass('activated'); 
@@ -3757,6 +4029,7 @@ function updateRainbowDom(to) {
 	$('.magic-rainbow').attr('data-type', to.rainbow.type);
 	$('.magic-rainbow').removeClass('dark elemental rainbow chaos').addClass(to.rainbow.type);
 	$('.magic-rainbow .magic-type span').html(to.rainbow.type);
+	console.log(to.rainbow.current);
 }
 
 async function activateRainbow(type, to) {
@@ -3807,7 +4080,6 @@ async function activateRainbow(type, to) {
 		$('.magic-rainbow').addClass('empty');
 		await util.wait(game.animationGap);
 		$('.magic-rainbow').removeClass('unavailable empty activated');
-		$('.magic-rainbow').removeClass('activated');
 	}
 
 	return magicPower;

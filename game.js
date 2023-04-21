@@ -372,13 +372,14 @@ export default function Game() {
 
     let difficulty = 'easy';
     let floor = 0;
+    let combat = 0;
     let round = 0;
     let map = 1;
     let mapType = 'normal';
     let boosterPack = 'basic';
     let arenasComplete = 0;
     let treasureChance = 0; // TODO: set to 0
-    let candyChance = 0;
+    let candyChance = 0; // TODO: set to 0
     let shardChance = 0;
     let uncommonChance = 20;
     let rareChance = 0;
@@ -406,11 +407,15 @@ export default function Game() {
     let aggroThresholds = [10, 15, 20, 22];
     let currentMonsters = [];
     let targetedMonster = {};
+    let previousMonsters = [];
     let monsterGroup = 1;
     let animationGap = 75;
     let rainbowDelay = 300;
     let animationDelay = 1000;
     let animationDmg = 250;
+    let playsounds = true;
+    let playmusic = true;
+    let tutorial = false;
     let debug = true;
     let essences = ALL_ESSENCES;
     let effects = ALL_EFFECTS;
@@ -509,6 +514,7 @@ export default function Game() {
     return {
         difficulty,
         floor,
+        combat,
         round,
         map,
         mapType,
@@ -543,12 +549,16 @@ export default function Game() {
         aggroThresholds,
         currentMonsters,
         targetedMonster,
+        previousMonsters,
         monsterGroup,
         animationGap,
         rainbowDelay,
         animationDelay,
         animationDmg,
         debug,
+        playsounds,
+        playmusic,
+        tutorial,
         essences, 
         effects,
         abilities,

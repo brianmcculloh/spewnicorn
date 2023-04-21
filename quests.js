@@ -23,7 +23,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'workshop',
         name: 'Workshop',
-        desc: 'You enter a workshop.',
+        desc: 'A myriad of tools adorn the walls and tables.',
         rarity: 5,
         options: [
             {id: 'explore', name: 'Explore', desc: 'Sharpen your skills.',
@@ -41,7 +41,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'oracle',
         name: 'Oracle',
-        desc: 'Desc',
+        desc: 'A powerful green light washes over you, beckoning you closer.',
         rarity: 5,
         options: [
             {id: 'explore', name: 'Inquire',
@@ -58,7 +58,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'alchemy_lab',
         name: 'Alchemy Lab',
-        desc: 'You enter an alchemy lab.',
+        desc: 'There is a strange scent in the air. It is warm and fragrant.',
         rarity: 5,
         options: [
             {id: 'transform', name: 'Transform', desc: 'Transform 3 cards'},
@@ -68,7 +68,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'midnight_glade',
         name: 'Midnight Glade',
-        desc: 'You enter a glade at midnight.',
+        desc: 'You come across a glad that is both dark and light at the same time.',
         rarity: 3,
         options: [
             {id: 'sleep', name: 'Sleep', desc: 'Remove a card'},
@@ -78,7 +78,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'midnight_meadow',
         name: 'Midnight Meadow',
-        desc: 'You enter a meadow at midnight.',
+        desc: 'You come across a meadow that is both dark and light at the same time.',
         rarity: 3,
         options: [
             {id: 'sleep', name: 'Sleep', desc: 'Remove a card'},
@@ -88,7 +88,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'challenge',
         name: 'Challenge!',
-        desc: 'You are challenged.',
+        desc: 'You hear a distant call to pick up arms and challenge an unseen opponent. Who will win?',
         rarity: 3,
         options: [
             {id: 'meet_challenge', name: 'Meet Challenge', desc: '75% chance to gain 3 courage, 25% chance to lose 3 health',
@@ -108,7 +108,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'deep_well',
         name: 'Deep Well',
-        desc: 'You come across a well. It is so deep you have trouble seeing the bottom.',
+        desc: 'It is so deep that you cannot see the bottom.',
         rarity: 5,
         options: [
             {id: 'toss_a_coin_in', name: 'Toss A Coin In',
@@ -124,7 +124,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'library',
         name: 'Library',
-        desc: 'Desc',
+        desc: 'There are so many to choose from. What will you take?',
         rarity: 8,
         options: [
             {id: 'find_a_card', name: 'Find A Card', desc: 'Choose 1 of 20 random cards to add to your deck.'},
@@ -134,7 +134,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'altar',
         name: 'Altar',
-        desc: 'Desc',
+        desc: 'You wonder what god this altar was built for. The altar feels... expectant...',
         rarity: 7,
         options: [
             {id: 'minor_sacrifice', name: 'Minor Sacrifice', desc: 'Lose 4 health and gain a random common treasure.'},
@@ -146,7 +146,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'reliquary',
         name: 'Reliquary',
-        desc: 'Desc',
+        desc: 'You enter a very old shop filled with wondrous treasures of various rarities.',
         rarity: 7,
         options: [
             {id: 'old_relic', name: 'Old Relic', desc: 'Lose 2 max health and gain a random common treasure.'},
@@ -158,7 +158,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'oratory',
         name: 'Oratory',
-        desc: 'Desc',
+        desc: 'A consecrated space where you can improve yourself - at a cost.',
         rarity: 5,
         options: [
             {id: 'pray', name: 'Pray', desc: 'Lose 8 health and gain 5 courage.'},
@@ -171,10 +171,10 @@ const ALL_QUESTS = [
     new Quests({
         id: 'dark_sanctuary',
         name: 'Dark Sanctuary',
-        desc: 'Desc',
+        desc: 'A mysterious space that offers protection - at a cost.',
         rarity: 6,
         options: [
-            {id: 'physical_blow', name: 'Physical Blow', desc: 'Lost 12 health and reduce aggro by 4.'},
+            {id: 'physical_blow', name: 'Physical Blow', desc: 'Lose 12 health and reduce aggro by 4.'},
             {id: 'mental_blow', name: 'Mental Blow', desc: 'Lose 5 max health and reduce aggro by 4.'},
             {id: 'spiritual_blow', name: 'Spiritual Blow', desc: 'Lose 4 courage and reduce aggro by 4.'},
             {id: 'leave', name: 'Leave'}
@@ -183,7 +183,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'bakery',
         name: 'Bakery',
-        desc: 'Desc',
+        desc: 'Delicious confections for sale!',
         rarity: 4,
         options: [
             {id: 'buy_1_candy', name: 'Buy 1 Candy', desc: 'For 2 courage'},
@@ -195,7 +195,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'mossy_pedestal',
         name: 'Mossy Pedestal',
-        desc: 'Desc',
+        desc: 'It looks ancient. Does it contain any secrets?',
         rarity: 9,
         options: [
             {id: 'touch_the_pedestal', name: 'Touch the pedestal',
@@ -212,7 +212,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'three_trunks',
         name: 'Three Trunks',
-        desc: 'Desc',
+        desc: 'You come upon three interesting tree trunks. They look dead. And yet, they feel alive.',
         rarity: 8,
         options: [
             {id: 'small_trunk', name: 'Small Trunk', desc: '100% to gain 1 couarge'},
@@ -224,7 +224,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'leap_of_faith',
         name: 'Leap of Faith',
-        desc: 'Desc',
+        desc: 'The landing will sting, but there is a chance of profit.',
         rarity: 5,
         options: [
             {id: 'leap1', name: 'Leap', desc: '25% chance to gain a common treasure, lose 5 health',
@@ -274,7 +274,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'stained_glass_mirror',
         name: 'Stained Glass Mirror',
-        desc: 'Desc',
+        desc: 'How can a mirror be made of stained glass? Whatever the mechanism, it is extremely colorful...',
         rarity: 6,
         options: [
             {id: 'peer_into_the_mirror', name: 'Peer into the mirror',
@@ -291,7 +291,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'singing_cavern',
         name: 'Singing Cavern',
-        desc: 'Desc',
+        desc: 'It is pleasant so far. How deep do you want to go?',
         rarity: 4,
         options: [
             {id: 'enter', name: 'Enter',
@@ -308,7 +308,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'lucky_spring',
         name: 'Lucky Spring',
-        desc: 'Desc',
+        desc: 'Lady luck has shined on you. Do you drink from the blue waters of the spring?',
         rarity: 4,
         options: [
             {id: 'drink_a_draught', name: 'Drink a Draught', desc: 'Ensharden two random cards'},
@@ -318,7 +318,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'labyrinth',
         name: 'Labyrinth',
-        desc: 'Desc',
+        desc: 'You wonder if this labyrinth contains a minotaur... or worse.',
         rarity: 8,
         options: [
             {id: 'enter', name: 'Enter',
@@ -1175,7 +1175,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'sudden_trap',
         name: 'Sudden Trap',
-        desc: 'Desc',
+        desc: 'The walls close in and there is nowhere to go.',
         rarity: 4,
         options: [
             {id: 'buy_your_way_out', name: 'Buy your way out', desc: 'Pay 1 courage'},
@@ -1184,7 +1184,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'the_liar',
         name: 'The Liar',
-        desc: 'Desc',
+        desc: 'She tells you she will give you a gift and you quickly accept. Probably too quickly.',
         rarity: 5,
         options: [
             {id: 'lose_1_shimmer', name: 'Lose 1 Shimmer'},
@@ -1195,7 +1195,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'briar_patch',
         name: 'Briar Patch',
-        desc: 'Desc',
+        desc: 'How shall you navigate this bramble thicket?',
         rarity: 5,
         options: [
             {id: 'run_through', name: 'Run Through', desc: 'Lose 3 max health'},

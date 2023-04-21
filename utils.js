@@ -42,16 +42,6 @@ export default class Util {
         return 'ontouchstart' in window // works on most browsers 
             || window.navigator.msMaxTouchPoints > 0; // works on ie10
     }
-    playsound(s, delay = 0) {
-        if(game.playsounds) {
-            setTimeout(function() {
-                var sound = context.createBufferSource();
-                sound.buffer = soundLoader.bufferList[s];
-                sound.connect(context.destination);
-                sound.start(0);
-            }, delay);
-        }
-    }
     randDecimal() {
         return this.rand();
     }
@@ -205,13 +195,32 @@ export default class Util {
         let tooltipClass = slots != '' ? ' tooltip' : '';
         let tooltip = slots != '' ? card.slotDesc : '';
         pack = card.pack ? ' ' + card.pack + '-pack' : '';
-        $("<div class='card-wrapper'><div class='card " + card.tier + unplayable + combinable + pack + " " + card.type + " " + cssClass + "' id='card-" + card.id + "' data-id='" + card.id + "' data-guid='" + card.guid + "' data-powertip='" + tooltip + "'><div class='card-image'></div><div class='card-frame'></div><div class='card-type'>" + card.type + "</div><div class='card-rarity'></div>" + manaDom + ageDom + "<div class='bubbles-left'>" + useDom + expireDom + lingerDom + "</div><div class='bubbles-right'>" + vanishDom + retainDom + ephemeralDom + breakableDom + "</div><div class='bubbles-bottom-left'>" + packDom + "</div><div class='name'>" + card.name + "</div><div class='desc'><div class='desc-inner'>" + card.desc + "</div></div><div class='slots" + tooltipClass + "' data-powertip='" + tooltip + "'>" + slots + "</div><div class='card-courage' data-amount='" + card.courage + "'>" + card.courage + "</div></div></div>")
-            .appendTo(to);
+        $("<div class='card-wrapper drawing'><div class='card " + card.tier + unplayable + combinable + pack + " " + card.type + " " + cssClass + "' id='card-" + card.id + "' data-id='" + card.id + "' data-guid='" + card.guid + "' data-powertip='" + tooltip + "'><div class='card-image'></div><div class='card-frame'></div><div class='card-type'>" + card.type + "</div><div class='card-rarity'></div>" + manaDom + ageDom + "<div class='bubbles-left'>" + useDom + expireDom + lingerDom + "</div><div class='bubbles-right'>" + vanishDom + retainDom + ephemeralDom + breakableDom + "</div><div class='bubbles-bottom-left'>" + packDom + "</div><div class='name'>" + card.name + "</div><div class='desc'><div class='desc-inner'>" + card.desc + "</div></div><div class='slots" + tooltipClass + "' data-powertip='" + tooltip + "'>" + slots + "</div><div class='card-courage' data-amount='" + card.courage + "'>" + card.courage + "</div></div></div>")
+            .appendTo(to)
+            .delay(1)
+            .queue(function() {
+                $(this).removeClass('drawing').dequeue();
+            });
             this.setTooltips(to);
+    }
+    animateShowCards(elem) {
+        $('.show-cards').addClass('shown');
+        elem.appendTo('.show-cards')
+            .delay(1000)
+            .queue(function() {
+                $(this).addClass('disappearing')
+                .delay(500)
+                .queue(function() {
+                    $('.show-cards').removeClass('shown');
+                    $(this).remove().dequeue();
+                }).dequeue();
+            });
     }
     appendMonster(monster, id) {
         $('<div class="monster ' + monster.id + '" data-id="' + id + '" data-guid="' + monster.guid + '"><div class="monster-stats">' + monster.statsDom + '</div><div class="sprite"></div><div class="combat-log"><div class="dmg-taken" data-amount="0"></div><div class="armor-lost" data-amount="0"></div><div class="health-lost" data-amount="0"></div></div><div class="monster-health creature-health"><div class="health-amount"><div class="armor-amount"><div class="armor-number"></div></div><div class="health-number"></div></div><div class="block-amount"><div class="block-number">' + monster.block + '</div></div></div><div class="status-bar"></div></div>')
-            .appendTo('.monster-panel');
+            .appendTo('.monster-panel')
+            .hide()
+            .fadeIn(1500);
             this.setTooltips('.monster-panel');
     }
     appendTreasure(treasure, to) {
@@ -296,8 +305,41 @@ export default class Util {
     removeCard(index, from) {
         $(from).children().eq(index).parent().remove();
     }
-    removeCardByGuid(guid) {
-        $('.card[data-guid=' + guid + ']').parent().remove();
+    removeCardByGuid(guid, animation = 'none') {
+        switch(animation) {
+            case 'none':
+                $('.card[data-guid=' + guid + ']').parent().remove();
+            break;
+            case 'discarded':
+                $('.card[data-guid=' + guid + ']').parent()
+                .addClass('discarded')
+                .delay(300)
+                .queue(function() {
+                    $(this).remove().dequeue();
+                });
+            break;
+            case 'played':
+                $('.card[data-guid=' + guid + ']').parent()
+                .addClass('discarding')
+                .delay(300)
+                .queue(function() {
+                    $(this).removeClass('discarding').addClass('discarded')
+                    .delay(300)
+                    .queue(function() {
+                        $(this).remove().dequeue();
+                    }).dequeue();
+                });
+            break;
+            case 'destroyed':
+                $('.card[data-guid=' + guid + ']').parent()
+                .addClass('destroying')
+                .delay(1000)
+                .queue(function() {
+                    $(this).remove().dequeue();
+                });
+            break;
+        }
+        
     }
     removeMonster(guid) {
         $('.monster[data-guid=' + guid + ']').addClass('dead').removeClass('clickable');
@@ -706,94 +748,31 @@ export default class Util {
         }
         return text;
     }
-    
-  
-}
 
-
-// sounds
-
-function BufferLoader(context, urlList, callback) {
-    this.context = context;
-    this.urlList = urlList;
-    this.onload = callback;
-    this.bufferList = new Array();
-    this.loadCount = 0;
-}
-
-BufferLoader.prototype.loadBuffer = function(url, index, len) {
-    // Load buffer asynchronously
-    var request = new XMLHttpRequest();
-    request.open("GET", url, true);
-    request.responseType = "arraybuffer";
-
-    var loader = this;
-
-    request.onload = function() {
-        let pct = (jQuery('.game-loading-bar').width() / len);
-        let oldw = jQuery('.game-loading-progress').width();
-        let w = oldw + pct;
-        if(w > oldw) {
-            jQuery('.game-loading-progress').css('width', w + 'px');
-        }
-        // Asynchronously decode the audio file data in request.response
-        loader.context.decodeAudioData(
-        request.response,
-        function(buffer) {
-            if (!buffer) {
-            alert('error decoding file data: ' + url);
-            return;
+    sound(f) {
+        var s = false
+        s = new Howl({
+            src: ['audio/' + f],
+            sprite: {
+                arenaRewards: [0, 7839],
+                rewards: [7839, 4540],
+                loot: [12379, 2405],
             }
-            loader.bufferList[index] = buffer;
-            if (++loader.loadCount == loader.urlList.length)
-            loader.onload(loader.bufferList);
-        },
-        function(error) {
-            console.error('decodeAudioData error', error);
-        }
-        );
+        });
+        return s;
     }
-
-    request.onerror = function() {
-        alert('BufferLoader: XHR error');
+    music(f, v = 1) {
+        var m = false;
+        m = new Howl({
+            src: ['audio/' + f],
+            autoplay: true,
+            html5: true,
+            loop: true,
+            volume: v
+        });
+        return m;
     }
-
-    request.send();
+    
 }
 
-BufferLoader.prototype.load = function() {
-    for (var i = 0; i < this.urlList.length; ++i) {
-        this.loadBuffer(this.urlList[i], i, this.urlList.length);
-    }
-}
-
-  
-let context;
-let soundLoader;
 const util = new Util();
-if(!util.isTouchDevice()) {
-	let splashloop = new SeamlessLoop();
-	splashloop.addUri('./audio/_click.wav', 2500, 'splash');
-}
-
-// Fix up prefixing
-window.AudioContext = window.AudioContext || window.webkitAudioContext;
-context = new AudioContext();
-
-soundLoader = new BufferLoader(
-	context,
-	[
-	  	'./audio/_click.wav', // 0
-		'./audio/_click2.wav', // 1
-		
-	],
-	finishedLoading
-);
-soundLoader.load();
-
-function finishedLoading() {
-  	setTimeout(function() {
-		// audio is loaded, game is ready
-		
-	}, 300);
-}

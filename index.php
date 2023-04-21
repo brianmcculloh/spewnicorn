@@ -8,7 +8,7 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<title>New Game | Spewnicorn Games</title>
+<title>The Spewnicorn | Spewnicorn Games</title>
 
 <!-- begin style -->
 
@@ -18,13 +18,51 @@
 <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="vendor/jquery.powertip.min.js"></script>
-<script type="text/javascript" src="vendor/seamlessLoop.js"></script>
+<script type="text/javascript" src="vendor/howler.core.min.js"></script>
 <script type="module" src="script.js"></script>
 
 
 </head>
 
 <body>
+
+  <div id="game-loading">
+    
+    <div class="game-loading-bar">
+
+      <div class="game-loading-progress"><div class="glow"></div></div>
+
+    </div>
+
+  </div>
+
+  <div id="splash" class="game-panel shown">
+
+    <h2>The Spewnicorn</h2>
+
+    <div class="message">Build the ultimate deck of cards and wield it to defeat the Gatekeepers!</div>
+
+    <div class="panel settings-panel">
+
+      <div class="button music toggled-on">Music <span>On</span></div>
+      <div class="button sound toggled-on">Sounds <span>On</span></div>
+      <div class="button tutorial">Tutorial <span>Off</span></div>
+      <div class="button difficulty toggled-on">Easy Mode <span>On</span></div>
+
+      <div class="panel-part panel-top-left"></div>
+      <div class="panel-part panel-top-middle"></div>
+      <div class="panel-part panel-top-right"></div>
+      <div class="panel-part panel-middle-left"></div>
+      <div class="panel-part panel-middle-right"></div>
+      <div class="panel-part panel-bottom-left"></div>
+      <div class="panel-part panel-bottom-middle"></div>
+      <div class="panel-part panel-bottom-right"></div>
+
+    </div>
+
+    <div class="button begin">New Game</div> 
+
+  </div>
 
   <div class="overlay"></div>
 
@@ -80,7 +118,7 @@
 
       </div>
 
-      <div class="game-aggro tooltip" data-powertip="<span class='aggro'>Aggro</span> level increases difficulty of guardian fights.<br /><br /><span class='crit'>Crit</span> percentage is the chance each attack is a critical hit (increases by 1 for each attack played, resets after a critical hit)">
+      <div class="game-aggro tooltip" data-powertip="<span class='aggro'>Aggro</span> level multiplies guardian attack damage during guardian fights.<br /><br /><span class='crit'>Crit</span> percentage is the chance each attack is a critical hit (increases by 1 for each attack played, resets after a critical hit)">
 
         <div class="aggro-bar"><div class="aggro-bar-inner"></div><span class="icon"></span><span class="level"></span></div>
 
@@ -189,6 +227,12 @@
     </div>
 
     <div class="map">
+
+      <div class="start-arrow">
+        <svg width="1200pt" height="1200pt" version="1.1" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
+          <path d="m1131.5 673.39c-99.613-64.078-169.92-160.05-201.66-274.11-2.3516-8.4492-9.7188-13.055-18.023-13.727-43.453-3.4805-86.914-6.8047-130.38-10.188-14.09-1.0938-23.16 16.609-16.055 27.984 23.555 37.703 44.398 76.547 62.688 116.79-241.81-128.45-554.66-100.38-763.64 80.676-8.4727 7.3438-3.4922 17.316 4.5703 20.566 27.133 69.527 66.516 129.45 120.64 181.04 9.0469 8.6289 24.828 7.4023 31.176-4.0195 125.03-225.01 408.36-294.41 623.04-161.59-42.996 22.117-87.254 41.102-133.14 56.891-12.434 4.2734-17.711 17.027-11.723 28.812 15.707 30.875 31.414 61.754 47.125 92.629 6.3594 12.492 21.828 11.387 31.141 4.0078 98.207-77.797 219.98-116.52 344.99-111.59 19.016 0.78516 23.852-24.785 9.2617-34.172zm-361.39 101.82c-8.9023-17.328-17.809-34.668-26.723-51.996 50.891-19.078 99.973-41.531 147.73-67.883 13.668-7.5352 11.09-25.105 0-33.168-227.14-165.34-544.7-100.49-691.48 134.06-40.512-42.84-71.723-91.621-93.238-147.32-0.74219-1.9336-1.7383-3.5508-2.8438-5.0391 218.36-158.65 525.97-172.04 753.66-24.023 12.719 8.2695 32.809-5.6875 26.988-20.746-19.246-49.824-41.953-97.656-68.426-143.79 27.301 2.1953 54.59 4.3789 81.887 6.5156 30.492 98.902 88.559 184.43 168.02 248.88-107.12 4.9336-208.15 40.887-295.58 104.51z"/>
+        </svg>
+      </div>
 
       <div class="map-inner">
 
@@ -541,6 +585,16 @@
 
     </div>
 
+    <div class="gate-screen game-panel">
+
+      <h2>Victory!</h2>
+
+      <div class="message">You have beaten the all powerful Guardian. Rest easy, friend.</div>
+
+      <div class="button gate-done">Play Again</div>
+
+    </div>
+
     <div class="combat">
 
       <div class="monster-panel"></div>
@@ -605,6 +659,8 @@
       <div class="end-combat button">&rarr;</div>
 
     </div>
+
+    <div class="show-cards cards-panel game-panel"></div>
 
     <div class="rewards cards-panel game-panel">
 
@@ -774,15 +830,23 @@
 
     </div>
 
-    <div class="end-game victory">
+    <div class="end-game victory game-panel">
 
-      <h2>VICTORY!</h2>
+      <h2>Victory!</h2>
+
+      <div class="message">You have beaten the game. Rest easy, friend.</div>
+
+      <div class="button play-again">Play Again</div>  
 
     </div>
 
-    <div class="end-game loss">
+    <div class="end-game loss game-panel">
 
-      <h2>Loss.</h2>
+      <h2>Defeat</h2>
+
+      <div class="message">A valiant effort.</div>
+
+      <div class="button play-again">Try Again?</div>  
 
     </div>
 

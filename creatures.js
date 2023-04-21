@@ -932,8 +932,8 @@ export function Monster() {
         return dom;
     }
 
-    function addMonsterToDom(monster, id) {
-        util.appendMonster(monster, id);
+    async function addMonsterToDom(monster, id) {
+        await util.appendMonster(monster, id);
 		updateMonsterStats(monster, id);
     }
 
@@ -959,11 +959,14 @@ export function Monster() {
     
         let currentMonsters = [];
 
+        let excluded = game.previousMonsters;
+        game.previousMonsters = [];
+
         if(game.mapType == 'arena') {
 
             if(game.map==1) {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(1, i, 'boss');
+                    let thisMonster = createMonster(1, i, 'boss', excluded);
                     currentMonsters.push(thisMonster);
                 }
             } else {
@@ -1004,7 +1007,7 @@ export function Monster() {
                         let num = util.chance(chance) ? 2 : 1;
                         if(game.floor == 1) num = 1; // never more than one monster on floor one
                         for (let i = 0; i < num; i++) {
-                            let thisMonster = createMonster(1, i);
+                            let thisMonster = createMonster(1, i, 'normal', excluded);
                             currentMonsters.push(thisMonster);
                         }
                     } else {
@@ -1015,7 +1018,7 @@ export function Monster() {
                 case 2:
                     if(game.map==1) {
                         // 1 Tier 2 monster
-                        let thisMonster = createMonster(2, game);
+                        let thisMonster = createMonster(2, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
 
@@ -1025,9 +1028,9 @@ export function Monster() {
                 case 3:
                     if(game.map==1) {
                         // 1 Tier 1 monster and 1 Tier 2 monster
-                        let thisMonster = createMonster(1, game);
+                        let thisMonster = createMonster(1, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
-                        thisMonster = createMonster(2, game);
+                        thisMonster = createMonster(2, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
 
@@ -1037,7 +1040,7 @@ export function Monster() {
                 case 4:
                     if(game.map==1) {
                         // 1 Tier 3 monster
-                        let thisMonster = createMonster(3, game);
+                        let thisMonster = createMonster(3, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
                         
@@ -1047,7 +1050,7 @@ export function Monster() {
                 case 5:
                     if(game.map==1) {
                         // 1 Tier 4 monster
-                        let thisMonster = createMonster(4, game);
+                        let thisMonster = createMonster(4, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
 
@@ -1057,9 +1060,9 @@ export function Monster() {
                 case 6:
                     if(game.map==1) {
                         // 1 Tier 4 monster and 1 Tier 2 monster
-                        let thisMonster = createMonster(4, game);
+                        let thisMonster = createMonster(4, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
-                        thisMonster = createMonster(2, game);
+                        thisMonster = createMonster(2, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
 
@@ -1074,12 +1077,12 @@ export function Monster() {
                         let chance = util.monsterNumChance(initial, increase);
                         if(util.chance(chance)) {
                             for (let i = 0; i < 3; i++) {
-                                let thisMonster = createMonster(3, i);
+                                let thisMonster = createMonster(3, i, 'normal', excluded);
                                 currentMonsters.push(thisMonster);
                             }
                         } else {
                             for (let i = 0; i < 2; i++) {
-                                let thisMonster = createMonster(4, i);
+                                let thisMonster = createMonster(4, i, 'normal', excluded);
                                 currentMonsters.push(thisMonster);
                             }
                         }
@@ -1097,20 +1100,20 @@ export function Monster() {
                         let chance = util.monsterNumChance(initial, increase);
                         if(util.chance(chance)) {
                             for (let i = 0; i < 2; i++) {
-                                let thisMonster = createMonster(4, i);
+                                let thisMonster = createMonster(4, i, 'normal', excluded);
                                 currentMonsters.push(thisMonster);
                             }
                             for (let i = 0; i < 1; i++) {
-                                let thisMonster = createMonster(3, i);
+                                let thisMonster = createMonster(3, i, 'normal', excluded);
                                 currentMonsters.push(thisMonster);
                             }
                             for (let i = 0; i < 1; i++) {
-                                let thisMonster = createMonster(2, i);
+                                let thisMonster = createMonster(2, i, 'normal', excluded);
                                 currentMonsters.push(thisMonster);
                             }
                         } else {
                             for (let i = 0; i < 5; i++) {
-                                let thisMonster = createMonster(2, i);
+                                let thisMonster = createMonster(2, i, 'normal', excluded);
                                 currentMonsters.push(thisMonster);
                             }
                         }
@@ -1123,7 +1126,7 @@ export function Monster() {
                     if(game.map==1) {
                         // 3 Tier 4 monsters
                         for (let i = 0; i < 3; i++) {
-                            let thisMonster = createMonster(4);
+                            let thisMonster = createMonster(4, i, 'normal', excluded);
                             currentMonsters.push(thisMonster);
                         }
                     } else {
@@ -1135,7 +1138,7 @@ export function Monster() {
                     if(game.map==1) {
                         // 4 Tier 4 monsters and 1 Tier 3 monster
                         for (let i = 0; i < 4; i++) {
-                            let thisMonster = createMonster(4);
+                            let thisMonster = createMonster(4, i, 'normal', excluded);
                             currentMonsters.push(thisMonster);
                         }
 
@@ -1144,7 +1147,7 @@ export function Monster() {
                         let chance = util.monsterNumChance(initial, increase);
                         if(util.chance(chance)) {
                             for (let i = 0; i < 1; i++) {
-                                let thisMonster = createMonster(3, i);
+                                let thisMonster = createMonster(3, i, 'normal', excluded);
                                 currentMonsters.push(thisMonster);
                             }
                         } 
@@ -1162,13 +1165,16 @@ export function Monster() {
     
     }
 
-    function createMonster(tier,  i = 0, category = 'normal') {
+    function createMonster(tier, i = 0, category = 'normal', excluded = []) {
 
         let possibleMonsters = monsters.filter(i => i.tier == tier && i.category == category);
+        possibleMonsters = possibleMonsters.filter( x => !excluded.filter( y => y.id === x.id).length);
         let copiedMonsters = JSON.parse(JSON.stringify(possibleMonsters)); // necessary to create a deep copy
         let monster = util.randFromArray(copiedMonsters);
 
         if(monster == undefined) return;
+
+        game.previousMonsters.push(monster);
 
         monster.health.current = monster.health.base;
         monster.guid = util.randString();
@@ -1209,7 +1215,9 @@ export function Monster() {
                 (to[game.abilities[i].id].persist == true && to[game.abilities[i].id].turns < 0) ||
                 (to[game.abilities[i].id].persist == false)) {
                 to[game.abilities[i].id].turns = to[game.abilities[i].id].baseTurns;
-                to[game.abilities[i].id].enabled = false;
+                if(to[game.abilities[i].id].turns == 0) {
+                    to[game.abilities[i].id].enabled = false;
+                }
             }
             // ability will not persist to the next combat unless re-persisted again this combat
             to[game.abilities[i].id].persist = false;
@@ -1364,9 +1372,8 @@ export function Player() {
         name: 'Player',
         armor: 25,
         health: {base: 50, current: 50, max: 50},
-        speed: {base: 10, current: 0, temp: 0, turns: 0},
+        speed: {base: 5, current: 0, temp: 0, turns: 0},
         rainbow: {base: 0, current: 0, temp: 0, turns: 0, max: 20, type: 'rainbow'},
-        courage: 50, // TODO: remove this
     });
 
     function dead(player) {

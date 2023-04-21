@@ -549,7 +549,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'spewnicorn_spray', name: 'Spewnicorn Spray', type: 'tool', mana: 0, addable: false, breakable: true, use: 2, natural: true,
+        id: 'spewnicorn_spray', name: 'Spewnicorn Spray', type: 'tool', mana: 0, addable: false, breakable: true, use: 2,
         descOverride: 'Deus Ex Machina.',
         effects: [
             {effect: 'solid', amount: -1, turns: 1, hex: true},
@@ -738,7 +738,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'tesseract', name: 'Tesseract', type: 'magic', target: 'monster', mana: 3, addable: false, retain: true, vanish: true, tier: 'legendary',
+        id: 'tesseract', name: 'Tesseract', type: 'magic', target: 'monster', mana: 3, retain: true, vanish: true, tier: 'legendary',
         dmg: [10],
         blk: [10],
         magic: [{type: 'aligned', amount: 40}], 
@@ -789,7 +789,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'battle_sequence', name: 'Battle Sequence', type: 'tool', mana: 3, addable: false, retain: true, vanish: true, tier: 'legendary',
+        id: 'battle_sequence', name: 'Battle Sequence', type: 'tool', mana: 3, retain: true, vanish: true, tier: 'legendary',
         effects: [
             {effect: 'fierce', amount: 5, turns: 1},
             {effect: 'mastery', amount: .5, turns: 1},
@@ -856,7 +856,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'self_fulfill', name: 'Self-Fulfill', type: 'tool', mana: 3, retain: true, addable: false, vanish: true, tier: 'legendary',
+        id: 'self_fulfill', name: 'Self-Fulfill', type: 'tool', mana: 3, retain: true, vanish: true, tier: 'legendary',
         additionalDesc: 'Achievement unlocked',
         actions: [
             {action: 'addCard', value: 2, what: 'self_enhance', to: 'drawCards'},
@@ -3738,17 +3738,14 @@ export function Deck() {
         addCard('leather_armor');
         addCard('stun');
 
-        // TODO: remove these cards
-        addCard('smash_and_grab');
-        addCard('familiar_strike');
-
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
         }
     }
 
     function removeCard(guid) {
-        this.cards = cards.filter(i => i.guid !== guid);
+        cards = cards.filter(i => i.guid !== guid);
+        this.cards = cards;
         player.cardsOwned -= 1;
     }
 
@@ -4189,6 +4186,7 @@ export function Deck() {
         let domCard = util.getDomCardByGuid(card.guid);
         domCard.find('.desc').html(desc);
         domCard.find('.slots').html(slots);
+        util.animateShowCards(domCard);
 
     }
 
@@ -4226,6 +4224,8 @@ export function Deck() {
             card = util.weightedRandom(addableCards);
             let desc = buildDescription(card);
             card.desc = desc;
+            let slotDesc = buildSlotsDescription(card);
+        	card.slotDesc = slotDesc;
         }
         game.toExclude.push(card.id);
         return card;
@@ -4480,7 +4480,7 @@ export function CombatDeck() {
                     combatDeck.discardCards.push(thisCard);
                 }
                 combatDeck.handCards = combatDeck.handCards.filter(i => i.guid !== thisCard.guid);
-                util.removeCardByGuid(thisCard.guid);
+                util.removeCardByGuid(thisCard.guid, 'discarded');
                 i--;
             } else {
                 thisCard.age += 1;
@@ -4490,10 +4490,11 @@ export function CombatDeck() {
 
     }
 
-    function discardCard(card, combatDeck) {
+    function discardCard(card, combatDeck, played = false) {
+        let animation = played ? 'played' : 'discarded';
         combatDeck.discardCards.push(card);
         combatDeck.handCards = combatDeck.handCards.filter(i => i.guid !== card.guid);
-        util.removeCardByGuid(card.guid);
+        util.removeCardByGuid(card.guid, animation);
     }
 
     function destroyHand(combatDeck) {
@@ -4502,7 +4503,7 @@ export function CombatDeck() {
             let thisCard = combatDeck.handCards[i];
             combatDeck.deadCards.push(thisCard);
             combatDeck.handCards = combatDeck.handCards.filter(i => i.guid !== thisCard.guid);
-            util.removeCardByGuid(thisCard.guid);
+            util.removeCardByGuid(thisCard.guid, 'destroyed');
             i--;
         }
 
@@ -4513,7 +4514,7 @@ export function CombatDeck() {
             combatDeck.deadCards.push(card);
         }
         combatDeck.handCards = combatDeck.handCards.filter(i => i.guid !== card.guid);
-        util.removeCardByGuid(card.guid);
+        util.removeCardByGuid(card.guid, 'destroyed');
     }
 
     function transmuteCards(combatDeck, deck, player) {
@@ -4528,7 +4529,7 @@ export function CombatDeck() {
             transmutedCard.desc = desc;
 
             // slots description
-            let slotDesc = buildSlotsDescription(transmutedCard);
+            let slotDesc = Deck().buildSlotsDescription(transmutedCard);
             transmutedCard.slotDesc = slotDesc;
 
             combatDeck.chooseCards.push(transmutedCard);
@@ -4545,13 +4546,13 @@ export function CombatDeck() {
                     combatDeck.discardCards = combatDeck.discardCards.filter(j => j.guid !== combatDeck.transmutingCards[i].guid);
                 }
             }
-            util.removeCardByGuid(combatDeck.transmutingCards[i].guid);
+            util.removeCardByGuid(combatDeck.transmutingCards[i].guid, 'destroyed');
         }
     }
 
     function activateCard(card, combatDeck) {
         combatDeck.handCards = combatDeck.handCards.filter(i => i.guid !== card.guid);
-        util.removeCardByGuid(card.guid);
+        util.removeCardByGuid(card.guid, 'played');
     }
 
     function destroyExpiredCards(combatDeck) {
@@ -4572,7 +4573,7 @@ export function CombatDeck() {
             if(expire == 0) {
                 combatDeck.deadCards.push(thisCard);
                 combatDeck.drawCards = combatDeck.drawCards.filter(i => i.guid !== thisCard.guid);
-                util.removeCardByGuid(thisCard.guid);
+                util.removeCardByGuid(thisCard.guid, 'destroyed');
                 i--;
             }
         }
