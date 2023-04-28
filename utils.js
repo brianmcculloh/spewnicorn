@@ -217,7 +217,7 @@ export default class Util {
             });
     }
     appendMonster(monster, id) {
-        $('<div class="monster ' + monster.id + '" data-id="' + id + '" data-guid="' + monster.guid + '"><div class="monster-stats">' + monster.statsDom + '</div><div class="sprite"></div><div class="combat-log"><div class="dmg-taken" data-amount="0"></div><div class="armor-lost" data-amount="0"></div><div class="health-lost" data-amount="0"></div></div><div class="monster-health creature-health"><div class="health-amount"><div class="armor-amount"><div class="armor-number"></div></div><div class="health-number"></div></div><div class="block-amount"><div class="block-number">' + monster.block + '</div></div></div><div class="status-bar"></div></div>')
+        $('<div class="monster ' + monster.id + '" data-id="' + id + '" data-guid="' + monster.guid + '"><div class="monster-stats">' + monster.statsDom + '</div><div class="sprite"></div><div class="combat-log"><div class="dmg-taken" data-amount="0"></div><div class="armor-lost" data-amount="0"></div><div class="health-gained" data-amount="0"></div><div class="health-lost" data-amount="0"></div></div><div class="monster-health creature-health"><div class="health-amount"><div class="armor-amount"><div class="armor-number"></div></div><div class="health-number"></div></div><div class="block-amount"><div class="block-number">' + monster.block + '</div></div></div><div class="status-bar"></div></div>')
             .appendTo('.monster-panel')
             .hide()
             .fadeIn(1500);
@@ -413,17 +413,17 @@ export default class Util {
             // overwrite with shard values
             if(card.shards?.length > 0) {
                 // single shard
-                if(card.shardUpgrades[attribute] != undefined) {
+                if(card.shardUpgrades[attribute] != undefined && !isNaN(card.shardUpgrades[attribute])) {
                     data = card.shardUpgrades[attribute];
                 } 
                 // overwrite with specific shard values
                 if(this.getShardNum(card, 'frost') > 0) {
-                    if(card.iceShardUpgrades[attribute] != undefined) {
+                    if(card.iceShardUpgrades[attribute] != undefined && !isNaN(card.iceShardUpgrades[attribute])) {
                         data = card.iceShardUpgrades[attribute];
                     }
                 }
                 if(this.getShardNum(card, 'flame') > 0) {
-                    if(card.fireShardUpgrades[attribute] != undefined) {
+                    if(card.fireShardUpgrades[attribute] != undefined && !isNaN(card.fireShardUpgrades[attribute])) {
                         data = card.fireShardUpgrades[attribute];
                     }
                 }
@@ -432,21 +432,21 @@ export default class Util {
                 if(card.shards.length > 1) {
                     // start with both shards values
                     if(card.bothShardUpgrades != undefined) {
-                        if(card.bothShardUpgrades[attribute] != undefined) {
+                        if(card.bothShardUpgrades[attribute] != undefined && !isNaN(card.bothShardUpgrades[attribute])) {
                             data = card.bothShardUpgrades[attribute];
                         }
                     } 
                     // overwrite with specific shard values
                     if(this.getShardNum(card, 'frost') > 1) {
                         if(card.iceShardUpgrades != undefined) {
-                            if(card.iceShardUpgrades[attribute + '_2'] != undefined) {
+                            if(card.iceShardUpgrades[attribute + '_2'] != undefined && !isNaN(card.iceShardUpgrades[attribute + '_2'])) {
                                 data = card.iceShardUpgrades[attribute + '_2'];
                             }
                         }
                     } 
                     if(this.getShardNum(card, 'flame') > 1) {
                         if(card.fireShardUpgrades != undefined) {
-                            if(card.fireShardUpgrades[attribute + '_2'] != undefined) {
+                            if(card.fireShardUpgrades[attribute + '_2'] != undefined && !isNaN(card.fireShardUpgrades[attribute + '_2'])) {
                                 data = card.fireShardUpgrades[attribute + '_2'];
                             }
                         }
@@ -689,7 +689,7 @@ export default class Util {
         $('.top-bar .tooltip').powerTip({
             followMouse: true,
             placement: 's',
-            offset: 5,
+            offset: 40,
             fadeInTime: 50,
             fadeOutTime: 30,
             closeDelay: 100,
@@ -701,7 +701,7 @@ export default class Util {
             followMouse: false,
             smartPlacement: true,
             placement: 'n',
-            offset: 190,
+            offset: 10,
             fadeInTime: 0,
             fadeOutTime: 0,
             closeDelay: 0,
@@ -713,7 +713,7 @@ export default class Util {
             followMouse: false,
             smartPlacement: true,
             placement: 'nw',
-            offset: 190,
+            offset: 5,
             fadeInTime: 0,
             fadeOutTime: 0,
             closeDelay: 0,
@@ -733,6 +733,34 @@ export default class Util {
             intentSensitivity: 5,
             popupClass: 'standard'
         });
+    }
+    setTooltip(elem, cls = false) {
+        if(cls) {
+            $(elem).powerTip({
+                followMouse: false,
+                smartPlacement: true,
+                placement: 'n',
+                offset: 5,
+                fadeInTime: 0,
+                fadeOutTime: 0,
+                closeDelay: 0,
+                intentPollInterval: 0,
+                intentSensitivity: 100,
+                popupClass: cls
+            });
+        } else {
+            $(elem).powerTip({
+                followMouse: true,
+                offset: 5,
+                fadeInTime: 50,
+                fadeOutTime: 30,
+                closeDelay: 100,
+                intentPollInterval: 30,
+                intentSensitivity: 5,
+                popupClass: 'standard'
+            });
+        }
+        
     }
     getFromDisplay(text) {
         if(text == 'handCards') {
@@ -757,7 +785,51 @@ export default class Util {
                 arenaRewards: [0, 7839],
                 rewards: [7839, 4540],
                 loot: [12379, 2405],
-            }
+                gainArmor: [14757, 839],
+                attackCard: [15596, 280],
+                loseBlock: [15876, 839],
+                loseArmor: [16715, 603],
+                gainBlk: [17320, 641],
+                deselectCard: [17962, 517],
+                startingBonus: [18479, 1521],
+                viewCards: [20000, 483],
+                drawCard: [20483, 136],
+                doneCards: [20597, 535],
+                takeDmg: [21132, 858],
+                toolCard: [21990, 1000],
+                abilityCard: [22991, 1959],
+                magicCard: [24950, 1359],
+                heal: [28135, 1991],
+                clickButton: [30127, 668],
+                choosePack: [31393, 3999],
+                clickShard: [35392, 3000],
+                selectCard: [38389, 660],
+                removeCard: [39049, 2000],
+                attachShard: [41049, 2341],
+                buyItem: [43390, 984],
+                addTreasure: [44374, 1655],
+                addCandy: [46029, 1181],
+                eatCandy: [47210, 1787],
+                shimmerAmount: [48997, 1878],
+                auraAmount: [50875, 2125],
+                sparkleAmount: [53000, 1717],
+                essenceLevel: [54717, 1283],
+                trashCandy: [56000, 1000],
+                aggroLevel: [57000, 1959],
+                frolic: [58959, 2768],
+                applyEffect: [61722, 917],
+                applyAbility: [61722, 917],
+                hex: [62639, 1418],
+                vex: [64057, 961],
+                death: [65020, 1694],
+
+                // specific effects
+                effectSolid: [66714, 1000],
+
+                // specific cards
+                rainbowOrb: [26309, 1828],
+
+            },
         });
         return s;
     }
@@ -765,8 +837,6 @@ export default class Util {
         var m = false;
         m = new Howl({
             src: ['audio/' + f],
-            autoplay: true,
-            html5: true,
             loop: true,
             volume: v
         });

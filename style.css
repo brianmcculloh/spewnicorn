@@ -29,7 +29,7 @@ body {
 	background-position:center center;
 	background-repeat:no-repeat;
 	background-image:url('./images/map1.png');
-	position:relative;
+	/*position:relative;*/
 	text-transform:capitalize;
 	image-rendering: pixelated;
 }
@@ -338,7 +338,6 @@ h2::after {
 	gap:20px;
 }
 #game-loading {
-	transition:all 3s;
 	z-index:99999999;
 }
 #splash {
@@ -379,6 +378,7 @@ body.game-started #splash .panel .difficulty {
 #game-loading.hidden {
 	opacity:0;
 	pointer-events:none;
+	transition:all 1s;
 }
 .game-loading-bar {
 	position:absolute;
@@ -398,7 +398,7 @@ body.game-started #splash .panel .difficulty {
 	width:0;
 	left:0;
 	background:hsl(8, 100%, 60%, 1);
-	transition:2s ease-in-out;
+	transition:1s ease-in-out;
 }
 .game-loading-progress.loaded {
 	width:100%;
@@ -1625,6 +1625,9 @@ body.debug .status-toggle {
 .courage-screen .courage-remove.too-expensive span.remove-courage {
 	color:red;
 }
+.button span.remove-courage {
+	margin-left:0;
+}
 .courage-cards .card-wrapper {
 	margin-bottom:40px;
 }
@@ -2114,6 +2117,14 @@ body.arena .monster-panel {
 }
 .combat-log .health-lost {
 	color:rgba(252, 28, 3, 1);
+}
+.combat-log .health-gained {
+	color:rgba(27, 224, 73, 1);
+}
+.player-health .combat-log {
+	position:absolute;
+	right:0;
+	z-index:999;
 }
 
 /* player panel */
@@ -4003,12 +4014,15 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 #powerTip span.sparkle {
 	color:var(--sparkle_color);
+	text-transform:capitalize;
 }
 #powerTip span.shimmer {
 	color:var(--shimmer_color);
+	text-transform:capitalize;
 }
 #powerTip span.aura {
 	color:var(--aura_color);
+	text-transform:capitalize;
 }
 #powerTip span.either {
 	color:yellow;

@@ -65,7 +65,7 @@ class Creatures {
         category = 'normal', // normal, boss, ice_guardian, fire_guardian
 
         // player specific
-        courage = 0,
+        courage = 50, // TODO: reset this to 0
         momentumAmount = 0,
 
     }) {
@@ -137,7 +137,7 @@ class Creatures {
         // player specific
         this.stance = 'none';
         this.sparkle = {current: 0, level: 0};
-        this.shimmer = {current: 0, level: 0};
+        this.shimmer = {current: 1, level: 0}; // TODO: reset these to 0
         this.aura = {current: 0, level: 0};
         this.aggro = {current: 0, level: 0};
         this.courage = courage;
@@ -275,6 +275,7 @@ const ALL_MONSTERS = [
         moveSet: [
             {effects: [
                 {effect: 'might', amount: 1, turns: -1},
+                {effect: 'heal', amount: 5, turns: -1},
             ]},
             {dmg: [1, 1, 1]},
             {dmg: [5]},

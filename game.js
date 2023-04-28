@@ -54,7 +54,7 @@ const ALL_EFFECTS = [
     // creature {base: 1, current: 0, temp: 0, turns: 0, persist: false}
     // buff     {effect: 'solid', amount: 2, turns: -1}
     // hex      {effect: 'solid', amount: -1, hex: true, turns: 2}
-    {id: 'solid', name: 'Solid', desc: 'Gain x extra block each time you gain block', x: -256, y: -4672},
+    {id: 'solid', name: 'Solid', desc: 'Gain x extra block each time you gain block', x: -256, y: -4672, sound: 'effectSolid'},
 
     // Usage:
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
@@ -378,7 +378,7 @@ export default function Game() {
     let mapType = 'normal';
     let boosterPack = 'basic';
     let arenasComplete = 0;
-    let treasureChance = 0; // TODO: set to 0
+    let treasureChance = 100; // TODO: set to 0
     let candyChance = 0; // TODO: set to 0
     let shardChance = 0;
     let uncommonChance = 20;
@@ -399,17 +399,17 @@ export default function Game() {
     let courageTreasureAmount = 5;
     let courageCandyAmount = 5;
     let courageCardAmount = 2;
-    let courageInterval = 7; // TODO: set this to 7
+    let courageInterval = 1; // TODO: set this to 7
     let removeCardCost = 2;
     let candySlots = 3;
     let cardRewardNumber = 4;
-    let essenceThresholds = [8, 12, 14, 15];
-    let aggroThresholds = [10, 15, 20, 22];
+    let essenceThresholds = [2, 4, 6, 8]; // TODO: set this to 8, 12, 14, 15
+    let aggroThresholds = [2, 4, 6, 8]; // TODO: set this to 10, 15, 20, 22
     let currentMonsters = [];
     let targetedMonster = {};
     let previousMonsters = [];
     let monsterGroup = 1;
-    let animationGap = 75;
+    let animationGap = 100;
     let rainbowDelay = 300;
     let animationDelay = 1000;
     let animationDmg = 250;

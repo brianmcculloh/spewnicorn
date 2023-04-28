@@ -78,10 +78,14 @@
  * 
  * Graphics - DONE
  * UI Animations - DONE
- * Music
- * -treasure screen
+ * Music - DONE
  * SFX
+ * -custom effects sounds
+ * -custom cards sounds
  * 
+ * TODO: mystical energy tooltip needs spacing after "use" keyword
+ * TODO: when adding shard to card, the brief card that pops up has black instead of white text shadow on draw effects
+ * TODO: what's going on with floor one monster fade in and out and back in?
  * 
  * 
  * 
@@ -140,6 +144,7 @@ let quests = Quests();
 window.quests = quests;
 
 // audio
+//var musicOverworld = new Howl({src:['audio/overworld.mp3'],loop:true});
 var musicOverworld = util.music('overworld.mp3');
 var musicFountain = util.music('fountain.mp3');
 var musicVictory = util.music('victory.wav');
@@ -198,15 +203,15 @@ jQuery(window).on('load', function() {
 jQuery(document).ready(function($) {
 
 	$('.game-loading-progress').addClass('loaded');
+	stopMusic();
 
 	setTimeout(function() {
-		jQuery('#game-loading').addClass('hidden');
-		stopMusic();
-	}, 3000);
+		$('#game-loading').addClass('hidden');
+	}, 1000);
 
 	setTimeout(function() {
-		jQuery('#game-loading').remove();
-	}, 6000);
+		$('.game-loading-progress').removeClass('loaded');
+	}, 2000);
 
 	$('#splash .begin').click(function(e) {
 		
@@ -216,12 +221,29 @@ jQuery(document).ready(function($) {
 
 		if(!$('body').hasClass('game-started')) {
 
-			init();
+			$('#game-loading').removeClass('hidden');
+			$('.game-loading-progress').addClass('loaded');
+
+			setTimeout(function() {
+				$('#game-loading').addClass('hidden');
+			}, 1100);
+
+			setTimeout(function() {
+				init();
+			}, 1000);
+
+			setTimeout(function() {
+				$('#game-loading').remove();
+			}, 3000);
 			
 		}
 
 		$('body').addClass('game-started');
 
+	});
+
+	$('.button, .icon-button').click(function() {
+		//if(game.playsounds) sounds.play('clickButton');
 	});
 
 	$('.settings-panel .button').click(function() {
@@ -299,6 +321,7 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.starting-options .button', function(e) {
 
+		if(game.playsounds) sounds.play('startingBonus');
 		$('.starting-options').removeClass('shown');
 		$('.starting-room').removeClass('shown');
 		$('.choose-booster-pack').addClass('shown');
@@ -315,6 +338,7 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.pack-cards-panel .select', function(e) {
 	
+		if(game.playsounds) sounds.play('choosePack');
 		$('.pack-cards-panel').removeClass('shown');
 		$('.starting-booster-packs').removeClass('shown');
 		$('.choose-booster-pack').removeClass('shown');
@@ -324,6 +348,7 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.pack-cards-panel .back', function(e) {
 
+		if(game.playsounds) sounds.play('doneCards');
 		$('.pack-cards-panel').removeClass('shown');
 
 	});
@@ -375,6 +400,7 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.rewards-cards .card', function(e) {
 	
+		if(game.playsounds) sounds.play('drawCard');
 		addCardToDeck($(this).data('id'));
 		$('.rewards-cards').addClass('unavailable');
 		
@@ -391,6 +417,8 @@ jQuery(document).ready(function($) {
 		$('.rewards-cards').empty();
 
 		$('.rewards').removeClass('shown');
+
+		treasureScreen();
 
 	});
 
@@ -505,6 +533,7 @@ jQuery(document).ready(function($) {
 		if(game.toPile !== 'allCards' && game.toPile !== 'deck') {
 			card = util.getCardByGuid($(this).data('guid'), combatDeck[game.toPile]);
 		}
+		if(game.playsounds) sounds.play('attachShard');
 		deck.attachShard(card, thisShard);
 		game.toPick -= 1;
 		updateCardDescriptions('shardCards', combatDeck.chooseCards);
@@ -610,6 +639,7 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.draw-cards-panel .done', function(e) {
 
+		if(game.playsounds) sounds.play('doneCards');
 		game.toPick = 0;
 		$('.draw-cards-panel').removeClass('shown');
 		$('.draw-cards-panel .card').removeClass('pickable');
@@ -619,6 +649,7 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.discard-cards-panel .done', function(e) {
 
+		if(game.playsounds) sounds.play('doneCards');
 		game.toPick = 0;
 		$('.discard-cards-panel').removeClass('shown');
 		$('.discard-cards-panel .card').removeClass('pickable');
@@ -628,6 +659,7 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.dead-cards-panel .done', function(e) {
 
+		if(game.playsounds) sounds.play('doneCards');
 		game.toPick = 0;
 		$('.dead-cards-panel').removeClass('shown');
 		$('.dead-cards-panel .card').removeClass('pickable');
@@ -637,6 +669,7 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.choose-cards-panel .done', function(e) {
 
+		if(game.playsounds) sounds.play('doneCards');
 		game.toPick = 0;
 		$('.choose-cards-panel').removeClass('shown');
 		$('.choose-cards-panel .card').removeClass('pickable');
@@ -646,12 +679,14 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.all-cards-panel .done', function(e) {
 
+		if(game.playsounds) sounds.play('doneCards');
 		$('.all-cards-panel').removeClass('shown');
 
 	});
 
 	$(document).on('click', '.library-panel .done', function(e) {
 
+		if(game.playsounds) sounds.play('doneCards');
 		$('.library-panel').removeClass('shown');
 
 	});
@@ -740,6 +775,7 @@ jQuery(document).ready(function($) {
 			$(this).addClass('selected');
 			game.toPick -= 1;
 			if(game.toPick == 0) {
+				if(game.playsounds) sounds.play('buyItem');
 				removeCardFromDeck($(this).data('guid'));
 				$('.choose-cards-panel').removeClass('shown');
 				$('.choose-cards-panel .card').removeClass('pickable');
@@ -784,6 +820,7 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.fountain-frolic', function(e) {
 
+		if(game.playsounds) sounds.play('frolic');
 		gainCourage($(this).attr('data-amount'));
 		$('.magic-fountain').removeClass('shown');
 
@@ -836,6 +873,7 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.courage-cards .card:not(.too-expensive)', function() {
 
+		if(game.playsounds) sounds.play('drawCard');
 		let id = $(this).attr('data-id');
 		buyCard(id);
 		$(this).addClass('disappearing')
@@ -884,6 +922,8 @@ jQuery(document).ready(function($) {
 
 		if(game.mapType == 'ice_gate' || game.mapType == 'fire_gate') {
 			gateScreen();
+		} else {
+			courageScreen();
 		}
 
 	});
@@ -973,6 +1013,7 @@ function setStatus(updateCards = true) {
 	$('.mana span').html(player.mana.current + '/' + player.mana.base);
 	$('.speed span').html(player.speed.current + '/' + player.speed.base);
 	$('.stance .icon-stance').attr('data-stance', player.stance);
+	$('.stance .icon-stance').data('powertip', "<span class='highlight'>Stance:</span> <span class='" + player.stance + "'>" + player.stance + "</span>");
 
 	$('.highest-damage-roll span').html(game.highestDmgRoll);
 	$('.treasure-chance span').html(game.treasureChance);
@@ -1134,6 +1175,7 @@ function updateCardDescription(elem, cards) {
 }
 
 function viewAllCards() {
+	if(game.playsounds) sounds.play('viewCards');
 	monsters.setEffects(player);
 	monsters.setAbilities(player);
 	setStatus();
@@ -1145,9 +1187,11 @@ function viewAllCards() {
 	updateCardDescriptions('allCards');
 }
 function viewLibrary() {
+	if(game.playsounds) sounds.play('viewCards');
 	$('.library-panel').addClass('shown');
 }
 function viewDrawCards() {
+	if(game.playsounds) sounds.play('viewCards');
 	$('.draw-cards-panel').addClass('shown');
 	$('.draw-cards-panel .cards').empty();
 	for(let i = 0; i < combatDeck.drawCards.length; i++) {
@@ -1156,6 +1200,7 @@ function viewDrawCards() {
 	updateCardDescriptions('drawCards');
 }
 function viewDiscardCards() {
+	if(game.playsounds) sounds.play('viewCards');
 	$('.discard-cards-panel').addClass('shown');
 	$('.discard-cards-panel .cards').empty();
 	for(let i = 0; i < combatDeck.discardCards.length; i++) {
@@ -1164,6 +1209,7 @@ function viewDiscardCards() {
 	updateCardDescriptions('discardCards');
 }
 function viewDeadCards() {
+	if(game.playsounds) sounds.play('viewCards');
 	$('.dead-cards-panel').addClass('shown');
 	$('.dead-cards-panel .cards').empty();
 	for(let i = 0; i < combatDeck.deadCards.length; i++) {
@@ -1182,6 +1228,7 @@ function viewChooseCards(chooseCards, action = 'pickable') {
 	if(game.toPile != 'deck') updateCardDescriptions('chooseCards', chooseCards);
 }
 function viewPackCards(pack) {
+	if(game.playsounds) sounds.play('viewCards');
 	$('.pack-cards-panel').addClass('shown');
 	$('.pack-cards-panel h2').html('<span>' + pack + '</span> booster pack cards');
 	$('.pack-cards-panel .cards').empty();
@@ -1199,6 +1246,7 @@ function chooseShardCard(shard, cards = deck.cards) {
 	$('.shard-cards-panel').addClass('shown');
 	$('.shard-cards-panel .cards').empty();
 	$('.shard-cards-panel').attr('data-shard', shard);
+	if(game.playsounds) sounds.play('clickShard');
 	for(let i = 0; i < cards.length; i++) {
 		if(deck.hasOpenSlot(cards[i])) {
 			util.appendCard(cards[i], '.shard-cards-panel .cards');
@@ -1207,7 +1255,7 @@ function chooseShardCard(shard, cards = deck.cards) {
 
 }
 
-function startCombat(tile) {
+async function startCombat(tile) {
 
 	console.clear();
 
@@ -1259,7 +1307,7 @@ function startCombat(tile) {
 	$('body').addClass('combating');
 	
 	if(!tile.hasClass('visited')) {
-		updateEssenceLevels(tile.attr('data-essence'), tile.attr('data-amount'));
+		await updateEssenceLevels(tile.attr('data-essence'), tile.attr('data-amount'));
 	}
 
 	player.cardRetain = 0;
@@ -1279,6 +1327,7 @@ function startCombat(tile) {
 	$('.magic-rainbow').attr('data-type', player.rainbow.type);
 	$('.magic-rainbow').removeClass('dark elemental rainbow chaos muddled').addClass(player.rainbow.type);
 	$('.magic-rainbow .magic-type span').html(player.rainbow.type);
+	$('.magic-rainbow .semi-circle--mask').css('transform', 'rotate(' + (magicPower * 1.8) + 'deg) translate3d(0, 0, 0)').removeClass('activated'); 
 
 	monsters.updateMonsterGroup();
 	monsters.loadMonsters();
@@ -1418,6 +1467,7 @@ async function updateEssenceLevels(essence, amount) {
 	} else if(essence != undefined) {
 		amount = parseFloat(amount);
 		for(let i = 0; i < amount; i++) {
+			if(game.playsounds) sounds.play(essence + 'Amount');
 			player[essence].current += 1;
 			let current = player[essence].current;
 			if(game.essenceThresholds.includes(current)) {
@@ -1427,6 +1477,7 @@ async function updateEssenceLevels(essence, amount) {
 				$('.essence-bar.aura span.level').html(player.aura.level);
 				$('.essence-bar.' + essence).addClass('level-up');
 				await util.wait(1200);
+				if(game.playsounds) sounds.play('essenceLevel');
 				$('.essence-bar.' + essence).removeClass('level-up');
 				// we only need to add the stance card once
 				if(game.essenceThresholds[0] == current) {
@@ -1488,7 +1539,7 @@ function beginTurn() {
 		} else if(player.stance == 'shimmer') {
 			let tempRowdy = Math.round(player.speed.current * player.shimmer.level);
 			player.rowdy.current += tempRowdy;
-			player.rowdy.temp = tempRowdy;
+			//player.rowdy.temp = tempRowdy; // this is supposed to be for the rest of combat, not just one turn
 		}
 	}
 
@@ -1640,6 +1691,7 @@ async function addCardTo(type, domCard = null, to = 'handCards', ignoreSpeed = f
 			}
 
 		}
+		if(game.playsounds) sounds.play('drawCard');
 		card = combatDeck.drawCard(player, combatDeck, ignoreSpeed);
 		game.cardsDrawn += 1;
 	} else if(type=='drawCards') {
@@ -2010,6 +2062,7 @@ function applyEffect(effect, to, turns = -1) {
 	// check for vex
 	if(player.vex.current > 0 && effect.hex) {
 		player.vex.current -= 1;
+		if(game.playsounds) sounds.play('vex');
 	} else {
 		if(effect.amount != undefined) {
 			to[effect.effect].current = Math.round(((to[effect.effect].current + effect.amount) + Number.EPSILON) * 100) / 100;
@@ -2026,9 +2079,19 @@ function applyEffect(effect, to, turns = -1) {
 				to[effect.effect].turns = turns;
 			}
 			if(effect.persist) to[effect.effect].persist = effect.persist;
-			if(effect.hex) to[effect.effect].hexed = true;
+			if(effect.hex) {
+				to[effect.effect].hexed = true;
+				if(game.playsounds) sounds.play('hex');
+			} else {
+				let gameEffect = game.effects.find(({ id }) => id === effect.effect);
+				let sound = gameEffect.sound ? gameEffect.sound : 'applyEffect';
+				if(game.playsounds) sounds.play(sound);
+			}
 		} else if(effect.base != undefined) {
 			to[effect.effect].base += effect.base;
+			let gameEffect = game.effects.find(({ id }) => id === effect.effect);
+			let sound = gameEffect.sound ? gameEffect.sound : 'applyEffect';
+			if(game.playsounds) sounds.play(sound);
 		}
 		if(to.type == 'monster') {
 			monsters.updateStatusBar();
@@ -2067,8 +2130,12 @@ function applyAbility(ability, to, turns = -1) {
 	to[ability.ability].baseTurns += turns;
 	if(ability.hex) {
 		to[ability.ability].turns = turns;
+		if(game.playsounds) sounds.play('hex');
 	} else {
 		to[ability.ability].turns += turns;
+		let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
+		let sound = gameAbility.sound ? gameAbility.sound : 'applyAbility';
+		if(game.playsounds) sounds.play(sound);
 	}
 	if(to[ability.ability].baseTurns < -1) to[ability.ability].baseTurns = -1;
 	if(to[ability.ability].turns < -1) to[ability.ability].turns = -1;
@@ -2086,14 +2153,14 @@ function endCombat() {
 		stopMusic();
 
 		if(game.mapType == 'arena') {
-			if(!sounds.playing('arenaRewards') && game.playsounds) sounds.play('arenaRewards');
+			if(game.playsounds) sounds.play('arenaRewards');
 		} else {
-			if(!sounds.playing('rewards') && game.playsounds) sounds.play('rewards');
+			if(game.playsounds) sounds.play('rewards');
 		}
 		
 		setTimeout(function() {
 			if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
-		}, 3000);
+		}, 1000);
 
 		game.combatEndedFlag = true;
 
@@ -2121,10 +2188,6 @@ function endCombat() {
 
 		rewardsScreen();
 
-		courageScreen();
-
-		treasureScreen();
-
 		// if rainbow is activated and kills all monsters it will still be activated at start of next combat
 		$('.magic-rainbow').removeClass('activated');
 
@@ -2134,10 +2197,23 @@ function endCombat() {
 
 function heal(creature, amount) {
 
+	if(amount==0) return;
+
+	if(game.playsounds) sounds.play('heal');
+
 	amount = parseFloat(amount);
 
-	creature.health.current += (amount + creature.mend.current);
+	let healActual = amount + creature.mend.current;
+
+	creature.health.current += healActual;
 	if(creature.health.current > creature.health.max) creature.health.current = creature.health.max;
+
+	let healDom = $('.player-health .health-gained');
+	if(creature.type=='monster') {
+		healDom = $('.monster[data-guid=' + creature.guid + '] .health-gained');
+	}
+
+	game.dmgAnimations({data: healActual, to: healDom});
 
 	setStatus();
 
@@ -2175,6 +2251,7 @@ async function updateAggro(amount) {
 			for(let i = 0; i < amount; i++) {
 				player.aggro.current += 1;
 				if(game.aggroThresholds.includes(player.aggro.current) || player.aggro.current > game.aggroThresholds.at(-1)) {
+					if(game.playsounds) sounds.play('aggroLevel');
 					player.aggro.level += 1;
 					$('.aggro-bar span.level').html(player.aggro.level);
 					$('.aggro-bar').addClass('level-up');
@@ -2196,11 +2273,11 @@ function loot(type, tier = 3) {
 
 	stopMusic();
 
-	if(!sounds.playing('loot') && game.playsounds) sounds.play('loot');
+	if(game.playsounds) sounds.play('loot');
 
 	setTimeout(function() {
 		if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
-	}, 2000);
+	}, 1000);
 
 	$('.loot-screen').addClass('shown');
 	// for normal treasure screens, any tier 1 - 3
@@ -2327,6 +2404,11 @@ function treasureScreen() {
 		loot('treasure');
 		game.treasureChance = 0;
 		
+	} else {
+
+		// go right to the courage screen if there are no treasures to be had
+		courageScreen();
+
 	}
 
 }
@@ -2340,6 +2422,9 @@ function gateScreen() {
 function courageScreen() {
 
 	if(game.floor % game.courageInterval == 0) {
+
+		stopMusic();
+		if(!musicCourage.playing() && game.playmusic) musicCourage.play();
 
 		$('.courage-screen').addClass('shown');
 		$('.courage-remove').addClass('shown');
@@ -2419,6 +2504,7 @@ function updateItemCost() {
 function addCandy(add) {
 
 	if(player.candies.length < game.candySlots) {
+		if(game.playsounds) sounds.play('addCandy');
 		let candy = treasures.candies.find(({ id }) => id === add);
 		let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
 		copiedCandy.desc = Deck().buildDescription(copiedCandy);
@@ -2432,6 +2518,7 @@ function addCandy(add) {
 
 async function eatCandy(add, monster = false) {
 
+	if(game.playsounds) sounds.play('addCandy');
 	let candy = player.candies.find(({ guid }) => guid === add);
 	player.candies = player.candies.filter(i => i.guid !== candy.guid);
 
@@ -2505,6 +2592,7 @@ async function eatCandy(add, monster = false) {
 
 function trashCandy(add) {
 
+	if(game.playsounds) sounds.play('trashCandy');
 	let candy = player.candies.find(({ guid }) => guid === add);
 	player.candies = player.candies.filter(i => i.guid !== candy.guid);
 
@@ -2512,6 +2600,7 @@ function trashCandy(add) {
 
 function addTreasure(add) {
 
+	if(game.playsounds) sounds.play('addTreasure');
 	let treasure = treasures.treasures.find(({ id }) => id === add);
 	treasure.desc = Deck().buildDescription(treasure);
 	Player().addTreasure(treasure, player);
@@ -2525,6 +2614,7 @@ function addTreasure(add) {
 
 function buyTreasure(id) {
 
+	if(game.playsounds) sounds.play('buyItem');
 	addTreasure(id);
 	let treasure = util.getTreasureById(id, treasures.treasures);
 	player.courage -= treasure.courage;
@@ -2537,6 +2627,7 @@ function buyCandy(id) {
 	let bought = false;
 
 	if(player.candies.length < 3) {
+		if(game.playsounds) sounds.play('buyItem');
 		addCandy(id);
 		let candy = util.getCandyById(id, treasures.candies);
 		player.courage -= candy.courage;
@@ -2550,6 +2641,7 @@ function buyCandy(id) {
 
 function buyCard(id) {
 
+	if(game.playsounds) sounds.play('buyItem');
 	addCardToDeck(id);
 	let card = util.getCardById(id, allCards);
 	player.courage -= card.courage;
@@ -2589,6 +2681,8 @@ function addCardToDeck(id) {
 
 function removeCardFromDeck(guid, cost = 0) {
 
+	if(game.playsounds) sounds.play('removeCard');
+
 	player.courage -= cost;
 	deck.removeCard(guid);
 
@@ -2617,6 +2711,7 @@ function selectCard(elem) {
 				}
 			} 
 			if(card.target == 'monster') {
+				if(game.playsounds) sounds.play('selectCard');
 				elem.addClass('selected');
 				$('.monster:not(.dead)').addClass('clickable');
 				drawArrow(elem);
@@ -2820,6 +2915,8 @@ function activateCard(card) {
 
 function deselectCard(elem) {
 
+	if(game.playsounds) sounds.play('deselectCard');
+
 	elem.removeClass('selected');
 
 	removeArrow();
@@ -2865,6 +2962,10 @@ async function playCard(elem, monster = undefined, type = false) {
 
 	if(card == undefined) return false;
 
+	let sound = card.sound ? card.sound : card.type + 'Card';
+
+	if(game.playsounds) sounds.play(sound);
+
 	let currentMonster = false;
 	if(monster != undefined) {
 		currentMonster = game.currentMonsters.filter(i => i.guid == monster.data('guid'));
@@ -2907,10 +3008,12 @@ async function playCard(elem, monster = undefined, type = false) {
 	let breakable = util.getCardAttribute(card, 'breakable');
 	if(use > 0) {
 		use -= 1;
-		card.use -= 1;
+		reduceCardStat(card, 'use', 1);
 		if(breakable) {
 			// use needs to be permanently decreased
 			deckCard.use -= 1;
+			// in the future this might need to be dealt with more holistically, because perhaps breakable
+			// could be affected by shards (although it's not now)
 		}
 	}
 
@@ -2934,7 +3037,7 @@ async function playCard(elem, monster = undefined, type = false) {
 
 	if(linger > 0) {
 		linger -= 1;
-		card.linger -= 1;
+		reduceCardStat(card, 'linger', 1);
 	}
 
 	// check for bless
@@ -2961,6 +3064,16 @@ async function playCard(elem, monster = undefined, type = false) {
 
 }
 
+function reduceCardStat(card, stat, amount) {
+
+	card[stat] -= amount;
+	card.shardUpgrades[stat] -= amount;
+	card.iceShardUpgrades[stat] -= amount;
+	card.fireShardUpgrades[stat] -= amount;
+	card.bothShardUpgrades[stat] -= amount;
+
+}
+
 async function processCard(card, currentMonster, type, multiply = 1) {
 
 	let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
@@ -2971,6 +3084,8 @@ async function processCard(card, currentMonster, type, multiply = 1) {
 		if(cardTarget != undefined) {
 			target = cardTarget;
 			if(target == 'player') {
+				// processDmg wants an undefined object, but processEffects and ProcessAbilities both want the player object
+				currentMonster = [player];
 				target = undefined;
 			} else {
 				target = util.shuffle(currentMonsters);
@@ -3024,6 +3139,7 @@ async function processDmg(dmg, currentMonster, multiply, card = false) {
 					}
 					let d = criticalHit ? crit(thisDmg) : thisDmg;
 					await attackMonster(currentMonster[0], d);
+					//await util.wait(game.animationGap);
 					if(criticalHit) {
 						game.attackCardsPlayed = 0;
 						player.rowdy.current = player.rowdy.base;
@@ -3040,7 +3156,7 @@ async function processDmg(dmg, currentMonster, multiply, card = false) {
 				} else {
 					await attackPlayer(false, dmg[i]);
 				}
-				await util.wait(game.animationGap);
+				await util.wait(game.animationDmg);
 			}
 		}
 		updateCritChance();
@@ -3277,6 +3393,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 									}
 									let card = util.randFromArray(combatDeck.chooseCards);
 									if(card != undefined) {
+										if(game.playsounds) sounds.play('attachShard');
 										deck.attachShard(card, thisShard);
 										if(!deck.hasOpenSlot(card)) {
 											combatDeck.chooseCards = combatDeck.chooseCards.filter(i => i.guid !== card.guid);
@@ -3948,6 +4065,7 @@ async function attackMonster(monster, dmg) {
 	monsters.updateMonsterStats(monster);
 
 	if(monsters.dead(monster)) {
+		if(game.playsounds) sounds.play('death');
 		util.removeMonster(monster.guid);
 	}
 	
@@ -3955,6 +4073,9 @@ async function attackMonster(monster, dmg) {
 
 function applyBlock(blk, to) {
 	if(to != undefined) {
+		setTimeout(function() {
+			if(game.playsounds) sounds.play('gainBlk');
+		}, 300);
 		to.block += (blk + to.solid.current);
 		game.message(to.name + ' (' + to.guid + ') gains ' + blk + ' block');
 	}
@@ -4011,7 +4132,7 @@ async function applyMagic(magic, to) {
 	}
 
 	// update rainbow dom
-	updateRainbowDom(to);
+	updateRainbowDom(player);
 
 	game.message(to.name + '(' + to.guid + ') applies ' + totalAmount + ' ' + type + ' magic');
 
@@ -4029,7 +4150,6 @@ function updateRainbowDom(to) {
 	$('.magic-rainbow').attr('data-type', to.rainbow.type);
 	$('.magic-rainbow').removeClass('dark elemental rainbow chaos').addClass(to.rainbow.type);
 	$('.magic-rainbow .magic-type span').html(to.rainbow.type);
-	console.log(to.rainbow.current);
 }
 
 async function activateRainbow(type, to) {
@@ -4061,6 +4181,7 @@ async function activateRainbow(type, to) {
 	for(let i = 0; i < game.currentMonsters.length; i++) {
 		monsters.updateMonsterStats(game.currentMonsters[i]);
 		if(monsters.dead(game.currentMonsters[i])) {
+			if(game.playsounds) sounds.play('death');
 			util.removeMonster(game.currentMonsters[i].guid);
 		}
 		if(monsters.allDead()) {
@@ -4090,6 +4211,7 @@ function applyArmor(arm, to) {
 		arm = parseFloat(arm);
 		let armor = arm + to.craft.current;
 		let extraArmor = (to.armor + armor) - to.health.current;
+		if(game.playsounds && armor > 0) sounds.play('gainArmor');
 		if(extraArmor > 0) {
 			to.armor = to.health.current;
 			to.block += Math.round(extraArmor * to.cunning.current);
@@ -4151,8 +4273,10 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false)
 			if(unblockedDmg <= 0) {
 				to[i].block -= thisDmg;
 				dmgTaken += thisDmg;
+				if(game.playsounds) sounds.play('loseBlock');
 			} else {
 				if(!ignoreBlock) {
+					if(to[i].block > 0 && game.playsounds) sounds.play('loseBlock');
 					dmgTaken += to[i].block;
 					to[i].block = 0;
 				}
@@ -4233,8 +4357,10 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false)
 					setStatus(false);
 				}
 				game.message(to[i].name + ' (' + to[i].guid + ') loses ' + armorLost + ' armor');
+				if(game.playsounds) sounds.play('loseArmor');
 			}
 			if(healthLost != 0) {
+				if(game.playsounds) sounds.play('takeDmg');
 				game.dmgAnimations({data: healthLost, to: healthLostDom});
 				await util.wait(game.animationDmg);
 				// check for retaliate

@@ -176,6 +176,7 @@
             <div class="block-number"></div>
           </div>
           <div class="icon-health"></div>
+          <div class="combat-log"><div class="health-gained" data-amount="0"></div></div>
         </div>
 
       </div>

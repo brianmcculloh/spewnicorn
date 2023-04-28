@@ -45,7 +45,8 @@ class Cards {
         combine = false,
         draw = false,
         discard = false,
-        destroy = false
+        destroy = false,
+        sound = false
     }) {
         this.guid = '';
         this.id = id;
@@ -91,6 +92,7 @@ class Cards {
         this.draw = draw;
         this.discard = discard;
         this.destroy = destroy;
+        this.sound = sound;
     }
 }
 
@@ -543,6 +545,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'rainbow_orb', name: 'Rainbow Orb', type: 'magic', mana: 0, addable: false,
         magic: [{type: 'rainbow', amount: 2}], 
+        sound: 'rainbowOrb',
         slots: 1,
         shardUpgrades: {
             magic: [{type: 'rainbow', amount: 4}], 
@@ -1063,7 +1066,7 @@ const ALL_CARDS = [
         id: 'debris', name: 'Debris', type: 'clutter', mana: 1, vanish: true, addable: false, natural: true,
     }),
     new Cards({
-        id: 'chaff', name: 'Chaff', type: 'clutter', addable: false, natural: true, ephemeral: true,
+        id: 'chaff', name: 'Chaff', type: 'clutter', addable: false, natural: true, ephemeral: true, playable: false, 
     }),
     new Cards({
         id: 'execrate', name: 'Execrate', type: 'clutter', mana: 1, addable: false, vanish: true,
@@ -1078,38 +1081,43 @@ const ALL_CARDS = [
             effects: [
                 {effect: 'solid', amount: -1, turns: 1, hex: true}
             ],
+            target: 'player'
         },
     }),
     new Cards({
-        id: 'curse', name: 'Curse', type: 'clutter', addable: false,
+        id: 'curse', name: 'Curse', type: 'clutter', addable: false, playable: false, 
         draw: {
             effects: [
                 {effect: 'rainbow', amount: -1, hex: true},
             ],
+            target: 'player'
         }
     }),
     new Cards({
-        id: 'timid', name: 'Timid', type: 'clutter', addable: false,
+        id: 'timid', name: 'Timid', type: 'clutter', addable: false, playable: false, 
         draw: {
             effects: [
                 {effect: 'might', amount: -1, turns: 1, hex: true},
             ],
+            target: 'player'
         }
     }),
     new Cards({
-        id: 'lethargy', name: 'Lethargy', type: 'clutter', addable: false, ephemeral: true,
+        id: 'lethargy', name: 'Lethargy', type: 'clutter', addable: false, ephemeral: true, playable: false, 
         draw: {
             effects: [
                 {effect: 'punch', amount: -1, turns: 1, hex: true},
             ],
+            target: 'player'
         }
     }),
     new Cards({
-        id: 'briars', name: 'Briars', type: 'clutter', addable: false, 
+        id: 'briars', name: 'Briars', type: 'clutter', addable: false, playable: false, 
         draw: {
             effects: [
                 {effect: 'speed', amount: -1, turns: 1, hex: true},
             ],
+            target: 'player'
         }
     }),
     new Cards({
@@ -1118,6 +1126,7 @@ const ALL_CARDS = [
             effects: [
                 {effect: 'solid', amount: -1, turns: 1, hex: true},
             ],
+            target: 'player'
         }
     }),
     
@@ -3727,7 +3736,7 @@ export function Deck() {
     let player = window.player;
 
     function buildDeck() {
-        addCard('jab');
+        /*addCard('jab');
         addCard('jab');
         addCard('jab');
         addCard('jab');
@@ -3736,7 +3745,10 @@ export function Deck() {
         addCard('shield');
         addCard('shield');
         addCard('leather_armor');
-        addCard('stun');
+        addCard('stun');*/
+
+        addCard('mystical_energy');
+        
 
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
