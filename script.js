@@ -79,22 +79,18 @@
  * Graphics - DONE
  * UI Animations - DONE
  * Music - DONE
- * SFX
- * -custom effects sounds
- * -custom cards sounds
- * 
- * TODO: mystical energy tooltip needs spacing after "use" keyword
- * TODO: when adding shard to card, the brief card that pops up has black instead of white text shadow on draw effects
- * TODO: what's going on with floor one monster fade in and out and back in?
- * 
+ * SFX - DONE
+ * Card Prices - DONE
  * 
  * 
  * PHASE V:
  * 
- * Stress test
+ * TODO: the magic type in the magic rainbow meter should have a tooltip explaining what that magic type does
  * 
- * Play test
- * -debug email report
+ * Stress and Balance testing
+ * 
+ * Play testing
+ * -debug email report or text file logging
  * 
  * Tutorial			
  * 
@@ -105,6 +101,8 @@
  * 
  * 
  * PHASE VI:
+ * 
+ * Fine Tuning and Quality of Life fixes
  * 
  * Monster hexes punch down but player buffs punch up. New damage amount is larger than original but damage amount color is red - should be green.
  * 
@@ -201,6 +199,10 @@ jQuery(window).on('load', function() {
 });
 
 jQuery(document).ready(function($) {
+
+	if(game.dev) {
+		$('.starting-room, .choose-booster-pack').css('display', 'none');
+	}
 
 	$('.game-loading-progress').addClass('loaded');
 	stopMusic();
@@ -437,12 +439,15 @@ jQuery(document).ready(function($) {
 
 		game.toPick = 1;
 		game.toPile = 'allCards';
-		chooseShardCard($(this).data('id'));
-		$(this).addClass('disappearing')
-			.delay(1000)
-			.queue(function() {
-				$(this).remove().dequeue();
-			});
+		let totalOpenSlots = deck.numOpenSlots(deck.cards);
+		if(totalOpenSlots > 0) {
+			chooseShardCard($(this).data('id'));
+			$(this).addClass('disappearing')
+				.delay(1000)
+				.queue(function() {
+					$(this).remove().dequeue();
+				});
+		}
 
 	});
 
@@ -535,8 +540,10 @@ jQuery(document).ready(function($) {
 		}
 		if(game.playsounds) sounds.play('attachShard');
 		deck.attachShard(card, thisShard);
+		game.toShow.push(card);
+		deck.showShardedCards(combatDeck);
 		game.toPick -= 1;
-		updateCardDescriptions('shardCards', combatDeck.chooseCards);
+		updateCardDescriptions('showCards', deck.cards);
 		updateCardDescriptions(game.toPile);
 		if(game.toPick == 0) {
 			$('.shard-cards-panel').removeClass('shown');
@@ -691,6 +698,15 @@ jQuery(document).ready(function($) {
 
 	});
 
+	$(document).on('click', '.library-panel .card', function(e) {
+
+		if(game.debug) {
+			if(game.playsounds) sounds.play('drawCard');
+			addCardToDeck($(this).data('id'));
+		}
+
+	});
+
 	$(document).on('click', '.draw-cards-panel .pickable', function(e) {
 
 		game.toPick -= 1;
@@ -753,13 +769,14 @@ jQuery(document).ready(function($) {
 		} else {
 			$(this).addClass('selected');
 			game.toPick -= 1;
-			let thisCard = util.getCardByGuid($(this).data('guid'), deck.cards);
+			let thisCard = util.getCardByGuid($(this).data('guid'), combatDeck.handCards);
 			combatDeck.transmutingCards.push(thisCard);
 			if(game.toPick == 0) {
 				combatDeck.transmuteCards(combatDeck, deck, player);
 				$('.choose-cards-panel').removeClass('shown');
 				$('.choose-cards-panel .card').removeClass('pickable');
 				$('.choose-cards-panel .message').html('');
+				$('.choose-cards-panel .cards').empty();
 				combatDeck.transmutingCards = [];
 			}
 		}
@@ -1059,6 +1076,9 @@ function updateCardDescriptions(which = 'handCards', chooseCards = null) {
 	} else if(which == 'packCards') {
 		cards = chooseCards;
 		selector = $('.pack-cards-panel .cards .card');
+	} else if(which == 'showCards') {
+		cards = chooseCards;
+		selector = $('.show-cards .card');
 	}
 	selector.each(function() {
 		updateCardDescription($(this), cards);
@@ -1484,8 +1504,8 @@ async function updateEssenceLevels(essence, amount) {
 					deck.addCard(essence + '_stance');
 				}
 			}
+			await util.updateEssencePercentage(essence);
 		}
-		util.updateEssencePercentage(essence);
 		setStatus();
 	}
 	$('.essence-bar.sparkle span.level').html(player.sparkle.level);
@@ -1925,12 +1945,12 @@ function endTurn(checkRetain = true) {
 	// retain cards
 	$('.player-cards .card').removeClass('playable selected');
 	if(player.cardRetain > 0 && checkRetain) {
-		$('.message').html('choose cards to retain').addClass('shown');
+		$('.player-panel .message').html('choose cards to retain').addClass('shown');
 		$('.retain-done').addClass('shown');
 		$('.player-cards .card').addClass('retainable');
 		$('.draw-card').addClass('disabled');
 	} else {
-		$('.message').removeClass('shown');
+		$('.player-panel .message').removeClass('shown');
 		$('.retain-done').removeClass('shown');
 		$('.player-cards .card').removeClass('retain retainable');
 		combatDeck.discardHand(combatDeck, player);
@@ -2108,8 +2128,8 @@ function clearTurnAbilities(from) {
 		if(from[game.abilities[i].id].turns > 1) {
 			from[game.abilities[i].id].turns -= 1;
 			from[game.abilities[i].id].enabled = true;
-		// effects could potentially persist from previous combat for player
-		} else if(from[game.abilities[i].id].persist == false && from[game.abilities[i].id].turns > -1) {
+		// abilities could potentially persist from previous combat for player
+		} else if((player[game.abilities[i].id].permanent == false && player[game.abilities[i].id].turns > -1)) {
 			from[game.abilities[i].id].turns = 0;
 			from[game.abilities[i].id].enabled = false;
 		}
@@ -2118,7 +2138,8 @@ function clearTurnAbilities(from) {
 
 function clearCombatAbilities() {
 	for(let i = 0; i < game.abilities.length; i++) {
-		if(player[game.abilities[i].id].persist == false && player[game.abilities[i].id].turns > -1) {
+		if((player[game.abilities[i].id].persist == false && player[game.abilities[i].id].turns > -1) || 
+			(player[game.abilities[i].id].permanent == false && player[game.abilities[i].id].turns < 1)) {
 			player[game.abilities[i].id].enabled = false;
 			player[game.abilities[i].id].turns = 0;
 		}
@@ -2127,9 +2148,12 @@ function clearCombatAbilities() {
 
 function applyAbility(ability, to, turns = -1) {
 	to[ability.ability].enabled = ability.enabled;
-	to[ability.ability].baseTurns += turns;
+	if(to[ability.ability].permanent) {
+		to[ability.ability].baseTurns += turns;
+	}
 	if(ability.hex) {
-		to[ability.ability].turns = turns;
+		to[ability.ability].turns = 0;
+		to[ability.ability].enabled = false;
 		if(game.playsounds) sounds.play('hex');
 	} else {
 		to[ability.ability].turns += turns;
@@ -2141,6 +2165,9 @@ function applyAbility(ability, to, turns = -1) {
 	if(to[ability.ability].turns < -1) to[ability.ability].turns = -1;
 	if(ability.persist) {
 		to[ability.ability].persist = ability.persist;
+	}
+	if(ability.permanent) {
+		to[ability.ability].permanent = ability.permanent;
 	}
 	if(to.type == 'monster') monsters.updateStatusBar();
 	setStatus();
@@ -2314,9 +2341,8 @@ function loot(type, tier = 3) {
 				util.appendShard(treasures.shards[index], '.loot-items');
 			}
 			var numCandies = util.randFromRange(1, 3);
-			for(let i = 0; i < 39; i++) {
-				//let candy = util.weightedRandom(treasures.candies);
-				let candy = treasures.candies[i];
+			for(let i = 0; i < numCandies; i++) {
+				let candy = util.weightedRandom(treasures.candies);
 				let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
 				copiedCandy.desc = Deck().buildDescription(copiedCandy);
 				let clickable = player.candies.length < game.candySlots ? true : false;
@@ -2843,14 +2869,18 @@ function discardCards() {
 
 	}).promise().done(function() {
 
-		$('.message').removeClass('shown');
+		$('body').removeClass('discarding');
 		$('.discard-done').removeClass('shown');
 		$('.card').removeClass('discard discardable');
+		$('.discard-message').removeClass('shown');
 		if(player.speed.current > 0) $('.draw-card').removeClass('disabled');
 		game.toDiscard = 0;
 		combatDeck.updateCardPlayability(player, combatDeck);
 		setStatus();
-		$('body').removeClass('selecting discarding');
+
+		if(!$('body').hasClass('destroying')) {
+			$('body').removeClass('selecting');
+		}
 
 	});
 }
@@ -2872,13 +2902,18 @@ function destroyCards() {
 
 	}).promise().done(function() {
 
-		$('.message').removeClass('shown');
+		$('body').removeClass('destroying');
 		$('.destroy-done').removeClass('shown');
 		$('.card').removeClass('destroy destroyable');
+		$('.destroy-message').removeClass('shown');
 		if(player.speed.current > 0) $('.draw-card').removeClass('disabled');
 		game.toDestroy = 0;
 		combatDeck.updateCardPlayability(player, combatDeck);
-		$('body').removeClass('selecting destroying');
+		setStatus();
+
+		if(!$('body').hasClass('discarding')) {
+			$('body').removeClass('selecting');
+		}
 		
 	});
 
@@ -2942,6 +2977,8 @@ function combineCards(elem) {
 		let card = util.getCardByGuid($(this).data('guid'), combatDeck.handCards);
 		combatDeck.destroyCard(card, combatDeck);
 		processCard(card, false, 'vanishes');
+
+		if(game.playsounds) sounds.play('combineCards');
 		
 	}).promise().done(function() {
 
@@ -3031,7 +3068,7 @@ async function playCard(elem, monster = undefined, type = false) {
 		await processCard(card, false, 'vanishes');
 	} else if(activateCard(card)) {
 		combatDeck.activateCard(card, combatDeck);
-	} else if(linger == 0) {
+	} else if(linger < 1) {
 		combatDeck.discardCard(card, combatDeck, 'played');
 	}
 
@@ -3039,6 +3076,7 @@ async function playCard(elem, monster = undefined, type = false) {
 		linger -= 1;
 		reduceCardStat(card, 'linger', 1);
 	}
+
 
 	// check for bless
 	if(card.type == 'ability' && player.bless.enabled) {
@@ -3066,11 +3104,11 @@ async function playCard(elem, monster = undefined, type = false) {
 
 function reduceCardStat(card, stat, amount) {
 
-	card[stat] -= amount;
-	card.shardUpgrades[stat] -= amount;
-	card.iceShardUpgrades[stat] -= amount;
-	card.fireShardUpgrades[stat] -= amount;
-	card.bothShardUpgrades[stat] -= amount;
+	if(card[stat] != undefined) card[stat] -= amount;
+	if(card.shardUpgrades[stat] != undefined) card.shardUpgrades[stat] -= amount;
+	if(card.iceShardUpgrades[stat] != undefined) card.iceShardUpgrades[stat] -= amount;
+	if(card.fireShardUpgrades[stat] != undefined) card.fireShardUpgrades[stat] -= amount;
+	if(card.bothShardUpgrades[stat] != undefined) card.bothShardUpgrades[stat] -= amount;
 
 }
 
@@ -3266,6 +3304,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						let addCard = '';
 						let thisCard = {};
 						let possibleCards = [];
+						let shards = actions[e].with != undefined ? actions[e].with : [];
+						$('.player-panel .message').html('').removeClass('shown');
 
 						if(actions[e].what != undefined) {
 							addCard = actions[e].what;
@@ -3297,7 +3337,6 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						}
 
 						for(let i = 0; i < actions[e].value; i++) {
-
 							thisCard = util.randFromArray(possibleCards);
 							possibleCards = possibleCards.filter(i => i.id !== thisCard.id);
 
@@ -3307,19 +3346,24 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								thisCard = combatDeck.initCard(thisCard);
 								combatDeck.chooseCards.push(thisCard);
 								game.toPile = actions[e].to;
+								if(shards.length > 0) {
+									for(let i = 0; i < shards.length; i++) {
+										deck.attachShard(thisCard, shards[i]);
+									}
+								}
 							} else {
-								let shards = actions[e].with != undefined ? actions[e].with : [];
 								combatDeck.addCard(addCard, combatDeck, actions[e].to, player, shards);
 							}
 						}
 
-						if(combatDeck.chooseCards.length > 0) {
+						if(combatDeck.chooseCards.length > 0 && actions[e].select != undefined) {
 							game.toPick = actions[e].select;
 							viewChooseCards(util.sort(combatDeck.chooseCards));
 						}
 
 					break;
 					case 'transmute':
+						$('.player-panel .message').html('choose cards to transmute').addClass('shown');
 						game.toPick = actions[e].select;
 						game.fromPile = actions[e].from;
 						var cards = [];
@@ -3395,6 +3439,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 									if(card != undefined) {
 										if(game.playsounds) sounds.play('attachShard');
 										deck.attachShard(card, thisShard);
+										game.toShow.push(card);
 										if(!deck.hasOpenSlot(card)) {
 											combatDeck.chooseCards = combatDeck.chooseCards.filter(i => i.guid !== card.guid);
 										}					
@@ -3408,6 +3453,9 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								}
 							}
 						}
+						
+						deck.showShardedCards(combatDeck);
+						
 					break;
 					case 'draw':
 						for(let i = 0; i < actions[e].value; i++) {
@@ -3416,7 +3464,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					break;
 					case 'discard':
 						if(combatDeck.handCards.length > 0) {
-							$('.message').html('choose cards to discard').addClass('shown');
+							$('.discard-message').html('choose cards to discard').addClass('shown');
 							$('.discard-done').addClass('shown');
 							$('.player-cards .card').addClass('discardable').removeClass('playable');
 							$('.draw-card').addClass('disabled');
@@ -3427,7 +3475,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					break;
 					case 'destroy':
 						if(combatDeck.handCards.length > 0) {
-							$('.message').html('choose cards to destroy').addClass('shown');
+							$('.destroy-message').html('choose cards to destroy').addClass('shown');
 							$('.destroy-done').addClass('shown');
 							$('.player-cards .card').addClass('destroyable').removeClass('playable');
 							$('.draw-card').addClass('disabled');
@@ -3472,7 +3520,10 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							if(actions[e].key == 'type') {
 								player[actions[e].what][actions[e].key] = actions[e].value;
 							} else {
-								player[actions[e].what][actions[e].key] += actions[e].value;
+								// we will actually increase the essence stats within the updateEssenceLevels function called below
+								if(actions[e].what != 'aura' && actions[e].what != 'sparkle' && actions[e].what != 'shimmer') {
+									player[actions[e].what][actions[e].key] += actions[e].value;
+								}
 								// if we increased speed we might need to re-enable draw card button
 								if(actions[e].what == 'speed' && actions[e].value > 0) {
 									$('.draw-card').removeClass('disabled');
@@ -3495,6 +3546,18 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						// if we're updating stats with UI, need to process
 						if(actions[e].what == 'aura' || actions[e].what == 'sparkle' || actions[e].what == 'shimmer') {
 							updateEssenceLevels(actions[e].what, actions[e].value);
+						} else if(actions[e].what != 'rainbow') {
+							if(game.playsounds) {
+								if(actions[e].value > 0) {
+									if(actions[e].what == 'courage') {
+										sounds.play('courage');
+									} else {
+										sounds.play('statUp');
+									}
+								} else {
+									sounds.play('statDown');
+								}
+							}
 						}
 					break;
 					case 'removeHexes':
@@ -3507,9 +3570,11 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						}
 					break;
 					case 'playOldest':
-						let card = combatDeck.getOldestCard(combatDeck.handCards);
-						let domCard = util.getDomCardByGuid(card.guid);
-						playCard(domCard);
+						let card = combatDeck.getOldestCard(combatDeck.handCards, playedCard);
+						if(card) {
+							let domCard = util.getDomCardByGuid(card.guid);
+							playCard(domCard);
+						}
 					break;
 
 				}
@@ -4109,6 +4174,7 @@ async function applyMagic(magic, to) {
 
 	// mix magic types?
 	if(type != to.rainbow.type) {
+		if(game.playsounds) sounds.play('muddleMagic');
 		to.rainbow.type = 'muddled';
 		// check for arcane
 		if(to.arcane.current > 0) {
@@ -4148,7 +4214,7 @@ function updateRainbowDom(to) {
 	$('.magic-rainbow .rainbow-power-current').html(amount);
 	$('.magic-rainbow .rainbow-power-max').html(to.rainbow.max);
 	$('.magic-rainbow').attr('data-type', to.rainbow.type);
-	$('.magic-rainbow').removeClass('dark elemental rainbow chaos').addClass(to.rainbow.type);
+	$('.magic-rainbow').removeClass('dark elemental rainbow chaos muddled').addClass(to.rainbow.type);
 	$('.magic-rainbow .magic-type span').html(to.rainbow.type);
 }
 
@@ -4168,6 +4234,10 @@ async function activateRainbow(type, to) {
 	let magicPower = util.getStatPercentage(to.rainbow.current, to.rainbow.max);
 
 	await game.rainbowAnimations(magicPower);
+	await util.wait(game.animationDelay);
+
+	if(game.playsounds) sounds.play('activateRainbow');
+
 	await util.wait(game.animationDelay);
 
 	let currentMonsters = game.currentMonsters.filter(i => i.dead == false);

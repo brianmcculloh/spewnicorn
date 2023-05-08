@@ -45,16 +45,16 @@ class Creatures {
         wisdom = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
 
         // abilities
-        protection = {enabled: false, baseTurns: 0, turns: 0, persist: false},
-        unreachable = {enabled: false, baseTurns: 0, turns: 0, persist: false},
-        tank = {enabled: false, baseTurns: 0, turns: 0, persist: false},
-        toothache = {enabled: false, baseTurns: 0, turns: 0, persist: false},
-        prepared = {enabled: false, baseTurns: 0, turns: 0, persist: false},
-        bless = {enabled: false, baseTurns: 0, turns: 0, persist: false},
-        hypnotize = {enabled: false, baseTurns: 0, turns: 0, persist: false},
-        stockpile = {enabled: false, baseTurns: 0, turns: 0, persist: false},
-        sift = {enabled: false, baseTurns: 0, turns: 0, persist: false},
-        panic = {enabled: false, baseTurns: 0, turns: 0, persist: false},
+        protection = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
+        unreachable = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
+        tank = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
+        toothache = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
+        prepared = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
+        bless = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
+        hypnotize = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
+        stockpile = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
+        sift = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
+        panic = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         
         // monster specific
         id, 
@@ -65,7 +65,7 @@ class Creatures {
         category = 'normal', // normal, boss, ice_guardian, fire_guardian
 
         // player specific
-        courage = 50, // TODO: reset this to 0
+        courage = 0, // TODO: reset this to 0
         momentumAmount = 0,
 
     }) {
@@ -137,7 +137,7 @@ class Creatures {
         // player specific
         this.stance = 'none';
         this.sparkle = {current: 0, level: 0};
-        this.shimmer = {current: 1, level: 0}; // TODO: reset these to 0
+        this.shimmer = {current: 0, level: 0};
         this.aura = {current: 0, level: 0};
         this.aggro = {current: 0, level: 0};
         this.courage = courage;
@@ -145,7 +145,7 @@ class Creatures {
         this.cardRetain = 0;
         this.treasures = [];
         this.candies = [];
-        this.mana = {base: 3, current: 0, temp: 0};
+        this.mana = {base: 3, current: 0, temp: 0}; // TODO: reset to base 3
         this.rainbow = rainbow;
         this.speed = speed;
         this.momentumAmount = momentumAmount;
@@ -354,7 +354,7 @@ const ALL_MONSTERS = [
             {dmg: [12], p: .2},
             {dmg: [5], blk: [5], p: .3},
             {abilities: [
-                {ability: 'tank', turns: 1, enabled: true, hex: true}
+                {ability: 'tank', hex: true}
             ], dmg: [15], p: .3}
         ],
     }),
@@ -395,7 +395,7 @@ const ALL_MONSTERS = [
             ]},
             {dmg: [7, 7]},
             {abilities: [
-                {ability: 'unreachable', turns: 0, enabled: false, hex: true},
+                {ability: 'unreachable', hex: true},
             ], dmg: [1, 1, 1, 1, 1]},
             {blk: [12]},
             {dmg: [15], blk: [5]},
@@ -403,8 +403,8 @@ const ALL_MONSTERS = [
                 {effect: 'punch', amount: -.1, turns: 3, hex: true},
             ]},
             {abilities: [
-                {ability: 'unreachable', turns: 0, enabled: false, hex: true},
-                {ability: 'tank', turns: 1, enabled: true, hex: true}
+                {ability: 'unreachable', hex: true},
+                {ability: 'tank', hex: true}
             ], dmg: [2, 2, 2, 2, 2]},
             {dmg: [35]},
         ],
@@ -496,7 +496,7 @@ const ALL_MONSTERS = [
             ], p: .2},
             {dmg: [3, 3, 3, 3, 3, 3], 
             abilities: [
-                {ability: 'tank', turns: 1, enabled: true, hex: true}
+                {ability: 'tank', hex: true}
             ], p: .2},
             {dmg: [5, 5, 5, 5], p: .2},
         ],
@@ -728,7 +728,7 @@ const ALL_MONSTERS = [
             ], p: .25},
             {dmg: [3, 3, 3, 3, 3, 3, 3], 
             abilities: [
-                {ability: 'tank', turns: 1, enabled: true, hex: true}
+                {ability: 'tank', hex: true}
             ], p: .25},
             {dmg: [4, 4, 4, 4, 4], p: .25},
         ],
@@ -759,7 +759,7 @@ const ALL_MONSTERS = [
             ]},
             {dmg: [50]},
             {abilities: [
-                {ability: 'tank', turns: 1, enabled: true, hex: true},
+                {ability: 'tank', hex: true},
             ]},
             {dmg: [20]},
         ],
@@ -1371,9 +1371,9 @@ export function Player() {
         type: 'player',
         id: 'player',
         name: 'Player',
-        armor: 25,
-        health: {base: 50, current: 50, max: 50},
-        speed: {base: 5, current: 0, temp: 0, turns: 0},
+        armor: 10,
+        health: {base: 75, current: 75, max: 75},
+        speed: {base: 5, current: 0, temp: 0, turns: 0}, // TODO: reset base to 5
         rainbow: {base: 0, current: 0, temp: 0, turns: 0, max: 20, type: 'rainbow'},
     });
 

@@ -350,6 +350,8 @@ h2::after {
 	transform:translateY(-100vh);
 	z-index:-1;
 	pointer-events:none;
+	flex-wrap:no-wrap;
+	padding:0;
 }
 #splash .begin {
 	margin-top:20px;
@@ -358,6 +360,13 @@ h2::after {
 	transform:translateY(0);
 	z-index:9999999;
 	pointer-events:auto;
+}
+#splash .logo {
+	display:flex;
+}
+#splash .logo img {
+	width:400px;
+	margin:0 auto 0 auto;
 }
 #splash .message {
 	text-transform:none;
@@ -466,11 +475,15 @@ body.game-started #splash .panel .difficulty {
 	padding-bottom:5px;
 }
 .game-logo {
-	padding:10px 10px;
 	position:relative;
+	width:200px;
+	height:43px;
 }
-.game-logo .logo {
-
+.game-logo img {
+	width:100%;
+	height:auto;
+	position:relative;
+	left:-6px;
 }
 .game-seed {
 	font-size:12px;
@@ -593,6 +606,9 @@ body.game-started #splash .panel .difficulty {
 	background-repeat:no-repeat;
 	background-size:256px 7984px;
 	background-position:0px 0px;
+}
+.essence-bar.capped span.level {
+	color:lime;
 }
 .game-aggro span.icon {
 	top:-6px;
@@ -1627,6 +1643,7 @@ body.debug .status-toggle {
 }
 .button span.remove-courage {
 	margin-left:0;
+	color:white;
 }
 .courage-cards .card-wrapper {
 	margin-bottom:40px;
@@ -2269,6 +2286,12 @@ body.arena .monster-panel {
 .player-panel .message.shown {
 	display:block;
 }
+.player-panel .message.discard-message {
+
+}
+.player-panel .message.destroy-message {
+
+}
 .player-panel .player {
 	display:flex;
 	gap:10px;
@@ -2589,7 +2612,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	background-position:calc(-1365px * .92) calc(-1148px * .92);
 }
 #card-arsenal .card-image {
-	background-position:0 calc(-1464px * .92);
+	background-position:calc(-1170px * .92) calc(-1620px * .92);
 }
 #card-smash_and_grab .card-image {
 	background-position:calc(-195px * .92) calc(-1306px * .92);
@@ -3493,6 +3516,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	opacity:0;
 	transition:all 1s linear;
 }
+.player-cards .card-wrapper.replacing {
+	pointer-events:none;
+}
 .player-cards .card {
 	scale:.8;	
 	/*transition:all 1s;*/
@@ -3507,7 +3533,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	transform:translateY(10px);
 	z-index:2;
 }
-.player-cards .card:hover {
+.card:hover {
 	scale:1.2;
 	z-index:12;
 }
@@ -3638,7 +3664,12 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 
 /* choose cards */
 .choose-cards-panel .card.selected {
-	border-color:blue;
+	filter: 
+		drop-shadow(1px 1px 0 blue) 
+		drop-shadow(1px -1px 0 blue)
+		drop-shadow(-1px 1px 0 blue)
+		drop-shadow(-1px -1px 0 blue)
+		drop-shadow(0 0 15px blue);
 }
 
 /* booster pack cards */
@@ -3956,11 +3987,13 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .show-cards.game-panel {
 	z-index:99999;
 	justify-content:center;
+	flex-direction:row;
 }
 .show-cards .card {
 	scale:1.6;
 	opacity:1;
 	transition:all 1s;
+	/*position:absolute;*/
 }
 .show-cards .card.disappearing {
 	scale:.8;
@@ -4025,7 +4058,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	text-transform:capitalize;
 }
 #powerTip span.either {
-	color:yellow;
+	color:lime;
 }
 #powerTip span.frost {
 	color:var(--frost_color);

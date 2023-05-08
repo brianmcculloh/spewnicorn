@@ -123,7 +123,7 @@ export default class Util {
         let use = util.getCardAttribute(card, 'use');
         let useDom = '';
         let useTip = '';
-        if(use > 0) {
+        if(use > -1) {
             plural = use == 1 ? '' : 's';
             useTip = "<span class='highlight'>Use:</span> Can be used " + use + " time" + plural + " before vanishing";
             useDom += '<span class="amount use tooltip" data-powertip="' + useTip + '" data-amount="' + use + '">' + use + '</span>';
@@ -132,7 +132,7 @@ export default class Util {
         let expire = util.getCardAttribute(card, 'expire');
         let expireDom = '';
         let expireTip = '';
-        if(expire > 0) {
+        if(expire > -1) {
             plural = expire == 1 ? '' : 's';
             expireTip = "<span class='highlight'>Expire:</span> Vanishes after " + expire + " turn" + plural;
             expireDom += '<span class="amount expire tooltip" data-powertip="' + expireTip + '" data-amount="' + expire + '">' + expire + '</span>';
@@ -141,7 +141,7 @@ export default class Util {
         let linger = util.getCardAttribute(card, 'linger');
         let lingerDom = '';
         let lingerTip = '';
-        if(linger > 0) {
+        if(linger > -1) {
             plural = linger == 1 ? '' : 's';
             lingerTip = "<span class='highlight'>Linger:</span> Remains in hand for " + linger + " use" + plural;
             lingerDom += '<span class="amount linger tooltip" data-powertip="' + lingerTip + '" data-amount="' + linger + '">' + linger + '</span>';
@@ -203,16 +203,16 @@ export default class Util {
             });
             this.setTooltips(to);
     }
-    animateShowCards(elem) {
+    animateShowCards() {
         $('.show-cards').addClass('shown');
-        elem.appendTo('.show-cards')
+        $('.show-cards .card')
             .delay(1000)
             .queue(function() {
                 $(this).addClass('disappearing')
                 .delay(500)
                 .queue(function() {
                     $('.show-cards').removeClass('shown');
-                    $(this).remove().dequeue();
+                    $(this).parent().remove().dequeue();
                 }).dequeue();
             });
     }
@@ -338,6 +338,14 @@ export default class Util {
                     $(this).remove().dequeue();
                 });
             break;
+            case 'replaced':
+                $('.card[data-guid=' + guid + ']').parent()
+                .addClass('replacing')
+                .delay(2000)
+                .queue(function() {
+                    $(this).remove().dequeue();
+                });
+            break;
         }
         
     }
@@ -413,17 +421,22 @@ export default class Util {
             // overwrite with shard values
             if(card.shards?.length > 0) {
                 // single shard
-                if(card.shardUpgrades[attribute] != undefined && !isNaN(card.shardUpgrades[attribute])) {
+                // Note: don't remember why we needed the isNaN check on all of these but it was causing any upgrade that wasn't just a single value to fail
+                // so only single damage/block/armor values worked when the check was in place
+                //if(card.shardUpgrades[attribute] != undefined && !isNaN(card.shardUpgrades[attribute])) {
+                if(card.shardUpgrades[attribute] != undefined) {
                     data = card.shardUpgrades[attribute];
                 } 
                 // overwrite with specific shard values
                 if(this.getShardNum(card, 'frost') > 0) {
-                    if(card.iceShardUpgrades[attribute] != undefined && !isNaN(card.iceShardUpgrades[attribute])) {
+                    //if(card.iceShardUpgrades[attribute] != undefined && !isNaN(card.iceShardUpgrades[attribute])) {
+                    if(card.iceShardUpgrades[attribute] != undefined) {
                         data = card.iceShardUpgrades[attribute];
                     }
                 }
                 if(this.getShardNum(card, 'flame') > 0) {
-                    if(card.fireShardUpgrades[attribute] != undefined && !isNaN(card.fireShardUpgrades[attribute])) {
+                    //if(card.fireShardUpgrades[attribute] != undefined && !isNaN(card.fireShardUpgrades[attribute])) {
+                    if(card.fireShardUpgrades[attribute] != undefined) {
                         data = card.fireShardUpgrades[attribute];
                     }
                 }
@@ -432,13 +445,15 @@ export default class Util {
                 if(card.shards.length > 1) {
                     // start with both shards values
                     if(card.bothShardUpgrades != undefined) {
-                        if(card.bothShardUpgrades[attribute] != undefined && !isNaN(card.bothShardUpgrades[attribute])) {
+                        //if(card.bothShardUpgrades[attribute] != undefined && !isNaN(card.bothShardUpgrades[attribute])) {
+                        if(card.bothShardUpgrades[attribute] != undefined) {
                             data = card.bothShardUpgrades[attribute];
                         }
                     } 
                     // overwrite with specific shard values
                     if(this.getShardNum(card, 'frost') > 1) {
                         if(card.iceShardUpgrades != undefined) {
+                            //if(card.iceShardUpgrades[attribute + '_2'] != undefined) {
                             if(card.iceShardUpgrades[attribute + '_2'] != undefined && !isNaN(card.iceShardUpgrades[attribute + '_2'])) {
                                 data = card.iceShardUpgrades[attribute + '_2'];
                             }
@@ -446,14 +461,15 @@ export default class Util {
                     } 
                     if(this.getShardNum(card, 'flame') > 1) {
                         if(card.fireShardUpgrades != undefined) {
-                            if(card.fireShardUpgrades[attribute + '_2'] != undefined && !isNaN(card.fireShardUpgrades[attribute + '_2'])) {
+                            //if(card.fireShardUpgrades[attribute + '_2'] != undefined && !isNaN(card.fireShardUpgrades[attribute + '_2'])) {
+                            if(card.fireShardUpgrades[attribute + '_2'] != undefined) {
                                 data = card.fireShardUpgrades[attribute + '_2'];
                             }
                         }
                     }
                 }
             }
-        }       
+        } 
 
         return data;
 
@@ -618,7 +634,7 @@ export default class Util {
         return allCards.find(({ guid }) => guid === add);
     }
     getDomCardByGuid(guid) {
-        return $('.card[data-guid=' + guid + ']');
+        return $('.card[data-guid=' + guid + ']:first');
     }
     getDomCardById(id) {
         return $('.card[data-id=' + id + ']');
@@ -662,7 +678,7 @@ export default class Util {
             }, ms)
         });
     }
-    updateEssencePercentage(essence) {
+    async updateEssencePercentage(essence) {
         let threshold = game.essenceThresholds[player[essence].level];
         let previousThreshold = game.essenceThresholds[player[essence].level - 1];
         if(previousThreshold == undefined) previousThreshold = 0;
@@ -798,7 +814,7 @@ export default class Util {
                 takeDmg: [21132, 858],
                 toolCard: [21990, 1000],
                 abilityCard: [22991, 1959],
-                magicCard: [24950, 1359],
+                magicCard: [26309, 1828],
                 heal: [28135, 1991],
                 clickButton: [30127, 668],
                 choosePack: [31393, 3999],
@@ -822,12 +838,276 @@ export default class Util {
                 hex: [62639, 1418],
                 vex: [64057, 961],
                 death: [65020, 1694],
+                activateRainbow: [66719, 1694],
+                muddleMagic: [75243, 1476],
+                combineCards: [76719, 1000],
+                transmuteCard: [77719, 873],
+                focus: [84874, 2365],
+                grow: [99425, 2138],
+                statUp: [101563, 1238],
+                statDown: [102801, 920],
+                courage: [146724, 2755],
 
-                // specific effects
-                effectSolid: [66714, 1000],
+
+                available: [24950, 1359],
+                
 
                 // specific cards
-                rainbowOrb: [26309, 1828],
+                magic1: [78592, 6282],
+                magic2: [68413, 1831],
+                magic3: [70244, 2523],
+                magic4: [72767, 1512],
+                magic5: [74279, 964],
+                magic6: [87239, 2264],
+                magic7: [89503, 3436],
+                magic8: [92939, 4064],
+                magic9: [97003, 2422],
+                magic10: [103721, 2612],
+                magic11: [106333, 2775],
+                magic12: [109108, 3487],
+                magic13: [112595, 3708],
+                magic14: [116303, 1079],
+                magic15: [118382, 1171],
+                magic16: [119553, 2616],
+                magic17: [122169, 4513],
+
+                attack1: [126682, 876],
+                attack2: [146236, 488],
+                attack3: [128024, 1979],
+                attack4: [130003, 1810],
+                attack5: [131813, 2188],
+                attack6: [134001, 1006],
+                attack7: [135007, 785],
+                attack8: [135792, 1339],
+                attack9: [137131, 1350],
+                attack10: [138481, 1242],
+                attack11: [139723, 754],
+                attack12: [140477, 1242],
+                attack13: [141719, 2003],
+                attack14: [143722, 998],
+                attack15: [144720, 1520],
+                attack16: [149479, 2727],
+                attack17: [152206, 581],
+
+                tool1: [152787, 3615],
+                tool2: [156402, 1836],
+                tool3: [158238, 3179],
+                tool4: [161417, 973],
+                tool5: [162390, 2610],
+                tool6: [165000, 2481],
+                tool7: [167481, 1186],
+                tool8: [168667, 1408],
+                tool9: [170075, 2163],
+                tool10: [172238, 871],
+                tool11: [174000, 1483],
+                tool12: [175483, 951],
+                tool13: [176434, 902],
+                tool14: [177336, 810],
+                tool15: [178146, 622],
+                tool16: [178768, 1064],
+                tool17: [179832, 1649],
+                tool18: [181481, 1570],
+                tool19: [183051, 2249],
+                tool20: [185300, 1420],
+                tool21: [186720, 2114],
+                tool22: [188834, 2245],
+                tool23: [191079, 2000],
+
+
+                // specific effects
+                effect1: [193079, 1163],
+                effect2: [194242, 437], 
+                effect3: [194679, 802],
+                effect4: [195481, 540],
+                effect5: [196021, 885],
+                effect6: [196906, 1001],
+                effect7: [197907, 745],
+                effect8: [198652, 921],
+                effect9: [199573, 669],
+                effect10: [200242, 670],
+                effect11: [200912, 569],
+                effect12: [201481, 747],
+                effect13: [202228, 597],
+                effect14: [202825, 411],
+                effect15: [203236, 722],
+                effect16: [203958, 2284],
+                effect17: [206242, 1997],
+                effect18: [208239, 280],
+                effect19: [208519, 2699],
+                effect20: [211218, 2263],
+                effect21: [213481, 1519],
+                effect22: [215000, 1247],
+                effect23: [216247, 1753],
+                effect24: [218000, 2000],
+                effect25: [220000, 624],
+                effect26: [220624, 427],
+                effect27: [221051, 2436],
+                effect28: [223487, 1951],
+                effect29: [225438, 2385],
+                effect30: [227823, 1041],
+                effect31: [228863, 1274],
+                effect32: [230137, 1863],
+                effect33: [232000, 1725],
+                effect34: [233725, 1758],
+                effect35: [235483, 2003],
+                effect36: [237486, ],
+
+
+
+
+                /* USED SOUND FILES (not in chronological order)
+
+                04_Fire_explosion_04_medium
+                04_Step_sand_01
+                08_Step_rock_02
+                03_Heal_04
+                13_Atk_buff_01
+                68_Die_01
+                83_Whip_woosh_2
+                085_save_game_02
+                084_save_game_01
+                50_Poison_05
+                Encounter_2
+                GP_End_Turn_1 
+                GB_Begin_Tuen_1
+                GP_Select_1
+                Quest_Accepted
+                Success_1
+                Quest_Clear
+                rewards
+                Game_Exit
+                Minigame_Start
+                Failure
+                Round_End
+                Save_Point
+                Drums_1
+
+                fnt_ui_page_flipping_01
+                fnt_ui_page_flipping_02
+                fnt_ui_page_flipping_06
+                fnt_ui_use_wood_03
+                fnt_ui_equip_metal_06
+                fnt_ui_magic_book_page_flip_02
+                fnt_ui_magic_book_page_flip_11
+                
+                Fantasy_UI (34)
+                Fantasy_UI (35)
+                Fantasy_UI (42)
+                Fantasy_UI (47)
+                Fantasy_UI (55)
+
+                SkywardHero_UI (1)
+                SkywardHero_UI (8)
+                SkywardHero_UI (13)
+                SkywardHero_UI (19)
+                SkywardHero_UI (21)
+                SkywardHero_UI (26)
+                SkywardHero_UI (33)
+                SkywardHero_UI (35)
+                SkywardHero_UI (39)
+
+                ESM_Fantasy_Game_...
+                Magic_Debuff_Spell_D
+                Magic_Ice_Instant_Cast_Spell_A
+                Magic_Ice_Instant_Cast_Spell_C
+                Magic_Fire_Instant_Cast_Spell_D
+                Magic_Arcane_Long_Cast_Spell_B
+                Magic_Molten_Lava_Hit_Fire_Gas_Burn
+                Magic_Earth_Instant_Cast_Spell_A
+                Magic_Shadow_Instant_Cast_Spell_A
+                Magic_Shadow_Instant_Cast_Spell_B
+                Magic_Shadow_Instant_Cast_Spell_C
+                Magic_Lightning_Spell_A
+                Magic_Lightnint_Instant_Cast_Spell_C
+                Magic_Key_Pick_Up_1
+                Magic_Key_Pick_Up_3
+                Magic_Debuff_Spell_A
+                Magic_Ring_Pickup_B
+                Organic_Magic_Poof_Buff_Hit
+                Organic_Magic_Poof_Buff_Hit_2
+                Organic_Magic_Poof_Buff_Hit_6
+                Organic_Magic_Accept_Quest_Drum_Impact_1
+                Organic_Coin_Collect_B
+                Organic_Item_Slide_2_Drag_Friction
+                Organic_Collect_Spell
+                Potion_Bottle_Cork_Pop_Magic
+
+                Item_Collect_Dark_Magic_A
+                Item_Collect_Dark_Magic_C
+                Item_Collect_Dark_Magic_D
+                Item_Collect_Dark_Magic_E
+                Item_Collect_Dark_Magic_F
+                Item_Collect_Dark_Magic_I
+                Item_Collect_Dark_Magic_J
+                Item_Collect_Dark_Magic_K
+                Item_Collect_Magic_A
+                Item_Collect_Magic_D
+                Item_Collect_Herbs_Organic_Grass
+                Item_Pick_Up_Magic_Metal_Armor
+                Item_Pickup_Metal_Armor
+                Item_Pick_Up_Leather_Armor
+                Item_Paper_Scroll_B
+                Item_Magic_Pickup_2_Spell
+                Item_Wooden_Chest_Open_or_Close_Medium_Small
+                Item_Crafting_Axe_B
+                Item_Crafting_Sword_B
+                Item_Crafting_Wooden_Shield_B_Build_Work_Shop_Repair
+                Item_Potion_Bottle_A_Jar
+                Item_Crafting_Magic_Armor_Build
+                Item_Crafting_Bow_A_Build
+                Item_Totem_Scroll_C
+                Pick_Up_Orb_Touch_1
+                Skill_Knife_Throw_B
+                Skill_Axe_Throw_B
+                Large_Gate_Close_2_Medium_Small
+                
+                Material_Stone_Touch_7_Magic
+                Material_Stone_Pickup_3_Magic
+                Material_Stone_Magic_Debris_Hit_4
+                Material_Stone_Medium_Slide_Magic
+                Material_Stone_Light_Hit_1_Magic
+                Material_Wood_Crate_Break_3_Magic
+                Material_Liquid_Pick_Up_2_Jug_Magic
+                Material_Liquid_Bubble_Pick_Up_1_Magic
+                Material_Liquid_Deep_Hit_1_Magic
+                Material_Liquid_Pick_Up_1_Magic
+                Material_Water_Bubble_Potion_3
+                Material_Harvest_2_Wet_Magic
+                Potion_Bottle_Cork_Pop_Magic
+                Crafting_UI_Tab_Button_7
+                Crafting_Select_Ore_Metal_Impact
+                Crafting_Select_Gem_Metal_Metallic_Ring
+                Craft_Armor_or_Weapon_1
+                Smash_Pot_B_Break
+                Book_Page_Turn_1_Paper
+
+                Attack_Fire_Arrow
+                Attack_Crossbow_E
+                Blade_Draw_1
+
+                Arcane_Missile_1_Accent
+
+                UI_Metal_Armory_Tab_1_Dry
+                UI_Earth_Select_Spell_Cast
+                UI_Arcane_Confirm_Spell_Cast
+                UI_Shadow_Confirm_Spell_Cast
+                UI_Arcane_Select_Spell_Cast
+                UI_Ice_Select_Spell_Cast
+
+                Backpack_Open_Close_Inventory
+                Creature_Longer_Low_Growl
+                Creature_Crow_Distant_Monster
+                Gear_Inventory_UI_3
+                Inventory_Material_Stone_UI_3
+                Inventory_Material_Stone_Touch_4
+                Weapon_Impact_Weapon
+                Weapon_Impact_Blood_Weapon
+                Chest_Unlock_Small_2_Switch
+
+
+
+
+                */
 
             },
         });

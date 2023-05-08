@@ -7,6 +7,7 @@ class Cards {
         name,
         type,
         target = '',
+        drawn = false,
         addable = true,
         playable = true,
         pack = 'basic',     // basic, combine, magic, damage, cycle
@@ -21,7 +22,7 @@ class Cards {
         ephemeral = false,  // card disappears if not used
         natural = false,    // functions as innate
         breakable = false,  // card is permanently removed from deck when used
-        linger = 0,         // card is not discarded when used this many times
+        linger = -1,         // card is not discarded when used this many times
         age = 0,            // when card is retained it ages 1
         mana,
         baseMana = mana,
@@ -53,6 +54,7 @@ class Cards {
         this.name = name;
         this.type = type;
         this.target = target;
+        this.drawn = drawn;
         this.addable = addable;
         this.playable = playable;
         this.pack = pack;
@@ -545,14 +547,13 @@ const ALL_CARDS = [
     new Cards({
         id: 'rainbow_orb', name: 'Rainbow Orb', type: 'magic', mana: 0, addable: false,
         magic: [{type: 'rainbow', amount: 2}], 
-        sound: 'rainbowOrb',
         slots: 1,
         shardUpgrades: {
             magic: [{type: 'rainbow', amount: 4}], 
         },
     }),
     new Cards({
-        id: 'spewnicorn_spray', name: 'Spewnicorn Spray', type: 'tool', mana: 0, addable: false, breakable: true, use: 2,
+        id: 'spewnicorn_spray', name: 'Spewnicorn Spray', type: 'tool', mana: 0, addable: false, breakable: true, use: 2, tier: 'legendary',
         descOverride: 'Deus Ex Machina.',
         effects: [
             {effect: 'solid', amount: -1, turns: 1, hex: true},
@@ -612,24 +613,28 @@ const ALL_CARDS = [
     /* Cards Added By Other Cards/Events: */
     new Cards({
         id: 'aura_stance', name: 'Aura Stance', type: 'tool', tier: 'uncommon', mana: 0, addable: false, retain: true,
+        sound: 'auraAmount',
         actions: [
             {action: 'stat', what: 'stance', value: 'aura'}
         ],
     }),
     new Cards({
         id: 'sparkle_stance', name: 'Sparkle Stance', type: 'tool', tier: 'uncommon', mana: 0, addable: false, retain: true,
+        sound: 'sparkleAmount',
         actions: [
             {action: 'stat', what: 'stance', value: 'sparkle'}
         ],
     }),
     new Cards({
         id: 'shimmer_stance', name: 'Shimmer Stance', type: 'tool', tier: 'uncommon', mana: 0, addable: false, retain: true,
+        sound: 'shimmerAmount',
         actions: [
             {action: 'stat', what: 'stance', value: 'shimmer'}
         ],
     }),
     new Cards({
         id: 'shimmer', name: 'Shimmer', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        sound: 'shimmerAmount',
         additionalDesc: 'Increase Shimmer essence by +1',
         actions: [
             {action: 'stat', what: 'shimmer', key: 'current', value: 1},
@@ -637,6 +642,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'sparkle', name: 'Sparkle', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        sound: 'sparkleAmount',
         additionalDesc: 'Increase Sparkle essence by +1',
         actions: [
             {action: 'stat', what: 'sparkle', key: 'current', value: 1},
@@ -644,6 +650,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'aura', name: 'Aura', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        sound: 'auraAmount',
         additionalDesc: 'Increase Aura essence by +1',
         actions: [
             {action: 'stat', what: 'aura', key: 'current', value: 1},
@@ -746,6 +753,7 @@ const ALL_CARDS = [
         blk: [10],
         magic: [{type: 'aligned', amount: 40}], 
         additionalDesc: 'Absolute power',
+        sound: 'magic1',
         actions: [
             {action: 'addCard', value: 2, what: 'impresa', to: 'drawCards'},
         ],
@@ -773,6 +781,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'battle_move', name: 'Battle Move', type: 'attack', mana: 1, tier: 'uncommon', target: 'monster', addable: false, retain: true, vanish: true,
         dmg: [9],
+        sound: 'attack17',
         combine: {
             actions: [
                 {action: 'addCard', value: 1, what: 'battle_combo', to: 'handCards'},
@@ -820,6 +829,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'battle_finisher', name: 'Battle Finisher', type: 'attack', target: 'monster', mana: 0, tier: 'rare', ephemeral: true, vanish: true, addable: false, pack: 'combine', 
         dmg: [10, 10, 10, 10],
+        sound: 'attack16',
         additionalDesc: 'Finish Him',
         actions: [
             {action: 'addCard', value: 2, what: 'battle_move', to: 'drawCards'},
@@ -905,30 +915,35 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'rainbow_converter', name: 'Rainbow Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        sound: 'magic4',
         actions: [
             {action: 'stat', what: 'rainbow', key: 'type', value: 'rainbow'},
         ]
     }),
     new Cards({
         id: 'chaos_converter', name: 'Chaos Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        sound: 'magic4',
         actions: [
             {action: 'stat', what: 'rainbow', key: 'type', value: 'chaos'},
         ]
     }),
     new Cards({
         id: 'dark_converter', name: 'Dark Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        sound: 'magic4',
         actions: [
             {action: 'stat', what: 'rainbow', key: 'type', value: 'dark'},
         ]
     }),
     new Cards({
         id: 'elemental_converter', name: 'Elemental Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        sound: 'magic4',
         actions: [
             {action: 'stat', what: 'rainbow', key: 'type', value: 'elemental'},
         ]
     }),
     new Cards({
         id: 'sparks', name: 'Sparks', type: 'magic', mana: 0, addable: false, retain: true, vanish: true,
+        sound: 'magic5',
         magic: [{type: 'aligned', amount: 2}], 
         slots: 1,
         shardUpgrades: {
@@ -1138,6 +1153,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'stomp', name: 'Stomp', type: 'attack', mana: 2, target: 'monster', 
         dmg: [12],
+        sound: 'attack2',
         effects: [
             {effect: 'might', amount: -3, turns: 1, hex: true}
         ],
@@ -1152,6 +1168,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'quick_buck', name: 'Quick Buck', type: 'attack', mana: 0, vanish: true, target: 'monster',
         dmg: [10],
+        sound: 'attack2',
         slots: 1,
         shardUpgrades: {
             natural: true,
@@ -1161,6 +1178,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'hind_kick', name: 'Hind Kick', type: 'attack', target: 'monster', mana: 1, linger: 1,
         dmg: [6, 6],
+        sound: 'attack2',
         slots: 1,
         shardUpgrades: {
             linger: 2,
@@ -1178,6 +1196,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'hammer_thrust', name: 'Hammer Thrust', type: 'attack', target: 'monster', mana: 2, rarity: 6,
         dmg: [12],
+        sound: 'attack2',
         effects: [
             {effect: 'punch', amount: -.25, turns: 1, hex: true}
         ],
@@ -1187,7 +1206,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'clever_trick', name: 'Clever Trick', type: 'attack', target: 'monster', mana: 1, rarity: 7, 
+        id: 'clever_trick', name: 'Clever Trick', type: 'attack', target: 'monster', mana: 1, rarity: 7, courage: 3,
         dmg: [5],
         actions: [
             {action: 'ensharden', type: 'random', select: 1, from: 'handCards', random: false}
@@ -1206,6 +1225,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'stampede', name: 'Stampede', type: 'attack', target: 'monster', mana: '?', tier: 'uncommon', rarity: 3, 
         dmg: [7],
+        sound: 'attack3',
         slots: 2,
         shardUpgrades: {
             dmg: [10],
@@ -1217,6 +1237,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'spin_kick', name: 'Spin Kick', type: 'attack', target: 'monster', mana: 0, tier: 'uncommon', rarity: 4, 
         dmg: [2, 2, 2],
+        sound: 'attack1',
         actions: [
             {action: 'addCard', value: 1, what: 'hind_kick', to: 'handCards'},
         ],
@@ -1258,7 +1279,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'familiar_strike', name: 'Familiar Strike', type: 'attack', target: 'monster', mana: 2, tier: 'uncommon', rarity: 7, 
+        id: 'familiar_strike', name: 'Familiar Strike', type: 'attack', target: 'monster', mana: 2, tier: 'uncommon', rarity: 7, courage: 3,
         dmg: [10],
         actions: [
             {action: 'addCard', value: 1, what: 'familiar_agony', to: 'handCards'},
@@ -1276,6 +1297,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'frenzied_charge', name: 'Frenzied Charge', type: 'attack', target: 'monster', mana: 2, tier: 'uncommon', 
         dmg: [20],
+        sound: 'attack5',
         actions: [
             {action: 'discard', value: 1},
         ],
@@ -1290,6 +1312,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'rainbow_thrust', name: 'Rainbow Thrust', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', 
         dmg: [7],
+        sound: 'attack4',
         magic: [{type: 'rainbow', amount: 3}], 
         slots: 1,
         fireShardUpgrades: {
@@ -1300,7 +1323,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'chaos_thrust', name: 'Chaos Thrust', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', rarity: 6, 
+        id: 'chaos_thrust', name: 'Chaos Thrust', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', rarity: 6, courage: 3, 
         dmg: [7],
         magic: [{type: 'chaos', amount: 3}], 
         slots: 1,
@@ -1312,7 +1335,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'elemental_thrust', name: 'Elemental Thrust', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', rarity: 6, 
+        id: 'elemental_thrust', name: 'Elemental Thrust', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', rarity: 6, courage: 3, 
         dmg: [7],
         magic: [{type: 'elemental', amount: 3}], 
         slots: 1,
@@ -1324,7 +1347,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'dark_thrust', name: 'Dark Thrust', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', rarity: 6,  
+        id: 'dark_thrust', name: 'Dark Thrust', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', rarity: 6, courage: 3,  
         dmg: [7],
         magic: [{type: 'dark', amount: 3}], 
         slots: 1,
@@ -1338,6 +1361,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'arsenal', name: 'Arsenal', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon',
         dmg: [9],
+        sound: 'attack2',
         actions: [
             {action: 'addCard', select: 1, value: 3, type: 'attack', to: 'handCards'},
         ],
@@ -1354,6 +1378,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'smash_and_grab', name: 'Smash & Grab', type: 'attack', target: 'monster', mana: 0, tier: 'uncommon', rarity: 6, 
         dmg: [7],
+        sound: 'attack7',
         actions: [
             {action: 'addCard', value: 3, type: 'attack', to: 'drawCards'},
             {action: 'draw', value: 1},
@@ -1372,6 +1397,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'fury', name: 'Fury', type: 'attack', target: 'monster', mana: 2, tier: 'uncommon', retain: true, rarity: 6,  
         dmg: [20],
+        sound: 'attack8',
         abilities: [
             {ability: 'panic', turns: 1, enabled: true}
         ],
@@ -1400,7 +1426,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'collateral_damage', name: 'Collateral Damage', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', rarity: 7, 
+        id: 'collateral_damage', name: 'Collateral Damage', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', rarity: 7, courage: 3, 
         dmg: [9],
         actions: [
             {action: 'destroy', value: 1},
@@ -1419,6 +1445,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'surprise_attack', name: 'Surprise Attack', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', rarity: 3, 
         dmg: [2, 3, 4],
+        sound: 'attack9',
         draw: {
             dmg: [1],
             actions: [
@@ -1458,7 +1485,7 @@ const ALL_CARDS = [
 
     /* Rare: */
     new Cards({
-        id: 'devastator', name: 'Devastator', type: 'attack', target: 'monster', mana: 3, tier: 'rare', 
+        id: 'devastator', name: 'Devastator', type: 'attack', target: 'monster', mana: 3, tier: 'rare', courage: 4, 
         dmg: [7, 8, 9],
         effects: [
             {effect: 'momentum', amount: 1}
@@ -1493,8 +1520,9 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'weaponry', name: 'Weaponry', type: 'attack', target: 'monster', mana: 1, tier: 'rare', rarity: 4, 
+        id: 'weaponry', name: 'Weaponry', type: 'attack', target: 'monster', mana: 1, tier: 'rare', rarity: 4, courage: 3, 
         dmg: [11],
+        sound: 'attack2',
         draw: {
             dmg: [2],
             blk: [2]
@@ -1522,7 +1550,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'amass', name: 'Amass', type: 'attack', target: 'monster', mana: 2, tier: 'rare', rarity: 3, 
+        id: 'amass', name: 'Amass', type: 'attack', target: 'monster', mana: 2, tier: 'rare', rarity: 3, courage: 3, 
         dmg: [14],
         actions: [
             {action: 'addCard', value: 3, type: 'attack', tier: 'rare', to: 'drawCards'},
@@ -1541,7 +1569,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'berserk', name: 'Berserk', type: 'attack', target: 'monster', mana: 2, tier: 'rare', pack: 'cycle', rarity: 6,  
+        id: 'berserk', name: 'Berserk', type: 'attack', target: 'monster', mana: 2, tier: 'rare', pack: 'cycle', rarity: 6, courage: 4,  
         dmg: [4, 4, 4, 4, 4],
         actions: [
             {action: 'destroy', value: 1},
@@ -1571,8 +1599,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'clever_barrage', name: 'Clever Barrage', type: 'attack', target: 'monster', mana: 3, tier: 'rare', ephemeral: true, rarity: 7, 
+        id: 'clever_barrage', name: 'Clever Barrage', type: 'attack', target: 'monster', mana: 3, tier: 'rare', ephemeral: true, rarity: 7, courage: 4, 
         dmg: [5, 4, 3, 2, 1],
+
         actions: [
             {action: 'ensharden', type: 'random', select: -1, from: 'handCards', random: true}
         ],
@@ -1592,8 +1621,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'freeze', name: 'Freeze', type: 'attack', target: 'monster', mana: 1, tier: 'rare', rarity: 7, 
+        id: 'freeze', name: 'Freeze', type: 'attack', target: 'monster', mana: 1, tier: 'rare', rarity: 7, courage: 4, 
         dmg: [7],
+        sound: 'attack10',
         actions: [
             {action: 'ensharden', type: 'frost', select: -1, from: 'handCards', random: true}
         ],
@@ -1605,8 +1635,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'scorch', name: 'Scorch', type: 'attack', target: 'monster', mana: 1, tier: 'rare', rarity: 7, 
+        id: 'scorch', name: 'Scorch', type: 'attack', target: 'monster', mana: 1, tier: 'rare', rarity: 7, courage: 4, 
         dmg: [7],
+        sound: 'attack11',
         actions: [
             {action: 'ensharden', type: 'flame', select: -1, from: 'handCards', random: true}
         ],
@@ -1618,8 +1649,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'ultra_kill', name: 'Ultra Kill', type: 'attack', target: 'monster', mana: 2, tier: 'rare', rarity: 8, 
+        id: 'ultra_kill', name: 'Ultra Kill', type: 'attack', target: 'monster', mana: 2, tier: 'rare', rarity: 8, courage: 5, 
         dmg: [0],
+        sound: 'attack12',
         effects: [
             {effect: 'fatality', amount: 1.1, turns: -1}
         ],
@@ -1660,8 +1692,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'auxiliary_kill', name: 'Auxiliary Kill', type: 'attack', target: 'monster', mana: 2, tier: 'rare', rarity: 4, 
+        id: 'auxiliary_kill', name: 'Auxiliary Kill', type: 'attack', target: 'monster', mana: 2, tier: 'rare', rarity: 4, courage: 3, 
         dmg: [12],
+        sound: 'attack13',
         actions: [
             {action: 'playOldest'},
             {action: 'addCard', value: 1, what: 'battle_move', to: 'drawCards'},
@@ -1697,8 +1730,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'mega_kill', name: 'Mega Kill', type: 'attack', target: 'monster', mana: 2, tier: 'rare', pack: 'combine', rarity: 6, 
+        id: 'mega_kill', name: 'Mega Kill', type: 'attack', target: 'monster', mana: 2, tier: 'rare', pack: 'combine', rarity: 6, courage: 4, 
         dmg: [10, 10],
+        sound: 'attack14',
         actions: [
             {action: 'addCard', value: 1, what: 'battle_move', to: 'drawCards'},
         ],
@@ -1715,8 +1749,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'disintegrate', name: 'Disintegrate', type: 'attack', target: 'monster', mana: 1, tier: 'rare', pack: 'cycle', rarity: 4, 
+        id: 'disintegrate', name: 'Disintegrate', type: 'attack', target: 'monster', mana: 1, tier: 'rare', pack: 'cycle', rarity: 4, courage: 3, 
         dmg: [18],
+        sound: 'attack15',
         actions: [
             {action: 'destroy', value: 1},
         ],
@@ -1738,7 +1773,7 @@ const ALL_CARDS = [
     /* TOOL CARDS */
     /* Common: */
     new Cards({
-        id: 'parry', name: 'Parry', type: 'tool', mana: 1, rarity: 2, 
+        id: 'parry', name: 'Parry', target: 'monster', type: 'tool', mana: 1, rarity: 2, 
         blk: [5],
         dmg: [5],
         slots: 2,
@@ -1809,7 +1844,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'chain_mail_armor', name: 'Chain Mail Armor', type: 'tool', mana: 1, rarity: 8, 
+        id: 'chain_mail_armor', name: 'Chain Mail Armor', type: 'tool', mana: 1, rarity: 8, courage: 3, 
         armor: [7],
         slots: 1,
         shardUpgrades: {
@@ -1818,6 +1853,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'cleanse', name: 'Cleanse', type: 'tool', mana: 1, pack: 'cycle', rarity: 6, 
+        sound: 'tool1',
         actions: [
             {action: 'destroy', value: 1},
             {action: 'draw', value: 1},
@@ -1888,7 +1924,7 @@ const ALL_CARDS = [
 
     /* Uncommon: */
     new Cards({
-        id: 'plate_armor', name: 'Plate Armor', type: 'tool', mana: 2, tier: 'uncommon', rarity: 6, 
+        id: 'plate_armor', name: 'Plate Armor', type: 'tool', mana: 2, tier: 'uncommon', rarity: 6, courage: 3, 
         armor: [10],
         slots: 2,
         shardUpgrades: {
@@ -1937,7 +1973,7 @@ const ALL_CARDS = [
         blk: [12],
         slots: 2,
         shardUpgrades: {
-            native: true,
+            natural: true,
         },
         bothShardUpgrades: {
             blk: [20]
@@ -1948,11 +1984,12 @@ const ALL_CARDS = [
         blk: [9],
         slots: 1,
         shardUpgrades: {
-            native: true,
+            natural: true,
         },
     }),
     new Cards({
         id: 'gallop', name: 'Gallop', type: 'tool', mana: 0, tier: 'uncommon', use: 1,
+        sound: 'tool4',
         actions: [
             {action: 'addCard', value: 1, what: 'boost', to: 'handCards'},
         ],
@@ -1968,7 +2005,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'sprint', name: 'Sprint', type: 'tool', mana: 1, tier: 'uncommon', use: 1, rarity: 8, 
+        id: 'sprint', name: 'Sprint', type: 'tool', mana: 1, tier: 'uncommon', use: 1, rarity: 8, courage: 3, 
         draw: {
             dmg: [1],
             target: 'player'
@@ -1997,6 +2034,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'gift', name: 'Gift', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, rarity: 4, 
+        sound: 'tool6',
         actions: [
             {action: 'addCard', value: 1, type: 'any', to: 'handCards'}
         ],
@@ -2012,7 +2050,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'sacrifice', name: 'Sacrifice', type: 'tool', mana: 0, tier: 'uncommon', use: 1, pack: 'cycle', rarity: 6, 
+        id: 'sacrifice', name: 'Sacrifice', type: 'tool', mana: 0, tier: 'uncommon', use: 1, pack: 'cycle', rarity: 6, courage: 3, 
+        sound: 'tool7',
         actions: [
             {action: 'destroy', value: 1},
         ],
@@ -2042,6 +2081,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'scavenge', name: 'Scavenge', type: 'tool', mana: 1, tier: 'uncommon', rarity: 2, 
+        sound: 'tool11',
         actions: [
             {action: 'addCard', select: 1, value: 3, type: 'any', to: 'handCards'}
         ],
@@ -2058,7 +2098,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'gears_of_war', name: 'Gears of War', type: 'tool', mana: 1, tier: 'uncommon', rarity: 6, 
+        id: 'gears_of_war', name: 'Gears of War', type: 'tool', mana: 1, tier: 'uncommon', rarity: 6, courage: 3, 
+        sound: 'tool12',
         actions: [
             {action: 'addCard', value: 3, type: 'tool', to: 'drawCards'},
             {action: 'draw', value: 1}
@@ -2076,6 +2117,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'seeing_ring', name: 'Seeing Ring', type: 'tool', mana: 1, tier: 'uncommon', vanish: true, rarity: 3, 
+        sound: 'tool3',
         actions: [
             {action: 'findDrawCard', value: 1}
         ],
@@ -2093,8 +2135,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'beautiful',  name: 'Beautiful', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, pack: 'combine', rarity: 8, 
-        additionalDesc: 'Add a Shimmer to your hand',
+        id: 'beautiful',  name: 'Beautiful', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, pack: 'combine', rarity: 8, courage: 3, 
+        sound: 'tool5',
         actions: [
             {action: 'addCard', value: 1, what: 'shimmer', to: 'handCards'},
             {action: 'addCard', value: 1, what: 'self_enhance', to: 'drawCards'},
@@ -2114,8 +2156,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'delightful',  name: 'Delightful', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, pack: 'combine', rarity: 8, 
-        additionalDesc: 'Add a Sparkle to your hand',
+        id: 'delightful',  name: 'Delightful', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, pack: 'combine', rarity: 8, courage: 3, 
+        sound: 'tool5',
         actions: [
             {action: 'addCard', value: 1, what: 'sparkle', to: 'handCards'},
             {action: 'addCard', value: 1, what: 'self_enhance', to: 'drawCards'},
@@ -2135,8 +2177,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'wonderful',  name: 'Wonderful', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, pack: 'combine', rarity: 8, 
-        additionalDesc: 'Add an Aura to your hand',
+        id: 'wonderful',  name: 'Wonderful', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, pack: 'combine', rarity: 8, courage: 3, 
+        sound: 'tool5',
         actions: [
             {action: 'addCard', value: 1, what: 'aura', to: 'handCards'},
             {action: 'addCard', value: 1, what: 'self_enhance', to: 'drawCards'},
@@ -2156,8 +2198,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'bravery',  name: 'Bravery', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, pack: 'combine', rarity: 8, 
-        additionalDesc: 'Add a Courage to your hand',
+        id: 'bravery',  name: 'Bravery', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, pack: 'combine', rarity: 8, courage: 3, 
+        sound: 'tool13',
         actions: [
             {action: 'addCard', value: 1, what: 'courage', to: 'handCards'},
             {action: 'addCard', value: 1, what: 'self_enhance', to: 'drawCards'},
@@ -2178,6 +2220,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'clever_maneuver', name: 'Clever Maneuver', type: 'tool', mana: 1, tier: 'uncommon', pack: 'cycle', rarity: 6, 
+        sound: 'tool10',
         actions: [
             {action: 'draw', value: 3},
             {action: 'discard', value: 1},
@@ -2200,6 +2243,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'riffle', name: 'Riffle', type: 'tool', mana: 1, tier: 'uncommon', pack: 'cycle', rarity: 4, 
+        sound: 'tool14',
         actions: [
             {action: 'draw', value: 2},
             {action: 'discard', value: 2},
@@ -2255,7 +2299,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'unstable_field', name: 'Unstable Field', type: 'tool', tier: 'uncommon', playable: false, retain: true, rarity: 9, 
+        id: 'unstable_field', name: 'Unstable Field', type: 'tool', tier: 'uncommon', playable: false, retain: true, rarity: 9, courage: 3, 
         destroy: {
             actions: [
                 {action: 'stat', what: 'mana', key: 'current', value: 1},
@@ -2279,7 +2323,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'disavow', name: 'Disavow', type: 'tool', mana: 2, tier: 'uncommon', rarity: 7, 
+        id: 'disavow', name: 'Disavow', type: 'tool', mana: 2, tier: 'uncommon', rarity: 7, courage: 3, 
+        sound: 'tool8',
         actions: [
             {action: 'addCard', value: 1, what: 'release', to: 'handCards'},
             {action: 'addCard', select: 1, value: 7, type: 'bottled', to: 'handCards'},
@@ -2296,7 +2341,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'ruin', name: 'Ruin', type: 'tool', mana: 2, tier: 'uncommon', rarity: 7, 
+        id: 'ruin', name: 'Ruin', type: 'tool', mana: 2, tier: 'uncommon', rarity: 7, courage: 3, 
+        sound: 'tool9',
         actions: [
             {action: 'addCard', value: 1, what: 'dismantle', to: 'handCards'},
             {action: 'addCard', select: 1, value: 7, type: 'bottled', to: 'handCards'},
@@ -2314,6 +2360,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'make_ready', name: 'Make Ready', type: 'tool', mana: 2, tier: 'uncommon',
+        sound: 'tool9',
         actions: [
             {action: 'addCard', value: 1, what: 'acquire', to: 'handCards'},
             {action: 'addCard', select: 1, value: 7, type: 'bottled', to: 'drawCards'},
@@ -2384,7 +2431,8 @@ const ALL_CARDS = [
 
     /* Rare: */
     new Cards({
-        id: 'frost_armor', name: 'Frost Armor', type: 'tool', mana: 0, use: 3, linger: 1, retain: true, tier: 'rare', rarity: 6, 
+        id: 'frost_armor', name: 'Frost Armor', type: 'tool', mana: 0, use: 3, linger: 1, retain: true, tier: 'rare', rarity: 6, courage: 4, 
+        sound: 'tool16',
         armor: [7],
         slots: 2,
         shardUpgrades: {
@@ -2403,7 +2451,8 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'flame_armor', name: 'Flame Armor', type: 'tool', mana: 0, use: 3, linger: 1, retain: true, tier: 'rare', rarity: 6, 
+        id: 'flame_armor', name: 'Flame Armor', type: 'tool', mana: 0, use: 3, linger: 1, retain: true, tier: 'rare', rarity: 6, courage: 4, 
+        sound: 'tool17',
         armor: [7],
         slots: 2,
         shardUpgrades: {
@@ -2422,7 +2471,7 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'bulwark', name: 'Bulwark', type: 'tool', mana: 2, tier: 'rare', rarity: 4, 
+        id: 'bulwark', name: 'Bulwark', type: 'tool', mana: 2, tier: 'rare', rarity: 4, courage: 3,
         blk: [20],
         effects: [
             {effect: 'stout', amount: 3, turns: -1}
@@ -2440,7 +2489,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'steel_hide', name: 'Steel Hide', type: 'tool', mana: 2, tier: 'rare', rarity: 4, 
+        id: 'steel_hide', name: 'Steel Hide', type: 'tool', mana: 2, tier: 'rare', rarity: 4, courage: 3, 
         blk: [30],
         slots: 2,
         shardUpgrades: {
@@ -2454,7 +2503,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'reactor', name: 'Reactor', type: 'tool', mana: 0, tier: 'rare', use: 1, rarity: 7, 
+        id: 'reactor', name: 'Reactor', type: 'tool', mana: 0, tier: 'rare', use: 1, rarity: 7, courage: 4, 
+        sound: 'tool18',
         actions: [
             {action: 'addCard', value: 2, what: 'energize', to: 'handCards'},
         ],
@@ -2476,7 +2526,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'power_surge', name: 'Power Surge', type: 'tool', mana: 0, tier: 'rare', use: 1, rarity: 6, 
+        id: 'power_surge', name: 'Power Surge', type: 'tool', mana: 0, tier: 'rare', use: 1, rarity: 6, courage: 4, 
+        sound: 'tool19',
         actions: [
             {action: 'stat', what: 'mana', key: 'current', value: 2},
             {action: 'stat', what: 'health', key: 'current', value: -4},
@@ -2509,7 +2560,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'enrich', name: 'Enrich', type: 'tool', mana: 1, tier: 'rare', rarity: 2, 
+        id: 'enrich', name: 'Enrich', type: 'tool', mana: 1, tier: 'rare', rarity: 2, courage: 3, 
+        sound: 'tool21',
         actions: [
             {action: 'addCard', value: 2, type: 'any', tier: 'rare', to: 'drawCards'}
         ],
@@ -2531,7 +2583,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'trade_up', name: 'Trade Up', type: 'tool', mana: 1, tier: 'rare', retain: true, vanish: true, rarity: 3, 
+        id: 'trade_up', name: 'Trade Up', type: 'tool', mana: 1, tier: 'rare', retain: true, vanish: true, rarity: 3, courage: 3,
+        sound: 'tool20', 
         actions: [
             {action: 'addCard', select: 1, value: 3, type: 'any', tier: 'rare', to: 'handCards'}
         ],
@@ -2550,7 +2603,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'tactics', name: 'Tactics', type: 'tool', mana: 1, tier: 'rare', pack: 'combine', rarity: 6, 
+        id: 'tactics', name: 'Tactics', type: 'tool', mana: 1, tier: 'rare', pack: 'combine', rarity: 6, courage: 4, 
+        sound: 'tool2',
         actions: [
             {action: 'addCard', select: 1, value: 3, type: 'tool', tier: 'rare', to: 'handCards'},
             {action: 'addCard', value: 1, what: 'self_enhance', to: 'drawCards'},
@@ -2572,7 +2626,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'unearth', name: 'Unearth', type: 'tool', mana: 0, tier: 'rare', use: 1, rarity: 9, 
+        id: 'unearth', name: 'Unearth', type: 'tool', mana: 0, tier: 'rare', use: 1, rarity: 9, courage: 4, 
         actions: [
             {action: 'findDeadCard', value: 1}
         ],
@@ -2582,7 +2636,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'blockade', name: 'Blockade', type: 'tool', mana: 2, tier: 'rare', ephemeral: true, rarity: 4, 
+        id: 'blockade', name: 'Blockade', type: 'tool', mana: 2, tier: 'rare', ephemeral: true, rarity: 4, courage: 3, 
         blk: [10],
         abilities: [
             {ability: 'tank', turns: 1, enabled: true}
@@ -2602,7 +2656,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'mezmerize', name: 'Mezmerize', type: 'tool', mana: 2, tier: 'rare', ephemeral: true,
+        id: 'mezmerize', name: 'Mezmerize', type: 'tool', mana: 2, tier: 'rare', ephemeral: true, courage: 4,
         abilities: [
             {ability: 'hypnotize', turns: 1, enabled: true}
         ],
@@ -2623,7 +2677,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'elite_maneuver', name: 'Elite Maneuver', type: 'tool', mana: 3, tier: 'rare', pack: 'cycle', rarity: 7, 
+        id: 'elite_maneuver', name: 'Elite Maneuver', type: 'tool', mana: 3, tier: 'rare', pack: 'cycle', rarity: 7, courage: 5, 
+        sound: 'tool23',
         blk: [8],
         actions: [
             {action: 'destroy', value: 4},
@@ -2647,7 +2702,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'expunge', name: 'Expunge', type: 'tool', mana: 2, tier: 'rare', pack: 'cycle', rarity: 6, 
+        id: 'expunge', name: 'Expunge', type: 'tool', mana: 2, tier: 'rare', pack: 'cycle', rarity: 6, courage: 4, 
+        sound: 'tool22',
         actions: [
             {action: 'destroy', value: 10},
         ],
@@ -2657,7 +2713,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'mysterious_fissure', name: 'Mysterious Fissure', type: 'tool', tier: 'rare', playable: false, retain: true, rarity: 3, 
+        id: 'mysterious_fissure', name: 'Mysterious Fissure', type: 'tool', tier: 'rare', playable: false, retain: true, rarity: 3, courage: 3, 
         discard: {
             dmg: [5],
             target: 'player',
@@ -2687,7 +2743,7 @@ const ALL_CARDS = [
 
     /* uncommon */
     new Cards({
-        id: 'forethought', name: 'Forethought', type: 'ability', mana: 1, tier: 'uncommon', rarity: 3, 
+        id: 'forethought', name: 'Forethought', type: 'ability', mana: 1, tier: 'uncommon', rarity: 3, courage: 3, 
         abilities: [
             {ability: 'prepared', enabled: true, baseTurns: -1},
         ],
@@ -2700,7 +2756,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'midas_touch', name: 'Midas Touch', type: 'ability', mana: 2, tier: 'uncommon', rarity: 7, 
+        id: 'midas_touch', name: 'Midas Touch', type: 'ability', mana: 2, tier: 'uncommon', rarity: 7, courage: 4, 
         abilities: [
             {ability: 'bless', enabled: true, baseTurns: -1}
         ],
@@ -2713,7 +2769,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'metalwork', name: 'Metalwork', type: 'ability', mana: 3, tier: 'uncommon', rarity: 6, 
+        id: 'metalwork', name: 'Metalwork', type: 'ability', mana: 3, tier: 'uncommon', rarity: 6, courage: 4, 
         abilities: [
             {ability: 'stockpile', enabled: true, baseTurns: -1}
         ],
@@ -2730,7 +2786,7 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'healing_salve', name: 'Healing Salve', type: 'ability', mana: 1, tier: 'uncommon', rarity: 4, 
+        id: 'healing_salve', name: 'Healing Salve', type: 'ability', mana: 1, tier: 'uncommon', rarity: 4, courage: 3, 
         effects: [
             {effect: 'heal', amount: 10}
         ],
@@ -2745,7 +2801,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'stamina', name: 'Stamina', type: 'ability', mana: 1, tier: 'uncommon', rarity: 4, 
+        id: 'stamina', name: 'Stamina', type: 'ability', mana: 1, tier: 'uncommon', rarity: 4, courage: 3, 
         effects: [
             {effect: 'regen', amount: 6}
         ],
@@ -2760,7 +2816,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'enigma_form', name: 'Enigma Form', type: 'ability', mana: 0, tier: 'uncommon', rarity: 6, 
+        id: 'enigma_form', name: 'Enigma Form', type: 'ability', mana: 0, tier: 'uncommon', rarity: 6, courage: 4, 
         effects: [
             {effect: 'mystery', amount: 1, turns: -1}
         ],
@@ -2771,11 +2827,11 @@ const ALL_CARDS = [
             ],
         },
         iceShardUpgrades: {
-            native: true
+            natural: true
         },
     }),
     new Cards({
-        id: 'robustness', name: 'Robustness', type: 'ability', mana: 1, tier: 'uncommon', 
+        id: 'robustness', name: 'Robustness', type: 'ability', mana: 1, tier: 'uncommon', courage: 3, 
         effects: [
             {effect: 'solid', amount: 2, turns: -1}
         ],
@@ -2790,7 +2846,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'masterwork', name: 'Masterwork', type: 'ability', mana: 1, tier: 'uncommon', rarity: 7, 
+        id: 'masterwork', name: 'Masterwork', type: 'ability', mana: 1, tier: 'uncommon', rarity: 7, courage: 4, 
         effects: [
             {effect: 'craft', amount: 2, turns: -1}
         ],
@@ -2805,7 +2861,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'violent_rage', name: 'Violent Rage', type: 'ability', mana: 1, tier: 'uncommon', rarity: 6, 
+        id: 'violent_rage', name: 'Violent Rage', type: 'ability', mana: 1, tier: 'uncommon', rarity: 6, courage: 4, 
         effects: [
             {effect: 'might', amount: 2, turns: -1}
         ],
@@ -2826,7 +2882,7 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'repurpose', name: 'Repurpose', type: 'ability', mana: 1, tier: 'uncommon', 
+        id: 'repurpose', name: 'Repurpose', type: 'ability', mana: 1, tier: 'uncommon', courage: 3, 
         effects: [
             {effect: 'cunning', amount: 1, turns: -1}
         ],
@@ -2841,7 +2897,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'shield_form', name: 'Shield Form', type: 'ability', mana: 2, tier: 'uncommon', rarity: 2, 
+        id: 'shield_form', name: 'Shield Form', type: 'ability', mana: 2, tier: 'uncommon', rarity: 2,
         effects: [
             {effect: 'stout', amount: 3, turns: -1}
         ],
@@ -2868,7 +2924,7 @@ const ALL_CARDS = [
         ],
         slots: 2,
         shardUpgrades: {
-            native: true
+            natural: true
         },
         fireShardUpgrades: {
             mana_2: 0
@@ -2891,11 +2947,11 @@ const ALL_CARDS = [
             ],
         },
         iceShardUpgrades: {
-            native: true
+            natural: true
         },
     }),
     new Cards({
-        id: 'short_temper', name: 'Short Temper', type: 'ability', mana: 1, tier: 'uncommon', 
+        id: 'short_temper', name: 'Short Temper', type: 'ability', mana: 1, tier: 'uncommon', courage: 3, 
         effects: [
             {effect: 'rowdy', amount: 10, turns: -1}
         ],
@@ -2906,11 +2962,11 @@ const ALL_CARDS = [
             ],
         },
         iceShardUpgrades: {
-            native: true
+            natural: true
         },
     }),
     new Cards({
-        id: 'explosivity', name: 'Explosivity', type: 'ability', mana: 1, tier: 'uncommon', 
+        id: 'explosivity', name: 'Explosivity', type: 'ability', mana: 1, tier: 'uncommon', courage: 3,
         effects: [
             {effect: 'fierce', amount: 7, turns: -1}
         ],
@@ -2921,7 +2977,7 @@ const ALL_CARDS = [
             ],
         },
         iceShardUpgrades: {
-            native: true
+            natural: true
         },
     }),
     
@@ -2930,7 +2986,7 @@ const ALL_CARDS = [
 
     /* rare */
     new Cards({
-        id: 'bastion', name: 'Bastion', type: 'ability', mana: 3, tier: 'rare', ephemeral: true, rarity: 8, 
+        id: 'bastion', name: 'Bastion', type: 'ability', mana: 3, tier: 'rare', ephemeral: true, rarity: 8, courage: 6,
         abilities: [
             {ability: 'protection', enabled: true, baseTurns: -1}
         ],
@@ -2944,22 +3000,22 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'bodiless_form', name: 'Bodiless Form', type: 'ability', mana: 3, tier: 'rare', ephemeral: true, rarity: 7, 
+        id: 'bodiless_form', name: 'Bodiless Form', type: 'ability', mana: 3, tier: 'rare', ephemeral: true, rarity: 7, courage: 5, 
         abilities: [
-            {ability: 'unreachable', enabled: true, turns: 2},
+            {ability: 'unreachable', enabled: true, turns: 2, persist: true},
             {ability: 'toothache', enabled: true, baseTurns: -1}
         ],
         slots: 1,
         shardUpgrades: {
             abilities: [
-                {ability: 'unreachable', enabled: true, turns: 3},
+                {ability: 'unreachable', enabled: true, turns: 3, persist: true},
                 {ability: 'toothache', enabled: true, baseTurns: -1}
             ],
             ephemeral: false
         },
     }),
     new Cards({
-        id: 'overpowered', name: 'Overpowered', type: 'ability', mana: 1, tier: 'rare', 
+        id: 'overpowered', name: 'Overpowered', type: 'ability', mana: 1, tier: 'rare', courage: 4, 
         effects: [
             {effect: 'punch', amount: .25, turns: -1}
         ],
@@ -2976,7 +3032,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'guzzle', name: 'Guzzle', type: 'ability', mana: 1, tier: 'rare', rarity: 6, 
+        id: 'guzzle', name: 'Guzzle', type: 'ability', mana: 1, tier: 'rare', rarity: 6, courage: 5,
         effects: [
             {effect: 'vigor', amount: 1, turns: -1}
         ],
@@ -2993,7 +3049,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'prescience', name: 'Prescience', type: 'ability', mana: 2, tier: 'rare', muster: 9, 
+        id: 'prescience', name: 'Prescience', type: 'ability', mana: 2, tier: 'rare', muster: 9, courage: 6,
         effects: [
             {effect: 'muster', amount: 4, turns: -1}
         ],
@@ -3013,7 +3069,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'acuity', name: 'Acuity', type: 'ability', mana: 3, tier: 'rare', rarity: 4, 
+        id: 'acuity', name: 'Acuity', type: 'ability', mana: 3, tier: 'rare', rarity: 4, courage: 4, 
         effects: [
             {effect: 'wisdom', amount: .5, turns: -1}
         ],
@@ -3043,6 +3099,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'rainbow_charge', name: 'Rainbow Charge', type: 'magic', mana: 1, tier: 'common', 
         magic: [{type: 'rainbow', amount: 7}], 
+        sound: 'magic3',
         slots: 1,
         shardUpgrades: {
             magic: [{type: 'rainbow', amount: 10}], 
@@ -3051,6 +3108,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'chaos_charge', name: 'Chaos Charge', type: 'magic', mana: 1, tier: 'common', 
         magic: [{type: 'chaos', amount: 7}], 
+        sound: 'magic3',
         slots: 1,
         shardUpgrades: {
             magic: [{type: 'chaos', amount: 10}], 
@@ -3059,6 +3117,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'dark_charge', name: 'Dark Charge', type: 'magic', mana: 1, tier: 'common', 
         magic: [{type: 'dark', amount: 7}], 
+        sound: 'magic3',
         slots: 1,
         shardUpgrades: {
             magic: [{type: 'dark', amount: 10}], 
@@ -3067,6 +3126,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'elemental_charge', name: 'Elemental Charge', type: 'magic', mana: 1, tier: 'common', 
         magic: [{type: 'elemental', amount: 7}], 
+        sound: 'magic3',
         slots: 1,
         shardUpgrades: {
             magic: [{type: 'elemental', amount: 10}], 
@@ -3075,14 +3135,16 @@ const ALL_CARDS = [
     new Cards({
         id: 'risky_charge', name: 'Risky Charge', type: 'magic', mana: 1, tier: 'common', 
         magic: [{type: 'random', amount: 9}], 
+        sound: 'magic3',
         slots: 1,
         shardUpgrades: {
             magic: [{type: 'random', amount: 12}], 
         },
     }),
     new Cards({
-        id: 'aligned_charge', name: 'Aligned Charge', type: 'magic', mana: 2, tier: 'common', pack: 'magic', rarity: 8, 
+        id: 'aligned_charge', name: 'Aligned Charge', type: 'magic', mana: 2, tier: 'common', pack: 'magic', rarity: 8, courage: 3, 
         magic: [{type: 'aligned', amount: 9}], 
+        sound: 'magic3',
         slots: 2,
         shardUpgrades: {
             magic: [{type: 'aligned', amount: 12}], 
@@ -3093,6 +3155,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'delayed_charge', name: 'Delayed Charge', type: 'magic', tier: 'common', playable: false,
+        sound: 'magic3',
         discard: {
             magic: [{type: 'aligned', amount: 9}], 
         },
@@ -3105,6 +3168,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'sacrificial_charge', name: 'Sacrificial Charge', type: 'magic', tier: 'common', playable: false,
+        sound: 'magic3',
         destroy: {
             magic: [{type: 'aligned', amount: 11}], 
         },
@@ -3121,6 +3185,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'rainbow_charm', name: 'Rainbow Charm', type: 'magic', mana: 0, tier: 'uncommon', retain: true, use: 1,
         magic: [{type: 'rainbow', amount: 3}], 
+        sound: 'magic2',
         slots: 1,
         fireShardUpgrades: {
             magic: [{type: 'rainbow', amount: 6}], 
@@ -3132,6 +3197,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'chaos_charm', name: 'Chaos Charm', type: 'magic', mana: 0, tier: 'uncommon', retain: true, use: 1,
         magic: [{type: 'chaos', amount: 3}], 
+        sound: 'magic2',
         slots: 1,
         fireShardUpgrades: {
             magic: [{type: 'chaos', amount: 6}], 
@@ -3142,7 +3208,8 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'dark_charm', name: 'Dark Charm', type: 'magic', mana: 0, tier: 'uncommon', retain: true, use: 1,
-        magic: [{type: 'dark', amount: 3}], 
+        magic: [{type: 'dark', amount: 3}],
+        sound: 'magic2', 
         slots: 1,
         fireShardUpgrades: {
             magic: [{type: 'dark', amount: 6}], 
@@ -3154,6 +3221,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'elemental_charm', name: 'Elemental Charm', type: 'magic', mana: 0, tier: 'uncommon', retain: true, use: 1,
         magic: [{type: 'elemental', amount: 3}], 
+        sound: 'magic2',
         slots: 1,
         fireShardUpgrades: {
             magic: [{type: 'elemental', amount: 6}], 
@@ -3163,8 +3231,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'aligned_charm', name: 'Aligned Charm', type: 'magic', mana: 1, tier: 'uncommon', retain: true, use: 1, pack: 'magic', rarity: 8, 
+        id: 'aligned_charm', name: 'Aligned Charm', type: 'magic', mana: 1, tier: 'uncommon', retain: true, use: 1, pack: 'magic', rarity: 8, courage: 3, 
         magic: [{type: 'aligned', amount: 5}], 
+        sound: 'magic2',
         slots: 1,
         fireShardUpgrades: {
             magic: [{type: 'aligned', amount: 8}], 
@@ -3176,6 +3245,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'risky_charm', name: 'Risky Charm', type: 'magic', mana: 0, tier: 'uncommon', retain: true, use: 1, rarity: 3, 
         magic: [{type: 'random', amount: 5}], 
+        sound: 'magic2',
         slots: 1,
         fireShardUpgrades: {
             magic: [{type: 'random', amount: 8}], 
@@ -3185,7 +3255,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'grow', name: 'Grow', type: 'magic', mana: 0, retain: true, linger: 2, tier: 'uncommon', pack: 'magic', rarity: 2, 
+        id: 'grow', name: 'Grow', type: 'magic', mana: 0, retain: true, linger: 2, tier: 'uncommon', pack: 'magic', rarity: 2, courage: 3, 
+        sound: 'grow',
         actions: [
             {action: 'stat', what: 'rainbow', key: 'max', value: 5},
             {action: 'draw', value: 1}
@@ -3196,7 +3267,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'focus', name: 'Focus', type: 'magic', mana: 0, retain: true, linger: 2, tier: 'uncommon', pack: 'magic', rarity: 2, 
+        id: 'focus', name: 'Focus', type: 'magic', mana: 0, retain: true, linger: 2, tier: 'uncommon', pack: 'magic', rarity: 2, courage: 3, 
+        sound: 'focus',
         actions: [
             {action: 'stat', what: 'rainbow', key: 'max', value: -5},
             {action: 'discard', value: 1}
@@ -3215,7 +3287,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'mystical_protection', name: 'Mystical Protection', type: 'magic', mana: 2, tier: 'uncommon', rarity: 6, 
+        id: 'mystical_protection', name: 'Mystical Protection', type: 'magic', mana: 2, tier: 'uncommon', rarity: 6, courage: 4, 
         magic: [{type: 'aligned', amount: 5}],
         effects: [
             {effect: 'vex', amount: 1, turns: -1}
@@ -3231,8 +3303,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'metamorphose', name: 'Metamorphose', type: 'magic', mana: 1, tier: 'uncommon', rarity: 3, 
+        id: 'metamorphose', name: 'Metamorphose', type: 'magic', mana: 1, tier: 'uncommon', rarity: 3, courage: 3, 
         magic: [{type: 'random', amount: 5}],
+        sound: 'magic10',
         actions: [
             {action: 'transmute', select: 2, from: 'handCards'}
         ],
@@ -3248,8 +3321,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'cryptic_rune', name: 'Cryptic Rune', type: 'magic', mana: 0, tier: 'uncommon', use: 1, pack: 'combine', rarity: 7, 
+        id: 'cryptic_rune', name: 'Cryptic Rune', type: 'magic', mana: 0, tier: 'uncommon', use: 1, pack: 'combine', rarity: 7, courage: 3, 
         magic: [{type: 'aligned', amount: 2}],
+        sound: 'magic11',
         actions: [
             {action: 'addCard', value: 1, what: 'impresa', to: 'drawCards'},
         ],
@@ -3270,7 +3344,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'magical_maneuver', name: 'Magical Maneuver', type: 'magic', mana: 0, tier: 'uncommon', pack: 'cycle', 
+        id: 'magical_maneuver', name: 'Magical Maneuver', type: 'magic', mana: 0, tier: 'uncommon', pack: 'cycle', courage: 3, 
+        sound: 'magic12',
         magic: [{type: 'aligned', amount: 2}], 
         actions: [
             {action: 'draw', value: 1},
@@ -3288,7 +3363,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'recaster', name: 'Recaster', type: 'magic', mana: 1, tier: 'uncommon', pack: 'magic', rarity: 9, 
+        id: 'recaster', name: 'Recaster', type: 'magic', mana: 1, tier: 'uncommon', pack: 'magic', rarity: 9, courage: 5, 
+        sound: 'magic13',
         actions: [
             {action: 'addCard', select: 1, value: 4, type: 'converter', to: 'handCards'},
         ],
@@ -3298,7 +3374,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'bloom', name: 'Bloom', type: 'magic', mana: 0, tier: 'uncommon', pack: 'magic', vanish: true, expire: 1, rarity: 7, 
+        id: 'bloom', name: 'Bloom', type: 'magic', mana: 0, tier: 'uncommon', pack: 'magic', vanish: true, expire: 1, rarity: 7, courage: 4, 
         actions: [
             {action: 'stat', what: 'rainbow', key: 'base', value: 1},
         ],
@@ -3322,7 +3398,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'fire_spell', name: 'Fire Spell', type: 'magic', mana: 0, tier: 'uncommon', vanish: true, 
+        id: 'fire_spell', name: 'Fire Spell', type: 'magic', mana: 0, tier: 'uncommon', vanish: true, courage: 3, 
+        sound: 'magic14',
         magic: [{type: 'aligned', amount: 2}],
         actions: [
             {action: 'destroy', value: 1}
@@ -3336,7 +3413,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'ice_spell', name: 'Ice Spell', type: 'magic', mana: 0, tier: 'uncommon', 
+        id: 'ice_spell', name: 'Ice Spell', type: 'magic', mana: 0, tier: 'uncommon', courage: 3,
+        sound: 'magic15',
         magic: [{type: 'aligned', amount: 2}],
         actions: [
             {action: 'draw', value: 1}
@@ -3384,7 +3462,7 @@ const ALL_CARDS = [
     /* rare */
 
     new Cards({
-        id: 'risky_incantation', name: 'Risky Incantation', type: 'magic', mana: 2, tier: 'rare', rarity: 4, 
+        id: 'risky_incantation', name: 'Risky Incantation', type: 'magic', mana: 2, tier: 'rare', rarity: 4, courage: 3, 
         magic: [{type: 'random', amount: 10}], 
         effects: [
             {effect: 'arcane', amount: 7, turns: 2}
@@ -3403,8 +3481,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'maelstrom', name: 'Maelstrom', type: 'magic', mana: 2, tier: 'rare', rarity: 4, 
+        id: 'maelstrom', name: 'Maelstrom', type: 'magic', mana: 2, tier: 'rare', rarity: 4, courage: 3, 
         magic: [{type: 'muddled', amount: 25}], 
+        sound: 'magic8',
         effects: [
             {effect: 'arcane', amount: 5, turns: -1}
         ],
@@ -3417,8 +3496,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'master_summoner', name: 'Master Summoner', type: 'magic', mana: 1, tier: 'rare', rarity: 6, 
+        id: 'master_summoner', name: 'Master Summoner', type: 'magic', mana: 1, tier: 'rare', rarity: 6, courage: 5, 
         magic: [{type: 'aligned', amount: 10}], 
+        sound: 'magic16',
         effects: [
             {effect: 'summon', amount: 5, turns: 2}
         ],
@@ -3436,8 +3516,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'master_sorcerer', name: 'Master Sorcerer', type: 'magic', mana: 1, tier: 'rare', rarity: 6, 
+        id: 'master_sorcerer', name: 'Master Sorcerer', type: 'magic', mana: 1, tier: 'rare', rarity: 6, courage: 5, 
         magic: [{type: 'aligned', amount: 10}], 
+        sound: 'magic16',
         effects: [
             {effect: 'sorcery', amount: .5, turns: 2}
         ],
@@ -3455,8 +3536,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'master_conjurer', name: 'Master Conjurer', type: 'magic', mana: 1, tier: 'rare', rarity: 6, 
+        id: 'master_conjurer', name: 'Master Conjurer', type: 'magic', mana: 1, tier: 'rare', rarity: 6, courage: 5, 
         magic: [{type: 'aligned', amount: 10}], 
+        sound: 'magic16',
         effects: [
             {effect: 'conjure', amount: 3, turns: 3}
         ],
@@ -3476,7 +3558,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'secret_arts', name: 'Secret Arts', type: 'magic', mana: 3, tier: 'rare', ephemeral: true, pack: 'magic', rarity: 7, 
+        id: 'secret_arts', name: 'Secret Arts', type: 'magic', mana: 3, tier: 'rare', ephemeral: true, pack: 'magic', rarity: 7, courage: 4, 
         magic: [{type: 'aligned', amount: 5}], 
         effects: [
             {effect: 'conjure', amount: 2, turns: 2},
@@ -3499,7 +3581,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'dazzle', name: 'Dazzle', type: 'magic', mana: 0, tier: 'rare', vanish: true, pack: 'combine',
+        id: 'dazzle', name: 'Dazzle', type: 'magic', mana: 0, tier: 'rare', vanish: true, pack: 'combine', courage: 3,
         effects: [
             {effect: 'enchanter', amount: 3, turns: 3}
         ],
@@ -3512,7 +3594,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'razzle', name: 'Razzle', type: 'magic', mana: 0, tier: 'rare', vanish: true, pack: 'combine', 
+        id: 'razzle', name: 'Razzle', type: 'magic', mana: 0, tier: 'rare', vanish: true, pack: 'combine', courage: 3, 
         effects: [
             {effect: 'mage', amount: 3, turns: 3}
         ],
@@ -3525,11 +3607,12 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'master_of_all', name: 'Master of All', type: 'magic', mana: 3, target: 'monster', tier: 'rare', vanish: true, ephemeral: true, pack: 'combine', 
+        id: 'master_of_all', name: 'Master of All', type: 'magic', mana: 3, target: 'monster', tier: 'rare', vanish: true, ephemeral: true, pack: 'combine', courage: 4, 
         dmg: [10],
         blk: [10],
         armor: [10], 
         magic: [{type: 'aligned', amount: 10}],
+        sound: 'magic16',
         actions: [
             {action: 'addCard', value: 1, what: 'impresa', to: 'drawCards'},
         ],
@@ -3556,7 +3639,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'mystical_energy', name: 'Mystical Energy', type: 'magic', mana: 0, tier: 'rare', linger: 1, use: 2, rarity: 7, 
+        id: 'mystical_energy', name: 'Mystical Energy', type: 'magic', mana: 0, tier: 'rare', linger: 1, use: 2, rarity: 7, courage: 5, 
         magic: [{type: 'aligned', amount: 5}],
         actions: [
             {action: 'removeHexes', to: 'player'},
@@ -3577,8 +3660,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'mystical_maneuver', name: 'Mystical Maneuver', type: 'magic', mana: 1, tier: 'rare', use: 2, linger: 1, pack: 'cycle', 
+        id: 'mystical_maneuver', name: 'Mystical Maneuver', type: 'magic', mana: 1, tier: 'rare', use: 2, linger: 1, pack: 'cycle', courage: 3, 
         magic: [{type: 'aligned', amount: 1}], 
+        sound: 'magic17',
         actions: [
             {action: 'draw', value: 2},
             {action: 'discard', value: 1}
@@ -3603,8 +3687,9 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'vortex', name: 'Vortex', type: 'magic', mana: '?', tier: 'rare', pack: 'magic', 
+        id: 'vortex', name: 'Vortex', type: 'magic', mana: '?', tier: 'rare', pack: 'magic', courage: 5,
         magic: [{type: 'aligned', amount: 6}], 
+        sound: 'magic7',
         slots: 2,
         shardUpgrades: {
             magic: [{type: 'aligned', amount: 9}],  
@@ -3614,7 +3699,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'ancient_runestone', name: 'Ancient Runestone', type: 'magic', mana: 3, tier: 'rare', pack: 'magic', pack: 'magic', retain: true, rarity: 7, 
+        id: 'ancient_runestone', name: 'Ancient Runestone', type: 'magic', mana: 3, tier: 'rare', pack: 'magic', pack: 'magic', retain: true, rarity: 7, courage: 5, 
         magic: [{type: 'aligned', amount: 2}], 
         effects: [
             {effect: 'mage', amount: 2, turns: 2},
@@ -3641,16 +3726,18 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'fleeting_incantation', name: 'Fleeting Incantation', type: 'magic', mana: 0, tier: 'rare', linger: 2, use: 2, expire: 2, pack: 'magic', rarity: 3, 
+        id: 'fleeting_incantation', name: 'Fleeting Incantation', type: 'magic', mana: 0, tier: 'rare', linger: 2, use: 2, expire: 2, pack: 'magic', rarity: 3, courage: 4, 
         magic: [{type: 'aligned', amount: 5}],
+        sound: 'magic6',
         slots: 1,
         shardUpgrades: {
-            native: true
+            natural: true
         },
     }),
     new Cards({
-        id: 'obelisk', name: 'Obelisk', type: 'magic', mana: 1, tier: 'rare', pack: 'magic', rarity: 4, 
+        id: 'obelisk', name: 'Obelisk', type: 'magic', mana: 1, tier: 'rare', pack: 'magic', rarity: 4, courage: 4, 
         magic: [{type: 'aligned', amount: 2}], 
+        sound: 'magic9',
         actions: [
             {action: 'addCard', value: 2, what: 'sparks', to: 'drawCards'},
         ],
@@ -3703,6 +3790,8 @@ export function AllCards() {
     function getAllCards() {
         let items = cards;
         for(let i = 0; i < items.length; i++) {
+            items[i].guid = util.randString();
+
             // TODO: re-enable this code after dev is complete
             // standard description
             //let desc = Deck().buildDescription(items[i]);
@@ -3729,6 +3818,8 @@ export function AllCards() {
     }
 }
 
+var sounds = util.sound('soundsprite.mp3');
+
 export function Deck() {
 
     let cards = [];
@@ -3736,7 +3827,7 @@ export function Deck() {
     let player = window.player;
 
     function buildDeck() {
-        /*addCard('jab');
+        addCard('jab');
         addCard('jab');
         addCard('jab');
         addCard('jab');
@@ -3745,14 +3836,11 @@ export function Deck() {
         addCard('shield');
         addCard('shield');
         addCard('leather_armor');
-        addCard('stun');*/
-
-        addCard('mystical_energy');
-        
-
+        addCard('stun');
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
         }
+
     }
 
     function removeCard(guid) {
@@ -3792,14 +3880,15 @@ export function Deck() {
             desc += flameDesc != '' ? '<div><span class="flame">Flame Shard</span>: ' + flameDesc : '</div>';
         }
         if(card.slots > 1) {
+            if(bothDesc == flame2Desc || bothDesc == frost2Desc) {
+                //desc += bothDesc != '' ? '<div><span class="frost">Frost Shard</span> + <span class="flame">Flame Shard</span>: ' + bothDesc : '</div>';
+                desc += bothDesc != '' ? '<div><span class="either">Double Shard</span>: ' + bothDesc : '</div>';
+            }
             if(bothDesc != frost2Desc) {
                 desc += frost2Desc != '' ? '<div><span class="frost">Double Frost Shard</span>: ' + frost2Desc : '</div>';
             }
             if(bothDesc != flame2Desc) {
                 desc += flame2Desc != '' ? '<div><span class="flame">Double Flame Shard</span>: ' + flame2Desc : '</div>';
-            }
-            if(bothDesc == flame2Desc || bothDesc == frost2Desc) {
-                desc += bothDesc != '' ? '<div><span class="frost">Frost Shard</span> + <span class="flame">Flame Shard</span>: ' + bothDesc : '</div>';
             }
         }
         return desc;
@@ -3842,6 +3931,11 @@ export function Deck() {
         let triggerDesc = buildTriggerDescription(trigger, desc);
         desc += triggerDesc;
 
+        let natural = shard ? util.getShardAttribute(card, shard, 'natural') : util.getCardAttribute(card, 'natural');
+        if(natural) {
+            desc += '<div class="desc-item"><span class="highlight">Natural</span></div>';
+        }
+
         let dmg = shard ? util.getShardAttribute(card, shard, 'dmg') : util.getCardAttribute(card, 'dmg');
         if(dmg.length > 0) {
             desc += '<div class="desc-item">Deal ';
@@ -3849,7 +3943,11 @@ export function Deck() {
                 desc += '<span class="amount dmg" data-amount="' + dmg[i] + '">' + dmg[i] + '</span>, ';
             }
             desc = desc.slice(0, -2);
-            desc += ' damage</div>';
+            if(card.mana == '?') {
+                desc += ' damage ? times</div>';
+            } else {
+                desc += ' damage</div>';
+            }
         }
 
         let blk = shard ? util.getShardAttribute(card, shard, 'blk') : util.getCardAttribute(card, 'blk');
@@ -3859,7 +3957,11 @@ export function Deck() {
                 desc += '<span class="amount blk" data-amount="' + blk[i] + '">' + blk[i] + '</span>, ';
             }
             desc = desc.slice(0, -2);
-            desc += ' block</div>';
+            if(card.mana == '?') {
+                desc += ' block ? times</div>';
+            } else {
+                desc += ' block</div>';
+            }
         }
 
         let armor = shard ? util.getShardAttribute(card, shard, 'armor') : util.getCardAttribute(card, 'armor');
@@ -3869,7 +3971,11 @@ export function Deck() {
                 desc += '<span class="amount armor" data-amount="' + armor[i] + '">' + armor[i] + '</span>, ';
             }
             desc = desc.slice(0, -2);
-            desc += ' armor</div>';
+            if(card.mana == '?') {
+                desc += ' armor ? times</div>';
+            } else {
+                desc += ' armor</div>';
+            }
         }
         let magicDesc = '';
         let magic = shard ? util.getShardAttribute(card, shard, 'magic') : util.getCardAttribute(card, 'magic');
@@ -3879,7 +3985,11 @@ export function Deck() {
                 magicDesc += '<span class="amount magic" data-amount="' + magic[i].amount + '">' + magic[i].amount + '</span> ' + magic[i].type + ', ';
             }
             magicDesc = magicDesc.slice(0, -2);
-            magicDesc += ' magic</div>';
+            if(card.mana == '?') {
+                magicDesc += ' magic ? times</div>';
+            } else {
+                magicDesc += ' magic</div>';
+            }
         }
         desc += magicDesc;
 
@@ -3910,15 +4020,15 @@ export function Deck() {
             }
             let use = util.getShardAttribute(card, shard, 'use');
             if(use > 0) {
-                desc += '<span class="desc-item"><span class="highlight">Use:</span> ' + use + '</span>';
+                desc += '<div class="desc-item"><span class="highlight">Use:</span> ' + use + '</div>';
             }
             let expire = util.getShardAttribute(card, shard, 'expire');
             if(expire > 0) {
-                desc += '<span class="desc-item"><span class="highlight">Expire:</span> ' + expire + '</span>';
+                desc += '<div class="desc-item"><span class="highlight">Expire:</span> ' + expire + '</div>';
             }
             let linger = util.getShardAttribute(card, shard, 'linger');
             if(linger > 0) {
-                desc += '<span class="desc-item"><span class="highlight">Linger:</span> ' + linger + '</span>';
+                desc += '<div class="desc-item"><span class="highlight">Linger:</span> ' + linger + '</div>';
             }
             let vanish = util.getShardAttribute(card, shard, 'vanish');
             if(vanish !== '') {
@@ -4128,6 +4238,7 @@ export function Deck() {
                     let value = actions[e].value;
                     let to = actions[e].to;
                     let from = actions[e].from;
+                    let cardWith = actions[e].with;
                     if(id == 'stat') {
                         name = whatName.toUpperCase();
                         what = '';
@@ -4149,16 +4260,25 @@ export function Deck() {
                     select = select == -1 ? ' all' : select;
                     type = type != undefined ? ' ' + type : '';
                     from = from != undefined ? ' ' + util.getFromDisplay(from) : '';
+                    if(cardWith != undefined) {
+                        if(cardWith.length > 1) {
+                            cardWith = ' with ' + cardWith[0] + ' and ' + cardWith[1] + ' shards';
+                        } else {
+                            cardWith = ' with ' + cardWith + ' shard';
+                        }
+                    } else {
+                        cardWith = '';
+                    }
                     if(select != '' && type != '' && value != '') {
                         to = to != '' ? ' and add ' + to : '';
-                        actionsDesc += 'Choose ' + select + ' of ' + value + type + ' cards ' + to + '. ';
+                        actionsDesc += 'Choose ' + select + ' of ' + value + type + ' cards ' + to + cardWith + '. ';
                     } else {
                         if(type == ' any' || type == ' attack' || type == ' tool' || type == ' ability' || type == ' magic') {
                             type = type != '' ? ' of type ' + type : '';
                         } else {
                             type = type != '' ? ' with ' + type : '';
                         }
-                        actionsDesc += '<div class="desc-item">' + name + select + what + value + to + from + type + '</div>';
+                        actionsDesc += '<div class="desc-item">' + name + select + what + value + to + from + type + cardWith + '</div>';
                     }
                 }
             }
@@ -4196,10 +4316,32 @@ export function Deck() {
         card.desc = desc;
         let slots = util.buildCardSlots(card);
         let domCard = util.getDomCardByGuid(card.guid);
-        domCard.find('.desc').html(desc);
+        domCard.find('.desc-inner').html(desc);
         domCard.find('.slots').html(slots);
-        util.animateShowCards(domCard);
 
+    }
+
+    function showShardedCards(combatDeck) {
+        if(game.toShow.length > 0) {
+			game.toShow = [... new Set(game.toShow)];
+            let cards = game.toShow;
+            for(let i = 0; i < cards.length; i++) {
+                let domCard = util.getDomCardByGuid(cards[i].guid);
+                let cloneCard = domCard.parent().clone();
+                cloneCard.appendTo('.show-cards');
+                // swap out the hand card so the dom card gets rebuilt
+                if(!game.combatEndedFlag) {
+                    let thisCard = util.getCardByGuid(cards[i].guid, combatDeck.handCards);
+                    if(thisCard != undefined) {
+                        util.removeCardByGuid(thisCard.guid, 'replaced');
+                        let css = thisCard.playable ? 'playable' : '';
+                        util.appendCard(thisCard, '.player-cards', css);
+                    }
+                }
+            }
+            util.animateShowCards();
+            game.toShow = [];
+        }
     }
 
     function decideCard(type = false, rarity = 'common') {
@@ -4249,6 +4391,7 @@ export function Deck() {
         addCard,
         removeCard,
         attachShard,
+        showShardedCards,
         hasOpenSlot,
         numOpenSlots,
         buildDescription,
@@ -4302,19 +4445,21 @@ export function CombatDeck() {
     }
 
     function getNaturalCard(combatDeck) {
-        let naturalCard = combatDeck.drawCards.filter(i => i.natural == true);
-        if(naturalCard.length > 0) {
-            naturalCard[0].natural = false;
-            return naturalCard[0];
+        for(let i = 0; i < combatDeck.drawCards.length; i++) {
+            let natural = util.getCardAttribute(combatDeck.drawCards[i], 'natural');
+            if(natural && !combatDeck.drawCards[i].drawn) {
+                return combatDeck.drawCards[i];
+            }
         }
+        
         return false;
     }
 
-    function getOldestCard(cards) {
+    function getOldestCard(cards, excluded = '') {
         let card = false;
-        let oldest = 0;
+        let oldest = -1;
         for(let i = 0; i < cards.length; i++) {
-            if(cards[i].age > oldest) {
+            if(cards[i].age > oldest && cards[i].id != excluded.id) {
                 oldest = cards[i].age;
                 card = cards[i];
             }
@@ -4336,13 +4481,22 @@ export function CombatDeck() {
                 let index = util.randArrayIndex(combatDeck.drawCards);
                 let naturalCard = getNaturalCard(combatDeck);
                 thisCard = naturalCard ? naturalCard : combatDeck.drawCards[index];
-                combatDeck.handCards.push(thisCard);
-                combatDeck.drawCards = combatDeck.drawCards.filter(i => i.guid !== thisCard.guid);
+                thisCard.drawn = true;
                 let thisRetain = util.getCardAttribute(thisCard, 'retain');
                 let retain = thisRetain ? ' retained' : '';
                 let css = thisCard.playable ? 'playable' : '';
-                util.appendCard(thisCard, '.player-cards', css + retain);
-                if(!ignoreSpeed) player.speed.current -= 1;
+                // some actions can add multiple cards to hand at once so we need to account for that
+                // we use 11 because the played card hasn't been discarded yet
+                if(combatDeck.handCards.length == 11) {
+                    combatDeck.discardCards.push(thisCard);
+                } else {
+                    combatDeck.handCards.push(thisCard);
+                    util.appendCard(thisCard, '.player-cards', css + retain);
+                    if(!ignoreSpeed) player.speed.current -= 1;
+                }
+                
+                combatDeck.drawCards = combatDeck.drawCards.filter(i => i.guid !== thisCard.guid);
+                
             }
 
             if(player.speed.current == 0 || combatDeck.handCards.length == 10) $('.draw-card').addClass('disabled');
@@ -4380,6 +4534,8 @@ export function CombatDeck() {
         
         updateCardPlayability(player, combatDeck);
 
+        if(game.playsounds) sounds.play('selectCard');
+
         return thisCard;
 
     }
@@ -4408,6 +4564,8 @@ export function CombatDeck() {
         }
         
         updateCardPlayability(player, combatDeck);
+
+        if(game.playsounds) sounds.play('selectCard');
 
         return thisCard;
 
@@ -4448,6 +4606,7 @@ export function CombatDeck() {
         thisCard = util.getCardByGuid(guid, combatDeck.chooseCards);
         let thisRetain = util.getCardAttribute(thisCard, 'retain');
         let retain = thisRetain ? ' retained' : '';
+        let discardable = $('body').hasClass('discarding') ? ' discardable' : '';
         
         util.removeCardByGuid(thisCard.guid);
         combatDeck.chooseCards = combatDeck.chooseCards.filter(i => i.guid !== thisCard.guid);
@@ -4458,7 +4617,7 @@ export function CombatDeck() {
             } else {
                 combatDeck.handCards.push(thisCard);
                 let css = thisCard.playable ? 'playable' : '';
-                util.appendCard(thisCard, '.player-cards', css + retain);
+                util.appendCard(thisCard, '.player-cards', css + retain + discardable);
             }
         } else if(to=='deck') {
             Deck().addCard(guid);
@@ -4467,6 +4626,8 @@ export function CombatDeck() {
         }
 
         updateCardPlayability(player, combatDeck);
+
+        if(game.playsounds) sounds.play('selectCard');
 
         return thisCard;
 
@@ -4487,6 +4648,7 @@ export function CombatDeck() {
                     }
                 }
                 if(ephemeral) {
+                    if(game.playsounds) sounds.play('removeCard');
                     combatDeck.deadCards.push(thisCard);
                 } else {
                     combatDeck.discardCards.push(thisCard);
@@ -4499,10 +4661,12 @@ export function CombatDeck() {
             }
             thisCard.tempRetain = false;
         }
+        if(game.playsounds) sounds.play('selectCard');
 
     }
 
     function discardCard(card, combatDeck, played = false) {
+        if(game.playsounds) sounds.play('selectCard');
         let animation = played ? 'played' : 'discarded';
         combatDeck.discardCards.push(card);
         combatDeck.handCards = combatDeck.handCards.filter(i => i.guid !== card.guid);
@@ -4518,11 +4682,13 @@ export function CombatDeck() {
             util.removeCardByGuid(thisCard.guid, 'destroyed');
             i--;
         }
+        if(game.playsounds) sounds.play('removeCard');
 
     }
 
     function destroyCard(card, combatDeck, skipDead = false) {
         if(!skipDead) {
+            if(game.playsounds) sounds.play('removeCard');
             combatDeck.deadCards.push(card);
         }
         combatDeck.handCards = combatDeck.handCards.filter(i => i.guid !== card.guid);
@@ -4530,6 +4696,7 @@ export function CombatDeck() {
     }
 
     function transmuteCards(combatDeck, deck, player) {
+        console.clearconsol
         for(let i = 0; i < combatDeck.transmutingCards.length; i++) {
             let possibleCards = AllCards().getAddableCards().filter(j => j.addable == true && j.type !== 'clutter' && j.id !== combatDeck.transmutingCards[i].id);
             let transmutedCard = util.randFromArray(possibleCards);
@@ -4560,6 +4727,7 @@ export function CombatDeck() {
             }
             util.removeCardByGuid(combatDeck.transmutingCards[i].guid, 'destroyed');
         }
+        if(game.playsounds) sounds.play('transmuteCard');
     }
 
     function activateCard(card, combatDeck) {
@@ -4573,6 +4741,7 @@ export function CombatDeck() {
             let thisCard = combatDeck.handCards[i];
             let expire = util.getCardAttribute(thisCard, 'expire');
             if(expire == 0) {
+                if(game.playsounds) sounds.play('removeCard');
                 combatDeck.deadCards.push(thisCard);
                 combatDeck.handCards = combatDeck.handCards.filter(i => i.guid !== thisCard.guid);
                 util.removeCardByGuid(thisCard.guid);
@@ -4583,6 +4752,7 @@ export function CombatDeck() {
             let thisCard = combatDeck.drawCards[i];
             let expire = util.getCardAttribute(thisCard, 'expire');
             if(expire == 0) {
+                if(game.playsounds) sounds.play('removeCard');
                 combatDeck.deadCards.push(thisCard);
                 combatDeck.drawCards = combatDeck.drawCards.filter(i => i.guid !== thisCard.guid);
                 util.removeCardByGuid(thisCard.guid, 'destroyed');
@@ -4593,6 +4763,7 @@ export function CombatDeck() {
             let thisCard = combatDeck.discardCards[i];
             let expire = util.getCardAttribute(thisCard, 'expire');
             if(expire == 0) {
+                if(game.playsounds) sounds.play('removeCard');
                 combatDeck.deadCards.push(thisCard);
                 combatDeck.discardCards = combatDeck.discardCards.filter(i => i.guid !== thisCard.guid);
                 util.removeCardByGuid(thisCard.guid);
@@ -4627,8 +4798,11 @@ export function CombatDeck() {
         if(shards.length > 0) {
             for(let i = 0; i < shards.length; i++) {
                 Deck().attachShard(copiedCard, shards[i]);
+                game.toShow.push(card);
             }
         }
+        Deck().showShardedCards(combatDeck);
+
         combatDeck[part].push(copiedCard);
         updateCardPlayability(player, combatDeck);
 
@@ -4638,6 +4812,7 @@ export function CombatDeck() {
             let css = copiedCard.playable ? 'playable' : '';
             util.appendCard(copiedCard, '.player-cards', css + retain);
         }
+
     }
 
     function initCard(card) {
@@ -4699,7 +4874,7 @@ export function CombatDeck() {
         incrementExpiredCards,
         addCard,
         initCard,
-        updateCardPlayability
+        updateCardPlayability,
     };
 
 }

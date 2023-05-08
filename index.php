@@ -38,7 +38,9 @@
 
   <div id="splash" class="game-panel shown">
 
-    <h2>The Spewnicorn</h2>
+    <div class="logo"><img src="./images/logo.png" /></div>
+
+    <?php /* <h2>The Spewnicorn</h2> */ ?>
 
     <div class="message">Build the ultimate deck of cards and wield it to defeat the Gatekeepers!</div>
 
@@ -86,7 +88,7 @@
 
       <div class="game-logo">
 
-        <div class="logo">Spewnicorn!</div>
+        <img src="./images/logo-small.png" />
 
       </div>
 
@@ -615,6 +617,8 @@
         <div class="frame frame-top-middle"></div>
 
         <div class="message"></div>
+        <div class="message discard-message"></div>
+        <div class="message destroy-message"></div>
 
         <div class="crit">crit! <span></span></div>
 

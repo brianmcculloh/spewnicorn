@@ -527,8 +527,8 @@ const ALL_TREASURES = [
         // use turns for counting turns normally, use baseTurns only for -1 (permanent this combat)
 
         abilities: [
-            {ability: 'panic', enabled: true, turns: 10, persist: true},
-            {ability: 'panic', enabled: true, baseTurns: -1},
+            {ability: 'panic', enabled: true, turns: 10, persist: true}, // this will persist between combats
+            {ability: 'panic', enabled: true, baseTurns: -1, permanent: true}, // this will apply the effect permanently
         ]
     }),
     */
@@ -707,7 +707,7 @@ const ALL_TREASURES = [
         courage: 6,
         rarity: 2,
         abilities: [
-            {ability: 'sift', baseTurns: -1, enabled: true}
+            {ability: 'sift', baseTurns: -1, enabled: true, permanent: true}
         ],
         x: -192,
         y: -1632
@@ -921,7 +921,7 @@ const ALL_TREASURES = [
         tier: 2,
         rarity: 6,
         abilities: [
-            {ability: 'prepared', baseTurns: -1, enabled: true}
+            {ability: 'prepared', baseTurns: -1, enabled: true, permanent: true}
         ],
         x: -128,
         y: -2336
@@ -933,7 +933,7 @@ const ALL_TREASURES = [
         tier: 2,
         rarity: 7,
         abilities: [
-            {ability: 'bless', enabled: true, baseTurns: -1}
+            {ability: 'bless', enabled: true, baseTurns: -1, permanent: true}
         ],
         x: -480,
         y: -15488
