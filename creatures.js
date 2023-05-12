@@ -279,13 +279,29 @@ const ALL_MONSTERS = [
             ]},
             {dmg: [1, 1, 1]},
             {dmg: [5]},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+            ]},
+            {dmg: [1, 1, 1]},
+            {dmg: [5]},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+                {effect: 'heal', amount: 5, turns: -1},
+            ]},
+            {dmg: [1, 1, 1]},
+            {dmg: [5]},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+            ]},
+            {dmg: [1, 1, 1]},
+            {dmg: [5]},
         ],
     }),
     new Creatures({
         type: 'monster',
         id: 'mummy', 
         name: 'Mummy', 
-        health: {base: 20, current: 0, max: 20},
+        health: {base: 35, current: 0, max: 35},
         pattern: 'fixed',
         moveSet: [
             {effects: [
@@ -303,7 +319,7 @@ const ALL_MONSTERS = [
         id: 'stone_walker', 
         name: 'Stone Walker', 
         health: {base: 30, current: 0, max: 30},
-        armor: 20,
+        armor: 10,
         pattern: 'random',
         moveSet: [
             {effects: [
@@ -311,8 +327,8 @@ const ALL_MONSTERS = [
             ], p: .2},
             {dmg: [8], blk: [4], p: .2},
             {dmg: [4], blk: [8], p: .2},
-            {dmg: [12], armor: 10, p: .2},
-            {blk: [10], armor: 5, p: .2},
+            {dmg: [11], armor: 3, p: .2},
+            {blk: [8], armor: 5, p: .2},
         ],
     }),
     new Creatures({
@@ -428,13 +444,13 @@ const ALL_MONSTERS = [
                 {action: 'addCard', value: 1, what: 'flay', to: 'drawCards'},
             ], p: .1},
             {actions: [
-                {action: 'addCard', value: 1, what: 'execrate', to: 'discardCards'},
+                {action: 'addCard', value: 2, what: 'execrate', to: 'discardCards'},
             ], p: .1},
             {actions: [
-                {action: 'addCard', value: 1, what: 'curse', to: 'discardCards'},
+                {action: 'addCard', value: 2, what: 'curse', to: 'discardCards'},
             ], p: .1},
             {actions: [
-                {action: 'addCard', value: 1, what: 'flay', to: 'discardCards'},
+                {action: 'addCard', value: 2, what: 'flay', to: 'discardCards'},
             ], p: .1},
             {armor: [5], p: .1},
             {blk: [15], p: .15},
@@ -948,11 +964,11 @@ export function Monster() {
 	    $('.monster[data-guid=' + monster.guid + '] .armor-number').html(monster.armor);
 	    $('.monster[data-guid=' + monster.guid + '] .block-number').html(monster.block);
         if(monster.block == 0) {
-            $('.monster-health .block-amount').removeClass('shown');
-            $('.monster-health').removeClass('blocked');
+            $('.monster[data-guid=' + monster.guid + '] .monster-health .block-amount').removeClass('shown');
+            $('.monster[data-guid=' + monster.guid + '] .monster-health').removeClass('blocked');
         } else {
-            $('.monster-health .block-amount').addClass('shown');
-            $('.monster-health').addClass('blocked');
+            $('.monster[data-guid=' + monster.guid + '] .monster-health .block-amount').addClass('shown');
+            $('.monster[data-guid=' + monster.guid + '] .monster-health').addClass('blocked');
         }
     }
 
@@ -1006,7 +1022,7 @@ export function Monster() {
                         let increase = 20;
                         let chance = util.monsterNumChance(initial, increase);
                         let num = util.chance(chance) ? 2 : 1;
-                        if(game.floor == 1) num = 1; // never more than one monster on floor one
+                        if(game.floor == 1 || game.floor == 2) num = 1; // never more than one monster on floors 1 and 2
                         for (let i = 0; i < num; i++) {
                             let thisMonster = createMonster(1, i, 'normal', excluded);
                             currentMonsters.push(thisMonster);
@@ -1319,7 +1335,7 @@ export function Monster() {
 
     function updateMonsterGroup() {
 
-        if(game.floor < 4) {
+        if(game.floor < 5) {
             game.monsterGroup = 1;
         } else if(game.floor < 8) {
             game.monsterGroup = 2;
@@ -1371,7 +1387,7 @@ export function Player() {
         type: 'player',
         id: 'player',
         name: 'Player',
-        armor: 10,
+        armor: 0,
         health: {base: 75, current: 75, max: 75},
         speed: {base: 5, current: 0, temp: 0, turns: 0}, // TODO: reset base to 5
         rainbow: {base: 0, current: 0, temp: 0, turns: 0, max: 20, type: 'rainbow'},

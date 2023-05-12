@@ -68,10 +68,10 @@ export default function Map() {
         let l = Math.round(util.randDecimal() * 100);
         let excludedTilesFountain = [1, 2, 3, 11, 12, 21, 22];
         let excludedTilesQuest = [1, 2, 3, 4, 11, 12, 13, 21, 22, 23, 31, 32];
-        //excludedTilesQuest = [];
+        excludedTilesQuest = []; // TODO: comment this out - debug purposes only
         let excludedTilesArena = [1, 2, 3, 4, 5, 11, 12, 13, 14, 21, 22, 23, 24, 31, 32, 33, 41, 42, 43];
         let fountainChance = 0;
-        let questChance = 0;
+        let questChance = 100; // TODO: reset this to 0
         let iceGateTiles = [20, 40, 60, 80];
         let fireGateTiles = [92, 94, 96, 98];
         let iceGateTile = util.randArrayIndex(iceGateTiles);

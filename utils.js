@@ -663,7 +663,7 @@ export default class Util {
         for (i = 0; i < options.length; i++)
             weights[i] = options[i].rarity + (weights[i - 1] || 0);
         
-        var random = this.rand() * weights[weights.length - 1];
+        var random = this.rand() * weights[weights.length - 1]; // TODO: check to see if rarity is working correctly
         
         for (i = 0; i < weights.length; i++)
             if (weights[i] > random)
@@ -736,6 +736,16 @@ export default class Util {
             intentPollInterval: 0,
             intentSensitivity: 100,
             popupClass: 'tooltip-bottom-bar'
+        });
+        $('.magic-rainbow').find('.tooltip').powerTip({
+            followMouse: true,
+            offset: 5,
+            fadeInTime: 50,
+            fadeOutTime: 30,
+            closeDelay: 100,
+            intentPollInterval: 30,
+            intentSensitivity: 5,
+            popupClass: 'standard'
         });
     }
     setTooltips(elem) {

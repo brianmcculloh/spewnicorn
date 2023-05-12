@@ -525,11 +525,12 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'leather_armor', name: 'Leather Armor', type: 'tool', mana: 0, addable: false,
+        id: 'leather_armor', name: 'Leather Armor', type: 'tool', mana: 0, addable: false, use: 1, 
         armor: [3],
         slots: 1,
         shardUpgrades: {
-            armor: [6],
+            use: 2,
+            armor: [5],
         },
     }),
     new Cards({
@@ -588,8 +589,8 @@ const ALL_CARDS = [
             {effect: 'enchanter', amount: 1, turns: 1},
             {effect: 'summon', amount: 1, turns: 1},
             {effect: 'arcane', amount: 1, turns: 1},
-            {effect: 'fatality', amount: 1, turns: 1},
-            {effect: 'retaliate', amount: 1, turns: 1},
+            {effect: 'fatality', amount: 1, turns: 1, persist: true},
+            {effect: 'retaliate', amount: .1, turns: 1},
             {effect: 'mystery', amount: 1, turns: 1},
             {effect: 'regen', amount: 1, turns: 1},
             {effect: 'wisdom', amount: 1, turns: 1},
@@ -635,7 +636,6 @@ const ALL_CARDS = [
     new Cards({
         id: 'shimmer', name: 'Shimmer', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'shimmerAmount',
-        additionalDesc: 'Increase Shimmer essence by +1',
         actions: [
             {action: 'stat', what: 'shimmer', key: 'current', value: 1},
         ]
@@ -643,7 +643,6 @@ const ALL_CARDS = [
     new Cards({
         id: 'sparkle', name: 'Sparkle', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'sparkleAmount',
-        additionalDesc: 'Increase Sparkle essence by +1',
         actions: [
             {action: 'stat', what: 'sparkle', key: 'current', value: 1},
         ]
@@ -651,14 +650,12 @@ const ALL_CARDS = [
     new Cards({
         id: 'aura', name: 'Aura', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'auraAmount',
-        additionalDesc: 'Increase Aura essence by +1',
         actions: [
             {action: 'stat', what: 'aura', key: 'current', value: 1},
         ]
     }),
     new Cards({
         id: 'courage', name: 'Courage', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
-        additionalDesc: 'Increase Courage by +1',
         actions: [
             {action: 'stat', what: 'courage', value: 1},
         ]
@@ -1418,10 +1415,10 @@ const ALL_CARDS = [
             {action: 'addCard', value: 1, what: 'battle_move', to: 'drawCards'},
         ],
         slots: 1,
-        fireSshardUpgrades: {
+        fireShardUpgrades: {
             dmg: [11],
         },
-        iceSshardUpgrades: {
+        iceShardUpgrades: {
             use: 2
         },
     }),
@@ -1650,10 +1647,10 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'ultra_kill', name: 'Ultra Kill', type: 'attack', target: 'monster', mana: 2, tier: 'rare', rarity: 8, courage: 5, 
-        dmg: [0],
+        dmg: [1],
         sound: 'attack12',
         effects: [
-            {effect: 'fatality', amount: 1.1, turns: -1}
+            {effect: 'fatality', amount: 1.1, turns: 1, persist: true}
         ],
         actions: [
             {action: 'draw', value: 1},
@@ -1662,19 +1659,19 @@ const ALL_CARDS = [
         slots: 2,
         shardUpgrades: {
             effects: [
-                {effect: 'fatality', amount: 1.3, turns: -1}
+                {effect: 'fatality', amount: 1.3, turns: 1, persist: true}
             ],
         },
         iceShardUpgrades: {
             effects: [
-                {effect: 'fatality', amount: 1.3, turns: -1}
+                {effect: 'fatality', amount: 1.3, turns: 1, persist: true}
             ],
             actions: [
                 {action: 'draw', value: 2},
                 {action: 'addCard', value: 1, what: 'battle_move', to: 'drawCards'},
             ],
             effects_2: [
-                {effect: 'fatality', amount: 1.7, turns: -1}
+                {effect: 'fatality', amount: 1.7, turns: 1, persist: true}
             ],
             actions_2: [
                 {action: 'draw', value: 3},
@@ -1683,7 +1680,7 @@ const ALL_CARDS = [
         },
         bothShardUpgrades: {
             effects: [
-                {effect: 'fatality', amount: 1.5, turns: -1}
+                {effect: 'fatality', amount: 1.5, turns: 1, persist: true}
             ],
             actions: [
                 {action: 'draw', value: 3},
@@ -1793,12 +1790,14 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'divert', name: 'Divert', type: 'tool', mana: 0, rarity: 7, 
+        id: 'divert', name: 'Divert', type: 'tool', mana: 0, rarity: 7, use: 3, 
         blk: [5],
         armor: [2],
         slots: 1,
         shardUpgrades: {
-            retain: true
+            blk: [7],
+            armor: [3],
+            use: 4
         },
     }),
     new Cards({
@@ -1844,11 +1843,12 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'chain_mail_armor', name: 'Chain Mail Armor', type: 'tool', mana: 1, rarity: 8, courage: 3, 
-        armor: [7],
+        id: 'chain_mail_armor', name: 'Chain Mail Armor', type: 'tool', mana: 1, rarity: 8, courage: 3, use: 2, 
+        armor: [6],
         slots: 1,
         shardUpgrades: {
-            armor: [10],
+            armor: [9],
+            use: 3
         },
     }),
     new Cards({
@@ -1924,14 +1924,14 @@ const ALL_CARDS = [
 
     /* Uncommon: */
     new Cards({
-        id: 'plate_armor', name: 'Plate Armor', type: 'tool', mana: 2, tier: 'uncommon', rarity: 6, courage: 3, 
+        id: 'plate_armor', name: 'Plate Armor', type: 'tool', use: 2, mana: 2, tier: 'uncommon', rarity: 6, courage: 3, 
         armor: [10],
         slots: 2,
         shardUpgrades: {
-            armor: [18],
+            armor: [17],
         },
         bothShardUpgrades: {
-            armor: [27]
+            armor: [26]
         },
     }),
     new Cards({
@@ -2431,9 +2431,9 @@ const ALL_CARDS = [
 
     /* Rare: */
     new Cards({
-        id: 'frost_armor', name: 'Frost Armor', type: 'tool', mana: 0, use: 3, linger: 1, retain: true, tier: 'rare', rarity: 6, courage: 4, 
+        id: 'frost_armor', name: 'Frost Armor', type: 'tool', mana: 0, use: 2, linger: 1, retain: true, tier: 'rare', rarity: 6, courage: 4, 
         sound: 'tool16',
-        armor: [7],
+        armor: [5],
         slots: 2,
         shardUpgrades: {
             armor: [8],
@@ -2441,8 +2441,8 @@ const ALL_CARDS = [
         iceShardUpgrades: {
             armor: [8],
             armor_2: [10],
-            use: 4,
-            use_2: 5,
+            use: 3,
+            use_2: 4,
             linger: 2,
             linger_2: 3,
         },
@@ -2451,9 +2451,9 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'flame_armor', name: 'Flame Armor', type: 'tool', mana: 0, use: 3, linger: 1, retain: true, tier: 'rare', rarity: 6, courage: 4, 
+        id: 'flame_armor', name: 'Flame Armor', type: 'tool', mana: 0, use: 2, linger: 1, retain: true, tier: 'rare', rarity: 6, courage: 4, 
         sound: 'tool17',
-        armor: [7],
+        armor: [5],
         slots: 2,
         shardUpgrades: {
             armor: [8],
@@ -2461,8 +2461,8 @@ const ALL_CARDS = [
         fireShardUpgrades: {
             armor: [8],
             armor_2: [10],
-            use: 4,
-            use_2: 5,
+            use: 3,
+            use_2: 4,
             linger: 2,
             linger_2: 3,
         },
@@ -2474,17 +2474,17 @@ const ALL_CARDS = [
         id: 'bulwark', name: 'Bulwark', type: 'tool', mana: 2, tier: 'rare', rarity: 4, courage: 3,
         blk: [20],
         effects: [
-            {effect: 'stout', amount: 3, turns: -1}
+            {effect: 'stout', amount: 3, turns: 3}
         ],
         slots: 2,
         shardUpgrades: {
             effects: [
-                {effect: 'stout', amount: 5, turns: -1}
+                {effect: 'stout', amount: 5, turns: 3}
             ],
         },
         bothShardUpgrades: {
             effects: [
-                {effect: 'stout', amount: 8, turns: -1}
+                {effect: 'stout', amount: 8, turns: 3}
             ],
         },
     }),
@@ -2938,12 +2938,12 @@ const ALL_CARDS = [
     new Cards({
         id: 'vengeance', name: 'Vengeance', type: 'ability', mana: 1, tier: 'uncommon', rarity: 2, 
         effects: [
-            {effect: 'retaliate', amount: 1, turns: -1}
+            {effect: 'retaliate', amount: .1, turns: -1}
         ],
         slots: 1,
         fireShardUpgrades: {
             effects: [
-                {effect: 'retaliate', amount: 1.2, turns: -1}
+                {effect: 'retaliate', amount: .2, turns: -1}
             ],
         },
         iceShardUpgrades: {
@@ -4321,7 +4321,7 @@ export function Deck() {
 
     }
 
-    function showShardedCards(combatDeck) {
+    function showShardedCards(combatDeck, player) {
         if(game.toShow.length > 0) {
 			game.toShow = [... new Set(game.toShow)];
             let cards = game.toShow;
@@ -4335,6 +4335,10 @@ export function Deck() {
                     if(thisCard != undefined) {
                         util.removeCardByGuid(thisCard.guid, 'replaced');
                         let css = thisCard.playable ? 'playable' : '';
+                        let cost = util.getCardAttribute(thisCard, 'mana');
+                        if(cost > player.mana.current) {
+                            css = '';
+                        }
                         util.appendCard(thisCard, '.player-cards', css);
                     }
                 }
@@ -4801,7 +4805,7 @@ export function CombatDeck() {
                 game.toShow.push(card);
             }
         }
-        Deck().showShardedCards(combatDeck);
+        Deck().showShardedCards(combatDeck, player);
 
         combatDeck[part].push(copiedCard);
         updateCardPlayability(player, combatDeck);
@@ -4846,6 +4850,7 @@ export function CombatDeck() {
     
     }
 
+
     return {
         drawCards,
         handCards,
@@ -4874,7 +4879,7 @@ export function CombatDeck() {
         incrementExpiredCards,
         addCard,
         initCard,
-        updateCardPlayability,
+        updateCardPlayability
     };
 
 }

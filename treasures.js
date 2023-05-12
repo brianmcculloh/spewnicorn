@@ -425,7 +425,7 @@ const ALL_CANDY= [
         courage: 4,
         rarity: 9,
         effects: [
-            {effect: 'fatality', amount: 1.2, turns: 1}
+            {effect: 'fatality', amount: 1.2, turns: 1, persist: true}
         ],
         x: -128,
         y: -1760
@@ -480,6 +480,7 @@ class Treasure {
        actions = [],
        x = 0,
        y = 0,
+       permanent = false
     }) {
         this.id = id;
         this.name = name;
@@ -494,6 +495,7 @@ class Treasure {
         this.actions = actions;
         this.x = x;
         this.y = y;
+        this.permanent = permanent;
     }
 }
 
@@ -512,6 +514,9 @@ const ALL_TREASURES = [
 
         // how much the treasure costs at a shop
         courage: 8,
+
+        // whether the treasure should get activated only once when first obtained or every combat
+        permanent: false,
 
         // optional: when the treasure should fire
         trigger: {counter: 0, when: 'cardsPlayed', at: 3, per: 'turn', once: false, activated: false},
@@ -536,7 +541,8 @@ const ALL_TREASURES = [
     // TIER 1
     new Treasure({
         id:'burning_ruby', 
-        name: 'Burning Ruby', 
+        name: 'Burning Ruby',
+        permanent: true,
         effects: [
             {effect: 'mastery', base: 1}
         ],
@@ -546,6 +552,7 @@ const ALL_TREASURES = [
     new Treasure({
         id:'gleaming_emerald', 
         name: 'Gleaming Emerald', 
+        permanent: true,
         effects: [
             {effect: 'fierce', base: 10}
         ],
@@ -554,7 +561,8 @@ const ALL_TREASURES = [
     }),
     new Treasure({
         id:'twinkling_sapphire', 
-        name: 'Twinkling Sapphire', 
+        name: 'Twinkling Sapphire',
+        permanent: true, 
         effects: [
             {effect: 'rowdy', base: 1}
         ],
@@ -565,6 +573,7 @@ const ALL_TREASURES = [
         id:'glowing_totem', 
         name: 'Glowing Totem', 
         courage: 10,
+        permanent: true,
         effects: [
             {effect: 'conjure', base: 1}
         ],
@@ -574,6 +583,7 @@ const ALL_TREASURES = [
     new Treasure({
         id:'talisman', 
         name: 'Talisman', 
+        permanent: true,
         effects: [
             {effect: 'mage', base: 2}
         ],
@@ -582,7 +592,8 @@ const ALL_TREASURES = [
     }),
     new Treasure({
         id:'magic_dust', 
-        name: 'Magic Dust', 
+        name: 'Magic Dust',
+        permanent: true, 
         effects: [
             {effect: 'enchanter', base: 1}
         ],
@@ -594,6 +605,7 @@ const ALL_TREASURES = [
         name: 'Black Cauldron', 
         rarity: 6,
         courage: 11,
+        permanent: true,
         effects: [
             {effect: 'summon', base: 1}
         ],
@@ -604,6 +616,7 @@ const ALL_TREASURES = [
         id:'opaque_charm', 
         name: 'Opaque Charm', 
         courage: 8,
+        permanent: true,
         effects: [
             {effect: 'arcane', base: 2}
         ],
@@ -614,6 +627,7 @@ const ALL_TREASURES = [
         id:'pridwen', 
         name: "Pridwen", 
         rarity: 4,
+        permanent: true,
         effects: [
             {effect: 'solid', base: 1}
         ],
@@ -624,6 +638,7 @@ const ALL_TREASURES = [
         id:'snakestone', 
         name: "Snakestone", 
         courage: 8,
+        permanent: true,
         effects: [
             {effect: 'mend', base: 2}
         ],
@@ -635,6 +650,7 @@ const ALL_TREASURES = [
         name: "Charmstone", 
         courage: 8,
         rarity: 4,
+        permanent: true,
         effects: [
             {effect: 'cunning', base: 2}
         ],
@@ -644,6 +660,7 @@ const ALL_TREASURES = [
     new Treasure({
         id:'thunderstone', 
         name: "Thunderstone", 
+        permanent: true,
         effects: [
             {effect: 'stout', base: 3}
         ],
@@ -653,6 +670,7 @@ const ALL_TREASURES = [
     new Treasure({
         id:'dew_of_yarva', 
         name: "Dew of Yarva", 
+        permanent: true,
         effects: [
             {effect: 'heal', base: 8}
         ],
@@ -662,6 +680,7 @@ const ALL_TREASURES = [
     new Treasure({
         id:'dew_of_lunya', 
         name: "Dew of Lunya", 
+        permanent: true,
         effects: [
             {effect: 'regen', base: 6}
         ],
@@ -673,6 +692,7 @@ const ALL_TREASURES = [
         name: 'Razor Barb', 
         courage: 8,
         rarity: 3,
+        permanent: true,
         effects: [
             {effect: 'retaliate', base: .2}
         ],
@@ -684,6 +704,7 @@ const ALL_TREASURES = [
         name: 'Lemon', 
         courage: 8,
         rarity: 3,
+        permanent: true,
         effects: [
             {effect: 'lemonade', base: 2}
         ],
@@ -695,6 +716,7 @@ const ALL_TREASURES = [
         name: 'Pricket', 
         courage: 8,
         rarity: 3,
+        permanent: true,
         effects: [
             {effect: 'spikes', base: .2}
         ],
@@ -706,6 +728,7 @@ const ALL_TREASURES = [
         name: 'Sifter', 
         courage: 6,
         rarity: 2,
+        permanent: true,
         abilities: [
             {ability: 'sift', baseTurns: -1, enabled: true, permanent: true}
         ],
@@ -728,6 +751,7 @@ const ALL_TREASURES = [
         name: "Sparkling Fragment", 
         courage: 6,
         rarity: 4,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'sparkle', key: 'current', value: 5}
         ],
@@ -739,6 +763,7 @@ const ALL_TREASURES = [
         name: "Shimmering Fragment", 
         courage: 6,
         rarity: 4,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'shimmer', key: 'current', value: 5}
         ],
@@ -750,6 +775,7 @@ const ALL_TREASURES = [
         name: "Radiating Fragment", 
         courage: 6,
         rarity: 4,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'aura', key: 'current', value: 5}
         ],
@@ -760,6 +786,7 @@ const ALL_TREASURES = [
         id:'pewter_mug', 
         name: "Pewter Mug", 
         courage: 5,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'courage', value: 7}
         ],
@@ -770,6 +797,7 @@ const ALL_TREASURES = [
         id:'torch', 
         name: "Torch", 
         tier: 1,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'mana', key: 'current', value: 1},
         ],
@@ -780,6 +808,7 @@ const ALL_TREASURES = [
     new Treasure({
         id:'candlestick', 
         name: "Candlestick", 
+        permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'current', value: 2},
         ],
@@ -798,6 +827,7 @@ const ALL_TREASURES = [
         courage: 12,
         tier: 2,
         rarity: 7,
+        permanent: true,
         effects: [
             {effect: 'wield', base: 1}
         ],
@@ -810,6 +840,7 @@ const ALL_TREASURES = [
         courage: 12,
         tier: 2,
         rarity: 7,
+        permanent: true,
         effects: [
             {effect: 'craft', base: 2}
         ],
@@ -822,6 +853,7 @@ const ALL_TREASURES = [
         courage: 10,
         tier: 2,
         rarity: 6,
+        permanent: true,
         effects: [
             {effect: 'might', base: 2}
         ],
@@ -834,6 +866,7 @@ const ALL_TREASURES = [
         courage: 10,
         tier: 2,
         rarity: 6,
+        permanent: true,
         effects: [
             {effect: 'vigor', base: 1}
         ],
@@ -846,6 +879,7 @@ const ALL_TREASURES = [
         courage: 13,
         tier: 2,
         rarity: 7,
+        permanent: true,
         effects: [
             {effect: 'momentum', base: 1}
         ],
@@ -859,7 +893,7 @@ const ALL_TREASURES = [
         tier: 2,
         rarity: 6,
         effects: [
-            {effect: 'vex', base: 1}
+            {effect: 'vex', amount: 1, turns: -1}
         ],
         x: -320,
         y: -766
@@ -871,7 +905,7 @@ const ALL_TREASURES = [
         tier: 2,
         rarity: 7,
         effects: [
-            {effect: 'fatality', base: 1.1}
+            {effect: 'fatality', amount: 1.1, turns: 1, persist: true}
         ],
         trigger: {counter: 0, when: 'turns', at: 2, per: 'combat', once: true, activated: false},
         x: -384,
@@ -883,6 +917,7 @@ const ALL_TREASURES = [
         courage: 12,
         tier: 2,
         rarity: 8,
+        permanent: true,
         effects: [
             {effect: 'mystery', base: 1}
         ],
@@ -895,6 +930,7 @@ const ALL_TREASURES = [
         courage: 10,
         tier: 2,
         rarity: 6,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'rainbow', key: 'base', value: 5},
         ],
@@ -920,6 +956,7 @@ const ALL_TREASURES = [
         courage: 11,
         tier: 2,
         rarity: 6,
+        permanent: true,
         abilities: [
             {ability: 'prepared', baseTurns: -1, enabled: true, permanent: true}
         ],
@@ -932,6 +969,7 @@ const ALL_TREASURES = [
         courage: 13,
         tier: 2,
         rarity: 7,
+        permanent: true,
         abilities: [
             {ability: 'bless', enabled: true, baseTurns: -1, permanent: true}
         ],
@@ -1087,6 +1125,7 @@ const ALL_TREASURES = [
         courage: 15,
         tier: 3,
         rarity: 9,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'mana', key: 'base', value: 1}
         ],
@@ -1099,6 +1138,7 @@ const ALL_TREASURES = [
         courage: 15,
         tier: 3,
         rarity: 9,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'mana', key: 'base', value: 1}
         ],
@@ -1111,6 +1151,7 @@ const ALL_TREASURES = [
         courage: 15,
         tier: 3,
         rarity: 9,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'mana', key: 'base', value: 1}
         ],
@@ -1123,6 +1164,7 @@ const ALL_TREASURES = [
         courage: 14,
         tier: 3,
         rarity: 8,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 2}
         ],
@@ -1135,6 +1177,7 @@ const ALL_TREASURES = [
         courage: 14,
         tier: 3,
         rarity: 8,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 2}
         ],
@@ -1147,6 +1190,7 @@ const ALL_TREASURES = [
         courage: 14,
         tier: 3,
         rarity: 8,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 2}
         ],
@@ -1159,6 +1203,7 @@ const ALL_TREASURES = [
         courage: 15,
         tier: 3,
         rarity: 8,
+        permanent: true,
         effects: [
             {effect: 'punch', base: .2}
         ],
@@ -1171,6 +1216,7 @@ const ALL_TREASURES = [
         courage: 15,
         tier: 3,
         rarity: 8,
+        permanent: true,
         effects: [
             {effect: 'muster', base: 2}
         ],
@@ -1183,6 +1229,7 @@ const ALL_TREASURES = [
         courage: 15,
         tier: 3,
         rarity: 8,
+        permanent: true,
         effects: [
             {effect: 'sorcery', base: .3}
         ],
@@ -1195,6 +1242,7 @@ const ALL_TREASURES = [
         courage: 13,
         tier: 3,
         rarity: 8,
+        permanent: true,
         effects: [
             {effect: 'wisdom', base: .5}
         ],
@@ -1208,7 +1256,7 @@ const ALL_TREASURES = [
         tier: 3,
         rarity: 9,
         effects: [
-            {effect: 'fatality', amount: 1.2, turns: 1}
+            {effect: 'fatality', amount: 1.2, turns: 1, persist: true}
         ],
         x: -192,
         y: -4032
@@ -1235,6 +1283,7 @@ const ALL_TREASURES = [
         courage: 20,
         tier: 4,
         rarity: 9,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'mana', key: 'base', value: 2},
             {action: 'stat', what: 'speed', key: 'base', value: -1}
@@ -1248,6 +1297,7 @@ const ALL_TREASURES = [
         courage: 20,
         tier: 4,
         rarity: 9,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'mana', key: 'base', value: 2},
             {action: 'stat', what: 'sparkle', key: 'current', value: -5}
@@ -1261,6 +1311,7 @@ const ALL_TREASURES = [
         courage: 20,
         tier: 4,
         rarity: 9,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'mana', key: 'base', value: 2},
             {action: 'stat', what: 'shimmer', key: 'current', value: -5}
@@ -1274,6 +1325,7 @@ const ALL_TREASURES = [
         courage: 20,
         tier: 4,
         rarity: 9,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'mana', key: 'base', value: 2},
             {action: 'stat', what: 'aura', key: 'current', value: -5}
@@ -1287,6 +1339,7 @@ const ALL_TREASURES = [
         courage: 20,
         tier: 4,
         rarity: 9,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'mana', key: 'base', value: 2},
             {action: 'stat', what: 'courage', value: -7}
@@ -1300,6 +1353,7 @@ const ALL_TREASURES = [
         courage: 20,
         tier: 4,
         rarity: 9,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 3},
             {action: 'stat', what: 'sparkle', key: 'current', value: -4}
@@ -1313,6 +1367,7 @@ const ALL_TREASURES = [
         courage: 20,
         tier: 4,
         rarity: 9,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 3},
             {action: 'stat', what: 'shimmer', key: 'current', value: -4}
@@ -1326,6 +1381,7 @@ const ALL_TREASURES = [
         courage: 20,
         tier: 4,
         rarity: 9,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 3},
             {action: 'stat', what: 'aura', key: 'current', value: -4}
@@ -1339,6 +1395,7 @@ const ALL_TREASURES = [
         courage: 20,
         tier: 4,
         rarity: 9,
+        permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 3},
             {action: 'stat', what: 'courage', value: -6}

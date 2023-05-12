@@ -218,7 +218,7 @@
 
       </div>
 
-      <div class="highest-damage-roll tooltip" data-powertip="The largest amount of damage you've dealt this run.">
+      <div class="highest-damage-roll tooltip" data-powertip="Your highest damage hit.">
         <div class="icon"></div>
         <span></span>
       </div>
@@ -461,7 +461,7 @@
 
         <div class="fountain-options shown buttons-wrapper">
 
-          <div class="button fountain-drink" data-amount="15">Drink (+15 Health &amp; Armor)</div>
+          <div class="button fountain-drink" data-amount="15" data-armor="5">Drink (+15 Health &amp; +5 Armor)</div>
 
           <div class="button fountain-search">Search (Find A Shard)</div>
 
@@ -628,7 +628,7 @@
 
           <div class="rainbow-power-amount"><span class="rainbow-power-current"></span>/<span class="rainbow-power-max"></span></div>
 
-          <div class="magic-type"><span></span> Magic</div>
+          <div class="magic-type"><span class="tooltip" data-powertip="<div class='tooltip-magic'><span class='rainbow'>Rainbow Magic: </span>Does damage to all monsters.</div><div class='tooltip-magic'><span class='elemental'>Elemental Magic: </span>Does damage to all monsters ignoring block.</div><div class='tooltip-magic'><span class='dark'>Dark Magic: </span>Does damage to all monsters ignorning armor.</div><div class='tooltip-magic'><span class='chaos'>Chaos Magic: </span>Does double damage to all monsters.</div><div class='tooltip-magic'><span class='muddled'>Muddled Magic: </span>Does damage to one random monster.</div>"></span> Magic</div>
 
           <div class="rainbow-power">
             <div class="mask">

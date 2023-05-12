@@ -2339,6 +2339,7 @@ body.arena .monster-panel {
 	left:0;
 	top:-5px;
 	bottom:auto;
+	color:lime;
 }
 
 /* magic rainbow */
@@ -3645,7 +3646,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
     bottom: 383px;
     right: 7px;
 }
-.combat.shown .end-combat {
+.combat.shown .end-combat.shown {
 	display:block;
 }
 .draw-cards {
@@ -4068,4 +4069,25 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 #powerTip span.both {
 	color:var(--both_color);
+}
+#powerTip .tooltip-magic {
+	margin-bottom:15px;
+}
+#powerTip .tooltip-magic:last-child {
+	margin-bottom:0;
+}
+#powerTip span.rainbow {
+	color:yellow;
+}
+#powerTip span.elemental {
+	color:rgba(3,194,144,1);
+}
+#powerTip span.dark {
+	color:rgba(160,23,198,1);
+}
+#powerTip span.chaos {
+	color:rgba(218,30,103,1);
+}
+#powerTip span.muddled {
+	color:rgba(38,148,214,1);
 }

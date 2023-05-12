@@ -155,7 +155,7 @@ const ALL_EFFECTS = [
     // creature {base: .9, current: 0, temp: 0, turns: -1, persist: false}, // value should range from .1 (10%) to .9 (90%) - does NOT work exactly the same as punch!
     // buff     {effect: 'resistance', amount: .9, turns: 2}
     // hex     {effect: 'resistance', amount: -.1, hex: true} // untested
-    {id: 'resistance', name: 'Resistance', desc: 'Incoming magic damage multiplier', x: -32, y: -5152, sound: 'effect35'},
+    {id: 'resistance', name: 'Resistance', desc: 'Incoming magic damage multiplier', x: -32, y: -5152, sound: 'effect35', delay: true},
 
     // Usage:
     // creature {base: 5, current: 0, temp: 0, turns: -1, persist: false}
@@ -167,13 +167,13 @@ const ALL_EFFECTS = [
     // creature {base: .5, current: 0, temp: 0, turns: -1, persist: false} // this is a multiplier, so can increment by .1
     // buff     {effect: 'spikes', amount: .5, turns: -1}
     // hex      {effect: 'spikes', amount: -.5, hex: true}
-    {id: 'spikes', name: 'Spikes', desc: 'Any armor lost does x times armor lost dmg back to attacker', x: -384, y: -5184, sound: 'effect15'},
+    {id: 'spikes', name: 'Spikes', desc: 'Any armor lost does x times armor lost dmg back to attacker', x: -384, y: -5184, sound: 'effect15', delay: true},
 
     // Usage:
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'vex', amount: 2, turns: -1}
     // hex      {effect: 'vex', amount: -1, hex: true}
-    {id: 'vex', name: 'Vex', desc: 'Block the next x hexes this combat', x: -482, y: -5856, sound: 'effect23'},
+    {id: 'vex', name: 'Vex', desc: 'Block the next x hexes this combat', x: -482, y: -5856, sound: 'effect23', delay: true},
 
     // Usage:
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
@@ -202,13 +202,13 @@ const ALL_EFFECTS = [
     // Usage:
     // creature {base: 0, current: 2, temp: 2, turns: 2, persist: false}
     // buff     {effect: 'fatality', amount: 2, turns: 2}
-    {id: 'fatality', name: 'Fatality', desc: 'Your next attack card does x times your highest total single damage dealt this run', x: -288, y: -7232, sound: 'effect17'},
+    {id: 'fatality', name: 'Fatality', desc: 'Your next attack card does x times your highest damage hit (fatalities do not increase highest damage hit value)', x: -288, y: -7232, sound: 'effect17'},
 
     // Usage:
     // creature {base: 0, current: 0, temp: .5, turns: 2, persist: false} // this is a multiplier, so can increment by .1
     // buff     {effect: 'retaliate', amount: .5, turns: -1}
     // hex      {effect: 'retaliate', amount: -.5, hex: true}
-    {id: 'retaliate', name: 'Retaliate', desc: 'Any health lost does x times health lost dmg back to attacker', x: -256, y: -6784},
+    {id: 'retaliate', name: 'Retaliate', desc: 'Any health lost does x times health lost dmg back to attacker', x: -256, y: -6784, delay: true},
 
     // Usage:
     // creature {base: 0, current: 0, temp: 1, turns: 2, persist: false}
@@ -251,13 +251,13 @@ const ALL_ABILITIES = [
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
     // buff     {ability: 'unreachable', turns: 1, enabled: true}
     // hex      {ability: 'unreachable', enabled: false, hex: true}
-    {id: 'unreachable', name: 'Unreachable', desc: 'All damage reduced to 1 per attack', x: -224, y: -7424},
+    {id: 'unreachable', name: 'Unreachable', desc: 'All damage reduced to 1 per attack', x: -224, y: -7424, delay: true},
 
     // Usage:
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
     // buff     {ability: 'tank', turns: 2, enabled: true}
     // hex      {ability: 'tank', enabled: false, hex: true}
-    {id: 'tank', name: 'Tank', desc: 'Damage only applies to armor', x: -224, y: -5856, sound: 'effect11'},
+    {id: 'tank', name: 'Tank', desc: 'Damage only applies to armor', x: -224, y: -5856, sound: 'effect11', delay: true},
 
     // Usage:
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
@@ -280,7 +280,7 @@ const ALL_ABILITIES = [
     // Usage:
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
     // buff     {ability: 'hypnotize', turns: 2, enabled: true}
-    {id: 'hypnotize', name: 'Hypnotize', desc: 'A random enemy targets itself', x: -448, y: -5248, sound: 'effect19'},
+    {id: 'hypnotize', name: 'Hypnotize', desc: 'A random enemy targets itself', x: -448, y: -5248, sound: 'effect19', delay: true},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
@@ -417,8 +417,8 @@ export default function Game() {
     let playsounds = true;
     let playmusic = true;
     let tutorial = false;
-    let debug = false;
-    let dev = false;
+    let debug = true;
+    let dev = true;
     let essences = ALL_ESSENCES;
     let effects = ALL_EFFECTS;
     let abilities = ALL_ABILITIES;

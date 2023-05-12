@@ -19,7 +19,7 @@ class Quests {
     }
 }
 
-const ALL_QUESTS = [
+const ALL_QUESTS = [/*
     new Quests({
         id: 'workshop',
         name: 'Workshop',
@@ -54,7 +54,7 @@ const ALL_QUESTS = [
             },
             {id: 'leave', name: 'Leave'}
         ]
-    }),
+    }),*/
     new Quests({
         id: 'alchemy_lab',
         name: 'Alchemy Lab',
@@ -64,7 +64,7 @@ const ALL_QUESTS = [
             {id: 'transform', name: 'Transform', desc: 'Transform 3 cards'},
             {id: 'leave', name: 'Leave'}
         ]
-    }),
+    }),/*
     new Quests({
         id: 'midnight_glade',
         name: 'Midnight Glade',
@@ -1201,7 +1201,7 @@ const ALL_QUESTS = [
             {id: 'run_through', name: 'Run Through', desc: 'Lose 3 max health'},
             {id: 'take_your_time', name: 'Take Your Time', desc: 'Lose 9 health'},
         ]
-    }),
+    }),*/
     
 ];
 
