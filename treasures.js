@@ -907,7 +907,7 @@ const ALL_TREASURES = [
         effects: [
             {effect: 'fatality', amount: 1.1, turns: 1, persist: true}
         ],
-        trigger: {counter: 0, when: 'turns', at: 2, per: 'combat', once: true, activated: false},
+        trigger: {counter: 0, when: 'turns', at: 4, per: 'combat', once: true, activated: false},
         x: -384,
         y: -4064
     }),
@@ -1098,7 +1098,7 @@ const ALL_TREASURES = [
         abilities: [
             {ability: 'tank', turns: 1, enabled: true}
         ],
-        trigger: {counter: 0, when: 'turns', at: 3, per: 'combat', once: false, activated: false},
+        trigger: {counter: 0, when: 'turns', at: 3, per: 'combat', once: true, activated: false},
         x: -32,
         y: -13794
     }),
@@ -1111,7 +1111,7 @@ const ALL_TREASURES = [
         abilities: [
             {ability: 'stockpile', turns: 1, enabled: true}
         ],
-        trigger: {counter: 0, when: 'turns', at: 4, per: 'combat', once: false, activated: false},
+        trigger: {counter: 0, when: 'turns', at: 4, per: 'combat', once: true, activated: false},
         x: -192,
         y: -418
     }),
@@ -1256,8 +1256,9 @@ const ALL_TREASURES = [
         tier: 3,
         rarity: 9,
         effects: [
-            {effect: 'fatality', amount: 1.2, turns: 1, persist: true}
+            {effect: 'fatality', amount: 1.3, turns: 1, persist: true}
         ],
+        trigger: {counter: 0, when: 'turns', at: 3, per: 'combat', once: true, activated: false},
         x: -192,
         y: -4032
     }),

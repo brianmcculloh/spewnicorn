@@ -801,7 +801,7 @@ const ALL_CARDS = [
         id: 'battle_sequence', name: 'Battle Sequence', type: 'tool', mana: 3, retain: true, vanish: true, tier: 'legendary',
         effects: [
             {effect: 'fierce', amount: 5, turns: 1},
-            {effect: 'mastery', amount: .5, turns: 1},
+            {effect: 'mastery', amount: 3, turns: 1},
             {effect: 'rowdy', amount: 30, turns: 1}
         ],
         actions: [
@@ -811,14 +811,14 @@ const ALL_CARDS = [
         shardUpgrades: {
             effects: [
                 {effect: 'fierce', amount: 6, turns: 1},
-                {effect: 'mastery', amount: .6, turns: 1},
+                {effect: 'mastery', amount: 4, turns: 1},
                 {effect: 'rowdy', amount: 40, turns: 1}
             ],
         },
         bothShardUpgrades: {
             effects: [
                 {effect: 'fierce', amount: 7, turns: 1},
-                {effect: 'mastery', amount: .7, turns: 1},
+                {effect: 'mastery', amount: 5, turns: 1},
                 {effect: 'rowdy', amount: 50, turns: 1}
             ],
         }
@@ -1409,7 +1409,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'premeditated_slash', name: 'Premeditated Slash', type: 'attack', mana: 0, tier: 'uncommon', use: 1, pack: 'combine', 
+        id: 'premeditated_slash', name: 'Premeditated Slash', type: 'attack', target: 'monster', mana: 0, tier: 'uncommon', use: 1, pack: 'combine', 
         dmg: [5],
         actions: [
             {action: 'addCard', value: 1, what: 'battle_move', to: 'drawCards'},
@@ -3335,6 +3335,9 @@ const ALL_CARDS = [
             use: 2
         },
         fireShardUpgrades: {
+            draw: {
+                magic: [{type: 'aligned', amount: 2}],
+            },
             draw_2: {
                 magic: [{type: 'aligned', amount: 4}],
             },
@@ -3375,6 +3378,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'bloom', name: 'Bloom', type: 'magic', mana: 0, tier: 'uncommon', pack: 'magic', vanish: true, expire: 1, rarity: 7, courage: 4, 
+        additionalDesc: 'BASE MAGIC ',
         actions: [
             {action: 'stat', what: 'rainbow', key: 'base', value: 1},
         ],
@@ -3767,6 +3771,7 @@ const ALL_CARDS = [
 export function AllCards() {
 
     const cards = ALL_CARDS;
+    let game = window.game;
 
     function getAddableCards(tier = false, type = false, pack = false, exclude = []) {
         let items = cards;
@@ -3794,19 +3799,26 @@ export function AllCards() {
 
             // TODO: re-enable this code after dev is complete
             // standard description
-            //let desc = Deck().buildDescription(items[i]);
-            //items[i].desc = desc;
+            let desc = Deck().buildDescription(items[i]);
+            items[i].desc = desc;
 
             // slots description
-            //let slotDesc = Deck().buildSlotsDescription(items[i]);
-            //items[i].slotDesc = slotDesc;
+            let slotDesc = Deck().buildSlotsDescription(items[i]);
+            items[i].slotDesc = slotDesc;
         }
         return items;
     }
 
+    function getTotalCards() {
+        return cards?.length;
+    }
+
     function buildLibrary() {
-        for(let i = 0; i < this.getAllCards().length; i++) {
-            util.appendCard(this.getAllCards()[i], '.library-panel .cards');
+        if(!game.libraryBuilt) {
+            game.libraryBuilt = true;
+            for(let i = 0; i < this.getTotalCards(); i++) {
+                util.appendCard(this.getAllCards()[i], '.library-panel .cards');
+            }
         }
     }
 
@@ -3814,6 +3826,7 @@ export function AllCards() {
         cards,
         getAddableCards,
         getAllCards,
+        getTotalCards,
         buildLibrary
     }
 }
@@ -3841,6 +3854,12 @@ export function Deck() {
             addCard('spewnicorn_spray');
         }
 
+
+        /*addCard('mystical_energy');
+        addCard('smash_and_grab');
+        addCard('rainbow_charge');
+        addCard('aligned_charge');
+        addCard('chain_mail_armor');*/
     }
 
     function removeCard(guid) {
@@ -4235,6 +4254,7 @@ export function Deck() {
                     if(whatCard != undefined) whatName = whatCard.name;
                     let select = actions[e].select;
                     let type = actions[e].type;
+                    let tier = actions[e].tier;
                     let value = actions[e].value;
                     let to = actions[e].to;
                     let from = actions[e].from;
@@ -4259,6 +4279,7 @@ export function Deck() {
                     select = select != undefined ? ' ' + select : '';
                     select = select == -1 ? ' all' : select;
                     type = type != undefined ? ' ' + type : '';
+                    tier = tier != undefined ? ' ' + tier : '';
                     from = from != undefined ? ' ' + util.getFromDisplay(from) : '';
                     if(cardWith != undefined) {
                         if(cardWith.length > 1) {
@@ -4271,7 +4292,7 @@ export function Deck() {
                     }
                     if(select != '' && type != '' && value != '') {
                         to = to != '' ? ' and add ' + to : '';
-                        actionsDesc += 'Choose ' + select + ' of ' + value + type + ' cards ' + to + cardWith + '. ';
+                        actionsDesc += 'Choose ' + select + ' of ' + value + tier + type + ' cards ' + to + cardWith + '. ';
                     } else {
                         if(type == ' any' || type == ' attack' || type == ' tool' || type == ' ability' || type == ' magic') {
                             type = type != '' ? ' of type ' + type : '';
@@ -4802,10 +4823,9 @@ export function CombatDeck() {
         if(shards.length > 0) {
             for(let i = 0; i < shards.length; i++) {
                 Deck().attachShard(copiedCard, shards[i]);
-                game.toShow.push(card);
+                game.toShow.push(copiedCard);
             }
         }
-        Deck().showShardedCards(combatDeck, player);
 
         combatDeck[part].push(copiedCard);
         updateCardPlayability(player, combatDeck);
@@ -4816,6 +4836,8 @@ export function CombatDeck() {
             let css = copiedCard.playable ? 'playable' : '';
             util.appendCard(copiedCard, '.player-cards', css + retain);
         }
+
+        Deck().showShardedCards(combatDeck, player);
 
     }
 

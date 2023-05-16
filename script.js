@@ -85,18 +85,18 @@
  * 
  * PHASE V:
  * 
- * TODO: I think the transform 3 cards quest only results in one transformed card
- * TODO: Does the Weaponry card only add rare attacks? If so, description needs to reflect that.
- * TODO: drawing cards that have draw damage effects should not be able to crit (currently they do, and they also don't reset crit %)
- * TODO: fatality is progressively hitting WAY too hard - is the actual highest damage roll stored in game object matching what shows in the dom?
- * TODO: Battle Sequence was added via a card reward but it wasn't in the view deck cards until after the next combat (i think)
  * 
+ * TODO: [can't replicate] attack card damage is getting reduced to 0 in combats where mystical energy and smash and grab are played, and rainbow has cycled
+ * --also have black vial and magic dust. smash and grab has flame shard and mystical energy has double frost shards
+ * TODO: [can't replicate] when purchasing relic at the store, remove card becomes too expensive even if i can still afford it
+ * TODO: [can't replicate] Battle Sequence was added via a card reward but it wasn't in the view deck cards until after the next combat
  * 
  * 
  * Play testing
  * -debug email report or text file logging
  * 
  * Stress and Balance testing
+ * -currently no enemies ever have vex
  * 
  * Tutorial			
  * 
@@ -112,7 +112,10 @@
  * 
  * When essence level is maxed out, essence cards should have a different effect. Maybe shimmer increases crit percentage, sparkle increases might, and aura increases mana
  * Monster hexes punch down but player buffs punch up. New damage amount is larger than original but damage amount color is red - should be green.
- * 
+ * Question: if player has might, should draw damage effects have might applied?
+ * When enshardening a card, the quick showshardedcard animation doesn't show the correct damage amounts (it always shows zero)
+ * Ideally hexing punch for different amounts and turn durations in the same turn shouldn't flatly combine. For instance, stun 50% for 2 turns and 25% for 1 turn should
+ * result in 1 turn of 75% stun and 1 turn of 50% stun, rather than 2 turns of 75% stun
  * 
  * 
  * 
@@ -384,7 +387,8 @@ jQuery(document).ready(function($) {
 			let visited = $(this).hasClass('visited') ? true : false;
 			visitFountain(visited);
 		} else if($(this).hasClass('quest')) {
-			visitQuest();
+			let visited = $(this).hasClass('visited') ? true : false;
+			visitQuest(visited);
 		} else {
 			startCombat($(this));
 		}
@@ -398,7 +402,7 @@ jQuery(document).ready(function($) {
 		
 	});
 
-	$(document).on('click', '.end-turn', function(e) {
+	$(document).on('click', '.end-turn:not(.disabled)', function(e) {
 
 		endTurn();
 
@@ -502,6 +506,7 @@ jQuery(document).ready(function($) {
 		let guid = $(this).parent().attr('data-candy-guid');
 		eatCandy(guid);
 		$('.candy[data-guid=' + guid + ']').remove();
+		$('.rewards-loot .candy, .loot-items .candy').addClass('clickable');
 		$('.trash-candy-confirm').removeClass('shown');
 
 	});
@@ -563,6 +568,7 @@ jQuery(document).ready(function($) {
 		}
 		if(game.toPick == 0) {
 			$('.shard-cards-panel').removeClass('shown');
+			$('.draw-card, .end-turn').removeClass('disabled');
 			combatDeck.chooseCards = [];
 		}
 
@@ -632,7 +638,13 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.library', function(e) {
 
-		viewLibrary();
+		if(game.playsounds) sounds.play('viewCards');
+		$('.library-panel, .library-loader').addClass('shown');
+		loadLibrary().done(function() {
+			$('.library-loader').removeClass('shown');
+		}).fail(function() {
+			console.log('Failed to load card library.');
+		});
 
 	});
 
@@ -785,7 +797,7 @@ jQuery(document).ready(function($) {
 		} else {
 			$(this).addClass('selected');
 			game.toPick -= 1;
-			let thisCard = util.getCardByGuid($(this).data('guid'), combatDeck.handCards);
+			let thisCard = util.getCardByGuid($(this).data('guid'), deck.cards);
 			combatDeck.transmutingCards.push(thisCard);
 			if(game.toPick == 0) {
 				combatDeck.transmuteCards(combatDeck, deck, player);
@@ -991,8 +1003,6 @@ function init() {
 
 	deck.buildDeck();
 
-	allCards.buildLibrary();
-
 	util.appendStartingBonuses();
 
 	util.appendBoosterPacks();
@@ -1005,8 +1015,8 @@ function init() {
 	updateEssenceLevels();
 	setStatus();
 
-	addTreasure('black_vial'); // use this to manually add treasures
-	//addCandy('blueberry_gumdrop'); // use this to manually add candies
+	//addTreasure('strongbox'); // use this to manually add treasures
+	//addCandy('pixie_dust'); // use this to manually add candies
 
 }
 
@@ -1034,7 +1044,7 @@ function setStatus(updateCards = true) {
 	$('.game-floor span').html(game.floor);
 	$('.game-round span').html(game.round);
 	$('.all-cards span.counter').html(player.cardsOwned);
-	$('.library span.counter').html(allCards.getAllCards().length);
+	$('.library span.counter').html(allCards.getTotalCards());
 
 	let healthLeft = util.getStatPercentage(player.health.current, player.health.max);
 	let armorLeft = util.getStatPercentage(player.armor, player.health.current);
@@ -1226,8 +1236,16 @@ function viewAllCards() {
 	updateCardDescriptions('allCards');
 }
 function viewLibrary() {
-	if(game.playsounds) sounds.play('viewCards');
-	$('.library-panel').addClass('shown');
+	allCards.buildLibrary();
+}
+function loadLibrary() {
+	// mock AJAX request, just for this demo
+	var deferred = jQuery.Deferred();
+	setTimeout(function() {
+		deferred.resolve();
+		viewLibrary();
+	}, 100);
+	return deferred;
 }
 function viewDrawCards() {
 	if(game.playsounds) sounds.play('viewCards');
@@ -1283,6 +1301,7 @@ function viewPackCards(pack) {
 }
 function chooseShardCard(shard, cards = deck.cards) {
 	$('.shard-cards-panel').addClass('shown');
+	$('.draw-card, .end-turn').addClass('disabled');
 	$('.shard-cards-panel .cards').empty();
 	$('.shard-cards-panel').attr('data-shard', shard);
 	if(game.playsounds) sounds.play('clickShard');
@@ -1460,13 +1479,13 @@ function visitFountain(visited) {
 		$('.fountain-visited').removeClass('shown');
 		$('.magic-fountain').addClass('shown');
 		$('.magic-fountain .fountain-options').addClass('shown');
-		game.floor += 1;
+		//game.floor += 1;
 		setStatus();
 	}
 	
 }
 
-function visitQuest() {
+function visitQuest(visited = false) {
 
 	stopMusic();
 	setTimeout(function() {
@@ -1475,12 +1494,17 @@ function visitQuest() {
 
 	game.mapType = 'quest';
 	$('.quest-screen').addClass('shown');
-	game.floor += 1;
+	//game.floor += 1;
 
 	let possibleQuests = quests.quests.filter(i => i.seen == false);
 	let quest = util.weightedRandom(possibleQuests);
 
-	if(quest != undefined) {
+	if(visited) {
+		$('.quest-screen h2').html('Deja Vu');
+		$('.quest-description').html('You swear you have seen this place before...');
+		let option = {id: 'leave', name: 'Leave'};
+		util.appendOption(option, '.quest-options', false);
+	} else if(quest != undefined) {
 		quest.seen = true;
 
 		game.currentQuest = quest;
@@ -1582,7 +1606,7 @@ function beginTurn() {
 			player.might.current += tempMight;
 			player.might.temp = tempMight;
 		} else if(player.stance == 'shimmer') {
-			let tempRowdy = Math.round(player.speed.current * player.shimmer.level);
+			let tempRowdy = Math.round(player.speed.current * player.shimmer.level * 2);
 			player.rowdy.current += tempRowdy;
 			//player.rowdy.temp = tempRowdy; // this is supposed to be for the rest of combat, not just one turn
 		}
@@ -1620,10 +1644,6 @@ function beginTurn() {
 	$('.card').removeClass('retain');
 	$('.draw-card').removeClass('disabled');
 	$('.crit').removeClass('shown');
-
-	for(let i = 0; i < game.currentMonsters.length; i++) {
-		monsters.updateMonsterStats(game.currentMonsters[i]);
-	}
 
 	combatDeck.updateCardPlayability(player, combatDeck); // necessary for cards that were retained
 
@@ -1797,7 +1817,12 @@ async function monsterAction(action = 'perform') {
 		let thisMonster = currentMonsters[i];
 
 		if(action == 'perform') {
-			thisMonster.block = thisMonster.stout.current;
+			// account for protection enabled
+			if(thisMonster.protection.enabled) {
+				thisMonster.block += thisMonster.stout.current;
+			} else {
+				thisMonster.block = thisMonster.stout.current;
+			}
 			applyArmor(thisMonster.muster.current, thisMonster);
 			// check for regen
 			if(thisMonster.regen.current > 0) {
@@ -1836,7 +1861,7 @@ async function monsterAction(action = 'perform') {
 
 					// check for hypnotize
 					if(game.targetedMonster.guid == thisMonster.guid) {
-						await attackMonster(thisMonster, attackAmount);
+						await attackMonster(thisMonster, attackAmount, false, true);
 					} else {
 						await attackPlayer(thisMonster, attackAmount);
 					}
@@ -1952,9 +1977,19 @@ async function monsterAction(action = 'perform') {
 
 function endTurn(checkRetain = true) {
 
-	// clear effects after x turns
+	// clear standard player effects
 	clearTurnEffects(player);
 	clearTurnAbilities(player);
+	monsters.updateStatusBar(player);
+
+	// clear delayed monster effects
+	let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
+	for(let i = 0; i < currentMonsters.length; i++) {
+		clearTurnEffects(currentMonsters[i], true);
+		clearTurnAbilities(currentMonsters[i], true);
+		monsters.updateMonsterStats(game.currentMonsters[i]);
+	}
+	monsters.updateStatusBar();
 
 	$('body').addClass('selecting retaining');
 
@@ -2012,9 +2047,9 @@ async function monsterTurn() {
 
 	await monsterAction();
 
+	// clear standard monster effects
 	let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
 	for(let i = 0; i < currentMonsters.length; i++) {
-		// clear effects after x turns
 		clearTurnEffects(currentMonsters[i]);
 		clearTurnAbilities(currentMonsters[i]);
 		monsters.updateMonsterStats(game.currentMonsters[i]);
@@ -2039,8 +2074,10 @@ function endMonsterTurn() {
 		currentMonsters[i].chosenMoveSetIndex = -1;
 	}
 
+	// clear delayed player effects
 	clearTurnEffects(player, true);
 	clearTurnAbilities(player, true);
+	monsters.updateStatusBar(player);
 	
 	beginTurn();
 
@@ -2109,7 +2146,8 @@ function clearCombatTreasureCounters() {
 	for(let i = 0; i < player.treasures.length; i++) {
 		let trigger = player.treasures[i].trigger;
 		if(trigger.counter > -1) {
-			if(trigger.per == 'turn' || (trigger.once && trigger.activated)) {
+			//if(trigger.per == 'turn' || (trigger.once && trigger.activated)) {
+			if(trigger.per == 'turn' || (trigger.once && trigger.per == 'combat')) {
 				trigger.counter = 0;
 				$('.treasure[data-id="' + player.treasures[i].id + '"] span.counter').html(trigger.counter);
 			}
@@ -2130,12 +2168,21 @@ function removeHexes(to) {
 
 function applyEffect(effect, to, turns = -1) {
 	// check for vex
-	if(player.vex.current > 0 && effect.hex) {
-		player.vex.current -= 1;
+	if(to.vex.current > 0 && effect.hex) {
+		to.vex.current -= 1;
 		if(game.playsounds) sounds.play('vex');
 	} else {
 		if(effect.amount != undefined) {
-			to[effect.effect].current = Math.round(((to[effect.effect].current + effect.amount) + Number.EPSILON) * 100) / 100;
+			// conjure should never go below 0 because if it does then when player applies any magic it will decrease rathen than increase rainbow
+			// basically when monster hexes conjure we want to reduce any positive conjuring, not go negative
+			let amt = effect.effect == 'conjure' ? 0 : Math.round(((to[effect.effect].current + effect.amount) + Number.EPSILON) * 100) / 100;
+			// punch should never go below 0
+			if(effect.effect == 'punch') {
+				if(amt < 0) {
+					amt = 0;
+				}
+			}
+			to[effect.effect].current = amt;
 			// rainbow is a special case and shouldn't technically be an effect, but it is, so treat it differently
 			if(effect.effect != 'rainbow') {
 				// if turns is set to -1 it means this is not a temporary effect. this way, both permanent and temp effects can be added together
@@ -2144,7 +2191,14 @@ function applyEffect(effect, to, turns = -1) {
 				}
 			}
 			if(turns > -1) {
-				to[effect.effect].turns += turns;
+				// punch works differently
+				if(effect.effect == 'punch') {
+					if(turns > to[effect.effect].turns) {
+						to[effect.effect].turns = turns;
+					}
+				} else {
+					to[effect.effect].turns += turns;
+				}
 			} else {
 				to[effect.effect].turns = turns;
 			}
@@ -2163,14 +2217,14 @@ function applyEffect(effect, to, turns = -1) {
 			let sound = gameEffect.sound ? gameEffect.sound : 'applyEffect';
 			if(game.playsounds) sounds.play(sound);
 		}
-		if(to.type == 'monster') {
-			monsters.updateStatusBar();
-		}
 		if(effect.effect == 'rainbow') {
 			updateRainbowDom(to);
 		}
-		setStatus();
 	}
+	if(to.type == 'monster') {
+		monsters.updateStatusBar();
+	}
+	setStatus();
 }
 
 function clearTurnAbilities(from, delay = false) {
@@ -2199,33 +2253,37 @@ function clearCombatAbilities() {
 }
 
 function applyAbility(ability, to, turns = -1) {
-	to[ability.ability].enabled = ability.enabled;
-	if(to[ability.ability].permanent) {
-		to[ability.ability].baseTurns += turns;
+	if(ability.hex || to[ability.ability].enabled == false) {
+		to[ability.ability].enabled = ability.enabled;
+		if(to[ability.ability].permanent) {
+			to[ability.ability].baseTurns += turns;
+		}
+		if(ability.hex) {
+			to[ability.ability].turns = 0;
+			to[ability.ability].enabled = false;
+			if(game.playsounds) sounds.play('hex');
+		} else {
+			to[ability.ability].turns += turns;
+			let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
+			let sound = gameAbility.sound ? gameAbility.sound : 'applyAbility';
+			if(game.playsounds) sounds.play(sound);
+		}
+		if(to[ability.ability].baseTurns < -1) to[ability.ability].baseTurns = -1;
+		if(to[ability.ability].turns < -1) to[ability.ability].turns = -1;
+		if(ability.persist) {
+			to[ability.ability].persist = ability.persist;
+		}
+		if(ability.permanent) {
+			to[ability.ability].permanent = ability.permanent;
+		}
+		if(to.type == 'monster') monsters.updateStatusBar();
+		setStatus();
 	}
-	if(ability.hex) {
-		to[ability.ability].turns = 0;
-		to[ability.ability].enabled = false;
-		if(game.playsounds) sounds.play('hex');
-	} else {
-		to[ability.ability].turns += turns;
-		let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
-		let sound = gameAbility.sound ? gameAbility.sound : 'applyAbility';
-		if(game.playsounds) sounds.play(sound);
-	}
-	if(to[ability.ability].baseTurns < -1) to[ability.ability].baseTurns = -1;
-	if(to[ability.ability].turns < -1) to[ability.ability].turns = -1;
-	if(ability.persist) {
-		to[ability.ability].persist = ability.persist;
-	}
-	if(ability.permanent) {
-		to[ability.ability].permanent = ability.permanent;
-	}
-	if(to.type == 'monster') monsters.updateStatusBar();
-	setStatus();
 }
 
 function endCombat() {
+
+	console.log('endCombat');
 
 	if(!game.combatEndedFlag) {
 
@@ -2239,7 +2297,11 @@ function endCombat() {
 		
 		setTimeout(function() {
 			if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
-		}, 1000);
+			// in case these don't happen immediately
+			$('.combat, .show-cards, .message, .button-done').removeClass('shown'); 
+			$('.player-cards, .monster-panel').empty();
+			removeArrow();
+		}, 3000);
 
 		game.combatEndedFlag = true;
 
@@ -2247,9 +2309,9 @@ function endCombat() {
 
 		$('.combat, .show-cards, .message, .button-done').removeClass('shown');
 		$('.candy').removeClass('clickable').addClass('trashable');
-		$('.player-cards').empty();
-		$('.monster-panel').empty();
+		$('.player-cards, .monster-panel').empty();
 		$('body').removeClass('combating selecting destroying');
+		removeArrow();
 
 		heal(player, player.heal.current);
 		
@@ -2641,7 +2703,7 @@ async function eatCandy(add, monster = false) {
 	let abilities = candy.abilities;
 	if(abilities != undefined) {
 		for(let e = 0; e < abilities.length; e++) {
-			let turns = abilities[e].baseTurns == undefined ? -1 : abilities[e].baseTurns;
+			let turns = abilities[e].turns == undefined ? -1 : abilities[e].turns;
 			applyAbility(abilities[e], player, turns);
 		}
 	}
@@ -3194,7 +3256,7 @@ async function processCard(card, currentMonster, type, multiply = 1) {
 	}
 
 	let dmg = util.getCardAttribute(card, 'dmg', type);
-	await processDmg(dmg, target, multiply, card);
+	await processDmg(dmg, target, multiply, card, type);
 
 	let blk = util.getCardAttribute(card, 'blk', type);
 	await processBlk(blk, multiply, card);
@@ -3216,16 +3278,16 @@ async function processCard(card, currentMonster, type, multiply = 1) {
 
 }
 
-async function processDmg(dmg, currentMonster, multiply, card = false) {
+async function processDmg(dmg, currentMonster, multiply, card = false, type = false) {
 	if(dmg.length) {
 		for(let i = 0; i < multiply; i++) {
-			let criticalHit = util.chance(game.critChance);
+			let criticalHit = type != 'draw' ? util.chance(game.critChance) : false;
 			for(let i = 0; i < dmg.length; i++) {
 				let thisDmg = dmg[i] + player.momentumAmount;
 				if(currentMonster) {
 					let fatalityHit = false;
 					// check for fatality
-					if(player.fatality.current > 0 && (game.highestDmgRoll * player.fatality.current) > thisDmg) {
+					if(player.fatality.current > 0 && (game.highestDmgRoll * player.fatality.current) > thisDmg && type != 'draw') {
 						thisDmg = game.highestDmgRoll * player.fatality.current;
 						fatalityHit = true;
 					}
@@ -3260,7 +3322,8 @@ async function processDmg(dmg, currentMonster, multiply, card = false) {
 			}
 		}
 		// fatality is the only effect that lasts per card rather than per turn
-		if(card.type == 'attack') {
+		// we also don't want to trigger fatality if the damage is coming from card draw
+		if(card.type == 'attack' && type != 'draw') {
 			if(player.fatality.turns > 0) {
 				player.fatality.turns -= 1;
 				if(player.fatality.turns == 0) {
@@ -3405,8 +3468,11 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 									possibleCards = AllCards().cards.filter(i => i.addable == true && i.tier == actions[e].tier);
 								}
 							}
-					
 						}
+
+						// make sure we're in the correct pack
+						possibleCards = possibleCards.filter(i => i.pack == 'basic' || i.pack == game.boosterPack);
+						
 
 						for(let i = 0; i < actions[e].value; i++) {
 							thisCard = util.randFromArray(possibleCards);
@@ -4184,20 +4250,20 @@ function crit(dmg) {
 	let threshold = 5; // crits are always at least 1.5x dmg
 	threshold += mastery;
 	let multiplier = (util.randIntFromInterval(threshold) / 10) + 1; // multiplier is over and above 1 (100% dmg)
-	let extraDmg = dmg * multiplier;
+	let critDmg = Math.round(dmg * multiplier);
 	let fierce = player.fierce.current;
-	dmg = Math.round(dmg + extraDmg + fierce);
-	$('.crit').addClass('shown').find('span').html(dmg);
-	return dmg;
+	critDmg += fierce;
+	$('.crit').addClass('shown').find('span').html(critDmg);
+	return critDmg;
 }
 
-async function attackMonster(monster, dmg, fatalityHit = false) {
+async function attackMonster(monster, dmg, fatalityHit = false, hypnotizeHit = false) {
 
 	// might effect
 	dmg += player.might.current;
 	dmg = Math.round(dmg * player.punch.current);
 	
-	doDamage(dmg, player, [monster], false, false, fatalityHit);
+	doDamage(dmg, player, [monster], false, false, fatalityHit, hypnotizeHit);
 	
 	monsters.updateMonsterStats(monster);
 
@@ -4385,7 +4451,7 @@ async function attackPlayer(monster, dmg) {
 
 }
 
-async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false, fatalityHit = false) {
+async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false, fatalityHit = false, hypnotizeHit = false) {
 	
 	if(to.length > 0) {
 		for (let i = 0; i < to.length; i++) {
@@ -4424,10 +4490,10 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 				}
 				// armor reduces damage by 50%
 				let armoredDmg = unblockedDmg;
-				// odd damage amounts should affect armor +1 more than health
-				let odd = armoredDmg % 2 == 0 ? 0 : 1;
+				// odd damage amounts should affect armor +1 more than health (unless no armor)
+				let odd = (armoredDmg % 2 == 0) || (to[i].armor == 0) ? 0 : 1;
 				if(!ignoreArmor) {
-					armoredDmg = Math.floor(unblockedDmg / 2);
+					armoredDmg = Math.round(unblockedDmg / 2);
 				}
 				// if we have enough armor, reduce armor and health by 50% of damage
 				if(!ignoreArmor && armoredDmg <= to[i].armor) {
@@ -4439,7 +4505,7 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 						healthLost += armoredDmg;
 						dmgTaken += armoredDmg;
 						to[i].health.current -= armoredDmg;
-						if(armoredDmg > game.highestDmgRoll && !fatalityHit && to[i].type=='monster') {
+						if(armoredDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && to[i].type=='monster') {
 							game.highestDmgRoll = armoredDmg;
 						}
 					}
@@ -4449,7 +4515,7 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 						healthLost += unblockedDmg;
 						dmgTaken += unblockedDmg;
 						to[i].health.current -= unblockedDmg;
-						if(unblockedDmg > game.highestDmgRoll && !fatalityHit && to[i].type=='monster') {
+						if(unblockedDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && to[i].type=='monster') {
 							game.highestDmgRoll = unblockedDmg;
 						}
 					} else {
@@ -4461,14 +4527,14 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 							healthLost += partialDmg;
 							dmgTaken += partialDmg;
 							to[i].health.current -= partialDmg;
-							if(partialDmg > game.highestDmgRoll && !fatalityHit && to[i].type=='monster') {
+							if(partialDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && to[i].type=='monster') {
 								game.highestDmgRoll = partialDmg;
 							}
 						}
 						healthLost += fullDmg;
 						dmgTaken += fullDmg;
 						to[i].health.current -= fullDmg;
-						if(fullDmg > game.highestDmgRoll && !fatalityHit && to[i].type=='monster') {
+						if(fullDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && to[i].type=='monster') {
 							game.highestDmgRoll = fullDmg;
 						}
 						armorLost += to[i].armor;

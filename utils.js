@@ -402,11 +402,21 @@ export default class Util {
                                 data = card.iceShardUpgrades[type][attribute + '_2'];
                             }
                         }
+                        if(card.iceShardUpgrades[type + '_2'] != undefined) {
+                            if(card.iceShardUpgrades[type + '_2'][attribute] != undefined) {
+                                data = card.iceShardUpgrades[type + '_2'][attribute];
+                            }
+                        }
                     } 
                     if(this.getShardNum(card, 'flame') > 1) {
                         if(card.fireShardUpgrades[type] != undefined) {
                             if(card.fireShardUpgrades[type][attribute + '_2'] != undefined) {
                                 data = card.fireShardUpgrades[type][attribute + '_2'];
+                            }
+                        }
+                        if(card.fireShardUpgrades[type + '_2'] != undefined) {
+                            if(card.fireShardUpgrades[type + '_2'][attribute] != undefined) {
+                                data = card.fireShardUpgrades[type + '_2'][attribute];
                             }
                         }
                     }
@@ -518,11 +528,21 @@ export default class Util {
                             data = card.iceShardUpgrades[type][attribute + '_2'];
                         }
                     }
+                    if(card.iceShardUpgrades[type + '_2'] != undefined) {
+                        if(card.iceShardUpgrades[type + '_2'][attribute] != undefined) {
+                            data = card.iceShardUpgrades[type + '_2'][attribute];
+                        }
+                    }
                 } 
                 if(shard == 'flame_2') {
                     if(card.fireShardUpgrades[type] != undefined) {
                         if(card.fireShardUpgrades[type][attribute + '_2'] != undefined) {
                             data = card.fireShardUpgrades[type][attribute + '_2'];
+                        }
+                    }
+                    if(card.fireShardUpgrades[type + '_2'] != undefined) {
+                        if(card.fireShardUpgrades[type + '_2'][attribute] != undefined) {
+                            data = card.fireShardUpgrades[type + '_2'][attribute];
                         }
                     }
                 }

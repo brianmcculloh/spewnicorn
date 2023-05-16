@@ -120,7 +120,7 @@ const ALL_EFFECTS = [
     // creature {base: .5, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'mastery', amount: 5, turns: -1}
     // hex      {effect: 'mastery', amount: -5, hex: true}
-    {id: 'mastery', name: 'Mastery', desc: 'Crit multiplier. Gets added to the base crit multiplier of .5 (150%). range is -20 (0%) to +5 (200%);', x: -320, y: -7200, sound: 'effect22'},
+    {id: 'mastery', name: 'Mastery', desc: 'Crit multiplier. Gets added to the base crit multiplier of 5 (150%). range is -15 (0%) to +5 (200%);', x: -320, y: -7200, sound: 'effect22'},
 
     // Usage:
     // creature {base: 3, current: 0, temp: 0, turns: -1, persist: false}
@@ -245,7 +245,7 @@ const ALL_ABILITIES = [
     // Usage:
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
     // buff     {ability: 'protection', turns: 2, enabled: true}
-    {id: 'protection', name: 'Protection', desc: 'Retain block each turn', x: -160, y: -1182, sound: 'effect10'},
+    {id: 'protection', name: 'Protection', desc: 'Retain block each turn', x: -160, y: -1182, sound: 'effect10', delay: true},
 
     // Usage:
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
@@ -403,7 +403,7 @@ export default function Game() {
     let courageInterval = 7; // TODO: set this to 7
     let removeCardCost = 2;
     let candySlots = 3;
-    let cardRewardNumber = 4;
+    let cardRewardNumber = 3;
     let essenceThresholds = [8, 12, 14, 15]; // TODO: set this to 8, 12, 14, 15
     let aggroThresholds = [10, 15, 20, 22]; // TODO: set this to 10, 15, 20, 22
     let currentMonsters = [];
@@ -417,8 +417,9 @@ export default function Game() {
     let playsounds = true;
     let playmusic = true;
     let tutorial = false;
-    let debug = true;
-    let dev = true;
+    let debug = false;
+    let dev = false;
+    let libraryBuilt = false;
     let essences = ALL_ESSENCES;
     let effects = ALL_EFFECTS;
     let abilities = ALL_ABILITIES;
@@ -560,6 +561,7 @@ export default function Game() {
         animationDmg,
         debug,
         dev,
+        libraryBuilt,
         playsounds,
         playmusic,
         tutorial,

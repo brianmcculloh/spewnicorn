@@ -135,7 +135,7 @@ class Creatures {
         this.category = category;
 
         // player specific
-        this.stance = 'none';
+        this.stance = 'none'; // TODO: reset to 'none'
         this.sparkle = {current: 0, level: 0};
         this.shimmer = {current: 0, level: 0};
         this.aura = {current: 0, level: 0};
@@ -145,7 +145,7 @@ class Creatures {
         this.cardRetain = 0;
         this.treasures = [];
         this.candies = [];
-        this.mana = {base: 3, current: 0, temp: 0}; // TODO: reset to base 3
+        this.mana = {base: 9, current: 0, temp: 0}; // TODO: reset to base 3
         this.rainbow = rainbow;
         this.speed = speed;
         this.momentumAmount = momentumAmount;
@@ -275,7 +275,7 @@ const ALL_MONSTERS = [
         moveSet: [
             {effects: [
                 {effect: 'might', amount: 1, turns: -1},
-                {effect: 'heal', amount: 5, turns: -1},
+                {effect: 'heal', amount: 5, turns: -1}
             ]},
             {dmg: [1, 1, 1]},
             {dmg: [5]},
@@ -305,7 +305,7 @@ const ALL_MONSTERS = [
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'might', amount: 2, turns: -1},
+                {effect: 'might', amount: 2, turns: -1}
             ]},
             {dmg: [8]},
             {dmg: [2, 2]},
@@ -323,7 +323,7 @@ const ALL_MONSTERS = [
         pattern: 'random',
         moveSet: [
             {effects: [
-                {effect: 'might', amount: 2, turns: 2},
+                {effect: 'might', amount: 2, turns: 2}
             ], p: .2},
             {dmg: [8], blk: [4], p: .2},
             {dmg: [4], blk: [8], p: .2},
@@ -340,7 +340,7 @@ const ALL_MONSTERS = [
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'punch', amount: -.2, turns: 1, hex: true},
+                {effect: 'punch', amount: -.2, turns: 1, hex: true}
             ]},
             {effects: [
                 {effect: 'might', amount: 2, turns: 2},
@@ -365,7 +365,7 @@ const ALL_MONSTERS = [
         moveSet: [
             {effects: [
                 {effect: 'rainbow', amount: -5, hex: true},
-                {effect: 'solid', amount: -2, turns: 1, hex: true},
+                {effect: 'solid', amount: -2, turns: 1, hex: true}
             ], p: .2},
             {dmg: [12], p: .2},
             {dmg: [5], blk: [5], p: .3},
@@ -824,7 +824,7 @@ const ALL_MONSTERS = [
             ], p: .2},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: -1, hex: true},
-                {effect: 'resistance', amount: -.1, turns: -1, hex: true},
+                {effect: 'enchanter', amount: -5, turns: -1, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
@@ -1267,24 +1267,23 @@ export function Monster() {
     function buildEffectsDom(to) {
         let dom = '';
         for(let i = 0; i < game.effects.length; i++) {
-            if(to[game.effects[i].id].current != 0) {
-                let turns = to[game.effects[i].id].turns > 0 ? '<span class="turns">' + to[game.effects[i].id].turns + '</span>' : '';
-                let effectText = to[game.effects[i].id].current;
-                if(game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery' || game.effects[i].id == 'resistance') {
-                    effectText = Math.round((effectText + Number.EPSILON) * 100);
-                    effectText += '%';
-                }
-                let amount = '<span class="amount">' + effectText + '</span>';
-                if((game.effects[i].id == 'punch' && to[game.effects[i].id].current == 1) ||
-                    (game.effects[i].id == 'resistance' && to[game.effects[i].id].current == 1) ||
-                    (game.effects[i].id == 'sorcery' && to[game.effects[i].id].current == 1) ||
-                    (game.effects[i].id == 'speed') ||
-                    (game.effects[i].id == 'mana') || 
-                    (game.effects[i].id == 'rainbow')) {
+            
+            if(game.effects[i].id != 'speed' && game.effects[i].id != 'mana' && game.effects[i].id != 'rainbow') {
+                
+                if(((game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery') && (to[game.effects[i].id].current == 1)) ||
+                ((game.effects[i].id != 'punch' && game.effects[i].id != 'sorcery') && (to[game.effects[i].id].current == 0))) {
 
-                    // don't show anything when values are default 100%  
+                    // don't show anything if current value is 0, or if current value is 1 for punch/resistance/sorcery
 
                 } else {
+
+                    let turns = to[game.effects[i].id].turns > 0 ? '<span class="turns">' + to[game.effects[i].id].turns + '</span>' : '';
+                    let effectText = to[game.effects[i].id].current;
+                    if(game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery' || game.effects[i].id == 'resistance') {
+                        effectText = Math.round((effectText + Number.EPSILON) * 100);
+                        effectText += '%';
+                    }
+                    let amount = '<span class="amount">' + effectText + '</span>';
 
                     let x = game.effects[i].x != undefined ? game.effects[i].x : '';
                     let y = game.effects[i].y != undefined ? game.effects[i].y : '';
@@ -1292,7 +1291,9 @@ export function Monster() {
                     dom += "<div class='single-status status-effect tooltip' style='background-position:" + x + "px " + y + "px;' data-id='" + game.effects[i].id + "' data-powertip='" + desc + "'>" + turns + amount + "</div>";
                 
                 }
+
             }
+            
         }
         return dom;
     }

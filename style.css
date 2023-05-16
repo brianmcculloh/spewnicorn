@@ -3964,6 +3964,12 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	transform:translateY(0);
 	opacity:1;
 }
+.library-loader {
+	display:none;
+}
+.library-loader.shown {
+	display:block;
+}
 .cards-panel .buttons-wrapper {
 	position:sticky;
 	display:none;
