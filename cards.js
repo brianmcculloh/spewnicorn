@@ -636,6 +636,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'shimmer', name: 'Shimmer', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'shimmerAmount',
+        descOverride: '+1 Shimmer (+5 Health at max level)',
         actions: [
             {action: 'stat', what: 'shimmer', key: 'current', value: 1},
         ]
@@ -643,6 +644,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'sparkle', name: 'Sparkle', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'sparkleAmount',
+        descOverride: '+1 Sparkle (+1 Speed at max level)',
         actions: [
             {action: 'stat', what: 'sparkle', key: 'current', value: 1},
         ]
@@ -650,6 +652,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'aura', name: 'Aura', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'auraAmount',
+        descOverride: '+1 Aura (+1 Mana at max level)',
         actions: [
             {action: 'stat', what: 'aura', key: 'current', value: 1},
         ]
@@ -1831,7 +1834,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'thwart', name: 'Thwart', type: 'tool', mana: 2, retain: true, rarity: 6, 
+        id: 'thwart', name: 'Thwart', type: 'tool', target: 'monster', mana: 2, retain: true, rarity: 6, 
         blk: [10],
         effects: [
             {effect: 'might', amount: -1, turns: 1, hex: true},
@@ -2681,8 +2684,8 @@ const ALL_CARDS = [
         sound: 'tool23',
         blk: [8],
         actions: [
-            {action: 'destroy', value: 4},
             {action: 'draw', value: 4},
+            {action: 'destroy', value: 4},
         ],
         draw: {
             blk: [1],
@@ -2692,8 +2695,8 @@ const ALL_CARDS = [
         shardUpgrades: {
             blk: [12],
             actions: [
-                {action: 'destroy', value: 6},
                 {action: 'draw', value: 6},
+                {action: 'destroy', value: 6},
             ],
         },
         bothShardUpgrades: {
@@ -3034,17 +3037,17 @@ const ALL_CARDS = [
     new Cards({
         id: 'guzzle', name: 'Guzzle', type: 'ability', mana: 1, tier: 'rare', rarity: 6, courage: 5,
         effects: [
-            {effect: 'vigor', amount: 1, turns: -1}
+            {effect: 'vigor', amount: .75, turns: -1}
         ],
         slots: 2,
         shardUpgrades: {
             effects: [
-                {effect: 'vigor', amount: 1.5, turns: -1}
+                {effect: 'vigor', amount: 1, turns: -1}
             ],
         },
         bothShardUpgrades: {
             effects: [
-                {effect: 'vigor', amount: 1.75, turns: -1}
+                {effect: 'vigor', amount: 1.25, turns: -1}
             ],
         },
     }),
@@ -3854,12 +3857,6 @@ export function Deck() {
             addCard('spewnicorn_spray');
         }
 
-
-        /*addCard('mystical_energy');
-        addCard('smash_and_grab');
-        addCard('rainbow_charge');
-        addCard('aligned_charge');
-        addCard('chain_mail_armor');*/
     }
 
     function removeCard(guid) {
@@ -4014,12 +4011,12 @@ export function Deck() {
 
         // effects
         let effects = shard ? util.getShardAttribute(card, shard, 'effects') : util.getCardAttribute(card, 'effects');
-        let effectsDesc = buildEffectsDescription(effects, desc);
+        let effectsDesc = buildEffectsDescription(effects, desc, thisCard);
         desc += effectsDesc;
 
         // abilities
         let abilities = shard ? util.getShardAttribute(card, shard, 'abilities') : util.getCardAttribute(card, 'abilities');
-        let abilitiesDesc = buildAbilitiesDescription(abilities, desc);
+        let abilitiesDesc = buildAbilitiesDescription(abilities, desc, thisCard);
         desc += abilitiesDesc;
 
         // actions
@@ -4133,12 +4130,12 @@ export function Deck() {
 
                 // effects
                 let effects = shard ? util.getShardAttribute(card, shard, 'effects', noun) : util.getCardAttribute(card, 'effects', noun);
-                let effectsDesc = buildEffectsDescription(effects, behaviorDesc);
+                let effectsDesc = buildEffectsDescription(effects, behaviorDesc, thisCard);
                 behaviorDesc += effectsDesc;
 
                 // abilities       
                 let abilities = shard ? util.getShardAttribute(card, shard, 'abilities', noun) : util.getCardAttribute(card, 'abilities', noun);
-                let abilitiesDesc = buildAbilitiesDescription(abilities, behaviorDesc);
+                let abilitiesDesc = buildAbilitiesDescription(abilities, behaviorDesc, thisCard);
                 behaviorDesc += abilitiesDesc;
 
                 // actions
@@ -4191,7 +4188,7 @@ export function Deck() {
         return triggerDesc;
     }
 
-    function buildEffectsDescription(effects, behaviorDesc) {
+    function buildEffectsDescription(effects, behaviorDesc, thisCard) {
         let effectsDesc = '';
         if(effects != undefined) {
             if(effects.length > 0) {
@@ -4205,6 +4202,11 @@ export function Deck() {
                     let turns = effects[e].turns > 0 ? ' <span class="desc-turns">for ' + effects[e].turns + ' turn' + plural + '</span> ' : '';
                     let effectText = effects[e].amount;
                     let effectAmount = effects[e].amount;
+                    let desc = '';
+                    if(thisCard.type == 'ability') {
+                        let gameEffect = game.effects.find(({ id }) => id === effects[e].effect);
+                        desc = ' <span class="effect-description">(' + gameEffect.desc + ')</span>';
+                    }
                     if(effectText == undefined) {
                         effectText = effects[e].base;
                         effectAmount = effects[e].base;
@@ -4213,14 +4215,14 @@ export function Deck() {
                         effectText = Math.round((effectText + Number.EPSILON) * 100);
                         effectText += '%';
                     }
-                    effectsDesc += ' <span class="amount ' + effects[e].effect + '" data-amount="' + effectAmount + '">' + effectText + '</span> ' + effects[e].effect + turns + '</div>';
+                    effectsDesc += ' <span class="amount ' + effects[e].effect + '" data-amount="' + effectAmount + '">' + effectText + '</span> ' + '<span class="effect-text">' + effects[e].effect + '</span>' + desc + turns + '</div>';
                 }
             }
         }
         return effectsDesc;
     }
 
-    function buildAbilitiesDescription(abilities, behaviorDesc) {
+    function buildAbilitiesDescription(abilities, behaviorDesc, thisCard) {
         let abilitiesDesc = '';
         if(abilities != undefined) {
             if(abilities.length > 0) {
@@ -4232,7 +4234,12 @@ export function Deck() {
                     }
                     let plural = abilities[e].turns > 1 ? 's' : '';
                     let turns = abilities[e].turns > 0 ? ' for ' + abilities[e].turns + ' turn' + plural : '';
-                    abilitiesDesc += abilities[e].ability + turns + '</div>';
+                    let desc = '';
+                    if(thisCard.type == 'ability') {
+                        let gameAbility = game.abilities.find(({ id }) => id === abilities[e].ability);
+                        desc = ' <span class="ability-description">(' + gameAbility.desc + ')</span>';
+                    }
+                    abilitiesDesc += '<span class="ability-text">' + abilities[e].ability + '</span>' + desc + turns + '</div>';
                 }
             }
         }

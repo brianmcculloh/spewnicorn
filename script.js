@@ -85,11 +85,16 @@
  * 
  * PHASE V:
  * 
+ * TODO: Bless from the Bracelet treasure isn't working
  * 
+ * 
+ * TODO: [can't replicate] Mystical Energy when played a second time (double sharded - flame & frost) summons -3 rainbow instead of +10,
+ * --and then a third time does nothing (also effects other magic)
  * TODO: [can't replicate] attack card damage is getting reduced to 0 in combats where mystical energy and smash and grab are played, and rainbow has cycled
  * --also have black vial and magic dust. smash and grab has flame shard and mystical energy has double frost shards
  * TODO: [can't replicate] when purchasing relic at the store, remove card becomes too expensive even if i can still afford it
- * TODO: [can't replicate] Battle Sequence was added via a card reward but it wasn't in the view deck cards until after the next combat
+ * TODO: [can't replicate] battle Sequence was added via a card reward but it wasn't in the view deck cards until after the next combat
+ * TODO: [can't replicate] sometimes highest damage roll doesn't update - crit related?
  * 
  * 
  * Play testing
@@ -110,7 +115,6 @@
  * 
  * Fine Tuning and Quality of Life fixes
  * 
- * When essence level is maxed out, essence cards should have a different effect. Maybe shimmer increases crit percentage, sparkle increases might, and aura increases mana
  * Monster hexes punch down but player buffs punch up. New damage amount is larger than original but damage amount color is red - should be green.
  * Question: if player has might, should draw damage effects have might applied?
  * When enshardening a card, the quick showshardedcard animation doesn't show the correct damage amounts (it always shows zero)
@@ -1015,7 +1019,7 @@ function init() {
 	updateEssenceLevels();
 	setStatus();
 
-	//addTreasure('strongbox'); // use this to manually add treasures
+	//addTreasure('pricket'); // use this to manually add treasures
 	//addCandy('pixie_dust'); // use this to manually add candies
 
 }
@@ -2110,6 +2114,8 @@ function clearTurnEffects(from, delay = false) {
 					from[game.effects[i].id].temp = 0;
 				}
 			}
+			// make sure .199999999 goes to .2
+			from[game.effects[i].id].current = Math.round(from[game.effects[i].id].current * 10) / 10;
 		}
 	}
 
@@ -2159,9 +2165,10 @@ function clearCombatTreasureCounters() {
 function removeHexes(to) {
 	for(let i = 0; i < game.effects.length; i++) {
 		if(to[game.effects[i].id].hexed) {
+			let current = game.effects[i].id == 'sorcery' || game.effects[i].id == 'punch' ? 1 : 0;
 			to[game.effects[i].id].temp = 0;
 			to[game.effects[i].id].turns = 0;
-			to[game.effects[i].id].current = 0;
+			to[game.effects[i].id].current = current;
 		}
 	}
 }
@@ -2560,6 +2567,8 @@ function gateScreen() {
 }
 
 function courageScreen() {
+
+	if(game.mapType == 'fountain') return false; // courage screen would have displayed prior to the fountain screen
 
 	if(game.floor % game.courageInterval == 0) {
 
@@ -3082,6 +3091,8 @@ function updateCritChance() {
 	if(crit > 100) crit = 100;
 	game.critChance = crit;
 
+	//game.critChance = 100; // dev purposes only
+
 }
 
 function combineCards(elem) {
@@ -3275,6 +3286,8 @@ async function processCard(card, currentMonster, type, multiply = 1) {
 
 	let actions = util.getCardAttribute(card, 'actions', type);
 	await processActions(actions, false, multiply, card);
+
+	combatDeck.updateCardPlayability(player, combatDeck);
 
 }
 
@@ -3473,7 +3486,6 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						// make sure we're in the correct pack
 						possibleCards = possibleCards.filter(i => i.pack == 'basic' || i.pack == game.boosterPack);
 						
-
 						for(let i = 0; i < actions[e].value; i++) {
 							thisCard = util.randFromArray(possibleCards);
 							possibleCards = possibleCards.filter(i => i.id !== thisCard.id);
@@ -3647,29 +3659,43 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						}
 					break;
 					case 'stat':
-						if(actions[e].key == undefined) {
+						let key = actions[e].key;
+						let what = actions[e].what;
+						let value = actions[e].value;
+						// if essence levels are maxed out, increase alternative stats
+						if((what == 'aura' && player.aura.level > game.essences.length)) {
+							what = 'mana'; // key is already 'current' and value is already 1
+						} else if ((what == 'sparkle' && player.sparkle.level > game.essences.length)) {
+							what = 'speed'; // key is already 'current' and value is already 1
+						} else if ((what == 'shimmer' && player.shimmer.level > game.essences.length)) {
+							what = 'health'; // key is already 'current'
+							value = 5;
+							// some other options would be increase raindow, increase courage, or decrease aggro
+							// armor and block won't work in the current state unless we account for them as we have courage below
+						}
+						if(key == undefined) {
 							// hacky provision for courage :( - it's the only simple/single value stat that needs to change numerically
-							if(actions[e].what == 'courage') {
-								player[actions[e].what] += actions[e].value;
+							if(what == 'courage') {
+								player[what] += value;
 							} else {
-								player[actions[e].what] = actions[e].value;
+								player[what] = value;
 							}
 						} else {
-							if(actions[e].key == 'type') {
-								player[actions[e].what][actions[e].key] = actions[e].value;
+							if(key == 'type') {
+								player[what][key] = value;
 							} else {
 								// we will actually increase the essence stats within the updateEssenceLevels function called below
-								if(actions[e].what != 'aura' && actions[e].what != 'sparkle' && actions[e].what != 'shimmer') {
-									player[actions[e].what][actions[e].key] += actions[e].value;
+								if(what != 'aura' && what != 'sparkle' && what != 'shimmer') {
+									player[what][key] += value;
 								}
 								// if we increased speed we might need to re-enable draw card button
-								if(actions[e].what == 'speed' && actions[e].value > 0) {
+								if(what == 'speed' && value > 0) {
 									$('.draw-card').removeClass('disabled');
 								}
 							}
 						}
 						// if we're changing the rainbow max stat, need to process possible rainbow activation & dom
-						if(actions[e].what == 'rainbow') {
+						if(what == 'rainbow') {
 							//updateRainbowDom(player);
 							if(player.rainbow.current >= player.rainbow.max) {
 
@@ -3682,12 +3708,12 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							player.health.current = player.health.max;
 						}
 						// if we're updating stats with UI, need to process
-						if(actions[e].what == 'aura' || actions[e].what == 'sparkle' || actions[e].what == 'shimmer') {
-							updateEssenceLevels(actions[e].what, actions[e].value);
-						} else if(actions[e].what != 'rainbow') {
+						if(what == 'aura' || what == 'sparkle' || what == 'shimmer') {
+							updateEssenceLevels(what, value);
+						} else if(what != 'rainbow') {
 							if(game.playsounds) {
-								if(actions[e].value > 0) {
-									if(actions[e].what == 'courage') {
+								if(value > 0) {
+									if(what == 'courage') {
 										sounds.play('courage');
 									} else {
 										sounds.play('statUp');
@@ -4267,8 +4293,10 @@ async function attackMonster(monster, dmg, fatalityHit = false, hypnotizeHit = f
 	
 	monsters.updateMonsterStats(monster);
 
-	if(monsters.dead(monster)) {
+	if(monsters.dying(monster)) {
 		if(game.playsounds) sounds.play('death');
+	}
+	if(monsters.dead(monster)) {
 		util.removeMonster(monster.guid);
 	}
 	
@@ -4388,8 +4416,10 @@ async function activateRainbow(type, to) {
 	await doDamage(dmg, undefined, whichMonster, ignoreBlock, ignoreArmor);
 	for(let i = 0; i < game.currentMonsters.length; i++) {
 		monsters.updateMonsterStats(game.currentMonsters[i]);
-		if(monsters.dead(game.currentMonsters[i])) {
+		if(monsters.dying(game.currentMonsters[i])) {
 			if(game.playsounds) sounds.play('death');
+		}
+		if(monsters.dead(game.currentMonsters[i])) {
 			util.removeMonster(game.currentMonsters[i].guid);
 		}
 		if(monsters.allDead()) {

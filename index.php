@@ -461,7 +461,7 @@
 
         <div class="fountain-options shown buttons-wrapper">
 
-          <div class="button fountain-drink" data-amount="15" data-armor="5">Drink (+15 Health &amp; +5 Armor)</div>
+          <div class="button fountain-drink" data-amount="20" data-armor="5">Drink (+20 Health &amp; +5 Armor)</div>
 
           <div class="button fountain-search">Search (Find A Shard)</div>
 

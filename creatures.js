@@ -145,7 +145,7 @@ class Creatures {
         this.cardRetain = 0;
         this.treasures = [];
         this.candies = [];
-        this.mana = {base: 9, current: 0, temp: 0}; // TODO: reset to base 3
+        this.mana = {base: 3, current: 0, temp: 0}; // TODO: reset to base 3
         this.rainbow = rainbow;
         this.speed = speed;
         this.momentumAmount = momentumAmount;
@@ -926,6 +926,15 @@ export function Monster() {
     let monsters = ALL_MONSTERS;
     let game = window.game;
 
+    function dying(monster) {
+        if(monster.health.current == 0 && !monster.dead) {
+            monster.dead = true;
+            return true;
+        }
+        return false;
+    }
+
+
     function dead(monster) {
         if(monster.health.current == 0 || monster.dead) {
             monster.dead = true;
@@ -1365,6 +1374,7 @@ export function Monster() {
     return {
         monsters,
         dead,
+        dying,
         allDead,
         buildStatsDom,
         buildEffectsDom,

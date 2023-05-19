@@ -400,7 +400,7 @@ export default function Game() {
     let courageTreasureAmount = 5;
     let courageCandyAmount = 5;
     let courageCardAmount = 2;
-    let courageInterval = 7; // TODO: set this to 7
+    let courageInterval = 5; // TODO: set this to 5
     let removeCardCost = 2;
     let candySlots = 3;
     let cardRewardNumber = 3;
