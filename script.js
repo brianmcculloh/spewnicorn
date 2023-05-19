@@ -85,7 +85,8 @@
  * 
  * PHASE V:
  * 
- * TODO: Bless from the Bracelet treasure isn't working
+ * TODO: Does clicking the next tile too quickly after a combat skip that combat?
+ * TODO: Make sure my recent ability change doesn't screw up other cards/treasures
  * 
  * 
  * TODO: [can't replicate] Mystical Energy when played a second time (double sharded - flame & frost) summons -3 rainbow instead of +10,
@@ -1019,7 +1020,7 @@ function init() {
 	updateEssenceLevels();
 	setStatus();
 
-	//addTreasure('pricket'); // use this to manually add treasures
+	//addTreasure('sifter'); // use this to manually add treasures
 	//addCandy('pixie_dust'); // use this to manually add candies
 
 }
@@ -2264,6 +2265,8 @@ function applyAbility(ability, to, turns = -1) {
 		to[ability.ability].enabled = ability.enabled;
 		if(to[ability.ability].permanent) {
 			to[ability.ability].baseTurns += turns;
+		} else {
+			to[ability.ability].baseTurns = ability.baseTurns;
 		}
 		if(ability.hex) {
 			to[ability.ability].turns = 0;
@@ -2289,8 +2292,6 @@ function applyAbility(ability, to, turns = -1) {
 }
 
 function endCombat() {
-
-	console.log('endCombat');
 
 	if(!game.combatEndedFlag) {
 
