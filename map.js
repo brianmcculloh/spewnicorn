@@ -90,35 +90,42 @@ export default function Map() {
             if (i == iceGateTiles[iceGateTile]) {
                 $(this).html('<span class="icon"></span>');
                 $(this).parent().addClass('gate ice-gate');
+                $(this).parent().attr('data-powertip', 'Ice Gate');
             } else if(i == fireGateTiles[fireGateTile]) {
                 $(this).html('<span class="icon"></span>');
                 $(this).parent().addClass('gate fire-gate');
+                $(this).parent().attr('data-powertip', 'Fire Gate');
             } else {
                 // arenas
                 if (i == j | i == k || i == l) {
                     $(this).html('<span class="icon"></span>');
                     $(this).parent().addClass('arena');
+                    $(this).parent().attr('data-powertip', 'Arena Battle');
                 } else {
-                    fountainChance++;
+                    fountainChance+=game.fountainChance;
                     // fountains
                     if(util.chance(fountainChance) && excludedTilesFountain.indexOf(i) < 0) {
                         $(this).html('<span class="icon"></span>');
                         $(this).parent().addClass('fountain');
+                        $(this).parent().attr('data-powertip', 'Magic Fountain');
                         fountainChance = 0;
                     } else {
-                        questChance++;
+                        questChance+=game.questChance;
                         // quests
                         if(util.chance(questChance) && excludedTilesQuest.indexOf(i) < 0) {
                             $(this).html('<span class="icon"></span>');
                             $(this).parent().addClass('quest');
+                            $(this).parent().attr('data-powertip', 'Quest');
                             questChance = 0;
                         } else {
                             // normal fights
                             let essence = util.randFromArray(game.essences);
-                            let desc = "<span class='" + essence + "' style='text-transform:capitalize'>" + essence + "</span> essence";
-                            $(this).html('<span class="icon tooltip" data-powertip="' + desc + '"></span>');
+                            let desc = "<span class='" + essence + "' style='text-transform:capitalize'>" + essence + "</span> Essence Combat";
+                            //$(this).html('<span class="icon tooltip" data-powertip="' + desc + '"></span>');
+                            $(this).html('<span class="icon"></span>');
                             $(this).parent().attr('data-essence', essence);
                             $(this).parent().attr('data-amount', 1);
+                            $(this).parent().attr('data-powertip', desc);
                             $(this).parent().addClass(essence);
                         }
                     }

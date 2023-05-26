@@ -204,7 +204,7 @@
       <div class="dead-cards icon-button tooltip" data-powertip="Dead cards"><div class="icon"></div><span class="counter"></span></div>
 
       <div class="stance">
-        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> unused speed converts to crit percentage x2.<br /><br /><span class='sparkle'>Sparkle:</span> unused speed converts to temporary might on the next turn.<br /><br /><span class='aura'>Aura:</span> unused speed converts to mana.<br /><br />None: unused speed converts to block."></div>
+        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> unused speed converts to block, armor, health, and max health next turn.<br /><br /><span class='sparkle'>Sparkle:</span> unused speed converts to temporary might next turn.<br /><br /><span class='aura'>Aura:</span> unused speed converts to mana next turn.<br /><br />None: unused speed converts to block next turn."></div>
         <div class="icon-stance tooltip" data-stance="none" data-powertip="<span class='highlight'>Stance:</span> None"></div>
       </div>
 
@@ -241,7 +241,7 @@
 
         <?php // Create the map
         $j = 0; for ($i = 1; $i <= 100; $i++) { $j++;
-          $class='tile';
+          $class='tile tooltip';
           if($i == 1) $class .= ' clickable'; 
           if($j % 10 == 0) {
             $class .= ' last-col';
@@ -262,7 +262,7 @@
           
           ?>
 
-          <div id="tile-<?php echo $i; ?>" class="<?php echo $class; ?>" data-shimmer="0" data-sparkle="0" data-aura="0">
+          <div id="tile-<?php echo $i; ?>" class="<?php echo $class; ?>" data-powertip="Map Tile" data-shimmer="0" data-sparkle="0" data-aura="0">
             <div><?php echo $html; ?></div>
           </div>
 
@@ -461,11 +461,11 @@
 
         <div class="fountain-options shown buttons-wrapper">
 
-          <div class="button fountain-drink" data-amount="20" data-armor="5">Drink (+20 Health &amp; +5 Armor)</div>
+          <div class="button fountain-drink" data-amount="25" data-armor="5">Drink (+25 Health &amp; +5 Armor)</div>
 
           <div class="button fountain-search">Search (Find A Shard)</div>
 
-          <div class="button fountain-frolic" data-amount="3">Frolic (+3 Courage)</div>
+          <div class="button fountain-frolic" data-amount="4">Frolic (+4 Courage)</div>
 
           <div class="fountain-visited">This fountain has dried up.</div>
 
@@ -628,7 +628,7 @@
 
           <div class="rainbow-power-amount"><span class="rainbow-power-current"></span>/<span class="rainbow-power-max"></span></div>
 
-          <div class="magic-type"><span class="tooltip" data-powertip="<div class='tooltip-magic'><span class='rainbow'>Rainbow Magic: </span>Does damage to all monsters.</div><div class='tooltip-magic'><span class='elemental'>Elemental Magic: </span>Does damage to all monsters ignoring block.</div><div class='tooltip-magic'><span class='dark'>Dark Magic: </span>Does damage to all monsters ignorning armor.</div><div class='tooltip-magic'><span class='chaos'>Chaos Magic: </span>Does double damage to all monsters.</div><div class='tooltip-magic'><span class='muddled'>Muddled Magic: </span>Does damage to one random monster.</div>"></span> Magic</div>
+          <div class="magic-type"><span class="tooltip" data-powertip="<div class='tooltip-magic'><span class='rainbow'>Rainbow Magic: </span>Does damage to all monsters.</div><div class='tooltip-magic'><span class='elemental'>Elemental Magic: </span>Does damage to all monsters ignoring block.</div><div class='tooltip-magic'><span class='dark'>Dark Magic: </span>Does damage to all monsters ignorning armor.</div><div class='tooltip-magic'><span class='chaos'>Chaos Magic: </span>Does double damage to a random monster.</div><div class='tooltip-magic'><span class='muddled'>Muddled Magic: </span>Does damage to a random monster.</div>"></span> Magic</div>
 
           <div class="rainbow-power">
             <div class="mask">

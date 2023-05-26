@@ -23,9 +23,9 @@ const ALL_BOOSTER_PACKS = [
 ];
 
 const ALL_ESSENCES = [
-    'sparkle',  // unused speed converts to temporary might on the next turn (attack build)
-    'shimmer',  // unused speed converts to rowdy for the rest of combat (damage build)
-    'aura',     // unused speed converts to mana (energy build)
+    'sparkle',  // unused speed converts to temporary might next turn
+    'shimmer',  // unused speed converts to speed next turn
+    'aura',     // unused speed converts to mana next turn
 ];
 /*********************************************
  * 
@@ -38,6 +38,10 @@ const ALL_ESSENCES = [
  * This way, if an effect that should carry over to the next combat has 5 turns left, it will
  * not be cleared at the end of combat, but will be cleared at the end of the turn in which it hits 0.
  * Use turns: -1 if you want the effect to be permanent
+ * 
+ * NORMAL: effect should clear at the end of your turn
+ * DELAY: effect should clear after opponent finishes their turn
+ * OFFSET: effect should clear at the beginning of your next turn AFTER some pre-turn things happen (such as gaining block)
  * 
 *********************************************/
 const ALL_EFFECTS = [
@@ -239,13 +243,14 @@ const ALL_EFFECTS = [
  * You currently cannot go from baseTurns: 3 (temporary) to baseTurns: -1 (permanent) // TODO: fix this
  * -Ideally the fix would be to buff with baseTurns: -1, which would immediately set baseTurns to -1 instead of just decrementing it by one (which is what it does now)
  * 
+ * DELAY/OFFSET - see description in effects above
 *********************************************/
 const ALL_ABILITIES = [
 
     // Usage:
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
     // buff     {ability: 'protection', turns: 2, enabled: true}
-    {id: 'protection', name: 'Protection', desc: 'Retain block each turn', x: -160, y: -1182, sound: 'effect10', delay: true},
+    {id: 'protection', name: 'Protection', desc: 'Retain block each turn', x: -160, y: -1182, sound: 'effect10', offset: true},
 
     // Usage:
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
@@ -378,6 +383,8 @@ export default function Game() {
     let mapType = 'normal';
     let boosterPack = 'basic';
     let arenasComplete = 0;
+    let fountainChance = 1.4;
+    let questChance = 1.6;
     let treasureChance = 0; // TODO: set to 0
     let candyChance = 0; // TODO: set to 0
     let shardChance = 0;
@@ -523,6 +530,8 @@ export default function Game() {
         mapType,
         boosterPack,
         arenasComplete,
+        fountainChance,
+        questChance,
         treasureChance,
         candyChance,
         shardChance,

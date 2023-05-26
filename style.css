@@ -740,6 +740,12 @@ body.game-started #splash .panel .difficulty {
 	scale:1.2;
 }
 .candy.selected {
+	filter:
+		drop-shadow(1px 1px 0 yellow)
+		drop-shadow(1px -1px 0 yellow)
+		drop-shadow(-1px 1px 0 yellow)
+		drop-shadow(-1px -1px 0 yellow)
+		drop-shadow(0 0 10px yellow);
 	animation: candythrob .5s ease-in-out infinite;
 }
 @keyframes candythrob {
@@ -1800,12 +1806,17 @@ body.arena .monster-panel {
 	width:310px;
 	height:36px;
 	background:#333;
+	border-right:3px solid rgba(252, 28, 3, 1);
 }
-.player-panel .creature-health {
-	border:3px solid transparent;
+.player-health.creature-health {
+	border-top:3px solid rgba(252, 28, 3, 1);
+	border-bottom:3px solid rgba(252, 28, 3, 1);
+	border-left:3px solid rgba(252, 28, 3, 1);
 }
 .creature-health.blocked {
-	border:3px solid var(--block_color);
+	border-top:3px solid var(--block_color);
+	border-bottom:3px solid var(--block_color);
+	border-left:3px solid var(--block_color);
 	height:36px;
 }
 .creature-health .health-amount {
@@ -1823,9 +1834,9 @@ body.arena .monster-panel {
 .creature-health .health-number {
 	position:absolute;
 	right:-14px;
-	top:-10px;
 	width:20px;
-	font-size:13px;
+	font-size:18px;
+	top:-14px;
 }
 .creature-health .armor-amount {
 	display:flex;
@@ -1842,9 +1853,9 @@ body.arena .monster-panel {
 .creature-health .armor-number {
 	position:absolute;
 	right:-14px;
-	bottom:-8px;
+	bottom:-11px;
 	width:20px;
-	font-size:13px;
+	font-size:18px;
 }
 .creature-health .block-amount {
 	position:absolute;
@@ -2109,7 +2120,7 @@ body.arena .monster-panel {
 	left:240px;
 }
 .combat-log {
-	z-index:3;
+	z-index:9;
 	font-size:40px;
 	width:80px;
 	position:relative;
@@ -2990,6 +3001,27 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 #card-acuity .card-image {
 	background-position:calc(-780px * .92) calc(-3974px * .92);
+}
+#card-cardistry .card-image {
+	background-position:calc(-975px * .92) calc(-3974px * .92);
+}
+#card-haste .card-image {
+	background-position:calc(-1365px * .92) calc(-3974px * .92);
+}
+#card-patience .card-image {
+	background-position:0 calc(-4132px * .92);
+}
+#card-uniformity .card-image {
+	background-position:calc(-195px * .92) calc(-4132px * .92);
+}
+#card-magic_bonus .card-image {
+	background-position:calc(-390px * .92) calc(-4132px * .92);
+}
+#card-magic_multiplier .card-image {
+	background-position:calc(-585px * .92) calc(-4132px * .92);
+}
+#card-prisma .card-image {
+	background-position:calc(-780px * .92) calc(-4132px * .92);
 }
 
 /* MAGIC */

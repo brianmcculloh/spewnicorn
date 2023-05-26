@@ -11,38 +11,38 @@ class Creatures {
         actions = [],
 
         // effects
-        solid = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        speed = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        might = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},  
-        punch = {base: 1, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        mend = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},  
-        craft = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false}, 
-        cunning = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},  
-        vigor = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},   
-        stout = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},  
-        muster = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false}, 
-        rowdy = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false}, 
-        fierce = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false}, 
-        mastery = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},  
-        heal = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false}, 
-        conjure = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false}, 
-        sorcery = {base: 1, current: 0, temp: 0, turns: 0, persist: false, hexed: false}, 
-        rainbow = {base: 0, current: 0, temp: 0, turns: 0, max: 0, type: 'rainbow'},
-        momentum = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false}, 
-        wield = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false}, 
-        resistance = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        lemonade = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        spikes = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        vex = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        mage = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        enchanter = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        summon = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        arcane = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        fatality = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        retaliate = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        mystery = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        regen = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
-        wisdom = {base: 0, current: 0, temp: 0, turns: 0, persist: false, hexed: false},
+        solid = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        speed = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        might = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
+        punch = {base: 1, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        mend = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
+        craft = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
+        cunning = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
+        vigor = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},   
+        stout = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
+        muster = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
+        rowdy = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
+        fierce = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
+        mastery = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
+        heal = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
+        conjure = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
+        sorcery = {base: 1, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
+        rainbow = {base: 0, current: 0, temp: [], turns: 0, max: 0, type: 'rainbow'},
+        momentum = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
+        wield = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
+        resistance = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        lemonade = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        spikes = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        vex = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        mage = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        enchanter = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        summon = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        arcane = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        fatality = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        retaliate = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        mystery = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        regen = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        wisdom = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
 
         // abilities
         protection = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
@@ -195,10 +195,10 @@ const ALL_MONSTERS = [
 
         // monsters can have default effects
 
-        cunning: {base: 1, current: 0, temp: 2, turns: 2},
-        cunning: {base: 1, current: 0, temp: 2, turns: 4, persist: true},
-        might: {base: 1, current: 0, temp: 0, turns: -1},
-        punch: {base: 1.1, current: 0, temp: 0, turns: -1},
+        cunning: {base: 1, current: 0, temp: [2], turns: 2},
+        cunning: {base: 1, current: 0, temp: [2], turns: 4, persist: true},
+        might: {base: 1, current: 0, temp: [], turns: -1},
+        punch: {base: 1.1, current: 0, temp: [], turns: -1},
 
         // monsters can have default actions
 
@@ -354,7 +354,7 @@ const ALL_MONSTERS = [
             {dmg: [5, 5]},
             {blk: [10]},
         ],
-        stout: {base: 3, current: 0, temp: 0, turns: -1},
+        stout: {base: 3, current: 0, temp: [], turns: -1},
     }),
     new Creatures({
         type: 'monster',
@@ -393,7 +393,7 @@ const ALL_MONSTERS = [
             {armor: [4], p: .2},
             {dmg: [1, 2, 3, 4], p: .2},
         ],
-        retaliate: {base: .1, current: 0, temp: 0, turns: -1},
+        retaliate: {base: .1, current: 0, temp: [], turns: -1},
     }),
     new Creatures({
         type: 'monster',
@@ -429,19 +429,19 @@ const ALL_MONSTERS = [
         type: 'monster',
         id: 'enchantress', 
         name: 'Enchantress', 
-        health: {base: 42, current: 0, max: 42},
+        health: {base: 48, current: 0, max: 48},
         tier: 2,
         armor: 5,
         pattern: 'random',
         moveSet: [
             {actions: [
-                {action: 'addCard', value: 1, what: 'execrate', to: 'drawCards'},
+                {action: 'addCard', value: 2, what: 'execrate', to: 'drawCards'},
             ], p: .1},
             {actions: [
-                {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
+                {action: 'addCard', value: 2, what: 'curse', to: 'drawCards'},
             ], p: .1},
             {actions: [
-                {action: 'addCard', value: 1, what: 'flay', to: 'drawCards'},
+                {action: 'addCard', value: 2, what: 'flay', to: 'drawCards'},
             ], p: .1},
             {actions: [
                 {action: 'addCard', value: 2, what: 'execrate', to: 'discardCards'},
@@ -452,11 +452,10 @@ const ALL_MONSTERS = [
             {actions: [
                 {action: 'addCard', value: 2, what: 'flay', to: 'discardCards'},
             ], p: .1},
-            {armor: [5], p: .1},
-            {blk: [15], p: .15},
-            {dmg: [15], p: .15}
+            {armor: [15], dmg: [10], p: .2},
+            {blk: [15], dmg: [16], p: .2}
         ],
-        resistance: {base: .2, current: 0, temp: 0, turns: -1, persist: false},
+        resistance: {base: .2, current: 0, temp: [], turns: -1, persist: false},
     }),
     new Creatures({
         type: 'monster',
@@ -496,7 +495,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         id: 'swarm', 
         name: 'Swarm', 
-        health: {base: 30, current: 0, max: 30},
+        health: {base: 49, current: 0, max: 49},
         tier: 3,
         armor: 30,
         pattern: 'random',
@@ -516,7 +515,7 @@ const ALL_MONSTERS = [
             ], p: .2},
             {dmg: [5, 5, 5, 5], p: .2},
         ],
-        heal: {base: 3, current: 0, temp: 0, turns: -1}
+        heal: {base: 3, current: 0, temp: [], turns: -1}
     }),
     new Creatures({
         type: 'monster',
@@ -543,13 +542,13 @@ const ALL_MONSTERS = [
             {dmg: [8, 8]},
             {blk: [10], dmg: [10]},
         ],
-        resistance: {base: .3, current: 0, temp: 0, turns: -1, persist: false},
+        resistance: {base: .3, current: 0, temp: [], turns: -1, persist: false},
     }),
     new Creatures({
         type: 'monster',
         id: 'red_dragon', 
         name: 'Red Dragon', 
-        health: {base: 95, current: 0, max: 95},
+        health: {base: 115, current: 0, max: 115},
         tier: 3,
         pattern: 'random',
         moveSet: [
@@ -563,11 +562,11 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: 1, turns: -1}
             ], p: .1},
             {dmg: [24], p: .1},
-            {dmg: [10], p: .1},
+            {dmg: [14], p: .1},
             {dmg: [18], p: .1},
             {dmg: [12], p: .1},
-            {armor: [10], blk: [10], p: .1},
-            {armor: [5], blk: [20], p: .1},
+            {dmg: [8], armor: [10], blk: [10], p: .1},
+            {dmg: [5], armor: [5], blk: [20], p: .1},
             {blk: [20], p: .1},
         ],
     }),
@@ -575,7 +574,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         id: 'green_dragon', 
         name: 'Green Dragon', 
-        health: {base: 95, current: 0, max: 95},
+        health: {base: 115, current: 0, max: 115},
         tier: 3,
         pattern: 'random',
         moveSet: [
@@ -590,11 +589,11 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: 1, turns: -1}
             ], p: .1},
             {dmg: [24], p: .1},
-            {dmg: [10], p: .1},
+            {dmg: [14], p: .1},
             {dmg: [18], p: .1},
             {dmg: [12], p: .1},
-            {armor: [10], blk: [10], p: .1},
-            {armor: [5], blk: [20], p: .1},
+            {dmg: [8], armor: [10], blk: [10], p: .1},
+            {dmg: [5], armor: [5], blk: [20], p: .1},
             {blk: [20], p: .1},
         ],
     }),
@@ -602,7 +601,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         id: 'cyberskull', 
         name: 'Cyberskull', 
-        health: {base: 60, current: 0, max: 60},
+        health: {base: 77, current: 0, max: 77},
         pattern: 'fixed',
         tier: 3,
         moveSet: [{
@@ -639,8 +638,13 @@ const ALL_MONSTERS = [
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
-            {armor: [5], dmg: [25]},
-            {armor: [8], dmg: [15]},
+            {armor: [5], dmg: [35]},
+            {armor: [8], dmg: [25]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [5], dmg: [35]},
+            {armor: [8], dmg: [25]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -654,25 +658,20 @@ const ALL_MONSTERS = [
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
-            {armor: [5], dmg: [25]},
-            {armor: [8], dmg: [15]},
+            {armor: [5], dmg: [35]},
+            {armor: [8], dmg: [25]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
-            {armor: [5], dmg: [25]},
-            {armor: [8], dmg: [15]},
-            {abilities: [
-                {ability: 'unreachable', turns: 1, enabled: true},
-            ]},
-            {armor: [5], dmg: [25]},
-            {armor: [8], dmg: [15]},
+            {armor: [5], dmg: [35]},
+            {armor: [8], dmg: [25]},
         ],
     }),
     new Creatures({
         type: 'monster',
         id: 'gold_dragon', 
         name: 'Gold Dragon', 
-        health: {base: 95, current: 0, max: 95},
+        health: {base: 115, current: 0, max: 115},
         armor: 30,
         tier: 4,
         pattern: 'random',
@@ -693,7 +692,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         id: 'black_dragon', 
         name: 'Black Dragon', 
-        health: {base: 70, current: 0, max: 70},
+        health: {base: 75, current: 0, max: 75},
         armor: 68,
         tier: 4,
         pattern: 'random',
@@ -702,17 +701,17 @@ const ALL_MONSTERS = [
             {dmg: [24], armor: [5], p: .25},
             {effects: [
                 {effect: 'resistance', amount: .8, turns: 1}
-            ], dmg: [6], armor: [15], p: .25},
+            ], dmg: [26], armor: [15], p: .25},
             {blk: [10], armor: [10], p: .25},
         ],
-        cunning: {base: 1, current: 0, temp: 0, turns: -1},
-        vigor: {base: 1, current: 0, temp: 0, turns: -1}
+        cunning: {base: 1, current: 0, temp: [], turns: -1},
+        vigor: {base: 1, current: 0, temp: [], turns: -1}
     }),
     new Creatures({
         type: 'monster',
         id: 'obsidian_walker', 
         name: 'Obsidian Walker', 
-        health: {base: 190, current: 0, max: 190},
+        health: {base: 220, current: 0, max: 220},
         tier: 4,
         pattern: 'fixed',
         moveSet: [
@@ -731,7 +730,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         id: 'seething_entity', 
         name: 'Seething Entity', 
-        health: {base: 77, current: 0, max: 77},
+        health: {base: 97, current: 0, max: 97},
         tier: 4,
         armor: 20,
         pattern: 'random',
@@ -748,7 +747,7 @@ const ALL_MONSTERS = [
             ], p: .25},
             {dmg: [4, 4, 4, 4, 4], p: .25},
         ],
-        heal: {base: 5, current: 0, temp: 0, turns: -1}
+        heal: {base: 5, current: 0, temp: [], turns: -1}
     }),
     
 
@@ -758,7 +757,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         id: 'ultramaton', 
         name: 'Ultramaton', 
-        health: {base: 250, current: 0, max: 250},
+        health: {base: 350, current: 0, max: 350},
         tier: 1,
         category: 'boss',
         pattern: 'fixed',
@@ -784,7 +783,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         id: 'unmaker', 
         name: 'Unmaker', 
-        health: {base: 300, current: 0, max: 300},
+        health: {base: 375, current: 0, max: 375},
         tier: 1,
         category: 'boss',
         pattern: 'random',
@@ -810,7 +809,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         id: 'arch_summoner', 
         name: 'Arch Summoner', 
-        health: {base: 200, current: 0, max: 200},
+        health: {base: 250, current: 0, max: 250},
         tier: 1,
         category: 'boss',
         pattern: 'random',
@@ -848,7 +847,7 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: 10, turn: 1},
             ], dmg: [10], p: .1},
         ],
-        resistance: {base: .5, current: 0, temp: 0, turns: -1, persist: false},
+        resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
     
 
@@ -1240,7 +1239,10 @@ export function Monster() {
             if((to[game.abilities[i].id].turns == 0) ||
                 (to[game.abilities[i].id].persist == true && to[game.abilities[i].id].turns < 0) ||
                 (to[game.abilities[i].id].persist == false)) {
-                to[game.abilities[i].id].turns = to[game.abilities[i].id].baseTurns;
+                // not all treasures and candies have baseTurn set - we don't want .turns to be undefined
+                if(to[game.abilities[i].id].baseTurn != undefined) {
+                    to[game.abilities[i].id].turns = to[game.abilities[i].id].baseTurns;
+                }
                 if(to[game.abilities[i].id].turns == 0) {
                     to[game.abilities[i].id].enabled = false;
                 }
@@ -1349,21 +1351,21 @@ export function Monster() {
             game.monsterGroup = 1;
         } else if(game.floor < 8) {
             game.monsterGroup = 2;
-        } else if(game.floor < 12) {
+        } else if(game.floor < 11) {
             game.monsterGroup = 3;
-        } else if(game.floor < 16) {
+        } else if(game.floor < 14) {
             game.monsterGroup = 4;
-        } else if(game.floor < 20) {
+        } else if(game.floor < 17) {
             game.monsterGroup = 5;
-        } else if(game.floor < 24) {
+        } else if(game.floor < 20) {
             game.monsterGroup = 6;
-        } else if(game.floor < 28) {
+        } else if(game.floor < 23) {
             game.monsterGroup = 7;
-        } else if(game.floor < 32) {
+        } else if(game.floor < 26) {
             game.monsterGroup = 8;
-        } else if(game.floor < 36) {
+        } else if(game.floor < 29) {
             game.monsterGroup = 9;
-        } else if(game.floor < 40) {
+        } else if(game.floor < 32) {
             game.monsterGroup = 10;
         } else {
             game.monsterGroup = 10;
@@ -1400,8 +1402,8 @@ export function Player() {
         name: 'Player',
         armor: 0,
         health: {base: 75, current: 75, max: 75},
-        speed: {base: 5, current: 0, temp: 0, turns: 0}, // TODO: reset base to 5
-        rainbow: {base: 0, current: 0, temp: 0, turns: 0, max: 20, type: 'rainbow'},
+        speed: {base: 5, current: 0, temp: [], turns: 0}, // TODO: reset base to 5
+        rainbow: {base: 0, current: 0, temp: [], turns: 0, max: 20, type: 'rainbow'},
     });
 
     function dead(player) {

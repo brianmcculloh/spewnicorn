@@ -675,21 +675,20 @@ export default class Util {
             }
         }
     }
-    weightedRandom(options) {
-        var i;
-    
-        var weights = [];
-    
-        for (i = 0; i < options.length; i++)
-            weights[i] = options[i].rarity + (weights[i - 1] || 0);
-        
-        var random = this.rand() * weights[weights.length - 1]; // TODO: check to see if rarity is working correctly
-        
-        for (i = 0; i < weights.length; i++)
-            if (weights[i] > random)
-                break;
-        
-        return options[i];
+    weightedRandom(weightedArray) {
+        const totalWeight = weightedArray.reduce((sum, element) => sum + element.weight, 0);
+        const randomWeight = Math.random() * totalWeight;
+        let weightSum = 0;
+
+        for (const element of weightedArray) {
+            weightSum += element.weight;
+            if (randomWeight < weightSum) {
+                return element;
+            }
+        }
+
+        // Fallback in case of unexpected issues
+        return null;
     }
     wait(ms) {
         return new Promise(resolve => {
