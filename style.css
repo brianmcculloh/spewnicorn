@@ -1795,7 +1795,7 @@ body.selecting .combat .overlay {
 	background-position:bottom center;
 	background-repeat:no-repeat;
 	margin:0 auto;
-	padding:0 50px;
+	padding:50px 50px 35px 50px;
 	width:100vw;
 }
 body.arena .monster-panel {
@@ -2090,6 +2090,48 @@ body.arena .monster-panel {
 	background-position:0 calc(-4271px * 1);
 	width:calc(895px * 1);
 	height:calc(655px * 1);
+}
+
+.monster-intent .intent-amount {
+	font-size:24px;
+	display:inline-block;
+	position:relative;
+	top:-8px;
+	text-shadow: 1px 1px 0px rgba(0, 0, 0, 1), 1px -1px 0px rgba(0, 0, 0, 1), -1px 1px 0px rgba(0, 0, 0, 1), -1px -1px 0px rgba(0, 0, 0, 1), 0px 0px 5px rgba(0, 0, 0, .7);
+}
+.monster-intent .intent-dmg {
+	color:rgba(252, 28, 3, 1);
+}
+.monster-intent .intent-blk {
+	color:var(--block_color);
+}
+.monster-intent .intent-armor {
+	color:rgba(199, 0, 136, 1);
+}
+.monster-intent .intent-icon {
+	width:32px;
+	height:32px;
+	position:relative;
+	background-image:url('images/sprites1.png');
+	background-repeat:no-repeat;
+	background-size:512px 15968px;
+	background-position:0 0;
+	display:inline-block;
+}
+.monster-intent .intent-dmg-icon {
+	background-position:-128px -9280px;
+}
+.monster-intent .intent-blk-icon {
+	background-position:-480px -14848px;
+}
+.monster-intent .intent-armor-icon {
+	background-position:-0px -13536px;
+}
+.monster-intent .intent-hex {
+	background-position:0 -2304px;
+}
+.monster-intent .intent-buff {
+	background-position:-288px -6304px;
 }
 
 .monster .monster-name {
@@ -3760,7 +3802,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	display:flex;
 	align-content:center;
 	align-items:center;
-	justify-content:center;
+	justify-content:flex-start;
 	flex-direction:column;
 	position:fixed;
 	height:100vh;

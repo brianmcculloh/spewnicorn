@@ -204,7 +204,7 @@
       <div class="dead-cards icon-button tooltip" data-powertip="Dead cards"><div class="icon"></div><span class="counter"></span></div>
 
       <div class="stance">
-        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> unused speed converts to block, armor, health, and max health next turn.<br /><br /><span class='sparkle'>Sparkle:</span> unused speed converts to temporary might next turn.<br /><br /><span class='aura'>Aura:</span> unused speed converts to mana next turn.<br /><br />None: unused speed converts to block next turn."></div>
+        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> unused speed converts to block, armor, and health next turn.<br /><br /><span class='sparkle'>Sparkle:</span> unused speed converts to temporary might next turn.<br /><br /><span class='aura'>Aura:</span> unused speed converts to mana next turn.<br /><br />None: unused speed converts to block next turn."></div>
         <div class="icon-stance tooltip" data-stance="none" data-powertip="<span class='highlight'>Stance:</span> None"></div>
       </div>
 

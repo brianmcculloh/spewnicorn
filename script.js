@@ -29,7 +29,7 @@
  * -no stance: unused speed converts to blocknext turn
  * -aura stance: unused speed converts to mana next turn
  * -sparkle stance: unused speed converts to temporary might next turn
- * -shimmer stance: unused speed converts to block, armor, health, and max health next turn
+ * -shimmer stance: unused speed converts to block, armor, and health next turn
  * 
  * MAGIC RAINBOW: an entity that floats above the player that is magic
  * -target it with magic cards
@@ -86,8 +86,7 @@
  * 
  * PHASE V:
  * 
- * TODO: is tesseract too powerful? should it lose its attack?
- * TODO: more ways to increase max health?
+ * TODO: 
  * 
  * 
  * TODO: [can't replicate] quest Library not working
@@ -1378,6 +1377,7 @@ async function startCombat(tile) {
 	$('.combat').addClass('shown');
 	$('.candy').removeClass('trashable').addClass('clickable');
 	$('body').addClass('combating');
+	$('.player-cards').removeClass('unavailable');
 	
 	if(!tile.hasClass('visited')) {
 		await updateEssenceLevels(tile.attr('data-essence'), tile.attr('data-amount'));
@@ -1625,7 +1625,7 @@ function beginTurn() {
 			player.might.temp.push(tempMight);
 		} else if(player.stance == 'shimmer') {
 			//player.speed.current = player.speed.base + Math.round(player.speed.current * player.shimmer.level) + extraSpeed; // old way of doing this was speed
-			player.health.max += Math.floor((player.speed.current / 4) * player.shimmer.level);
+			//player.health.max += Math.floor((player.speed.current / 4) * player.shimmer.level); // we determined this could be infinitely farmable
 			heal(player, Math.floor((player.speed.current / 2) * player.shimmer.level));
 			applyArmor(Math.floor((player.speed.current / 2) * player.shimmer.level), player);
 			applyBlock(Math.floor(player.speed.current * player.shimmer.level), player);
@@ -1838,6 +1838,7 @@ async function monsterAction(action = 'perform') {
 		if(currentMonsters[i].dead) continue; // ignore dead monsters
 
 		let intent = '';
+		let intentTooltip = '';
 		let thisMonster = currentMonsters[i];
 
 		if(action == 'perform') {
@@ -1893,7 +1894,8 @@ async function monsterAction(action = 'perform') {
 				}
 
 				if(action == 'query') {
-					intent += Math.round((attackAmount + thisMonster.might.current) * thisMonster.punch.current) + ' attack, ';
+					let a = Math.round((attackAmount + thisMonster.might.current) * thisMonster.punch.current);
+					intent += '<span class="tooltip" data-powertip="Attack for ' + a + ' damage"><span class="intent-dmg intent-amount">' + a + '</span><span class="intent-dmg-icon intent-icon"></span></span>';
 				} else {
 
 					// check for hypnotize
@@ -1916,7 +1918,8 @@ async function monsterAction(action = 'perform') {
 		for (var key in defend) {
 			if (defend.hasOwnProperty(key)) {
 				if(action == 'query') {
-					intent += (defend[key] + thisMonster.solid.current) + ' defend, ';
+					let a = (defend[key] + thisMonster.solid.current);
+					intent += '<span class="tooltip" data-powertip="Gain ' + a + ' block"><span class="intent-blk intent-amount">' + a + '</span><span class="intent-blk-icon intent-icon"></span></span>';
 				} else {
 					applyBlock(defend[key], thisMonster);
 				}
@@ -1926,7 +1929,8 @@ async function monsterAction(action = 'perform') {
 		for (var key in armor) {
 			if (armor.hasOwnProperty(key)) {
 				if(action == 'query') {
-					intent += (armor[key] + thisMonster.craft.current) + ' armor, ';
+					let a = (armor[key] + thisMonster.craft.current);
+					intent += '<span class="tooltip" data-powertip="Gain ' + a + ' armor"><span class="intent-armor intent-amount">' + a + '</span><span class="intent-armor-icon intent-icon"></span></span>';
 				} else {
 					applyArmor(armor[key], thisMonster);
 				}
@@ -1949,7 +1953,12 @@ async function monsterAction(action = 'perform') {
                     amount += '%';
 				}
 				if(action == 'query') {
-					intent += prefix + amount + ' ' + effect + turns + ', ';
+					intentTooltip = prefix + amount + ' ' + effect + turns;
+					if(effects[e].hex) {
+						intent += '<span class="intent-hex effect-hex intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
+					} else {
+						intent += '<span class="intent-buff effect-buff intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
+					}
 				} else {
 					let turns = effects[e].turns == undefined ? -1 : effects[e].turns;
 					applyEffect(effects[e], to, turns);
@@ -1968,7 +1977,12 @@ async function monsterAction(action = 'perform') {
 					prefix = 'Hex ';
 				}
 				if(action == 'query') {
-					intent += prefix + abilities[e].ability + turnsDom + ', ';
+					intentTooltip = prefix + abilities[e].ability + turnsDom;
+					if(abilities[e].hex) {
+						intent += '<span class="intent-hex ability-hex intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
+					} else {
+						intent += '<span class="intent-buff ability-buff intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
+					}
 				} else {
 					applyAbility(abilities[e], to, turns);
 				}
@@ -1990,7 +2004,8 @@ async function monsterAction(action = 'perform') {
 						what = what != undefined ? ' (' + what + ')' : '';
 						value = value != undefined ? ' +' + value : '';
 						to = value != undefined ? ' to ' + to : '';
-						intent += prefix + name + what + value + to + ', ';
+						intentTooltip = prefix + name + what + value + to;
+						intent += '<span class="intent-hex action-hex intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
 					}
 				} else {
 					let update = processActions(actions, currentMonsters[i]);
@@ -2000,8 +2015,8 @@ async function monsterAction(action = 'perform') {
 		
 		if(action == 'query') {
 			thisMonster.chosenMoveSetIndex = moveSetIndex;
-			intent = intent.slice(0,-2);
-			$('.monster[data-guid=' + thisMonster.guid + '] .monster-intent').html('intent: ' + intent);
+			$('.monster[data-guid=' + thisMonster.guid + '] .monster-intent').html(intent);
+			util.setTooltips('.monster-intent');
 		} else {
 			monsters.updateMonsterStats(thisMonster);
 		}
@@ -2414,6 +2429,7 @@ function endCombat() {
 		
 		game.candyChance += 10;
 		game.shardChance += 5;
+		player.block = 0;
 		clearCombatEffects();
 		clearCombatAbilities();
 		clearCombatTreasureCounters();
@@ -3545,6 +3561,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						if(game.combatEndedFlag) return;
 
 						let addCard = '';
+						let addThisCard = {};
 						let thisCard = {};
 						let possibleCards = [];
 						let shards = actions[e].with != undefined ? actions[e].with : [];
@@ -3585,7 +3602,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							thisCard = util.randFromArray(possibleCards);
 							possibleCards = possibleCards.filter(i => i.id !== thisCard.id);
 
-							if(addCard == '') addCard = thisCard.id;
+							addThisCard = addCard;
+							if(addCard == '') addThisCard = thisCard.id;
 
 							if(actions[e].select != undefined) {
 								thisCard = combatDeck.initCard(thisCard);
@@ -3597,7 +3615,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 									}
 								}
 							} else {
-								combatDeck.addCard(addCard, combatDeck, actions[e].to, player, shards);
+								combatDeck.addCard(addThisCard, combatDeck, actions[e].to, player, shards);
 							}
 						}
 
@@ -4401,11 +4419,14 @@ async function attackMonster(monster, dmg, fatalityHit = false, hypnotizeHit = f
 
 function applyBlock(blk, to) {
 	if(to != undefined) {
-		setTimeout(function() {
-			if(game.playsounds) sounds.play('gainBlk');
-		}, 300);
-		to.block += (blk + to.solid.current);
-		game.message(to.name + ' (' + to.guid + ') gains ' + blk + ' block');
+		let blkActual = blk + to.solid.current;
+		if(blkActual > 0) {
+			setTimeout(function() {
+				if(game.playsounds) sounds.play('gainBlk');
+			}, 300);
+			to.block += blkActual;
+		}
+		game.message(to.name + ' (' + to.guid + ') gains ' + blkActual + ' block');
 	}
 }
 
@@ -4473,6 +4494,7 @@ function updateRainbowDom(to) {
 	if(magicPower < 0) magicPower = 0;
 	magicPower = magicPower * 1.8;
 	let amount = to.rainbow.current <= to.rainbow.max ? to.rainbow.current : to.rainbow.max;
+	amount = Math.round(amount);
 	$('.magic-rainbow .semi-circle--mask').css('transform', 'rotate(' + magicPower + 'deg) translate3d(0, 0, 0)').removeClass('activated'); 
 	$('.magic-rainbow .rainbow-power-current').html(amount);
 	$('.magic-rainbow .rainbow-power-max').html(to.rainbow.max);
@@ -4482,6 +4504,8 @@ function updateRainbowDom(to) {
 }
 
 async function activateRainbow(type, to) {
+
+	$('.player-cards').addClass('unavailable');
 
 	if(monsters.allDead()) return; // if rainbow tries to activate multiple times after it has already killed all monsters
 
@@ -4499,7 +4523,7 @@ async function activateRainbow(type, to) {
 	let magicPower = util.getStatPercentage(to.rainbow.current, to.rainbow.max);
 
 	await game.rainbowAnimations(magicPower);
-	await util.wait(game.animationDelay);
+	//await util.wait(game.animationDelay);
 
 	if(game.playsounds) sounds.play('activateRainbow');
 
@@ -4538,6 +4562,7 @@ async function activateRainbow(type, to) {
 		$('.magic-rainbow').addClass('empty');
 		await util.wait(game.animationGap);
 		$('.magic-rainbow').removeClass('unavailable empty activated');
+		$('.player-cards').removeClass('unavailable');
 	}
 
 	return magicPower;

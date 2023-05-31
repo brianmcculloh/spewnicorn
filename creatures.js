@@ -327,8 +327,8 @@ const ALL_MONSTERS = [
             ], p: .2},
             {dmg: [8], blk: [4], p: .2},
             {dmg: [4], blk: [8], p: .2},
-            {dmg: [11], armor: 3, p: .2},
-            {blk: [8], armor: 5, p: .2},
+            {dmg: [11], armor: [3], p: .2},
+            {blk: [8], armor: [5], p: .2},
         ],
     }),
     new Creatures({

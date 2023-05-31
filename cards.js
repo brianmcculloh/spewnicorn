@@ -3859,7 +3859,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'fleeting_incantation', name: 'Fleeting Incantation', type: 'magic', mana: 0, tier: 'rare', linger: 2, use: 2, expire: 2, pack: 'magic', weight: 7, courage: 4, 
+        id: 'fleeting_incantation', name: 'Fleeting Incantation', type: 'magic', mana: 0, tier: 'rare', retain: true, linger: 2, use: 2, expire: 2, pack: 'magic', weight: 7, courage: 4, 
         magic: [{type: 'aligned', amount: 5}],
         sound: 'magic6',
         slots: 1,
@@ -3984,9 +3984,6 @@ export function Deck() {
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
         }
-
-        addCard('violent_rage');
-        addCard('timid');
 
     }
 

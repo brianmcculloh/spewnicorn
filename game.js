@@ -418,8 +418,7 @@ export default function Game() {
     let previousMonsters = [];
     let monsterGroup = 1;
     let animationGap = 100;
-    let rainbowDelay = 300;
-    let animationDelay = 1000;
+    let animationDelay = 500;
     let animationDmg = 250;
     let playsounds = true;
     let playmusic = true;
@@ -499,6 +498,7 @@ export default function Game() {
 
         let percentage = magicPower > 100 ? 100 : magicPower;
         let amount = player.rainbow.max * (percentage / 100);
+        amount = Math.round(amount);
 	    let degrees = percentage * 1.8;
 
         $('.magic-rainbow').addClass('activated');
@@ -565,7 +565,6 @@ export default function Game() {
         previousMonsters,
         monsterGroup,
         animationGap,
-        rainbowDelay,
         animationDelay,
         animationDmg,
         debug,
