@@ -86,7 +86,7 @@
  * 
  * PHASE V:
  * 
- * TODO: 
+ * TODO:
  * 
  * 
  * TODO: [can't replicate] quest Library not working
@@ -1024,7 +1024,7 @@ function init() {
 	setStatus();
 
 	//addTreasure('excalibur'); // use this to manually add treasures
-	//addCandy('chocolate_bar'); // use this to manually add candies
+	//addCandy('lemon_gumdrop'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
 }
@@ -2729,18 +2729,24 @@ function updateItemCost() {
 		let cost = $(this).attr('data-amount');
 		if(cost > player.courage) {
 			$(this).parent().addClass('too-expensive');
+		} else {
+			$(this).parent().removeClass('too-expensive');
 		}
 	});
 	$('.courage-items .candy-courage').each(function(e) {
 		let cost = $(this).attr('data-amount');
 		if(cost > player.courage) {
 			$(this).parent().addClass('too-expensive');
+		} else {
+			$(this).parent().removeClass('too-expensive');
 		}
 	});
 	$('.courage-cards .card-courage').each(function(e) {
 		let cost = $(this).attr('data-amount');
 		if(cost > player.courage) {
 			$(this).parent().addClass('too-expensive');
+		} else {
+			$(this).parent().removeClass('too-expensive');
 		}
 	});
 	let cost = game.removeCardCost;
@@ -3073,8 +3079,14 @@ function markDiscard(elem) {
 
 	if(elem.hasClass('discard')) {
 		elem.removeClass('discard');
+		$('.discard-done').removeClass('shown');
 	} else if($('.card.discard').length < game.toDiscard) {
 		elem.addClass('discard');
+		$('.discard-done').removeClass('shown');
+		// if there are not enough hand cards to satisfy requirements, or if requirements are met, show done button
+		if($('.player-cards .card:not(.discard)').length == 0 || $('.card.discard').length == game.toDiscard) {
+			$('.discard-done').addClass('shown');
+		}
 	}
 
 }
@@ -3083,8 +3095,14 @@ function markDestroy(elem) {
 
 	if(elem.hasClass('destroy')) {
 		elem.removeClass('destroy');
+		$('.destroy-done').removeClass('shown');
 	} else if($('.card.destroy').length < game.toDestroy) {
 		elem.addClass('destroy');
+		$('.destroy-done').removeClass('shown');
+		// if there are not enough hand cards to satisfy requirements, or if requirements are met, show done button
+		if($('.player-cards .card:not(.destroy)').length == 0 || $('.card.destroy').length == game.toDestroy) {
+			$('.destroy-done').addClass('shown');
+		}
 	}
 
 }
@@ -3726,9 +3744,10 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						}
 					break;
 					case 'discard':
-						if(combatDeck.handCards.length > 0) {
+						// currently only cards can invoke this action, so make sure invoking card isn't the only one in hand
+						if(combatDeck.handCards.length > 1) {
 							$('.discard-message').html('choose cards to discard').addClass('shown');
-							$('.discard-done').addClass('shown');
+							//$('.discard-done').addClass('shown');
 							$('.player-cards .card').addClass('discardable').removeClass('playable');
 							$('.draw-card').addClass('disabled');
 							$('body').addClass('discarding selecting');
@@ -3737,9 +3756,10 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						}
 					break;
 					case 'destroy':
-						if(combatDeck.handCards.length > 0) {
+						// currently only cards can invoke this action, so make sure invoking card isn't the only one in hand
+						if(combatDeck.handCards.length > 1) {
 							$('.destroy-message').html('choose cards to destroy').addClass('shown');
-							$('.destroy-done').addClass('shown');
+							//$('.destroy-done').addClass('shown');
 							$('.player-cards .card').addClass('destroyable').removeClass('playable');
 							$('.draw-card').addClass('disabled');
 							$('body').addClass('destroying selecting');

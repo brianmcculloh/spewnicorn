@@ -124,7 +124,8 @@ const ALL_EFFECTS = [
     // creature {base: .5, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'mastery', amount: 5, turns: -1}
     // hex      {effect: 'mastery', amount: -5, hex: true}
-    {id: 'mastery', name: 'Mastery', desc: 'Crit multiplier. Gets added to the base crit multiplier of 5 (150%). range is -15 (0%) to +5 (200%);', x: -320, y: -7200, sound: 'effect22'},
+    // Gets added to the base crit multiplier of 5 (150%). range is -15 (0%) to +5 (200%);
+    {id: 'mastery', name: 'Mastery', desc: 'Crit damage multiplier. 1 Mastery = +10% multiplier (150% default base + 10% = 160% total)', x: -320, y: -7200, sound: 'effect22'},
 
     // Usage:
     // creature {base: 3, current: 0, temp: 0, turns: -1, persist: false}
