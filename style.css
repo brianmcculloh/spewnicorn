@@ -2164,7 +2164,7 @@ body.arena .monster-panel {
 .combat-log {
 	z-index:9;
 	font-size:40px;
-	width:80px;
+	width:300px;
 	position:relative;
 }
 .combat-log > div {
@@ -2177,7 +2177,6 @@ body.arena .monster-panel {
 	opacity:1;
 	position:absolute;
 	transition:all 3s;
-	
 }
 .combat-log .dmg-taken {
 	color:#FFF;
@@ -2190,6 +2189,17 @@ body.arena .monster-panel {
 }
 .combat-log .health-gained {
 	color:rgba(27, 224, 73, 1);
+}
+.combat-log .status-text span {
+	color:yellow;
+	display:block;
+	transition:all 4s;
+	font-size:25px;
+	width:300px;
+	text-align:center;
+}
+.combat-log .status-text span.hex {
+	color:red;
 }
 .player-health .combat-log {
 	position:absolute;
@@ -3793,7 +3803,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .pack-button[data-pack="cycle"] {
 	background-position:calc(-1350px * .92) 0px;
 }
-.pack-cards-panel h2 span {
+.pack-cards-panel h2 span, .pack-cards-panel .message span {
 	color:yellow;
 }
 

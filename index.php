@@ -647,6 +647,7 @@
             <div class="dmg-taken" data-amount="0"></div>
             <div class="armor-lost" data-amount="0"></div>
             <div class="health-lost" data-amount="0"></div>
+            <div class="status-text"></div>
           </div>
 
           <div class="player-cards"></div>
@@ -789,7 +790,7 @@
 
       <h2></h2>
 
-      <div class="message"></div>
+      <div class="message">These are all the possible card rewards for this booster pack, plus you start with <span></span></div>
 
       <div class="cards"></div>
 

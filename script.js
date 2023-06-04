@@ -86,9 +86,15 @@
  * 
  * PHASE V:
  * 
- * TODO:
+ * TODO: should Battle Sequence be easier to get off?
+ * TODO: sometimes courage screen only shows 1 ability instead of 2
+ * TODO: bakery courage should decrease by 1 each
+ * TODO: medallion is way too powerful because both the amount and turns are cumulative - only the amount should stack, not the turns
+ * --after fixing this, make sure it's ok that it persists into the next combat
  * 
  * 
+ * TODO: [can't replicate] added a shard to a card, and then the next quest was the trasform 3 quest, and the sharded card was still in the show cards
+ * TODO: [can't replicate] Can't select to discard a slash card that was just added by surprise attack
  * TODO: [can't replicate] quest Library not working
  * TODO: [can't replicate] Playing Scorch when hand consists of 2 flame jabs and 1 flay causes .show-cards overlay to display and not be closeable.
  * - similary, playing Freeze when hand consists of 1 frost jab and 1 frost shield and 1 sparkle stance (no slots) and 1 battle combo (no slots)
@@ -566,7 +572,7 @@ jQuery(document).ready(function($) {
 		if(game.playsounds) sounds.play('attachShard');
 		deck.attachShard(card, thisShard);
 		game.toShow.push(card);
-		deck.showShardedCards(combatDeck, player);
+		deck.showModifiedCards(combatDeck, player, true);
 		game.toPick -= 1;
 		updateCardDescriptions('showCards', deck.cards);
 		updateCardDescriptions(game.toPile);
@@ -802,18 +808,22 @@ jQuery(document).ready(function($) {
 		if($(this).hasClass('selected')) {
 			$(this).removeClass('selected');
 			game.toPick += 1;
+			// TODO: remove card from toShow array
+			let thisGuid = $(this).data('guid');
+			game.toTransmute = game.toTransmute.filter(j => j.guid !== thisGuid);
 		} else {
 			$(this).addClass('selected');
 			game.toPick -= 1;
-			let thisCard = util.getCardByGuid($(this).data('guid'), combatDeck.allCards(combatDeck));
-			combatDeck.transmutingCards.push(thisCard);
+			let theseCards = deck.cards;
+			if(!game.combatEndedFlag) theseCards = combatDeck.allCards(combatDeck);
+			let thisCard = util.getCardByGuid($(this).data('guid'), theseCards);
+			game.toTransmute.push(thisCard);
 			if(game.toPick == 0) {
 				combatDeck.transmuteCards(combatDeck, deck, player);
 				$('.choose-cards-panel').removeClass('shown');
 				$('.choose-cards-panel .card').removeClass('pickable');
 				$('.choose-cards-panel .message').html('');
 				$('.choose-cards-panel .cards').empty();
-				combatDeck.transmutingCards = [];
 			}
 		}
 
@@ -1301,6 +1311,13 @@ function viewPackCards(pack) {
 	if(game.playsounds) sounds.play('viewCards');
 	$('.pack-cards-panel').addClass('shown');
 	$('.pack-cards-panel h2').html('<span>' + pack + '</span> booster pack cards');
+	let card = 'Self Enhance';
+	if(pack == 'magic') {
+		card = 'Sparks';
+	} else if(pack == 'cycle') {
+		card = 'Bottled Speed';
+	}
+	$('.pack-cards-panel .message span').html(card);
 	$('.pack-cards-panel .cards').empty();
 	$('.pack-cards-panel .select').attr('data-pack', pack);
 	let packCards = AllCards().getAddableCards(false, false, pack);
@@ -1474,6 +1491,19 @@ function startingBonus(elem) {
 function startingBoosterPack(elem) {
 
 	let pack = elem.attr('data-pack');
+	let id = '';
+	let card = [];
+	if(pack == 'combine') {
+		id = 'self_enhance';
+	} else if(pack == 'magic') {
+		id = 'sparks';
+	} else {
+		id = 'bottled_speed';
+	}
+	deck.addCard(id);
+	card = util.getCardById(id, deck.cards);
+	game.toShow.push(card);
+	deck.showModifiedCards(combatDeck, player, true);
 	game.boosterPack = pack;
 	setStatus();
 		
@@ -1571,6 +1601,9 @@ async function updateEssenceLevels(essence, amount) {
 					if(game.essenceThresholds[0] == current) {
 						deck.addCard(essence + '_stance');
 						combatDeck.addCard(essence + '_stance', combatDeck, 'drawCards', player);
+						let card = util.getCardById(essence + '_stance', deck.cards);
+						game.toShow.push(card);
+						deck.showModifiedCards(combatDeck, player, true);
 					}
 				}
 				await util.updateEssencePercentage(essence);
@@ -1621,8 +1654,10 @@ function beginTurn() {
 			player.mana.current = player.mana.base + Math.round(player.speed.current * player.aura.level);
 		} else if(player.stance == 'sparkle') {
 			let tempMight = Math.round(player.speed.current * player.sparkle.level);
-			player.might.current += tempMight;
-			player.might.temp.push(tempMight);
+			if(tempMight > 0) {
+				player.might.current += tempMight;
+				player.might.temp.push(tempMight);
+			}
 		} else if(player.stance == 'shimmer') {
 			//player.speed.current = player.speed.base + Math.round(player.speed.current * player.shimmer.level) + extraSpeed; // old way of doing this was speed
 			//player.health.max += Math.floor((player.speed.current / 4) * player.shimmer.level); // we determined this could be infinitely farmable
@@ -2143,6 +2178,13 @@ function clearTurnEffects(from, delay = false, offset = false) {
 			let index = from[game.effects[i].id].turns < 1 ? 0 : from[game.effects[i].id].turns - 1;
 			let temp = from[game.effects[i].id].temp[index] != undefined ? from[game.effects[i].id].temp[index] : false;
 
+			/* for debugging sparkle stance temp might + permanent sources like excalibur + mummy might debuff
+			if(game.effects[i].id=='might') {
+				console.log(from[game.effects[i].id].temp);
+				console.log(index);
+				console.log(from[game.effects[i].id].temp[index]);
+			} */
+
 			if(temp) {
 				from[game.effects[i].id].temp.splice(index, 1);
 				from[game.effects[i].id].current -= temp;
@@ -2269,12 +2311,17 @@ function applyEffect(effect, to, turns = -1) {
 		to.vex.current -= 1;
 		if(game.playsounds) sounds.play('vex');
 	} else {
+		let statusDom = $('.player .status-text');
+		if(to.type=='monster') {
+			statusDom = $('.monster[data-guid=' + to.guid + '] .status-text');
+		}
 		if(effect.amount != undefined) {
 			// conjure should never go below 0 because if it does then when player applies any magic it will decrease rather than increase rainbow
 			// basically when monster hexes conjure we want to reduce any positive conjuring, not go negative
-			let amt = (effect.effect == 'conjure' && effect.hex) ? 0 : Math.round(((to[effect.effect].current + effect.amount) + Number.EPSILON) * 100) / 100;
-			// punch should never go below 0
-			if(effect.effect == 'punch') {
+			//let amt = (effect.effect == 'conjure' && effect.hex) ? 0 : Math.round(((to[effect.effect].current + effect.amount) + Number.EPSILON) * 100) / 100;
+			let amt = Math.round(((to[effect.effect].current + effect.amount) + Number.EPSILON) * 100) / 100;
+			// punch and speed should never go below 0
+			if(effect.effect == 'punch' || effect.effect == 'speed') {
 				if(amt < 0) {
 					amt = 0;
 				}
@@ -2285,7 +2332,7 @@ function applyEffect(effect, to, turns = -1) {
 				// if turns is set to -1 it means this is not a temporary effect. this way, both permanent and temp effects can be added together
 				if(turns > -1) {
 					//to[effect.effect].temp = Math.round(((to[effect.effect].temp + effect.amount) + Number.EPSILON) * 100) / 100;
-					to[effect.effect].temp.push(effect.amount);
+					to[effect.effect].temp.push(effect.amount);  //TODO: test sparkle stance + excalibur against mummy: mummy hexes might which disrupts temp array
 				}
 			}
 			if(turns > -1) {
@@ -2304,13 +2351,20 @@ function applyEffect(effect, to, turns = -1) {
 				to[effect.effect].turns = turns;
 			}
 			if(effect.persist) to[effect.effect].persist = effect.persist;
+			let amtShow = amt;
+			if(effect.effect == 'punch' || effect.effect == 'sorcery' || effect.effect == 'resistance') {
+				amtShow = Math.round((amtShow + Number.EPSILON) * 100);
+				amtShow += '%';
+			}
 			if(effect.hex) {
 				to[effect.effect].hexed = true;
 				if(game.playsounds) sounds.play('hex');
+				game.statusAnimations({data: amtShow + ' ' + effect.effect, to: statusDom, hex: true});
 			} else {
 				let gameEffect = game.effects.find(({ id }) => id === effect.effect);
 				let sound = gameEffect.sound ? gameEffect.sound : 'applyEffect';
 				if(game.playsounds) sounds.play(sound);
+				game.statusAnimations({data: amtShow + ' ' + effect.effect, to: statusDom, hex: false});
 			}
 		} else if(effect.base != undefined) {
 			to[effect.effect].base += effect.base;
@@ -2318,6 +2372,12 @@ function applyEffect(effect, to, turns = -1) {
 			let gameEffect = game.effects.find(({ id }) => id === effect.effect);
 			let sound = gameEffect.sound ? gameEffect.sound : 'applyEffect';
 			if(game.playsounds) sounds.play(sound);
+			let amtShow = effect.base;
+			if(effect.effect == 'punch' || effect.effect == 'sorcery' || effect.effect == 'resistance') {
+				amtShow = Math.round((amtShow + Number.EPSILON) * 100);
+				amtShow += '%';
+			}
+			game.statusAnimations({data: amtShow + ' ' + effect.effect, to: statusDom, hex: false});
 		}
 		if(effect.effect == 'rainbow') {
 			updateRainbowDom(to);
@@ -2357,6 +2417,10 @@ function clearCombatAbilities() {
 function applyAbility(ability, to, turns = -1) {
 	if(ability.hex || to[ability.ability].enabled == false) {
 		to[ability.ability].enabled = ability.enabled;
+		let statusDom = $('.player .status-text');
+		if(to.type=='monster') {
+			statusDom = $('.monster[data-guid=' + to.guid + '] .status-text');
+		}
 		if(to[ability.ability].permanent) {
 			to[ability.ability].baseTurns += turns;
 		} else {
@@ -2366,11 +2430,13 @@ function applyAbility(ability, to, turns = -1) {
 			to[ability.ability].turns = 0;
 			to[ability.ability].enabled = false;
 			if(game.playsounds) sounds.play('hex');
+			game.statusAnimations({data: ability.ability, to: statusDom, hex: true});
 		} else {
 			to[ability.ability].turns += turns;
 			let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
 			let sound = gameAbility.sound ? gameAbility.sound : 'applyAbility';
 			if(game.playsounds) sounds.play(sound);
+			game.statusAnimations({data: ability.ability, to: statusDom, hex: false});
 		}
 		if(to[ability.ability].baseTurns < -1) to[ability.ability].baseTurns = -1;
 		if(to[ability.ability].turns < -1) to[ability.ability].turns = -1;
@@ -3576,7 +3642,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 				switch(actions[e].action) {
 					case 'addCard':
 
-						if(game.combatEndedFlag) return;
+						//if(game.combatEndedFlag) return; //disabled this because it was not allowing the library quest to work
 
 						let addCard = '';
 						let addThisCard = {};
@@ -3735,7 +3801,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							}
 						}
 						
-						deck.showShardedCards(combatDeck, player);
+						deck.showModifiedCards(combatDeck, player, true);
 						
 					break;
 					case 'draw':
@@ -3822,6 +3888,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								// we will actually increase the essence stats within the updateEssenceLevels function called below
 								if(what != 'aura' && what != 'sparkle' && what != 'shimmer') {
 									player[what][key] += value;
+									// it's possible we had full armor and reduced health, so armor needs to reduce to match health
+									if(player.armor > player.health.current) player.armor = player.health.current;
 								}
 								// if we increased speed we might need to re-enable draw card button
 								if(what == 'speed' && value > 0) {
@@ -4274,12 +4342,12 @@ async function processQuest(elem) {
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			} else if(option == 'see_depth') {
-				let actions = [{action: 'stat', what: 'rainbow', key: 'max', value: 5}];
+				let actions = [{action: 'stat', what: 'rainbow', key: 'base', value: 2}, {action: 'stat', what: 'rainbow', key: 'max', value: 5}];
 				await processActions(actions);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			} else if(option == 'see_clarity') {
-				let actions = [{action: 'stat', what: 'rainbow', key: 'max', value: -5}];
+				let actions = [{action: 'stat', what: 'rainbow', key: 'base', value: 2}, {action: 'stat', what: 'rainbow', key: 'max', value: -5}];
 				await processActions(actions);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
@@ -4461,7 +4529,7 @@ async function applyMagic(magic, to) {
 		type = util.randFromArray(types);
 	}
 
-	// don't let rainbow get to 0
+	// don't let rainbow max get to 0
 	if(to.rainbow.max < 1) {
 		to.rainbow.max = 1;
 	}
@@ -4472,6 +4540,7 @@ async function applyMagic(magic, to) {
 	}
 
 	let totalAmount = Math.round(player.sorcery.current * (magic.amount + player.conjure.current));
+	if(totalAmount < 0) totalAmount = 0;
 
 	// increase magic amount
 	to.rainbow.current += totalAmount;
@@ -4554,7 +4623,7 @@ async function activateRainbow(type, to) {
 	let whichMonster = to.rainbow.type == 'muddled' || to.rainbow.type == 'chaos' ? [util.randFromArray(currentMonsters)] : currentMonsters;
 
 	// check for magic resistance
-	dmg = dmg - (dmg * whichMonster[0].resistance.current);
+	dmg = Math.round(dmg - (dmg * whichMonster[0].resistance.current));
 
 	await doDamage(dmg, undefined, whichMonster, ignoreBlock, ignoreArmor);
 	for(let i = 0; i < game.currentMonsters.length; i++) {
@@ -4642,7 +4711,7 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 			}
 
 			// is player unreachable?
-			if(to[i].unreachable.enabled) {
+			if(to[i]?.unreachable?.enabled) {
 				thisDmg = 1;
 			}
 
@@ -4719,8 +4788,8 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 			}
 
 			if(to[i].health.current <= 0) to[i].health.current = 0;
-			if(to[i].armor.current <= 0) to[i].armor.current = 0;
-			if(to[i].block.current <= 0) to[i].block.current = 0;
+			if(to[i].armor <= 0) to[i].armor = 0;
+			if(to[i].block <= 0) to[i].block = 0;
 
 			let dmgTakenDom = $('.player .dmg-taken');
 			let armorLostDom = $('.player .armor-lost');

@@ -623,7 +623,8 @@ const ALL_CARDS = [
         id: 'aura_stance', name: 'Aura Stance', type: 'tool', tier: 'uncommon', mana: 0, addable: false, retain: true,
         sound: 'auraAmount',
         actions: [
-            {action: 'stat', what: 'stance', value: 'aura'}
+            {action: 'stat', what: 'stance', value: 'aura'},
+            {action: 'stat', what: 'mana', key: 'current', value: 1}
         ],
     }),
     new Cards({
@@ -632,12 +633,18 @@ const ALL_CARDS = [
         actions: [
             {action: 'stat', what: 'stance', value: 'sparkle'}
         ],
+        effects: [
+            {effect: 'might', amount: 2, turns: 1}
+        ]
     }),
     new Cards({
         id: 'shimmer_stance', name: 'Shimmer Stance', type: 'tool', tier: 'uncommon', mana: 0, addable: false, retain: true,
         sound: 'shimmerAmount',
+        armor: [3],
+        blk: [5],
         actions: [
-            {action: 'stat', what: 'stance', value: 'shimmer'}
+            {action: 'stat', what: 'stance', value: 'shimmer'},
+            {action: 'stat', what: 'health', key: 'current', value: 4}
         ],
     }),
     new Cards({
@@ -974,7 +981,7 @@ const ALL_CARDS = [
         },
         destroy: {
             actions: [
-                {action: 'stat', what: 'speed', key: 'current', value: 3},
+                {action: 'stat', what: 'speed', key: 'current', value: 5},
             ]
         },
     }),
@@ -992,7 +999,7 @@ const ALL_CARDS = [
         },
         destroy: {
             actions: [
-                {action: 'stat', what: 'mana', key: 'current', value: 2},
+                {action: 'stat', what: 'mana', key: 'current', value: 4},
             ]
         },
     }),
@@ -1005,7 +1012,7 @@ const ALL_CARDS = [
             armor: [5]
         },
         destroy: {
-            armor: [7]
+            armor: [15]
         },
     }),
     new Cards({
@@ -1017,7 +1024,7 @@ const ALL_CARDS = [
             blk: [12]
         },
         destroy: {
-            blk: [18]
+            blk: [30]
         },
     }),
     new Cards({
@@ -1029,7 +1036,7 @@ const ALL_CARDS = [
             dmg: [10]
         },
         destroy: {
-            dmg: [15]
+            dmg: [25]
         },
     }),
     new Cards({
@@ -1046,7 +1053,7 @@ const ALL_CARDS = [
         },
         destroy: {
             actions: [
-                {action: 'draw', value: 4}
+                {action: 'draw', value: 6}
             ]
         },
     }),
@@ -1059,7 +1066,7 @@ const ALL_CARDS = [
             magic: [{type: 'aligned', amount: 6}], 
         },
         destroy: {
-            magic: [{type: 'aligned', amount: 11}], 
+            magic: [{type: 'aligned', amount: 20}], 
         },
     }),
     new Cards({
@@ -1289,19 +1296,19 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'familiar_strike', name: 'Familiar Strike', type: 'attack', target: 'monster', mana: 2, tier: 'uncommon', weight: 3, courage: 3,
+        id: 'familiar_strike', name: 'Familiar Strike', type: 'attack', target: 'monster', mana: 3, tier: 'uncommon', weight: 3, courage: 3,
         dmg: [10],
         actions: [
             {action: 'addCard', value: 1, what: 'familiar_agony', to: 'handCards'},
         ],
         slots: 1,
-        fireShardUpgrades: {
+        shardUpgrades: {
             actions: [
                 {action: 'addCard', value: 2, what: 'familiar_agony', to: 'handCards'},
             ],
         },
-        iceShardUpgrades: {
-            mana: 1
+        bothShardUpgrades: {
+            mana: 2
         },
     }),
     new Cards({
@@ -1412,12 +1419,12 @@ const ALL_CARDS = [
             {ability: 'panic', turns: 1, enabled: true}
         ],
         slots: 1,
-        fireShardUpgrades: {
+        shardUpgrades: {
             abilities: [
                 {ability: 'panic', turns: 2, enabled: true}
             ],
         },
-        iceShardUpgrades: {
+        bothShardUpgrades: {
             mana: 1
         },
     }),
@@ -3947,6 +3954,7 @@ export function AllCards() {
     function buildLibrary() {
         if(!game.libraryBuilt) {
             game.libraryBuilt = true;
+            $('.library-panel .cards').empty();
             for(let i = 0; i < this.getTotalCards(); i++) {
                 util.appendCard(this.getAllCards()[i], '.library-panel .cards');
             }
@@ -3971,7 +3979,6 @@ export function Deck() {
     let player = window.player;
 
     function buildDeck() {
-        addCard('jab');
         addCard('jab');
         addCard('jab');
         addCard('jab');
@@ -4477,16 +4484,24 @@ export function Deck() {
 
     }
 
-    function showShardedCards(combatDeck, player) {
+    function showModifiedCards(combatDeck, player, refresh = false) {
         if(game.toShow.length > 0) {
 			game.toShow = [... new Set(game.toShow)];
             let cards = game.toShow;
             for(let i = 0; i < cards.length; i++) {
-                let domCard = util.getDomCardByGuid(cards[i].guid);
+                let domCard = [];
+                if(cards[i].guid !== '') {
+                    domCard = util.getDomCardByGuid(cards[i].guid);
+                }
+                if(domCard.length == 0 || domCard == undefined) {
+                    util.appendCard(cards[i], '.library-panel .cards');
+                    domCard = util.getDomCardById(cards[i].id);
+                }
+
                 let cloneCard = domCard.parent().clone();
                 cloneCard.appendTo('.show-cards');
                 // swap out the hand card so the dom card gets rebuilt
-                if(!game.combatEndedFlag) {
+                if(!game.combatEndedFlag && refresh) {
                     let thisCard = util.getCardByGuid(cards[i].guid, combatDeck.handCards);
                     if(thisCard != undefined) {
                         util.removeCardByGuid(thisCard.guid, 'replaced');
@@ -4551,7 +4566,7 @@ export function Deck() {
         addCard,
         removeCard,
         attachShard,
-        showShardedCards,
+        showModifiedCards,
         hasOpenSlot,
         numOpenSlots,
         buildDescription,
@@ -4856,8 +4871,8 @@ export function CombatDeck() {
     }
 
     function transmuteCards(combatDeck, deck, player) {
-        for(let i = 0; i < combatDeck.transmutingCards.length; i++) {
-            let possibleCards = AllCards().getAddableCards().filter(j => j.addable == true && j.type !== 'clutter' && j.id !== combatDeck.transmutingCards[i].id);
+        for(let i = 0; i < game.toTransmute.length; i++) {
+            let possibleCards = AllCards().getAddableCards().filter(j => j.addable == true && j.type !== 'clutter' && j.id !== game.toTransmute[i].id);
             let transmutedCard = util.randFromArray(possibleCards);
             transmutedCard = JSON.parse(JSON.stringify(transmutedCard)); // necessary to create a deep copy
             transmutedCard.guid = util.randString();
@@ -4870,22 +4885,27 @@ export function CombatDeck() {
             let slotDesc = Deck().buildSlotsDescription(transmutedCard);
             transmutedCard.slotDesc = slotDesc;
 
+            // show transmuted cards
+            game.toShow.push(transmutedCard);
+
             combatDeck.chooseCards.push(transmutedCard);
             if(game.fromPile == 'allCards') {
                 deck.cards.push(transmutedCard);
-                deck.cards = deck.cards.filter(j => j.guid !== combatDeck.transmutingCards[i].guid);
+                deck.cards = deck.cards.filter(j => j.guid !== game.toTransmute[i].guid);
             } else {
                 let card = addChooseCard(player, combatDeck, transmutedCard.guid, game.fromPile);
                 if(game.fromPile == 'handCards') {
-                    combatDeck.handCards = combatDeck.handCards.filter(j => j.guid !== combatDeck.transmutingCards[i].guid);
+                    combatDeck.handCards = combatDeck.handCards.filter(j => j.guid !== game.toTransmute[i].guid);
                 } else if(game.fromPile == 'drawCards') {
-                    combatDeck.drawCards = combatDeck.drawCards.filter(j => j.guid !== combatDeck.transmutingCards[i].guid);
+                    combatDeck.drawCards = combatDeck.drawCards.filter(j => j.guid !== game.toTransmute[i].guid);
                 } else if(game.fromPile == 'discardCards') {
-                    combatDeck.discardCards = combatDeck.discardCards.filter(j => j.guid !== combatDeck.transmutingCards[i].guid);
+                    combatDeck.discardCards = combatDeck.discardCards.filter(j => j.guid !== game.toTransmute[i].guid);
                 }
             }
-            util.removeCardByGuid(combatDeck.transmutingCards[i].guid, 'destroyed');
+            util.removeCardByGuid(game.toTransmute[i].guid, 'destroyed');
         }
+        game.toTransmute = [];
+        Deck().showModifiedCards(combatDeck, player);
         if(game.playsounds) sounds.play('transmuteCard');
     }
 
@@ -4961,7 +4981,12 @@ export function CombatDeck() {
             }
         }
 
-        combatDeck[part].push(copiedCard);
+        // cards added to draw pile should always be put in a random position
+        if(part == 'drawCards') {
+            combatDeck[part].splice((combatDeck[part].length+1) * Math.random() | 0, 0, copiedCard);
+        } else {
+            combatDeck[part].push(copiedCard);
+        }
         updateCardPlayability(player, combatDeck);
 
         if(part == 'handCards') {
@@ -4971,7 +4996,7 @@ export function CombatDeck() {
             util.appendCard(copiedCard, '.player-cards', css + retain);
         }
 
-        Deck().showShardedCards(combatDeck, player);
+        Deck().showModifiedCards(combatDeck, player, true);
 
     }
 

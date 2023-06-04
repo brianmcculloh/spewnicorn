@@ -401,10 +401,11 @@ export default function Game() {
     let toPick = 0;
     let toExclude = [];
     let toShow = [];
+    let toTransmute = [];
     let toPile = '';
     let fromPile = '';
     let currentQuest;
-    let combatEndedFlag = false;
+    let combatEndedFlag = true;
     let courageTreasureAmount = 5;
     let courageCandyAmount = 5;
     let courageCardAmount = 2;
@@ -462,7 +463,6 @@ export default function Game() {
         await blkAnimation(elem, animation);
         await util.wait(animationGap);
 
-        //elem.css('scale', '.1');
         elem.css('opacity', '0').delay(300).promise() 
         .done(function() {
             $('.monster').removeClass('damaged');
@@ -471,14 +471,30 @@ export default function Game() {
                 elem.remove();
             });
         });
+    }
+    async function statusAnimations(animation) {
+        let elem = $('<span>' + animation.data + '</span>');
+        if(animation.hex) elem.addClass('hex');
         
+        await statusAnimation(elem, animation);
+        await util.wait(animationGap);
+
+        elem.css('scale', '.8');
+        elem.css('opacity', '0').promise(),
+        elem.css('transform', 'translateY(-30px)').delay(3500).promise() 
+        .done(function() {
+            elem.css('opacity', '0').delay(500).promise() 
+            .done(function() {
+                elem.remove();
+            });
+        });
     }
 
     function dmgAnimation(elem, animation) {
         return new Promise(resolve => {
             elem.appendTo(animation.to).promise(),
             elem.css('scale', '2').promise(),
-            elem.animate({top: '-100'}).promise()
+            elem.animate({top: '-100px'}).promise()
             .done(function() {
                 resolve();
             });
@@ -488,6 +504,15 @@ export default function Game() {
         return new Promise(resolve => {
             elem.appendTo(animation.to).promise(),
             $(animation.to).closest('.monster').addClass('damaged'),
+            elem.css('scale', '2').promise()
+            .done(function() {
+                resolve();
+            });
+        });
+    }
+    function statusAnimation(elem, animation) {
+        return new Promise(resolve => {
+            elem.appendTo(animation.to).promise(),
             elem.css('scale', '2').promise()
             .done(function() {
                 resolve();
@@ -549,6 +574,7 @@ export default function Game() {
         toPile,
         toExclude,
         toShow,
+        toTransmute,
         fromPile,
         currentQuest,
         combatEndedFlag,
@@ -582,6 +608,7 @@ export default function Game() {
         boosterPacks,
         dmgAnimations,
         blkAnimations,
+        statusAnimations,
         rainbowAnimations,
         message
     };

@@ -20,7 +20,7 @@ class Quests {
 }
 
 const ALL_QUESTS = [
-    new Quests({
+   new Quests({
         id: 'workshop',
         name: 'Workshop',
         desc: 'A myriad of tools adorn the walls and tables.',
@@ -280,8 +280,8 @@ const ALL_QUESTS = [
             {id: 'peer_into_the_mirror', name: 'Peer into the mirror',
                 options: [
                     {id: 'see_color', name: 'See Color', desc: 'Increase rainbow base by 5'},
-                    {id: 'see_depth', name: 'See Depth', desc: 'Increase rainbow max by 5'},
-                    {id: 'see_clarity', name: 'See Clarity', desc: 'Decrease rainbow max by 5'},
+                    {id: 'see_depth', name: 'See Depth', desc: 'Increase rainbow base by 2 and max by 5'},
+                    {id: 'see_clarity', name: 'See Clarity', desc: 'Increase rainbow base by 2 and decrease rainbow max by 5'},
                     {id: 'leave', name: 'Leave'}
                 ]
             },

@@ -344,15 +344,22 @@ const ALL_MONSTERS = [
             ]},
             {effects: [
                 {effect: 'might', amount: 2, turns: 2},
+            ],
+            actions: [
+                {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
             ]},
             {dmg: [10]},
             {blk: [10]},
             {dmg: [5, 5]},
-            {blk: [10]},
+            {blk: [10], actions: [
+                {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
+            ]},
             {dmg: [10]},
             {blk: [10]},
             {dmg: [5, 5]},
-            {blk: [10]},
+            {blk: [10], actions: [
+                {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
+            ]},
         ],
         stout: {base: 3, current: 0, temp: [], turns: -1},
     }),
@@ -744,6 +751,9 @@ const ALL_MONSTERS = [
             {dmg: [3, 3, 3, 3, 3, 3, 3], 
             abilities: [
                 {ability: 'tank', hex: true}
+            ], 
+            actions: [
+                {action: 'addCard', value: 1, what: 'briars', to: 'discardCards'},
             ], p: .25},
             {dmg: [4, 4, 4, 4, 4], p: .25},
         ],
@@ -772,11 +782,15 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'solid', amount: -1, turns: 1, hex: true},
             ]},
-            {dmg: [50]},
-            {abilities: [
+            {dmg: [60]},
+            {dmg: [20], abilities: [
                 {ability: 'tank', hex: true},
+            ],
+            actions: [
+                {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'briars', to: 'discardCards'},
             ]},
-            {dmg: [20]},
+            {dmg: [30]},
         ],
     }),
     new Creatures({
@@ -792,9 +806,9 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: 10, turn: 1},
                 {effect: 'resistance', amount: .4, turns: 2}
             ], p: .25},
-            {dmg: [25], p: .25},
-            {dmg: [12, 12], p: .1},
-            {armor: [10], blk: [10], p: .1},
+            {dmg: [35], p: .25},
+            {dmg: [18, 18], p: .1},
+            {dmg: [20], armor: [10], blk: [10], p: .1},
             {actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
@@ -820,7 +834,7 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
-            ], p: .2},
+            ], dmg: [10], p: .2},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: -1, hex: true},
                 {effect: 'enchanter', amount: -5, turns: -1, hex: true},
@@ -841,11 +855,11 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
-            ], dmg: [10], p: .2},
-            {dmg: [25], p: .1},
+            ], dmg: [20], p: .2},
+            {dmg: [35], p: .1},
             {effects: [
                 {effect: 'might', amount: 10, turn: 1},
-            ], dmg: [10], p: .1},
+            ], dmg: [15], p: .1},
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
@@ -867,10 +881,10 @@ const ALL_MONSTERS = [
                 {action: 'addCard', value: 5, what: 'execrate', to: 'drawCards'},
             ]},
             {dmg: [25]},
-            {armor: [15]},
+            {armor: [15], blk: [15]},
             {dmg: [4, 4, 4, 4],
             effects: [
-                {effect: 'might', amount: 2, turns: -1},
+                {effect: 'might', amount: 3, turns: -1},
             ]},
         ],
     }),
@@ -887,7 +901,7 @@ const ALL_MONSTERS = [
         category: 'ice_guardian',
         pattern: 'random',
         moveSet: [
-            {blk: [30], armor: [15], p: .1},
+            {blk: [30], armor: [30], p: .1},
             {dmg: [35], p: .1},
             {effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},

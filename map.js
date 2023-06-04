@@ -66,6 +66,8 @@ export default function Map() {
         let j = Math.round(util.randDecimal() * 100);
         let k = Math.round(util.randDecimal() * 100);
         let l = Math.round(util.randDecimal() * 100);
+        let m = Math.round(util.randDecimal() * 100);
+        let n = Math.round(util.randDecimal() * 100);
         let excludedTilesFountain = [1, 2, 3, 11, 12, 21, 22];
         let excludedTilesQuest = [1, 2, 3, 4, 11, 12, 13, 21, 22, 23, 31, 32];
         //excludedTilesQuest = []; // TODO: comment this out - debug purposes only
@@ -97,7 +99,7 @@ export default function Map() {
                 $(this).parent().attr('data-powertip', 'Fire Gate');
             } else {
                 // arenas
-                if (i == j | i == k || i == l) {
+                if (i == j | i == k || i == l || i == m || i == n) {
                     $(this).html('<span class="icon"></span>');
                     $(this).parent().addClass('arena');
                     $(this).parent().attr('data-powertip', 'Arena Battle');
