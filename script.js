@@ -86,13 +86,10 @@
  * 
  * PHASE V:
  * 
- * TODO: should Battle Sequence be easier to get off?
- * TODO: sometimes courage screen only shows 1 ability instead of 2
- * TODO: bakery courage should decrease by 1 each
- * TODO: medallion is way too powerful because both the amount and turns are cumulative - only the amount should stack, not the turns
- * --after fixing this, make sure it's ok that it persists into the next combat
+ * TODO: 
  * 
  * 
+ * TODO: [can't replicate] sometimes courage screen only shows 1 ability instead of 2
  * TODO: [can't replicate] added a shard to a card, and then the next quest was the trasform 3 quest, and the sharded card was still in the show cards
  * TODO: [can't replicate] Can't select to discard a slash card that was just added by surprise attack
  * TODO: [can't replicate] quest Library not working
@@ -125,6 +122,7 @@
  * 
  * Monster hexes punch down but player buffs punch up. New damage amount is larger than original but damage amount color is red - should be green.
  * Question: if player has might, should draw damage effects have might applied?
+ * Question: should only one hit of a multi-attack card be affected by crit (like how fatality works)?
  * 
  * 
  * 
@@ -247,6 +245,14 @@ jQuery(document).ready(function($) {
 
 			$('#game-loading').removeClass('hidden');
 			$('.game-loading-progress').addClass('loaded');
+
+			let gameseed = $('input#custom-seed').val();
+			if(gameseed == '') {
+				gameseed = (Math.random() + 1).toString(36).substring(2);
+			}
+			game.seed = gameseed;
+			util.setGameSeed(gameseed);
+			$('.game-seed span').html(gameseed);
 
 			setTimeout(function() {
 				$('#game-loading').addClass('hidden');
@@ -588,18 +594,19 @@ jQuery(document).ready(function($) {
 
 	});
 
-	$(document).on('click', '.player-cards .card.playable', function(e) {
+	$(document).on('click', '.player-cards .card', function(e) {
 
-		if($(this).hasClass('combinable')) {
+		let combinable = $(this).hasClass('combinable');
+		let playable = $(this).hasClass('playable');
+		if(combinable) {
 			let id = $(this).data('id');
 			if($('.card.combinable[data-id="' + id + '"]').hasClass('selected') && !$(this).hasClass('selected')) {
 				$(this).addClass('selected');
 				combineCards($(this));
 			} else {
 				selectCard($(this));
-
 			}
-		} else {
+		} else if(playable) {
 			selectCard($(this));
 		}
 
@@ -875,6 +882,15 @@ jQuery(document).ready(function($) {
 
 	});
 
+	$(document).on('click', '.fountain-bathe', function(e) {
+
+		let amount = parseFloat($(this).attr('data-amount'));
+		player.health.max += amount;
+		heal(player, $(this).attr('data-amount'));
+		$('.magic-fountain').removeClass('shown');
+
+	});
+
 	$(document).on('click', '.fountain-search', function(e) {
 
 		loot('shard');
@@ -1034,7 +1050,7 @@ function init() {
 	setStatus();
 
 	//addTreasure('excalibur'); // use this to manually add treasures
-	//addCandy('lemon_gumdrop'); // use this to manually add candies
+	//addCandy('chocolate_fudge'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
 }
@@ -1181,18 +1197,18 @@ function updateCardDescription(elem, cards) {
 	elem.find('.dmg').each(function(e) {
 		let dmg = $(this).data('amount');
 		let originalDmg = dmg;
-		if(player.might.current != 0) {
+		if(player.might.current != 0 && card.draw.target != 'player' && card.discard.target != 'player') {
 			dmg += player.might.current;
 		}
-		if(player.momentumAmount != 0) {
+		if(player.momentumAmount != 0 && card.draw.target != 'player' && card.discard.target != 'player') {
 			dmg += player.momentumAmount;
 		}
 		// if we're outside of combat, current will be unset (0), so use base instead
 		let punch = game.combatEndedFlag ? player.punch.base : player.punch.current;
-		if(punch != 1) {
+		if(punch != 1 && card.draw.target != 'player' && card.discard.target != 'player') {
 			dmg = Math.round(dmg * punch);
 		}
-		if(card.age > 0) {
+		if(card.age > 0 && card.draw.target != 'player' && card.discard.target != 'player') {
 			if(player.wisdom.current != 1) {
 				dmg += Math.round(card.age * player.wisdom.current);
 			} else {
@@ -1312,7 +1328,7 @@ function viewPackCards(pack) {
 	$('.pack-cards-panel').addClass('shown');
 	$('.pack-cards-panel h2').html('<span>' + pack + '</span> booster pack cards');
 	let card = 'Self Enhance';
-	if(pack == 'magic') {
+	if(pack == 'rainbow') {
 		card = 'Sparks';
 	} else if(pack == 'cycle') {
 		card = 'Bottled Speed';
@@ -1322,9 +1338,9 @@ function viewPackCards(pack) {
 	$('.pack-cards-panel .select').attr('data-pack', pack);
 	let packCards = AllCards().getAddableCards(false, false, pack);
 	for(let i = 0; i < packCards.length; i++) {
-		let desc = Deck().buildDescription(packCards[i]);
+		let desc = deck.buildDescription(packCards[i]);
         packCards[i].desc = desc;
-		let slotDesc = Deck().buildSlotsDescription(packCards[i]);
+		let slotDesc = deck.buildSlotsDescription(packCards[i]);
         packCards[i].slotDesc = slotDesc;
 		util.appendCard(packCards[i], '.pack-cards-panel .cards');
 	}
@@ -1334,6 +1350,7 @@ function chooseShardCard(shard, cards = deck.cards) {
 	$('.draw-card, .end-turn').addClass('disabled');
 	$('.shard-cards-panel .cards').empty();
 	$('.shard-cards-panel').attr('data-shard', shard);
+	$('.shard-cards-panel h2 span').html(shard);
 	if(game.playsounds) sounds.play('clickShard');
 	for(let i = 0; i < cards.length; i++) {
 		if(deck.hasOpenSlot(cards[i])) {
@@ -1460,6 +1477,9 @@ function startingBonus(elem) {
 			let possibleCards = AllCards().cards.filter(i => i.addable == true && i.tier == 'rare');
 			let card = util.randFromArray(possibleCards);
 			deck.addCard(card.id);
+			let addedCard = util.getCardById(card.id, deck.cards);
+			game.toShow.push(addedCard);
+			deck.showModifiedCards(combatDeck, player, true);
 			entity.health.current -= 7;
 		} else if(action == 'addCommonTreasure') {
 			let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 1);
@@ -1481,7 +1501,7 @@ function startingBonus(elem) {
 
 	// max health should also increase current health
 	if(att == 'health') {
-		entity[att].current += amount;
+		heal(entity, amount);
 	}
 
 	setStatus();
@@ -1495,7 +1515,7 @@ function startingBoosterPack(elem) {
 	let card = [];
 	if(pack == 'combine') {
 		id = 'self_enhance';
-	} else if(pack == 'magic') {
+	} else if(pack == 'rainbow') {
 		id = 'sparks';
 	} else {
 		id = 'bottled_speed';
@@ -1648,22 +1668,24 @@ function beginTurn() {
 		}
 
 		// stances only apply to speed, which can only be taken into account after turn 1
-		if(player.stance == 'none') {
-			applyBlock(player.speed.current, player);
-		} else if(player.stance == 'aura') {
-			player.mana.current = player.mana.base + Math.round(player.speed.current * player.aura.level);
-		} else if(player.stance == 'sparkle') {
-			let tempMight = Math.round(player.speed.current * player.sparkle.level);
-			if(tempMight > 0) {
-				player.might.current += tempMight;
-				player.might.temp.push(tempMight);
+		if(player.speed.current > 0) {
+			if(player.stance == 'none') {
+				applyBlock(player.speed.current, player);
+			} else if(player.stance == 'aura') {
+				player.mana.current = player.mana.base + Math.round(player.speed.current * player.aura.level);
+			} else if(player.stance == 'sparkle') {
+				let tempMight = Math.round(player.speed.current * player.sparkle.level);
+				if(tempMight > 0) {
+					player.might.current += tempMight;
+					player.might.temp.push(tempMight);
+				}
+			} else if(player.stance == 'shimmer') {
+				//player.speed.current = player.speed.base + Math.round(player.speed.current * player.shimmer.level) + extraSpeed; // old way of doing this was speed
+				//player.health.max += Math.floor((player.speed.current / 4) * player.shimmer.level); // we determined this could be infinitely farmable
+				heal(player, Math.floor((player.speed.current / 2) * player.shimmer.level));
+				applyArmor(Math.floor((player.speed.current / 2) * player.shimmer.level), player);
+				applyBlock(Math.floor(player.speed.current * player.shimmer.level), player);
 			}
-		} else if(player.stance == 'shimmer') {
-			//player.speed.current = player.speed.base + Math.round(player.speed.current * player.shimmer.level) + extraSpeed; // old way of doing this was speed
-			//player.health.max += Math.floor((player.speed.current / 4) * player.shimmer.level); // we determined this could be infinitely farmable
-			heal(player, Math.floor((player.speed.current / 2) * player.shimmer.level));
-			applyArmor(Math.floor((player.speed.current / 2) * player.shimmer.level), player);
-			applyBlock(Math.floor(player.speed.current * player.shimmer.level), player);
 		}
 			
 	}
@@ -2232,7 +2254,7 @@ function clearTurnEffects(from, delay = false, offset = false) {
 			}*/
 
 			// make sure .199999999 goes to .2
-			from[game.effects[i].id].current = Math.round(from[game.effects[i].id].current * 10) / 10;
+			from[game.effects[i].id].current = Math.round((from[game.effects[i].id].current + Number.EPSILON) * 100) / 100;
 		}
 	}
 
@@ -2337,7 +2359,7 @@ function applyEffect(effect, to, turns = -1) {
 			}
 			if(turns > -1) {
 				// punch works differently
-				if(effect.effect == 'punch') {
+				/*if(effect.effect == 'punch' || effect.effect == 'solid') { // we added solid here because of the medallion treasure - any others?
 					if(turns > to[effect.effect].turns) {
 						to[effect.effect].turns = turns;
 					}
@@ -2346,6 +2368,9 @@ function applyEffect(effect, to, turns = -1) {
 						turns += 1;
 					}
 					to[effect.effect].turns += turns;
+				}*/
+				if(turns > to[effect.effect].turns) {
+					to[effect.effect].turns = turns;
 				}
 			} else {
 				to[effect.effect].turns = turns;
@@ -2607,15 +2632,18 @@ function loot(type, tier = 3) {
 			possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == tier);
 			if(possibleTreasures.length > 0) {
 				let treasure = util.weightedRandom(possibleTreasures);
-				treasure.desc = Deck().buildDescription(treasure);
+				treasure.desc = deck.buildDescription(treasure);
 				util.appendTreasure(treasure, '.loot-items');
 			}
 		break;
 		case 'treasure':
 			if(possibleTreasures.length > 0) {
-				let treasure = util.weightedRandom(possibleTreasures);
-				treasure.desc = Deck().buildDescription(treasure);
+			for(let i = 0; i < possibleTreasures.length; i++) {
+				//let treasure = util.weightedRandom(possibleTreasures);
+				let treasure = possibleTreasures[i];
+				treasure.desc = deck.buildDescription(treasure);
 				util.appendTreasure(treasure, '.loot-items');
+			}
 			}
 			var numEssences = util.randFromRange(1, 3);
 			for(let i = 0; i < numEssences; i++) {
@@ -2631,7 +2659,7 @@ function loot(type, tier = 3) {
 			for(let i = 0; i < numCandies; i++) {
 				let candy = util.weightedRandom(treasures.candies);
 				let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
-				copiedCandy.desc = Deck().buildDescription(copiedCandy);
+				copiedCandy.desc = deck.buildDescription(copiedCandy);
 				let clickable = player.candies.length < game.candySlots ? true : false;
 				util.appendCandy(copiedCandy, '.loot-items', clickable);
 			}
@@ -2640,7 +2668,7 @@ function loot(type, tier = 3) {
 			for(let i = 0; i < tier; i++) {
 				let candy = util.weightedRandom(treasures.candies);
 				let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
-				copiedCandy.desc = Deck().buildDescription(copiedCandy);
+				copiedCandy.desc = deck.buildDescription(copiedCandy);
 				let clickable = player.candies.length < game.candySlots ? true : false;
 				util.appendCandy(copiedCandy, '.loot-items', clickable);
 			}
@@ -2674,7 +2702,7 @@ function rewardsScreen() {
 	game.toExclude = [];
 
 	for(let i = 0; i < game.cardRewardNumber; i++) {
-		let card = Deck().decideCard();
+		let card = deck.decideCard();
 		util.appendCard(card, '.rewards-cards');
 	}
 	if(util.chance(game.candyChance)) {
@@ -2682,7 +2710,7 @@ function rewardsScreen() {
 		if(game.candyChance < 0) game.candyChance = 0;
 		let candy = util.weightedRandom(treasures.candies);
 		let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
-		copiedCandy.desc = Deck().buildDescription(copiedCandy);
+		copiedCandy.desc = deck.buildDescription(copiedCandy);
 		let clickable = player.candies.length < game.candySlots ? true : false;
 		util.appendCandy(copiedCandy, '.rewards-loot', clickable);
 		$('.rewards-loot-wrapper').addClass('shown');
@@ -2753,34 +2781,34 @@ function courageScreen() {
 			theseTreasures.push(thisTreasure);
 			possibleTreasures = possibleTreasures.filter(i => i.id !== thisTreasure.id);
 			if(thisTreasure == undefined) break;
-			thisTreasure.desc = Deck().buildDescription(thisTreasure);
+			thisTreasure.desc = deck.buildDescription(thisTreasure);
 			util.appendTreasure(thisTreasure, '.courage-items');
 		}
 
 		for(let i = 0; i < game.courageCandyAmount; i++) {
 			let thisCandy = util.weightedRandom(treasures.candies);
-			thisCandy.desc = Deck().buildDescription(thisCandy);
+			thisCandy.desc = deck.buildDescription(thisCandy);
 			let clickable = player.candies.length < game.candySlots ? true : false;
 			util.appendCandy(thisCandy, '.courage-items', clickable);
 		}
 
 		for(let i = 0; i < game.courageCardAmount; i++) {
-			let card = Deck().decideCard('attack');
+			let card = deck.decideCard('attack');
 			util.appendCard(card, '.courage-cards');
 		}
 
 		for(let i = 0; i < game.courageCardAmount; i++) {
-			let card = Deck().decideCard('tool');
+			let card = deck.decideCard('tool');
 			util.appendCard(card, '.courage-cards');
 		}
 
 		for(let i = 0; i < game.courageCardAmount; i++) {
-			let card = Deck().decideCard('magic');
+			let card = deck.decideCard('magic');
 			util.appendCard(card, '.courage-cards');
 		}
 
 		for(let i = 0; i < game.courageCardAmount; i++) {
-			let card = Deck().decideCard('ability', 'uncommon');
+			let card = deck.decideCard('ability', 'uncommon');
 			util.appendCard(card, '.courage-cards');
 		}
 
@@ -2831,7 +2859,7 @@ function addCandy(add) {
 		if(game.playsounds) sounds.play('addCandy');
 		let candy = treasures.candies.find(({ id }) => id === add);
 		let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
-		copiedCandy.desc = Deck().buildDescription(copiedCandy);
+		copiedCandy.desc = deck.buildDescription(copiedCandy);
 		Player().addCandy(copiedCandy, player);
 		if(player.candies.length == game.candySlots) {
 			$('.loot-items .candy').removeClass('clickable');
@@ -2926,7 +2954,7 @@ function addTreasure(add) {
 
 	if(game.playsounds) sounds.play('addTreasure');
 	let treasure = treasures.treasures.find(({ id }) => id === add);
-	treasure.desc = Deck().buildDescription(treasure);
+	treasure.desc = deck.buildDescription(treasure);
 	Player().addTreasure(treasure, player);
 
 	// treasures that have counters don't get applied immediately
@@ -3025,25 +3053,27 @@ function selectCard(elem) {
 	} else {
 		//let card = util.getCardById(elem.data('id'), allCards); // was this wrong?
 		let card = util.getCardByGuid(elem.data('guid'), combatDeck.handCards);
-		$('.card.playable').removeClass('selected'); // deselect any other previously selected cards
-		$('.button.play-card').remove();
-		if(!$('body').hasClass('selecting')) {
-			if(elem.hasClass('combinable')) {
-				$('.card.playable:not(.combinable').removeClass('playable');
-				elem.addClass('selected');
-				// some cards can be combined or played. does player want to play this card instead of combine it?
-				if(util.hasPlayAction(card)) {
-					util.appendConfirm(card, elem);
-				}
-			} 
-			if(card.target == 'monster') {
-				if(game.playsounds) sounds.play('selectCard');
-				elem.addClass('selected');
-				$('.monster:not(.dead)').addClass('clickable');
-				drawArrow(elem);
-			} else {
-				if(!elem.hasClass('combinable')) {
-					playCard(elem);
+		if(card != undefined) {
+			$('.card.playable').removeClass('selected'); // deselect any other previously selected cards
+			$('.button.play-card').remove();
+			if(!$('body').hasClass('selecting')) {
+				if(elem.hasClass('combinable')) {
+					$('.card.playable:not(.combinable').removeClass('playable');
+					elem.addClass('selected');
+					// some cards can be combined or played. does player want to play this card instead of combine it?
+					if(util.hasPlayAction(card) && elem.hasClass('playable')) {
+						util.appendConfirm(card, elem);
+					}
+				} 
+				if(card.target == 'monster') {
+					if(game.playsounds) sounds.play('selectCard');
+					elem.addClass('selected');
+					$('.monster:not(.dead)').addClass('clickable');
+					drawArrow(elem);
+				} else {
+					if(!elem.hasClass('combinable')) {
+						playCard(elem);
+					}
 				}
 			}
 		}
@@ -3286,7 +3316,7 @@ function combineCards(elem) {
 	
 	playCard(elem, undefined, 'combine');
 
-	$('.card.playable.combinable.selected').each(function() {
+	$('.card.combinable.selected').each(function() {
 
 		let card = util.getCardByGuid($(this).data('guid'), combatDeck.handCards);
 		combatDeck.destroyCard(card, combatDeck);
@@ -3490,6 +3520,19 @@ async function processDmg(dmg, currentMonster, multiply, card = false, type = fa
 					if(player.fatality.current > 0 && (game.highestDmgRoll * player.fatality.current) > thisDmg && type != 'draw') {
 						thisDmg = game.highestDmgRoll * player.fatality.current;
 						fatalityHit = true;
+						// fatality is the only effect that lasts per card rather than per turn
+						// we also don't want to trigger fatality if the damage is coming from card draw
+						if(card.type == 'attack' && type != 'draw') {
+							if(player.fatality.turns > 0) {
+								player.fatality.turns -= 1;
+								let index = player.fatality.turns;
+								let temp = player.fatality.temp[index] != undefined ? player.fatality.temp[index] : 0;
+								if(temp > 0) {
+									player.fatality.current -= temp;
+									player.fatality.temp.splice(index, 1);
+								}
+							}
+						}
 					}
 					// check for age
 					if(card.age > 0) {
@@ -3504,7 +3547,7 @@ async function processDmg(dmg, currentMonster, multiply, card = false, type = fa
 					//await util.wait(game.animationGap);
 					if(criticalHit) {
 						game.attackCardsPlayed = 0;
-						player.rowdy.current = player.rowdy.base;
+						//player.rowdy.current = player.rowdy.base; // this was incorrect - rowdy should persist regardless of critical hit
 						$('.crit').addClass('shown');
 					} else {
 						game.attackCardsPlayed += 1;
@@ -3519,23 +3562,6 @@ async function processDmg(dmg, currentMonster, multiply, card = false, type = fa
 					await attackPlayer(false, dmg[i]);
 				}
 				await util.wait(game.animationDmg);
-			}
-		}
-		// fatality is the only effect that lasts per card rather than per turn
-		// we also don't want to trigger fatality if the damage is coming from card draw
-		if(card.type == 'attack' && type != 'draw') {
-			if(player.fatality.turns > 0) {
-				player.fatality.turns -= 1;
-				let index = player.fatality.turns;
-				let temp = player.fatality.temp[index] != undefined ? player.fatality.temp[index] : 0;
-				if(temp > 0) {
-					player.fatality.current -= temp;
-					player.fatality.temp.splice(index, 1);
-				}
-				/*if(player.fatality.turns == 0) {
-					player.fatality.current -= player.fatality.temp[0];
-					player.fatality.temp = [];
-				}*/
 			}
 		}
 		updateCritChance();
@@ -3643,7 +3669,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					case 'addCard':
 
 						//if(game.combatEndedFlag) return; //disabled this because it was not allowing the library quest to work
-
+						game.toShow = [];
 						let addCard = '';
 						let addThisCard = {};
 						let thisCard = {};
@@ -3700,12 +3726,19 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								}
 							} else {
 								combatDeck.addCard(addThisCard, combatDeck, actions[e].to, player, shards);
+								if(thisCard != undefined) {
+									let desc = deck.buildDescription(thisCard);
+									thisCard.desc = desc;
+									game.toShow.push(thisCard);
+								}
 							}
 						}
 
 						if(combatDeck.chooseCards.length > 0 && actions[e].select != undefined) {
 							game.toPick = actions[e].select;
 							viewChooseCards(util.sort(combatDeck.chooseCards));
+						} else {
+							deck.showModifiedCards(combatDeck, player, true);
 						}
 
 					break;
@@ -3744,6 +3777,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					case 'ensharden':
 						game.toPick = actions[e].select;
 						game.toPile = actions[e].from;
+						game.toShow = [];
 						var cards = [];
 						let shard = actions[e].type;
 						let thisShard = shard;
@@ -3970,17 +4004,17 @@ async function processQuest(elem) {
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			} else if(option == 'thickness') {
-				let effects = [{effect: 'solid', base: 1}];
+				let effects = [{effect: 'solid', base: 2}];
 				await processEffects(effects);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			} else if(option == 'strength') {
-				let effects = [{effect: 'might', base: 1}];
+				let effects = [{effect: 'might', base: 2}];
 				await processEffects(effects);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			} else if(option == 'wizardry') {
-				let effects = [{effect: 'conjure', base: 1}];
+				let effects = [{effect: 'conjure', base: 2}];
 				await processEffects(effects);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
@@ -4069,6 +4103,7 @@ async function processQuest(elem) {
 			} else if(option == 'wish_for_long_life') {
 				let actions = [{action: 'stat', what: 'health', key: 'max', value: 7}];
 				await processActions(actions);
+				heal(player, 7);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			}
@@ -4152,6 +4187,12 @@ async function processQuest(elem) {
 					{action: 'stat', what: 'health', key: 'current', value: -8}
 				];
 				await processActions(actions);
+			} else if(option == 'worship') {
+				let actions = [
+					{action: 'stat', what: 'health', key: 'max', value: 4},
+					{action: 'stat', what: 'health', key: 'current', value: -8}
+				];
+				await processActions(actions);
 			}
 			$('.quest-screen').removeClass('shown');
 			$('.quest-options').empty();
@@ -4178,18 +4219,15 @@ async function processQuest(elem) {
 		break;
 		case 'bakery':
 			if(option == 'buy_1_candy') {
+				loot('candy', 1);
+			} else if(option == 'buy_2_candies') {
 				if(player.courage > 1) {
 					gainCourage(-1);
-					loot('candy', 1);
-				}
-			} else if(option == 'buy_2_candies') {
-				if(player.courage > 2) {
-					gainCourage(-2);
 					loot('candy', 2);
 				}
 			} else if(option == 'buy_3_candies') {
-				if(player.courage > 3) {
-					gainCourage(-3);
+				if(player.courage > 2) {
+					gainCourage(-2);
 					loot('candy', 3);
 				}
 			}		

@@ -255,7 +255,7 @@ const ALL_MONSTERS = [
 
     Arena:
     ------
-    Ultramaton
+    Ultraumaton
     Unmaker
     Arch Summoner
 
@@ -765,8 +765,8 @@ const ALL_MONSTERS = [
 
     new Creatures({
         type: 'monster',
-        id: 'ultramaton', 
-        name: 'Ultramaton', 
+        id: 'ultraumaton', 
+        name: 'Ultraumaton', 
         health: {base: 350, current: 0, max: 350},
         tier: 1,
         category: 'boss',

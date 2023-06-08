@@ -26,44 +26,43 @@ function mulberry32(a) {
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
     }
 }
-// create cyrb128 state based on specified seed
-//const gameseed = "bananas"; // manually set seed here
-const gameseed = (Math.random() + 1).toString(36).substring(2);
-$('.game-seed span').html(gameseed);
-const seed = cyrb128(gameseed);
-const rand = mulberry32(seed[0]);
 
 export default class Util {
     constructor() {
-        this.rand = rand;
+        this.seed = cyrb128('bananas');
+        this.rand = mulberry32(this.seed[0]);
         this.game = window.game;
+    }
+    setGameSeed(gameseed) {
+        util.seed = cyrb128(gameseed);
+        util.rand = mulberry32(util.seed[0]);
     }
     isTouchDevice() {
         return 'ontouchstart' in window // works on most browsers 
             || window.navigator.msMaxTouchPoints > 0; // works on ie10
     }
     randDecimal() {
-        return this.rand();
+        return util.rand();
     }
     randIntFromInterval(threshold) {
-        return Math.floor(this.rand() * (10 - threshold + 1) + threshold)
+        return Math.floor(util.rand() * (10 - threshold + 1) + threshold)
     }
     randFromRange(min, max) {
-        return Math.round(this.rand() * (max - min) + min);
+        return Math.round(util.rand() * (max - min) + min);
     }
     chance(percent) {
-        let d = this.rand();
+        let d = util.rand();
         return d <= (percent / 100);
     }
     monsterNumChance(initial = 0, increase = 10) {
         return (Math.round(game.floor / game.monsterGroup) * increase) + initial;
     }
     randFromArray(arr) {
-        let item = arr[Math.floor(this.rand() * arr.length)];
+        let item = arr[Math.floor(util.rand() * arr.length)];
         return item;
     }
     randArrayIndex(arr) {
-        return Math.floor(this.rand() * arr.length);
+        return Math.floor(util.rand() * arr.length);
     }
     randString() {
         return (Math.random() + 1).toString(36).substring(2);
@@ -201,7 +200,7 @@ export default class Util {
             .queue(function() {
                 $(this).removeClass('drawing').dequeue();
             });
-            this.setTooltips(to);
+            util.setTooltips(to);
     }
     animateShowCards() {
         $('.show-cards').addClass('shown');
@@ -221,7 +220,7 @@ export default class Util {
             .appendTo('.monster-panel')
             .hide()
             .fadeIn(1500);
-            this.setTooltips('.monster-panel');
+            util.setTooltips('.monster-panel');
     }
     appendTreasure(treasure, to) {
         let trigger = '';
@@ -231,7 +230,7 @@ export default class Util {
         let treasureName = '<span class="highlight">' + treasure.name + ':</span>';
         $("<div class='treasure tooltip " + treasure.id + "' style='background-position:" + (treasure.x * 1.5) + "px " + (treasure.y * 1.5) + "px;' data-id='" + treasure.id + "' data-powertip='" + treasureName + "<br />" + treasure.desc + "'>" + trigger + "<div class='treasure-courage' data-amount='" + treasure.courage + "'>" + treasure.courage + "</div></div>")
             .appendTo(to);
-            this.setTooltips(to);
+            util.setTooltips(to);
     }
     appendCandy(candy, to, clickable) {
         let css = 'trashable ';
@@ -240,16 +239,16 @@ export default class Util {
         let candyName = '<span class="highlight">' + candy.name + ':</span>';
         $("<div class='candy tooltip " + css + candy.id + "' style='background-position:" + (candy.x * 1.25) + "px " + (candy.y * 1.25) + "px;' data-id='" + candy.id + "' data-guid='" + candy.guid + "' data-powertip='" + candyName + "<br />" + candy.desc + "'><div class='candy-courage' data-amount='" + candy.courage + "'>" + candy.courage + "</div></div>")
             .appendTo(to);
-            this.setTooltips(to);
+            util.setTooltips(to);
     }
     appendOption(option, to, quest) {
         let desc = option.desc != undefined ? ' (' + option.desc + ')' : '';
         $('<div class="button" data-option="' + option.id + '" data-quest="' + quest + '">' + option.name + desc + '</div>')
             .appendTo(to);
-            this.setTooltips(to);
+            util.setTooltips(to);
     }
     appendStartingBonuses() {
-        let options = this.shuffle(game.startingOptions);
+        let options = util.shuffle(game.startingOptions);
         for(let i = 0; i < 4; i++) {
             let att = options[i].att;
             let amount = options[i].amount;
@@ -265,7 +264,7 @@ export default class Util {
             $('<div class="button"' + attDom + amountDom + keyDom + entityDom + actionDom + '>' + name + '</div>')
                 .appendTo('.starting-options');
         }
-        this.setTooltips('.starting-options');
+        util.setTooltips('.starting-options');
     }
     appendBoosterPacks() {
         let packs = game.boosterPacks;
@@ -273,7 +272,7 @@ export default class Util {
             $('<div class="pack-button tooltip" data-pack="' + packs[i] + '" data-powertip="View cards in this booster pack"><span>' + packs[i] + ' Pack</span></div>')
                 .appendTo('.starting-booster-packs');
         }
-        this.setTooltips('.starting-booster-packs');
+        util.setTooltips('.starting-booster-packs');
     }
     getFirstEmptyElement(selector) {
         let elem;
@@ -289,18 +288,18 @@ export default class Util {
         let desc = '<span class="' + shard.id + '">' + shard.name + '</span> shard. Permanently attach this to a card with an empty shard slot';
         $("<div class='shard tooltip " + shard.id + "' data-id='" + shard.id + "' data-powertip='" + desc + "'></div>")
             .appendTo(to);
-            this.setTooltips(to);
+            util.setTooltips(to);
     }
     appendEssence(essence, to) {
         let desc = '<span class="' + essence + '">' + essence + '</span>';
         $("<div class='essence tooltip " + essence + "' data-id='" + essence + "' data-powertip='Increases your " + desc + " essence'></div>")
             .appendTo(to);
-            this.setTooltips(to);
+            util.setTooltips(to);
     }
     appendConfirm(card, to) {
         $('<div class="button play-card" data-guid="' + card.guid + '">Play This Card</div>')
             .appendTo(to);
-            this.setTooltips(to);
+            util.setTooltips(to);
     }
     removeCard(index, from) {
         $(from).children().eq(index).parent().remove();
@@ -372,14 +371,14 @@ export default class Util {
                     } 
                 }
                 // overwrite with specific shard values
-                if(this.getShardNum(card, 'frost') > 0) {
+                if(util.getShardNum(card, 'frost') > 0) {
                     if(card.iceShardUpgrades[type] != undefined) {
                         if(card.iceShardUpgrades[type][attribute] != undefined) {
                             data = card.iceShardUpgrades[type][attribute];
                         }
                     }
                 }
-                if(this.getShardNum(card, 'flame') > 0) {
+                if(util.getShardNum(card, 'flame') > 0) {
                     if(card.fireShardUpgrades[type] != undefined) {
                         if(card.fireShardUpgrades[type][attribute] != undefined) {
                             data = card.fireShardUpgrades[type][attribute];
@@ -396,7 +395,7 @@ export default class Util {
                         }
                     } 
                     // overwrite with specific shard values
-                    if(this.getShardNum(card, 'frost') > 1) {
+                    if(util.getShardNum(card, 'frost') > 1) {
                         if(card.iceShardUpgrades[type] != undefined) {
                             if(card.iceShardUpgrades[type][attribute + '_2'] != undefined) {
                                 data = card.iceShardUpgrades[type][attribute + '_2'];
@@ -408,7 +407,7 @@ export default class Util {
                             }
                         }
                     } 
-                    if(this.getShardNum(card, 'flame') > 1) {
+                    if(util.getShardNum(card, 'flame') > 1) {
                         if(card.fireShardUpgrades[type] != undefined) {
                             if(card.fireShardUpgrades[type][attribute + '_2'] != undefined) {
                                 data = card.fireShardUpgrades[type][attribute + '_2'];
@@ -438,13 +437,13 @@ export default class Util {
                     data = card.shardUpgrades[attribute];
                 } 
                 // overwrite with specific shard values
-                if(this.getShardNum(card, 'frost') > 0) {
+                if(util.getShardNum(card, 'frost') > 0) {
                     //if(card.iceShardUpgrades[attribute] != undefined && !isNaN(card.iceShardUpgrades[attribute])) {
                     if(card.iceShardUpgrades[attribute] != undefined) {
                         data = card.iceShardUpgrades[attribute];
                     }
                 }
-                if(this.getShardNum(card, 'flame') > 0) {
+                if(util.getShardNum(card, 'flame') > 0) {
                     //if(card.fireShardUpgrades[attribute] != undefined && !isNaN(card.fireShardUpgrades[attribute])) {
                     if(card.fireShardUpgrades[attribute] != undefined) {
                         data = card.fireShardUpgrades[attribute];
@@ -461,7 +460,7 @@ export default class Util {
                         }
                     } 
                     // overwrite with specific shard values
-                    if(this.getShardNum(card, 'frost') > 1) {
+                    if(util.getShardNum(card, 'frost') > 1) {
                         if(card.iceShardUpgrades != undefined) {
                             //if(card.iceShardUpgrades[attribute + '_2'] != undefined) {
                             if(card.iceShardUpgrades[attribute + '_2'] != undefined && !isNaN(card.iceShardUpgrades[attribute + '_2'])) {
@@ -469,7 +468,7 @@ export default class Util {
                             }
                         }
                     } 
-                    if(this.getShardNum(card, 'flame') > 1) {
+                    if(util.getShardNum(card, 'flame') > 1) {
                         if(card.fireShardUpgrades != undefined) {
                             //if(card.fireShardUpgrades[attribute + '_2'] != undefined && !isNaN(card.fireShardUpgrades[attribute + '_2'])) {
                             if(card.fireShardUpgrades[attribute + '_2'] != undefined) {
@@ -599,12 +598,12 @@ export default class Util {
     hasPlayAction(card) {
         let action = false;
         if( // we don't care about dmg here because that is taken care of by the dom ability to click targeted monster
-            this.getCardAttribute(card, 'blk').length > 0 ||
-            this.getCardAttribute(card, 'armor').length > 0 ||
-            this.getCardAttribute(card, 'magic').length > 0 ||
-            this.getCardAttribute(card, 'effects').length > 0 ||
-            this.getCardAttribute(card, 'abilities').length > 0 ||
-            this.getCardAttribute(card, 'actions').length > 0
+            util.getCardAttribute(card, 'blk').length > 0 ||
+            util.getCardAttribute(card, 'armor').length > 0 ||
+            util.getCardAttribute(card, 'magic').length > 0 ||
+            util.getCardAttribute(card, 'effects').length > 0 ||
+            util.getCardAttribute(card, 'abilities').length > 0 ||
+            util.getCardAttribute(card, 'actions').length > 0
         ) {
             action = true;
         }
@@ -627,7 +626,7 @@ export default class Util {
             return quest;
         } else if (quest.options) {
             for (let i = 0; i < quest.options.length; i++) {
-                const result = this.getQuestSubOptions(quest.options[i], option);
+                const result = util.getQuestSubOptions(quest.options[i], option);
                 if (result) {
                     return result;
                 }
@@ -657,7 +656,7 @@ export default class Util {
         return $('.card[data-guid=' + guid + ']:first');
     }
     getDomCardById(id) {
-        return $('.card[data-id=' + id + ']');
+        return $('.card[data-id=' + id + ']:first');
     }
     getCardFromPile(card, pile) {
         return pile.find(({ guid }) => guid === card.guid);
@@ -666,7 +665,7 @@ export default class Util {
         return Math.round(((x / y) + Number.EPSILON) * 100).toFixed(0);
     }
     pickAWinningItem(data) {
-        let winner = this.rand();
+        let winner = util.rand();
         let threshold = 0;
         for (let i = 0; i < data.length; i++) {
             threshold += parseFloat(data[i].p);

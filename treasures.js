@@ -29,6 +29,7 @@ const ALL_SHARDS = [
 class Candy {
     constructor({
         id,
+        type = 'candy',
         name,
         desc,
         weight = 5,
@@ -47,6 +48,7 @@ class Candy {
     }) {
         this.guid = '';
         this.id = id;
+        this.type = type;
         this.name = name;
         this.desc = desc;
         this.weight = weight;
@@ -469,6 +471,7 @@ const ALL_CANDY= [
 class Treasure {
     constructor({
        id,
+       type = 'treasure',
        name,
        desc,
        weight = 5,
@@ -483,6 +486,7 @@ class Treasure {
        permanent = false
     }) {
         this.id = id;
+        this.type = type;
         this.name = name;
         this.desc = desc;
         this.owned = false;
@@ -1211,8 +1215,8 @@ const ALL_TREASURES = [
         y: -10240
     }),
     new Treasure({
-        id:'philospher-stone', 
-        name: "Philospher Stone", 
+        id:'philosopher_stone', 
+        name: "Philosopher Stone", 
         courage: 15,
         tier: 3,
         weight: 2,

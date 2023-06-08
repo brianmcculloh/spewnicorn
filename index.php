@@ -49,7 +49,8 @@
       <div class="button music toggled-on">Music <span>On</span></div>
       <div class="button sound toggled-on">Sounds <span>On</span></div>
       <div class="button tutorial">Tutorial <span>Off</span></div>
-      <div class="button difficulty toggled-on">Easy Mode <span>On</span></div>
+      <div class="button difficulty">Easy Mode <span>Off</span></div>
+      <input id="custom-seed" type="text" placeholder="Custom Seed..." />
 
       <div class="panel-part panel-top-left"></div>
       <div class="panel-part panel-top-middle"></div>
@@ -463,6 +464,8 @@
 
           <div class="button fountain-drink" data-amount="25" data-armor="5">Drink (+25 Health &amp; +5 Armor)</div>
 
+          <div class="button fountain-bathe" data-amount="3">Bathe (+3 Max Health)</div>
+
           <div class="button fountain-search">Search (Find A Shard)</div>
 
           <div class="button fountain-frolic" data-amount="4">Frolic (+4 Courage)</div>
@@ -714,7 +717,7 @@
 
     <div class="shard-cards-panel cards-panel" data-shard="">
 
-      <h2>Attach To Card</h2>
+      <h2>Attach <span></span> Shard To Card</h2>
 
       <div class="message"></div>
 

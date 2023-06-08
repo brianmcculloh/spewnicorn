@@ -87,6 +87,12 @@ export default function Map() {
         while(excludedTilesArena.indexOf(l) >= 0) {
             l = Math.round(util.randDecimal() * 100);
         }
+        while(excludedTilesArena.indexOf(m) >= 0) {
+            m = Math.round(util.randDecimal() * 100);
+        }
+        while(excludedTilesArena.indexOf(n) >= 0) {
+            n = Math.round(util.randDecimal() * 100);
+        }
         $('.tile div').each(function(e) { i++;
             // gates
             if (i == iceGateTiles[iceGateTile]) {

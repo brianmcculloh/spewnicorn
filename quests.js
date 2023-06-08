@@ -29,9 +29,9 @@ const ALL_QUESTS = [
             {id: 'explore', name: 'Explore', desc: 'Sharpen your skills.',
                 options: [
                     {id: 'quickness', name: 'Quickness', desc: 'Gain 1 Speed'},
-                    {id: 'thickness', name: 'Thickness', desc: 'Gain 1 Solid'},
-                    {id: 'strength', name: 'Strength', desc: 'Gain 1 Might'},
-                    {id: 'wizardry', name: 'Wizardry', desc: 'Gain 1 Conjure'},
+                    {id: 'thickness', name: 'Thickness', desc: 'Gain 2 Solid'},
+                    {id: 'strength', name: 'Strength', desc: 'Gain 2 Might'},
+                    {id: 'wizardry', name: 'Wizardry', desc: 'Gain 2 Conjure'},
                     {id: 'leave', name: 'Leave'}
                 ]
             },
@@ -165,6 +165,7 @@ const ALL_QUESTS = [
             {id: 'meditate', name: 'Meditate', desc: 'Lose 8 health and gain 2 shimmer.'},
             {id: 'fast', name: 'Fast', desc: 'Lose 8 health and gain 2 sparkle.'},
             {id: 'hold_vigil', name: 'Hold Vigil', desc: 'Lose 8 health and gain 2 aura.'},
+            {id: 'worship', name: 'Worship', desc: 'Lose 8 health and gain 4 max health.'},
             {id: 'leave', name: 'Leave'}
         ]
     }),
@@ -186,9 +187,9 @@ const ALL_QUESTS = [
         desc: 'Delicious confections for sale!',
         weight: 6,
         options: [
-            {id: 'buy_1_candy', name: 'Buy 1 Candy', desc: 'For 1 courage'},
-            {id: 'buy_2_candies', name: 'Buy 2 Candies', desc: 'For 2 courage'},
-            {id: 'buy_3_candies', name: 'Buy 3 Candies', desc: 'For 3 courage'},
+            {id: 'buy_1_candy', name: 'Get 1 Candy', desc: 'For free'},
+            {id: 'buy_2_candies', name: 'Buy 2 Candies', desc: 'For 1 courage'},
+            {id: 'buy_3_candies', name: 'Buy 3 Candies', desc: 'For 2 courage'},
             {id: 'leave', name: 'Leave'}
         ]
     }),
@@ -1175,7 +1176,7 @@ const ALL_QUESTS = [
     new Quests({
         id: 'sudden_trap',
         name: 'Sudden Trap',
-        desc: 'The walls close in and there is nowhere to go.',
+        desc: 'The walls close in and there is nowhere to go. But a mysterious figure offers a hand, for a price.',
         weight: 6,
         options: [
             {id: 'buy_your_way_out', name: 'Buy your way out', desc: 'Pay 1 courage'},

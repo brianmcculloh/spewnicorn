@@ -18,7 +18,7 @@ const ALL_STARTING_OPTIONS = [
 
 const ALL_BOOSTER_PACKS = [
     'combine',
-    'magic',
+    'rainbow',
     'cycle'
 ];
 
@@ -376,7 +376,8 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let difficulty = 'easy';
+    let seed = false;
+    let difficulty = 'normal';
     let floor = 0;
     let combat = 0;
     let round = 0;
@@ -386,7 +387,7 @@ export default function Game() {
     let arenasComplete = 0;
     let fountainChance = 1.4;
     let questChance = 1.6;
-    let treasureChance = 0; // TODO: set to 0
+    let treasureChance = 100; // TODO: set to 0
     let candyChance = 0; // TODO: set to 0
     let shardChance = 0;
     let uncommonChance = 20;
@@ -395,7 +396,7 @@ export default function Game() {
     let critChance = 0;
     let attackCardsPlayed = 0;
     let cardsDrawn = 0;
-    let highestDmgRoll = 0;
+    let highestDmgRoll = 0; // TODO: set to 0
     let toDiscard = 0;
     let toDestroy = 0;
     let toPick = 0;
@@ -548,6 +549,7 @@ export default function Game() {
     }
     
     return {
+        seed,
         difficulty,
         floor,
         combat,
