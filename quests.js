@@ -20,7 +20,7 @@ class Quests {
 }
 
 const ALL_QUESTS = [
-   new Quests({
+    new Quests({
         id: 'workshop',
         name: 'Workshop',
         desc: 'A myriad of tools adorn the walls and tables.',

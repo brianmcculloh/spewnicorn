@@ -95,6 +95,7 @@ const ALL_CANDY= [
         courage: 3,
         weight: 3,
         armor: [15],
+        combatOnly: false,
         x: -448,
         y: -2464
     }),
@@ -814,7 +815,7 @@ const ALL_TREASURES = [
         name: "Candlestick", 
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'current', value: 2},
+            {action: 'stat', what: 'speed', key: 'current', value: 3},
         ],
         trigger: {counter: 0, when: 'cardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -64,
@@ -936,7 +937,7 @@ const ALL_TREASURES = [
         weight: 4,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'rainbow', key: 'base', value: 5},
+            {action: 'stat', what: 'rainbow', key: 'base', value: 8},
         ],
         x: -64,
         y: -10048
@@ -997,7 +998,7 @@ const ALL_TREASURES = [
         name: "Pendant", 
         weight: 4,
         effects: [
-            {effect: 'might', amount: 3, turns: 2, persist: true}
+            {effect: 'might', amount: 1, turns: -1, persist: true}
         ],
         trigger: {counter: 0, when: 'attackCardsPlayed', at: 3, per: 'turn', once: false, activated: false},
         x: -320,
@@ -1100,7 +1101,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 4,
         abilities: [
-            {ability: 'tank', turns: 1, enabled: true}
+            {ability: 'tank', turns: 2, enabled: true}
         ],
         trigger: {counter: 0, when: 'turns', at: 3, per: 'combat', once: true, activated: false},
         x: -32,
@@ -1248,7 +1249,7 @@ const ALL_TREASURES = [
         weight: 2,
         permanent: true,
         effects: [
-            {effect: 'wisdom', base: .5}
+            {effect: 'wisdom', base: 3}
         ],
         x: -416,
         y: -13088
@@ -1273,7 +1274,7 @@ const ALL_TREASURES = [
         tier: 3,
         weight: 2,
         actions: [
-            {action: 'ensharden', type: 'random', select: 1, from: 'drawCards', random: false}
+            {action: 'ensharden', type: 'random', select: 3, from: 'drawCards', random: false}
         ],
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: true, activated: false},
         x: -96,

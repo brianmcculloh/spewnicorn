@@ -228,10 +228,10 @@ const ALL_EFFECTS = [
     {id: 'regen', name: 'Regen', desc: 'Heal x each turn and decrease x by 1', x: -128, y: -5760, sound: 'effect6'},
 
     // Usage:
-    // creature {base: 1, current: 0, temp: 2, turns: 2, persist: false} // base is default 1 (100%), so 1.5 would be 150%
-    // buff     {effect: 'wisdom', amount: .5, turns: -1}
-    // hex      {effect: 'wisdom', amount: -.5, hex: true}
-    {id: 'wisdom', name: 'Wisdom', desc: 'Age multiplies dmg/blk/magic effects', x: -416, y: -6304, sound: 'effect28'},
+    // creature {base: 1, current: 0, temp: 2, turns: 2, persist: false} // base is default 1 (100%), so 1 would be 200% and -1 would be 0%
+    // buff     {effect: 'wisdom', amount: 1, turns: -1}
+    // hex      {effect: 'wisdom', amount: -1, hex: true}
+    {id: 'wisdom', name: 'Wisdom', desc: 'Age boosts dmg/blk/magic amounts', x: -416, y: -6304, sound: 'effect28'},
     
 ];
 /*********************************************
@@ -387,7 +387,7 @@ export default function Game() {
     let arenasComplete = 0;
     let fountainChance = 1.4;
     let questChance = 1.6;
-    let treasureChance = 100; // TODO: set to 0
+    let treasureChance = 0; // TODO: set to 0
     let candyChance = 0; // TODO: set to 0
     let shardChance = 0;
     let uncommonChance = 20;
@@ -536,6 +536,7 @@ export default function Game() {
         $('.magic-rainbow').attr('data-type', player.rainbow.type);
         $('.magic-rainbow').removeClass('dark elemental rainbow chaos').addClass(player.rainbow.type);
         $('.magic-rainbow .magic-type span').html(player.rainbow.type);
+        $('.magic-rainbow .magic-type span').attr('data-type', player.rainbow.type);
 
     }
 

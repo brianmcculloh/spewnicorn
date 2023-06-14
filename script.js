@@ -64,6 +64,8 @@
  * Magic Type Attack - does [magic type] stuff to monster, and adds [magic type] magic if matches current magic type
  * If card doesn't kill, receive that much damage back
  * Effect: Each magic card played, gain x block
+ * Need a simple single large damage attack card
+ * Fancy Prance: 1 block, 1 dmg, 1 armor, draw card(s) for 0 cost
  * 
  * 
  * PHASE III:
@@ -86,7 +88,12 @@
  * 
  * PHASE V:
  * 
- * TODO: 
+ * TODO: sometimes selected cards rom rewards are not added to my deck. happened with ruin and mystical protection.
+ * --actually these cards DID get added but they didn't show up in shard attach screen or combat deck right away.
+ * --the number of cards in deck is correct (17) but clicking to view all deck cards only shows 15 cards
+ * TODO: showmodifiedcards in cards.js game.toShow array has an undefined first value. i noticed shimmer stance card was not
+ * added to my deck when i hit level 1. i think it was after rewards cards stopped getting added to deck.
+ * 
  * 
  * 
  * TODO: [can't replicate] sometimes courage screen only shows 1 ability instead of 2
@@ -1025,6 +1032,10 @@ function init() {
 
 	console.clear();
 
+	//addTreasure('signet_ring'); // use this to manually add treasures
+	//addCandy('cotton_candy'); // use this to manually add candies
+	//courageScreen(); // use this to manually show courage screen
+
 	if(game.debug) $('body').addClass('debug');
 
 	util.setInitialTooltips();
@@ -1048,10 +1059,6 @@ function init() {
 	updateAggro();
 	updateEssenceLevels();
 	setStatus();
-
-	//addTreasure('excalibur'); // use this to manually add treasures
-	//addCandy('chocolate_fudge'); // use this to manually add candies
-	//courageScreen(); // use this to manually show courage screen
 
 }
 
@@ -1362,7 +1369,10 @@ function chooseShardCard(shard, cards = deck.cards) {
 
 async function startCombat(tile) {
 
-	console.clear();
+	//console.clear();
+
+	// there could be residual "to show" cards that need cleared - like if combat ends with collateral damage played
+	game.toShow = [];
 
 	game.combatEndedFlag = false;
 
@@ -1440,6 +1450,7 @@ async function startCombat(tile) {
 	$('.magic-rainbow').attr('data-type', player.rainbow.type);
 	$('.magic-rainbow').removeClass('dark elemental rainbow chaos muddled').addClass(player.rainbow.type);
 	$('.magic-rainbow .magic-type span').html(player.rainbow.type);
+	$('.magic-rainbow .magic-type span').attr('data-type', player.rainbow.type);
 	$('.magic-rainbow .semi-circle--mask').css('transform', 'rotate(' + (magicPower * 1.8) + 'deg) translate3d(0, 0, 0)').removeClass('activated'); 
 
 	monsters.updateMonsterGroup();
@@ -1497,6 +1508,10 @@ function startingBonus(elem) {
 			entity.health.current -= 7;
 			entity.health.max -= 7;
 		}
+		// since treasures can add effects and abilities, need to update player statuses
+		monsters.setEffects(player);
+		monsters.setAbilities(player);
+		monsters.updateStatusBar();
 	}
 
 	// max health should also increase current health
@@ -2494,21 +2509,19 @@ function endCombat() {
 		}, 3000);
 
 		setTimeout(function() {
-			// in case these don't happen immediately
+			// these should delay to happen after lingering combat effects
 			$('.combat, .show-cards, .message, .button-done').removeClass('shown'); 
+			$('body').removeClass('combating selecting destroying');
 			$('.player-cards, .monster-panel').empty();
 			removeArrow();
-		}, 1000);
+		}, 2000);
+
+		// don't put this in settimeout because it causes rewards screen candies to not be clickable
+		$('.candy').removeClass('clickable').addClass('trashable');
 
 		game.combatEndedFlag = true;
 
 		game.message('End combat floor ' + game.floor);
-
-		$('.combat, .show-cards, .message, .button-done').removeClass('shown');
-		$('.candy').removeClass('clickable').addClass('trashable');
-		$('.player-cards, .monster-panel').empty();
-		$('body').removeClass('combating selecting destroying');
-		removeArrow();
 
 		heal(player, player.heal.current);
 		
@@ -2638,31 +2651,26 @@ function loot(type, tier = 3) {
 		break;
 		case 'treasure':
 			if(possibleTreasures.length > 0) {
-			for(let i = 0; i < possibleTreasures.length; i++) {
-				//let treasure = util.weightedRandom(possibleTreasures);
-				let treasure = possibleTreasures[i];
+				let treasure = util.weightedRandom(possibleTreasures);
 				treasure.desc = deck.buildDescription(treasure);
 				util.appendTreasure(treasure, '.loot-items');
 			}
-			}
-			var numEssences = util.randFromRange(1, 3);
+			// one or two essences
+			var numEssences = util.randFromRange(1, 2);
 			for(let i = 0; i < numEssences; i++) {
 				var index = util.randArrayIndex(game.essences);
 				util.appendEssence(game.essences[index], '.loot-items');
 			}
-			var numShards = util.randFromRange(1, 2);
-			for(let i = 0; i < numShards; i++) {
-				var index = util.randArrayIndex(treasures.shards);
-				util.appendShard(treasures.shards[index], '.loot-items');
-			}
-			var numCandies = util.randFromRange(1, 3);
-			for(let i = 0; i < numCandies; i++) {
-				let candy = util.weightedRandom(treasures.candies);
-				let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
-				copiedCandy.desc = deck.buildDescription(copiedCandy);
-				let clickable = player.candies.length < game.candySlots ? true : false;
-				util.appendCandy(copiedCandy, '.loot-items', clickable);
-			}
+			// one shard
+			var index = util.randArrayIndex(treasures.shards);
+			util.appendShard(treasures.shards[index], '.loot-items');
+			// one candy
+			let candy = util.weightedRandom(treasures.candies);
+			let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
+			copiedCandy.desc = deck.buildDescription(copiedCandy);
+			let clickable = player.candies.length < game.candySlots ? true : false;
+			util.appendCandy(copiedCandy, '.loot-items', clickable);
+			
 		break;
 		case 'candy':
 			for(let i = 0; i < tier; i++) {
@@ -2718,7 +2726,7 @@ function rewardsScreen() {
 	if(util.chance(game.shardChance) && deck.numOpenSlots() > 0) {
 		game.shardChance -= 5;
 		if(game.shardChance < 0) game.shardChance = 0;
-		const index = util.randArrayIndex(treasures.shards);
+		var index = util.randArrayIndex(treasures.shards);
 		util.appendShard(treasures.shards[index], '.rewards-loot');
 		$('.rewards-loot-wrapper').addClass('shown');
 	}
@@ -3314,7 +3322,7 @@ function updateCritChance() {
 
 function combineCards(elem) {
 	
-	playCard(elem, undefined, 'combine');
+	playCard(elem, undefined, 'combine', false);
 
 	$('.card.combinable.selected').each(function() {
 
@@ -3332,7 +3340,7 @@ function combineCards(elem) {
 
 }
 
-async function playCard(elem, monster = undefined, type = false) {
+async function playCard(elem, monster = undefined, type = false, useMana = true) {
 
 	$('.monster').removeClass('clickable');
 	elem.removeClass('selected playable').addClass('playing');
@@ -3355,7 +3363,7 @@ async function playCard(elem, monster = undefined, type = false) {
 	let mana = util.getCardAttribute(card, 'mana');
 	let multiply = 1;
 	let numShards = util.getShardNum(card, 'any');
-	if(mana == '?') {
+	if(mana == '?' && useMana) {
 		if(numShards==1) {
 			if(player.speed.current > player.mana.current) {
 				multiply = player.speed.current;
@@ -3375,9 +3383,9 @@ async function playCard(elem, monster = undefined, type = false) {
 	}
 
 	// reduce mana prior to processing card
-	if(mana == '?') {
+	if(mana == '?' && useMana) {
 		player.mana.current = 0;
-	} else {
+	} else if(useMana) {
 		player.mana.current -= mana;
 	}
 	if(player.mana.current <= 0) player.mana.current = 0;
@@ -3485,6 +3493,8 @@ async function processCard(card, currentMonster, type, multiply = 1) {
 
 	let dmg = util.getCardAttribute(card, 'dmg', type);
 	await processDmg(dmg, target, multiply, card, type);
+
+	if(monsters.allDead()) return;
 
 	let blk = util.getCardAttribute(card, 'blk', type);
 	await processBlk(blk, multiply, card);
@@ -3971,10 +3981,10 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						}
 					break;
 					case 'playOldest':
-						let card = combatDeck.getOldestCard(combatDeck.handCards, playedCard);
+						let card = combatDeck.getOldestPlayableCard(combatDeck.handCards, playedCard);
 						if(card) {
 							let domCard = util.getDomCardByGuid(card.guid);
-							playCard(domCard);
+							playCard(domCard, undefined, false, false)
 						}
 					break;
 
@@ -4628,6 +4638,7 @@ function updateRainbowDom(to) {
 	$('.magic-rainbow').attr('data-type', to.rainbow.type);
 	$('.magic-rainbow').removeClass('dark elemental rainbow chaos muddled').addClass(to.rainbow.type);
 	$('.magic-rainbow .magic-type span').html(to.rainbow.type);
+	$('.magic-rainbow .magic-type span').attr('data-type', player.rainbow.type);
 }
 
 async function activateRainbow(type, to) {
@@ -4733,9 +4744,11 @@ async function attackPlayer(monster, dmg) {
 }
 
 async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false, fatalityHit = false, hypnotizeHit = false) {
-	
+
 	if(to.length > 0) {
 		for (let i = 0; i < to.length; i++) {
+
+			let thisTo = to[i] == false || to[i] == undefined ? player : to[i];
 
 			let thisDmg = dmg;
 			let dmgTaken = 0;
@@ -4749,93 +4762,93 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 			}
 
 			// is player unreachable?
-			if(to[i]?.unreachable?.enabled) {
+			if(thisTo.unreachable?.enabled) {
 				thisDmg = 1;
 			}
 
 			let unblockedDmg = thisDmg;
 			if(!ignoreBlock) {
-				unblockedDmg = thisDmg - to[i].block;
+				unblockedDmg = thisDmg - thisTo.block;
 			}
 
 			// full block
 			if(unblockedDmg <= 0) {
-				to[i].block -= thisDmg;
+				thisTo.block -= thisDmg;
 				dmgTaken += thisDmg;
 				if(game.playsounds) sounds.play('loseBlock');
 			} else {
 				if(!ignoreBlock) {
-					if(to[i].block > 0 && game.playsounds) sounds.play('loseBlock');
-					dmgTaken += to[i].block;
-					to[i].block = 0;
+					if(thisTo.block > 0 && game.playsounds) sounds.play('loseBlock');
+					dmgTaken += thisTo.block;
+					thisTo.block = 0;
 				}
 				// armor reduces damage by 50%
 				let armoredDmg = unblockedDmg;
 				// odd damage amounts should affect armor +1 more than health (unless no armor)
-				let odd = (armoredDmg % 2 == 0) || (to[i].armor == 0) ? 0 : 1;
+				let odd = (armoredDmg % 2 == 0) || (thisTo.armor == 0) ? 0 : 1;
 				if(!ignoreArmor) {
 					armoredDmg = Math.round(unblockedDmg / 2);
 				}
 				// if we have enough armor, reduce armor and health by 50% of damage
-				if(!ignoreArmor && armoredDmg <= to[i].armor) {
+				if(!ignoreArmor && armoredDmg <= thisTo.armor) {
 					armorLost += (armoredDmg + odd);
 					dmgTaken += armorLost;
-					to[i].armor -= (armoredDmg + odd);
+					thisTo.armor -= (armoredDmg + odd);
 					// only hit armor if tank enabled
-					if(!to[i].tank.enabled) {
+					if(!thisTo.tank.enabled) {
 						healthLost += armoredDmg;
 						dmgTaken += armoredDmg;
-						to[i].health.current -= armoredDmg;
-						if(armoredDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && to[i].type=='monster') {
+						thisTo.health.current -= armoredDmg;
+						if(armoredDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && thisTo.type=='monster') {
 							game.highestDmgRoll = armoredDmg;
 						}
 					}
 				} else {
-					if(ignoreArmor || to[i].armor == 0) {
+					if(ignoreArmor || thisTo.armor == 0) {
 						// full hit
 						healthLost += unblockedDmg;
 						dmgTaken += unblockedDmg;
-						to[i].health.current -= unblockedDmg;
-						if(unblockedDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && to[i].type=='monster') {
+						thisTo.health.current -= unblockedDmg;
+						if(unblockedDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && thisTo.type=='monster') {
 							game.highestDmgRoll = unblockedDmg;
 						}
 					} else {
 						// first reduce armored health, then full tank the rest	
-						let partialDmg = to[i].armor;
-						let fullDmg = unblockedDmg - (to[i].armor * 2);
+						let partialDmg = thisTo.armor;
+						let fullDmg = unblockedDmg - (thisTo.armor * 2);
 						// only hit remaining armor if tank enabled
-						if(!to[i].tank.enabled) {
+						if(!thisTo.tank.enabled) {
 							healthLost += partialDmg;
 							dmgTaken += partialDmg;
-							to[i].health.current -= partialDmg;
-							if(partialDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && to[i].type=='monster') {
+							thisTo.health.current -= partialDmg;
+							if(partialDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && thisTo.type=='monster') {
 								game.highestDmgRoll = partialDmg;
 							}
 						}
 						healthLost += fullDmg;
 						dmgTaken += fullDmg;
-						to[i].health.current -= fullDmg;
-						if(fullDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && to[i].type=='monster') {
+						thisTo.health.current -= fullDmg;
+						if(fullDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && thisTo.type=='monster') {
 							game.highestDmgRoll = fullDmg;
 						}
-						armorLost += to[i].armor;
-						dmgTaken += to[i].armor;
-						to[i].armor = 0;
+						armorLost += thisTo.armor;
+						dmgTaken += thisTo.armor;
+						thisTo.armor = 0;
 					}
 				}
 			}
 
-			if(to[i].health.current <= 0) to[i].health.current = 0;
-			if(to[i].armor <= 0) to[i].armor = 0;
-			if(to[i].block <= 0) to[i].block = 0;
+			if(thisTo.health.current <= 0) thisTo.health.current = 0;
+			if(thisTo.armor <= 0) thisTo.armor = 0;
+			if(thisTo.block <= 0) thisTo.block = 0;
 
 			let dmgTakenDom = $('.player .dmg-taken');
 			let armorLostDom = $('.player .armor-lost');
 			let healthLostDom = $('.player .health-lost');
-			if(to[i].type=='monster') {
-				dmgTakenDom = $('.monster[data-guid=' + to[i].guid + '] .dmg-taken');
-				armorLostDom = $('.monster[data-guid=' + to[i].guid + '] .armor-lost');
-				healthLostDom = $('.monster[data-guid=' + to[i].guid + '] .health-lost');
+			if(thisTo.type=='monster') {
+				dmgTakenDom = $('.monster[data-guid=' + thisTo.guid + '] .dmg-taken');
+				armorLostDom = $('.monster[data-guid=' + thisTo.guid + '] .armor-lost');
+				healthLostDom = $('.monster[data-guid=' + thisTo.guid + '] .health-lost');
 			}
 			dmgTakenDom.attr('data-amount', dmgTaken);
 			armorLostDom.attr('data-amount', armorLost);
@@ -4843,23 +4856,23 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 
 			if(dmgTaken > 0) {
 				game.blkAnimations({data: dmgTaken, to: dmgTakenDom});
-				game.message(to[i].name + ' (' + to[i].guid + ') takes ' + dmgTaken + ' total damage');
+				game.message(thisTo.name + ' (' + thisTo.guid + ') takes ' + dmgTaken + ' total damage');
 				await util.wait(game.animationDmg);
 			}
 			if(armorLost > 0) {
 				game.dmgAnimations({data: armorLost, to: armorLostDom});
 				await util.wait(game.animationDmg);
 				// check for spikes
-				if(to[i].spikes.current > 0 && from != undefined) {
+				if(thisTo.spikes.current > 0 && from != undefined) {
 
-					let spikesDmg = Math.round(to[i].spikes.current * armorLost);
+					let spikesDmg = Math.round(thisTo.spikes.current * armorLost);
 					if(spikesDmg < 1) spikesDmg = 1;
 
 					await doDamage(spikesDmg, undefined, [from]);
 					setStatus(false);
 
 				}
-				game.message(to[i].name + ' (' + to[i].guid + ') loses ' + armorLost + ' armor');
+				game.message(thisTo.name + ' (' + thisTo.guid + ') loses ' + armorLost + ' armor');
 				if(game.playsounds) sounds.play('loseArmor');
 			}
 			if(healthLost > 0) {
@@ -4867,16 +4880,16 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 				game.dmgAnimations({data: healthLost, to: healthLostDom});
 				await util.wait(game.animationDmg);
 				// check for retaliate
-				if(to[i].retaliate.current > 0 && from != undefined) {
+				if(thisTo.retaliate.current > 0 && from != undefined) {
 
-					let retalDmg = Math.round(to[i].retaliate.current * healthLost);
+					let retalDmg = Math.round(thisTo.retaliate.current * healthLost);
 					if(retalDmg < 1) retalDmg = 1;
 					
 					await doDamage(retalDmg, undefined, [from]);
 					setStatus(false);
 
 				}
-				game.message(to[i].name + ' (' + to[i].guid + ') loses ' + healthLost + ' health');
+				game.message(thisTo.name + ' (' + thisTo.guid + ') loses ' + healthLost + ' health');
 			}
 
 		}

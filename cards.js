@@ -307,6 +307,7 @@ const ALL_CARDS = [
 
     Common:
 
+    Parry
     Stomp
     Quick Buck
     Hind Kick
@@ -353,7 +354,6 @@ const ALL_CARDS = [
 
     Common:
 
-    Parry
     Divert
     Recoil
     Repel
@@ -753,7 +753,10 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'ouroboros', name: 'Ouroboros', type: 'magic', addable: false, retain: true, vanish: true,
+        id: 'ouroboros', name: 'Ouroboros', type: 'magic', mana: 0, addable: false, retain: true, vanish: true,
+        dmg: [4],
+        blk: [4],
+        magic: [{type: 'aligned', amount: 10}], 
         combine: {
             actions: [
                 {action: 'addCard', value: 1, what: 'tesseract', to: 'handCards'},
@@ -805,7 +808,13 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'battle_combo', name: 'Battle Combo', type: 'tool', addable: false, retain: true, vanish: true,
+        id: 'battle_combo', name: 'Battle Combo', type: 'tool', mana: 0, addable: false, retain: true, vanish: true,
+        blk: [6],
+        effects: [
+            {effect: 'fierce', amount: 5, turns: 1},
+            {effect: 'mastery', amount: 1.5, turns: 1},
+            {effect: 'rowdy', amount: 15, turns: 1}
+        ],
         combine: {
             actions: [
                 {action: 'addCard', value: 1, what: 'battle_sequence', to: 'handCards'},
@@ -815,7 +824,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'battle_sequence', name: 'Battle Sequence', type: 'tool', mana: 3, retain: true, addable: false, vanish: true, tier: 'legendary',
         effects: [
-            {effect: 'fierce', amount: 5, turns: 1},
+            {effect: 'fierce', amount: 10, turns: 1},
             {effect: 'mastery', amount: 3, turns: 1},
             {effect: 'rowdy', amount: 30, turns: 1}
         ],
@@ -825,14 +834,14 @@ const ALL_CARDS = [
         slots: 2,
         shardUpgrades: {
             effects: [
-                {effect: 'fierce', amount: 6, turns: 1},
+                {effect: 'fierce', amount: 12, turns: 1},
                 {effect: 'mastery', amount: 4, turns: 1},
                 {effect: 'rowdy', amount: 40, turns: 1}
             ],
         },
         bothShardUpgrades: {
             effects: [
-                {effect: 'fierce', amount: 7, turns: 1},
+                {effect: 'fierce', amount: 14, turns: 1},
                 {effect: 'mastery', amount: 5, turns: 1},
                 {effect: 'rowdy', amount: 50, turns: 1}
             ],
@@ -842,7 +851,7 @@ const ALL_CARDS = [
         id: 'battle_finisher', name: 'Battle Finisher', type: 'attack', target: 'monster', mana: 0, tier: 'rare', ephemeral: true, vanish: true, addable: false, pack: 'combine', 
         dmg: [10, 10, 10, 10],
         sound: 'attack16',
-        additionalDesc: 'Finish Him',
+        additionalDesc: 'Finish Him!',
         actions: [
             {action: 'addCard', value: 4, what: 'battle_move', to: 'drawCards'},
         ],
@@ -873,6 +882,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'self_advance', name: 'Self-Advance', type: 'tool', addable: false, retain: true, vanish: true,
+        blk: [3],
+        armor: [3],
+        actions: [
+            {action: 'stat', what: 'health', key: 'current', value: 6},
+        ],
         combine: {
             actions: [
                 {action: 'addCard', value: 1, what: 'self_fulfill', to: 'handCards'},
@@ -1141,7 +1155,7 @@ const ALL_CARDS = [
         id: 'lethargy', name: 'Lethargy', type: 'clutter', addable: false, ephemeral: true, playable: false, 
         draw: {
             effects: [
-                {effect: 'punch', amount: -1, turns: 1, hex: true},
+                {effect: 'punch', amount: -.25, turns: 1, hex: true},
             ],
             target: 'player'
         }
@@ -1170,6 +1184,26 @@ const ALL_CARDS = [
 
     /* ATTACK CARDS */
     /* Common: */
+    new Cards({
+        id: 'parry', name: 'Parry', target: 'monster', type: 'attack', mana: 1, weight: 8, 
+        blk: [5],
+        dmg: [5],
+        slots: 2,
+        fireShardUpgrades: {
+            blk: [7],
+            dmg: [7],
+            dmg_2: [13]
+        },
+        iceShardUpgrades: {
+            blk: [7],
+            dmg: [7],
+            blk_2: [13]
+        },
+        bothShardUpgrades: {
+            blk: [10],
+            dmg: [10]
+        },
+    }),
     new Cards({
         id: 'stomp', name: 'Stomp', type: 'attack', mana: 2, target: 'monster', 
         dmg: [12],
@@ -1621,7 +1655,6 @@ const ALL_CARDS = [
     new Cards({
         id: 'clever_barrage', name: 'Clever Barrage', type: 'attack', target: 'monster', mana: 3, tier: 'rare', ephemeral: true, weight: 3, courage: 4, 
         dmg: [5, 4, 3, 2, 1],
-
         actions: [
             {action: 'ensharden', type: 'random', select: -1, from: 'handCards', random: true}
         ],
@@ -1793,26 +1826,6 @@ const ALL_CARDS = [
     /* TOOL CARDS */
     /* Common: */
     new Cards({
-        id: 'parry', name: 'Parry', target: 'monster', type: 'tool', mana: 1, weight: 8, 
-        blk: [5],
-        dmg: [5],
-        slots: 2,
-        fireShardUpgrades: {
-            blk: [7],
-            dmg: [7],
-            dmg_2: [13]
-        },
-        iceShardUpgrades: {
-            blk: [7],
-            dmg: [7],
-            blk_2: [13]
-        },
-        bothShardUpgrades: {
-            blk: [10],
-            dmg: [10]
-        },
-    }),
-    new Cards({
         id: 'divert', name: 'Divert', type: 'tool', mana: 0, weight: 3, use: 3, 
         blk: [5],
         armor: [2],
@@ -1916,31 +1929,25 @@ const ALL_CARDS = [
         discard: {
             actions: [
                 {action: 'stat', what: 'mana', key: 'current', value: 2},
+                {action: 'draw', value: 1},
             ]
         },
         slots: 1,
         shardUpgrades: {
-            discard: {
-                actions: [
-                    {action: 'stat', what: 'mana', key: 'current', value: 3},
-                ]
-            },
+            retain: true
         },
     }),
     new Cards({
         id: 'fractured_orb', name: 'Fractured Orb', type: 'tool', playable: false, weight: 3, 
         destroy: {
             actions: [
-                {action: 'stat', what: 'mana', key: 'current', value: 3},
+                {action: 'stat', what: 'mana', key: 'current', value: 4},
+                {action: 'draw', value: 2},
             ]
         },
         slots: 1,
         shardUpgrades: {
-            destroy: {
-                actions: [
-                    {action: 'stat', what: 'mana', key: 'current', value: 4},
-                ]
-            },
+            retain: true
         },
     }),
 
@@ -1998,7 +2005,8 @@ const ALL_CARDS = [
             natural: true,
         },
         bothShardUpgrades: {
-            blk: [25]
+            blk: [25],
+            retain: true
         },
     }),
     new Cards({
@@ -2007,6 +2015,7 @@ const ALL_CARDS = [
         slots: 1,
         shardUpgrades: {
             natural: true,
+            retain: true
         },
     }),
     new Cards({
@@ -2983,16 +2992,13 @@ const ALL_CARDS = [
     new Cards({
         id: 'short_temper', name: 'Short Temper', type: 'ability', mana: 1, tier: 'uncommon', courage: 3, 
         effects: [
-            {effect: 'rowdy', amount: 10, turns: -1}
+            {effect: 'rowdy', amount: 7, turns: -1}
         ],
         slots: 1,
-        fireShardUpgrades: {
+        shardUpgrades: {
             effects: [
-                {effect: 'rowdy', amount: 20, turns: -1}
+                {effect: 'rowdy', amount: 12, turns: -1}
             ],
-        },
-        iceShardUpgrades: {
-            natural: true
         },
     }),
     new Cards({
@@ -3163,7 +3169,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'acuity', name: 'Acuity', type: 'ability', mana: 3, tier: 'rare', weight: 6, courage: 4, 
         effects: [
-            {effect: 'wisdom', amount: .5, turns: -1}
+            {effect: 'wisdom', amount: 2, turns: -1}
         ],
         slots: 2,
         shardUpgrades: {
@@ -3174,7 +3180,7 @@ const ALL_CARDS = [
         },
         bothShardUpgrades: {
             effects: [
-                {effect: 'wisdom', amount: 1, turns: -1}
+                {effect: 'wisdom', amount: 4, turns: -1}
             ],
         },
     }),
@@ -3301,22 +3307,18 @@ const ALL_CARDS = [
         },
         slots: 1,
         shardUpgrades: {
-            discard: {
-                magic: [{type: 'aligned', amount: 13}], 
-            },
+            retain: true
         },
     }),
     new Cards({
         id: 'sacrificial_charge', name: 'Sacrificial Charge', type: 'magic', tier: 'common', playable: false,
         sound: 'magic3',
         destroy: {
-            magic: [{type: 'aligned', amount: 11}], 
+            magic: [{type: 'aligned', amount: 15}], 
         },
         slots: 1,
         shardUpgrades: {
-            destroy: {
-                magic: [{type: 'aligned', amount: 15}], 
-            },
+            retain: true
         },
     }),
 
@@ -3558,7 +3560,8 @@ const ALL_CARDS = [
         shardUpgrades: {
             magic: [{type: 'aligned', amount: 3}],
             actions: [
-                {action: 'destroy', value: 2}
+                {action: 'destroy', value: 1},
+                {action: 'draw', value: 1}
             ],
         },
     }),
@@ -3567,13 +3570,14 @@ const ALL_CARDS = [
         sound: 'magic15',
         magic: [{type: 'aligned', amount: 2}],
         actions: [
-            {action: 'draw', value: 1}
+            {action: 'discard', value: 1}
         ],
         slots: 1,
         shardUpgrades: {
             magic: [{type: 'aligned', amount: 3}],
             actions: [
-                {action: 'draw', value: 2}
+                {action: 'discard', value: 1},
+                {action: 'draw', value: 1}
             ],
         },
     }),
@@ -4002,7 +4006,6 @@ export function Deck() {
             addCard('spewnicorn_spray');
         }
 
-
     }
 
     function removeCard(guid) {
@@ -4025,6 +4028,10 @@ export function Deck() {
         copiedCard.slotDesc = slotDesc;
 
         cards.push(copiedCard);
+        if(copiedCard == undefined || copiedCard == false || copiedCard == '' || copiedCard == null) {
+            console.log('Tried to add ' + add + ' to deck but failed.');
+            console.log(addCard);
+        }
         player.cardsOwned += 1;
     }
 
@@ -4532,21 +4539,10 @@ export function Deck() {
 
     function decideCard(type = false, tier = 'common') {
 
-        let addableCards = AllCards().getAddableCards(tier, type, false, game.toExclude);
+        // determine & update chances
         let legendary = util.chance(game.legendaryChance);
         let rare = util.chance(game.rareChance);
         let uncommon = util.chance(game.uncommonChance);
-        if(game.mapType == 'ice_gate' || game.mapType == 'fire_gate' || legendary) {
-            addableCards = AllCards().getAddableCards('legendary', type, false, game.toExclude);
-            game.legendaryChance = 0;
-        } else if(game.mapType == 'arena' || rare) {
-            addableCards = AllCards().getAddableCards('rare', type, false, game.toExclude);
-            game.rareChance = 0
-        } else if(uncommon) {
-            addableCards = AllCards().getAddableCards('uncommon', type, false, game.toExclude);
-            let uncommonDecrease = game.floor;
-            game.uncommonChance -= uncommonDecrease;
-        }
         let legendaryIncrease = Math.round((game.floor - 10) / 2);
         if(legendaryIncrease < 0) legendaryIncrease = 0;
         game.legendaryChance += legendaryIncrease;
@@ -4559,6 +4555,23 @@ export function Deck() {
         if(uncommonIncrease < 0) uncommonIncrease = 0;
         game.uncommonChance += uncommonIncrease;
         if(game.uncommonChance > 50) game.uncommonChance = 50; // uncommon chance caps at 50
+
+        // get array of cards to choose from
+        let addableCards = AllCards().getAddableCards(tier, type, false, game.toExclude);
+        if(game.mapType == 'ice_gate' || game.mapType == 'fire_gate' || legendary) {
+            addableCards = AllCards().getAddableCards('legendary', type, false, game.toExclude); // there are currently no legendary addable cards
+            if(addableCards.length == 0) addableCards = AllCards().getAddableCards('rare', type, false, game.toExclude);
+            game.legendaryChance = 0;
+        } else if(game.mapType == 'arena' || rare) {
+            addableCards = AllCards().getAddableCards('rare', type, false, game.toExclude);
+            game.rareChance = 0
+        } else if(uncommon) {
+            addableCards = AllCards().getAddableCards('uncommon', type, false, game.toExclude);
+            let uncommonDecrease = game.floor;
+            game.uncommonChance -= uncommonDecrease;
+        }
+        
+        // get the actual card
         let card = false;
         if(addableCards.length > 0) {
             card = util.weightedRandom(addableCards);
@@ -4646,6 +4659,18 @@ export function CombatDeck() {
         let oldest = -1;
         for(let i = 0; i < cards.length; i++) {
             if(cards[i].age > oldest && cards[i].id != excluded.id) {
+                oldest = cards[i].age;
+                card = cards[i];
+            }
+        }
+        return card;
+    }
+
+    function getOldestPlayableCard(cards, excluded = '') {
+        let card = false;
+        let oldest = -1;
+        for(let i = 0; i < cards.length; i++) {
+            if(cards[i].age > oldest && cards[i].id != excluded.id && cards[i].playable) {
                 oldest = cards[i].age;
                 card = cards[i];
             }
@@ -4883,7 +4908,7 @@ export function CombatDeck() {
 
     function transmuteCards(combatDeck, deck, player) {
         for(let i = 0; i < game.toTransmute.length; i++) {
-            let possibleCards = AllCards().getAddableCards().filter(j => j.addable == true && j.type !== 'clutter' && j.id !== game.toTransmute[i].id);
+            let possibleCards = AllCards().getAddableCards().filter(j => j.addable == true && j.id !== game.toTransmute[i].id);
             let transmutedCard = util.randFromArray(possibleCards);
             transmutedCard = JSON.parse(JSON.stringify(transmutedCard)); // necessary to create a deep copy
             transmutedCard.guid = util.randString();
@@ -5056,6 +5081,7 @@ export function CombatDeck() {
         canDraw,
         getNaturalCard,
         getOldestCard,
+        getOldestPlayableCard,
         drawCard,
         addDrawCard,
         addDiscardCard,

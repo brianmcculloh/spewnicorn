@@ -2451,6 +2451,21 @@ body.arena .monster-panel {
 	position:relative;
 	z-index:9;
 }
+.magic-rainbow .magic-type span[data-type="rainbow"] {
+	color:yellow;
+}
+.magic-rainbow .magic-type span[data-type="muddled"] {
+	color:rgba(38,148,214,1);
+}
+.magic-rainbow .magic-type span[data-type="chaos"] {
+	color:rgba(218,30,103,1);
+}
+.magic-rainbow .magic-type span[data-type="dark"] {
+	color:rgba(160,23,198,1);
+}
+.magic-rainbow .magic-type span[data-type="elemental"] {
+	color:rgba(3,194,144,1);
+}
 .magic-rainbow .rainbow-power {
 	position:absolute;
 	z-index:1;
