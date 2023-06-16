@@ -4016,7 +4016,8 @@ export function Deck() {
 
     function addCard(add) {
         let addCard = AllCards().cards.find(({ id }) => id === add);
-        let copiedCard = JSON.parse(JSON.stringify(addCard)); // necessary to create a deep copy
+        //let copiedCard = JSON.parse(JSON.stringify(addCard)); // necessary to create a deep copy
+        let copiedCard = $.extend(true, {}, addCard);
         copiedCard.guid = util.randString();
         
         // standard card description
@@ -4030,7 +4031,14 @@ export function Deck() {
         cards.push(copiedCard);
         if(copiedCard == undefined || copiedCard == false || copiedCard == '' || copiedCard == null) {
             console.log('Tried to add ' + add + ' to deck but failed.');
+            console.log('addCard:');
             console.log(addCard);
+            console.log('game:');
+            console.log(game);
+            console.log('this.cards:');
+            console.log(this.cards);
+            console.log('cards:');
+            console.log(cards);
         }
         player.cardsOwned += 1;
     }
@@ -4067,7 +4075,8 @@ export function Deck() {
 
         let desc = '';
         // let's just use a copy of the passed card since we're modifying it with shards for description purposes only
-        let card = JSON.parse(JSON.stringify(thisCard)); // necessary to create a deep copy
+        //let card = JSON.parse(JSON.stringify(thisCard)); // necessary to create a deep copy
+        let card = $.extend(true, {}, thisCard);
 
         if(shard=='flame') {
             card.shards.push('flame');
@@ -4611,15 +4620,20 @@ export function CombatDeck() {
     let game = window.game;
 
     function sync(deckCards, combatDeck) {
-        combatDeck.drawCards = [];
+        //combatDeck.drawCards = [];
+        combatDeck.drawCards.length = 0;
         for(let i = 0; i < deckCards.length; i++) {
             deckCards[i].mana = deckCards[i].baseMana;
-            let copiedCard = JSON.parse(JSON.stringify(deckCards[i]));
+            //let copiedCard = JSON.parse(JSON.stringify(deckCards[i])); // necessary to create a deep copy
+            let copiedCard = $.extend(true, {}, deckCards[i]);
             combatDeck.drawCards.push(copiedCard);
         }
-        combatDeck.handCards = [];
-        combatDeck.discardCards = [];
-        combatDeck.deadCards = [];
+        //combatDeck.handCards = [];
+        //combatDeck.discardCards = [];
+        //combatDeck.deadCards = [];
+        combatDeck.handCards.length = 0;
+        combatDeck.discardCards.length = 0;
+        combatDeck.deadCards.length = 0;
            
     }
 
@@ -4640,7 +4654,7 @@ export function CombatDeck() {
     function shuffleDeck(combatDeck) {
         combatDeck.drawCards = util.shuffle(combatDeck.discardCards);
         combatDeck.discardCards = [];
-        
+        //combatDeck.discardCards.length = 0;
     }
 
     function getNaturalCard(combatDeck) {
@@ -4910,7 +4924,8 @@ export function CombatDeck() {
         for(let i = 0; i < game.toTransmute.length; i++) {
             let possibleCards = AllCards().getAddableCards().filter(j => j.addable == true && j.id !== game.toTransmute[i].id);
             let transmutedCard = util.randFromArray(possibleCards);
-            transmutedCard = JSON.parse(JSON.stringify(transmutedCard)); // necessary to create a deep copy
+            //transmutedCard = JSON.parse(JSON.stringify(transmutedCard)); // necessary to create a deep copy
+            transmutedCard = $.extend(true, {}, transmutedCard);
             transmutedCard.guid = util.randString();
 
             // standard description
@@ -4940,7 +4955,10 @@ export function CombatDeck() {
             }
             util.removeCardByGuid(game.toTransmute[i].guid, 'destroyed');
         }
-        game.toTransmute = [];
+        //game.toTransmute = [];
+        //combatDeck.chooseCards = [];
+        game.toTransmute.length = 0;
+        combatDeck.chooseCards.length = 0;
         Deck().showModifiedCards(combatDeck, player);
         if(game.playsounds) sounds.play('transmuteCard');
     }
@@ -4999,7 +5017,8 @@ export function CombatDeck() {
 
     function addCard(add, combatDeck, part, player, shards = []) {
         let addCard = AllCards().cards.find(({ id }) => id === add);
-        let copiedCard = JSON.parse(JSON.stringify(addCard)); // necessary to create a deep copy
+        //let copiedCard = JSON.parse(JSON.stringify(addCard)); // necessary to create a deep copy
+        let copiedCard = $.extend(true, {}, addCard);
         copiedCard.guid = util.randString();
        
         // standard description
@@ -5037,7 +5056,8 @@ export function CombatDeck() {
     }
 
     function initCard(card) {
-        let copiedCard = JSON.parse(JSON.stringify(card)); // necessary to create a deep copy
+        //let copiedCard = JSON.parse(JSON.stringify(card)); // necessary to create a deep copy
+        let copiedCard = $.extend(true, {}, card);
         copiedCard.guid = util.randString();
 
         // standard description

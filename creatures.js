@@ -998,7 +998,8 @@ export function Monster() {
         let currentMonsters = [];
 
         let excluded = game.previousMonsters;
-        game.previousMonsters = [];
+        //game.previousMonsters = [];
+        game.previousMonsters.length = 0;
 
         if(game.mapType == 'arena') {
 

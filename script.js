@@ -66,6 +66,8 @@
  * Effect: Each magic card played, gain x block
  * Need a simple single large damage attack card
  * Fancy Prance: 1 block, 1 dmg, 1 armor, draw card(s) for 0 cost
+ * Effect: limit number of cards played per turn, or combat, or add some sort of "beat of death" penalty for playing cards
+ * --cycle can get out of control with repel upgraded, bottled speed, and mana orb card
  * 
  * 
  * PHASE III:
@@ -91,9 +93,10 @@
  * TODO: sometimes selected cards rom rewards are not added to my deck. happened with ruin and mystical protection.
  * --actually these cards DID get added but they didn't show up in shard attach screen or combat deck right away.
  * --the number of cards in deck is correct (17) but clicking to view all deck cards only shows 15 cards
- * TODO: showmodifiedcards in cards.js game.toShow array has an undefined first value. i noticed shimmer stance card was not
+ * --showmodifiedcards in cards.js game.toShow array has an undefined first value. i noticed shimmer stance card was not
  * added to my deck when i hit level 1. i think it was after rewards cards stopped getting added to deck.
- * 
+ * --i selected unearch as my reward but then it wasn't in my deck (deck size 25, unearth was reward for ice guardian)
+ * TODO: the transmute candy didn't actually transmute my cards
  * 
  * 
  * TODO: [can't replicate] sometimes courage screen only shows 1 ability instead of 2
@@ -111,6 +114,26 @@
  * 
  * Play testing
  * -debug email report or text file logging
+ * Benchmarking
+ * -floor 1: 6.5mb
+ * -floor 2: 7.6mb
+ * -floor 3: 9.2mb
+ * -floor 4: 22.7mb (12 rounds)
+ * -floor 5: 32.7mb (5 rounds)
+ * -floor 6: 39.8mb (4 rounds)
+ * -floor 7: 46.9mb (3 rounds)
+ * -floor 8: 58.5mb (4 rounds)
+ * -floor 9: 74.3mb (4 rounds)
+ * -floor 10: 114mb (5 rounds)
+ * 
+ * Benchmarking 10 floors
+ * -no cards drawn, no shards attached and no cards removed: 6.4mb
+ * -no cards drawn, shards attached and cards removed: 7.5mb
+ * -5 cards drawn per fight, no cards played, yes shards/removals: 9.8mb
+ * -10 cards drawn per fight, no cards played, yes shards/removals: 13.5mb
+ * -10 cards drawn per fight, draw pile and deck screens opened once per fight, no cards played, yes shards/removals: 19.5mb
+ * -5 cards drawn and 3-5 played per fight, yes shards/removals: 14.9mb
+ * 
  * 
  * Stress and Balance testing
  * -currently no enemies ever have vex
@@ -130,6 +153,7 @@
  * Monster hexes punch down but player buffs punch up. New damage amount is larger than original but damage amount color is red - should be green.
  * Question: if player has might, should draw damage effects have might applied?
  * Question: should only one hit of a multi-attack card be affected by crit (like how fatality works)?
+ * 
  * 
  * 
  * 
@@ -591,12 +615,13 @@ jQuery(document).ready(function($) {
 		updateCardDescriptions(game.toPile);
 		// we might be sharding multiple cards, so need to remove fully sharded cards
 		if(!deck.hasOpenSlot(card)) {
-			$(this).remove();
+			$(this).parent().remove();
 		}
 		if(game.toPick == 0) {
 			$('.shard-cards-panel').removeClass('shown');
 			$('.draw-card, .end-turn').removeClass('disabled');
-			combatDeck.chooseCards = [];
+			//combatDeck.chooseCards = [];
+			combatDeck.chooseCards.length = 0;
 		}
 
 	});
@@ -1032,8 +1057,8 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('signet_ring'); // use this to manually add treasures
-	//addCandy('cotton_candy'); // use this to manually add candies
+	//addTreasure('gold_leaf'); // use this to manually add treasures
+	//addCandy('marshmallows'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
 	if(game.debug) $('body').addClass('debug');
@@ -1372,7 +1397,8 @@ async function startCombat(tile) {
 	//console.clear();
 
 	// there could be residual "to show" cards that need cleared - like if combat ends with collateral damage played
-	game.toShow = [];
+	//game.toShow = [];
+	game.toShow.length = 0;
 
 	game.combatEndedFlag = false;
 
@@ -2129,7 +2155,8 @@ function endTurn(checkRetain = true) {
 		applyArmor(player.block, player);
 	}
 
-	combatDeck.chooseCards = [];
+	//combatDeck.chooseCards = [];
+	combatDeck.chooseCards.length = 0;
 	game.toPile = 'handCards';
 
 	updateCardDescriptions('allCards');
@@ -2280,11 +2307,13 @@ function clearTurnEffects(from, delay = false, offset = false) {
 function clearCombatEffects() {
 	for(let i = 0; i < game.effects.length; i++) {
 		if(player[game.effects[i].id].turns > -1 && player[game.effects[i].id].persist != true) {
-			player[game.effects[i].id].temp = [];
+			//player[game.effects[i].id].temp = [];
+			player[game.effects[i].id].temp.length = 0;
 			player[game.effects[i].id].turns = 0;
 			player[game.effects[i].id].current = 0;
 		} else if(player[game.effects[i].id].turns == -1) {
-			player[game.effects[i].id].temp = [];
+			//player[game.effects[i].id].temp = [];
+			player[game.effects[i].id].temp.length = 0;
 			player[game.effects[i].id].turns = 0;
 			player[game.effects[i].id].current = 0;
 		}
@@ -2333,7 +2362,8 @@ function removeHexes(to) {
 		} else {
 			if(to[game.effects[i].id].hexed) {
 				let current = game.effects[i].id == 'sorcery' || game.effects[i].id == 'punch' ? 1 : 0;
-				to[game.effects[i].id].temp = [];
+				//to[game.effects[i].id].temp = [];
+				to[game.effects[i].id].temp.length = 0;
 				to[game.effects[i].id].turns = 0;
 				to[game.effects[i].id].current = current;
 				to[game.effects[i].id].hexed = false;
@@ -2666,7 +2696,8 @@ function loot(type, tier = 3) {
 			util.appendShard(treasures.shards[index], '.loot-items');
 			// one candy
 			let candy = util.weightedRandom(treasures.candies);
-			let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
+			//let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
+			let copiedCandy = $.extend(true, {}, candy);
 			copiedCandy.desc = deck.buildDescription(copiedCandy);
 			let clickable = player.candies.length < game.candySlots ? true : false;
 			util.appendCandy(copiedCandy, '.loot-items', clickable);
@@ -2675,7 +2706,8 @@ function loot(type, tier = 3) {
 		case 'candy':
 			for(let i = 0; i < tier; i++) {
 				let candy = util.weightedRandom(treasures.candies);
-				let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
+				//let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
+				let copiedCandy = $.extend(true, {}, candy);
 				copiedCandy.desc = deck.buildDescription(copiedCandy);
 				let clickable = player.candies.length < game.candySlots ? true : false;
 				util.appendCandy(copiedCandy, '.loot-items', clickable);
@@ -2707,7 +2739,8 @@ function rewardsScreen() {
 	$('.rewards-loot').empty();
 	$('.rewards-loot-wrapper').removeClass('shown');
 
-	game.toExclude = [];
+	//game.toExclude = [];
+	game.toExclude.length = 0;
 
 	for(let i = 0; i < game.cardRewardNumber; i++) {
 		let card = deck.decideCard();
@@ -2717,7 +2750,8 @@ function rewardsScreen() {
 		game.candyChance -= 10;
 		if(game.candyChance < 0) game.candyChance = 0;
 		let candy = util.weightedRandom(treasures.candies);
-		let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
+		//let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
+		let copiedCandy = $.extend(true, {}, candy);
 		copiedCandy.desc = deck.buildDescription(copiedCandy);
 		let clickable = player.candies.length < game.candySlots ? true : false;
 		util.appendCandy(copiedCandy, '.rewards-loot', clickable);
@@ -2866,7 +2900,8 @@ function addCandy(add) {
 	if(player.candies.length < game.candySlots) {
 		if(game.playsounds) sounds.play('addCandy');
 		let candy = treasures.candies.find(({ id }) => id === add);
-		let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
+		//let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
+		let copiedCandy = $.extend(true, {}, candy);
 		copiedCandy.desc = deck.buildDescription(copiedCandy);
 		Player().addCandy(copiedCandy, player);
 		if(player.candies.length == game.candySlots) {
@@ -3432,7 +3467,6 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 		reduceCardStat(card, 'linger', 1);
 	}
 
-
 	// check for bless
 	if(card.type == 'ability' && player.bless.enabled) {
 		let possibleCards = combatDeck.handCards.filter(i => i.mana > 0);
@@ -3679,7 +3713,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					case 'addCard':
 
 						//if(game.combatEndedFlag) return; //disabled this because it was not allowing the library quest to work
-						game.toShow = [];
+						//game.toShow = [];
+						game.toShow.length = 0;
 						let addCard = '';
 						let addThisCard = {};
 						let thisCard = {};
@@ -3787,7 +3822,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					case 'ensharden':
 						game.toPick = actions[e].select;
 						game.toPile = actions[e].from;
-						game.toShow = [];
+						//game.toShow = [];
+						game.toShow.length = 0;
 						var cards = [];
 						let shard = actions[e].type;
 						let thisShard = shard;
