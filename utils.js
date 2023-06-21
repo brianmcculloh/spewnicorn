@@ -103,13 +103,15 @@ export default class Util {
     }
     appendCard(card, to, cssClass = '') {
         if(!card) return;
-        let slots = util.buildCardSlots(card);
+        let slots = '';
+        slots = util.buildCardSlots(card);
 
         let mana = util.getCardAttribute(card, 'mana');
         let manaDom = '';
         manaDom = '<div class="card-mana"><span class="mana amount" data-amount="' + mana + '">' + mana + '</span></div>';
 
-        let age = util.getCardAttribute(card, 'age');
+        let age = -1;
+        age = util.getCardAttribute(card, 'age');
         let ageDom = '';
         let ageTip = '';
         let plural = '';
@@ -119,7 +121,8 @@ export default class Util {
             ageDom += '<div class="card-age tooltip" data-powertip="' + ageTip + '"><span class="age amount" data-amount="' + age + '">' + age + '</span></div>';
         }
 
-        let use = util.getCardAttribute(card, 'use');
+        let use = -1;
+        use = util.getCardAttribute(card, 'use');
         let useDom = '';
         let useTip = '';
         if(use > -1) {
@@ -128,7 +131,8 @@ export default class Util {
             useDom += '<span class="amount use tooltip" data-powertip="' + useTip + '" data-amount="' + use + '">' + use + '</span>';
         }
 
-        let expire = util.getCardAttribute(card, 'expire');
+        let expire = -1;
+        expire = util.getCardAttribute(card, 'expire');
         let expireDom = '';
         let expireTip = '';
         if(expire > -1) {
@@ -137,7 +141,8 @@ export default class Util {
             expireDom += '<span class="amount expire tooltip" data-powertip="' + expireTip + '" data-amount="' + expire + '">' + expire + '</span>';
         }
 
-        let linger = util.getCardAttribute(card, 'linger');
+        let linger = -1;
+        linger = util.getCardAttribute(card, 'linger');
         let lingerDom = '';
         let lingerTip = '';
         if(linger > -1) {
@@ -146,7 +151,8 @@ export default class Util {
             lingerDom += '<span class="amount linger tooltip" data-powertip="' + lingerTip + '" data-amount="' + linger + '">' + linger + '</span>';
         }
 
-        let vanish = util.getCardAttribute(card, 'vanish');
+        let vanish = false;
+        vanish = util.getCardAttribute(card, 'vanish');
         let vanishDom = '';
         let vanishTip = '';
         if(vanish) {
@@ -154,7 +160,8 @@ export default class Util {
             vanishDom += '<div class="vanish tooltip" data-powertip="' + vanishTip + '"><span></span></div>';
         }
 
-        let retain = util.getCardAttribute(card, 'retain');
+        let retain = false;
+        retain = util.getCardAttribute(card, 'retain');
         let retainDom = '';
         let retainTip = '';
         if(retain) {
@@ -162,7 +169,8 @@ export default class Util {
             retainDom += '<div class="retain tooltip" data-powertip="' + retainTip + '"><span></span></div>';
         }
 
-        let ephemeral = util.getCardAttribute(card, 'ephemeral');
+        let ephemeral = false;
+        ephemeral = util.getCardAttribute(card, 'ephemeral');
         let ephemeralDom = '';
         let ephemeralTip = '';
         if(ephemeral) {
@@ -170,7 +178,8 @@ export default class Util {
             ephemeralDom += '<div class="ephemeral tooltip" data-powertip="' + ephemeralTip + '"><span></span></div>';
         }
 
-        let breakable = util.getCardAttribute(card, 'breakable');
+        let breakable = false;
+        breakable = util.getCardAttribute(card, 'breakable');
         let breakableDom = '';
         let breakableTip = '';
         if(breakable) {
@@ -178,7 +187,8 @@ export default class Util {
             breakableDom += '<div class="breakable tooltip" data-powertip="' + breakableTip + '"><span></span></div>';
         }
 
-        let pack = util.getCardAttribute(card, 'pack');
+        let pack = false;
+        pack = util.getCardAttribute(card, 'pack');
         let packDom = '';
         let packTip = '';
         if(pack) {
@@ -766,10 +776,22 @@ export default class Util {
             popupClass: 'standard'
         });
     }
+    setSplashTooltips() {
+        $('#splash').find('.tooltip').powerTip({
+            followMouse: true,
+            offset: 40,
+            fadeInTime: 50,
+            fadeOutTime: 30,
+            closeDelay: 100,
+            intentPollInterval: 30,
+            intentSensitivity: 5,
+            popupClass: 'standard'
+        });
+    }
     setTooltips(elem) {
         $(elem).find('.tooltip').powerTip({
             followMouse: true,
-            offset: 5,
+            offset: 40,
             fadeInTime: 50,
             fadeOutTime: 30,
             closeDelay: 100,
@@ -805,6 +827,14 @@ export default class Util {
             });
         }
         
+    }
+    clearTooltips() {
+        $.powerTip.destroy();
+        util.setTooltips('.map-inner');
+	    util.setTooltips('.buttons-wrapper');
+        util.setTooltips('.treasures');
+        util.setTooltips('.candies');
+        util.setInitialTooltips();
     }
     getFromDisplay(text) {
         if(text == 'handCards') {

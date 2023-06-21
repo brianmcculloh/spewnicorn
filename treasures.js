@@ -75,7 +75,7 @@ const ALL_CANDY= [
     new Candy({
         id:'nut_clusters', 
         name: 'Nut Clusters', 
-        dmg: [15],
+        dmg: [25],
         weight: 7,
         target: 'monster',
         x: -384,
@@ -85,7 +85,7 @@ const ALL_CANDY= [
         id:'circus_peanuts', 
         name: 'Circus Peanuts', 
         weight: 7,
-        blk: [15],
+        blk: [20],
         x: -480,
         y: -3456
     }),
@@ -105,28 +105,28 @@ const ALL_CANDY= [
         id:'blueberry_hard_candy', 
         name: 'Blueberry Hard Candy', 
         weight: 6,
-        magic: [{type: 'rainbow', amount: 6}],
+        magic: [{type: 'rainbow', amount: 14}],
         x: -64,
         y: -14816
     }),
     new Candy({
         id:'grape_hard_candy', 
         name: 'Grape Hard Candy', 
-        magic: [{type: 'dark', amount: 6}],
+        magic: [{type: 'dark', amount: 14}],
         x: -128,
         y: -14816
     }),
     new Candy({
         id:'cherry_hard_candy', 
         name: 'Cherry Hard Candy', 
-        magic: [{type: 'chaos', amount: 6}],
+        magic: [{type: 'chaos', amount: 14}],
         x: -32,
         y: -14816
     }),
     new Candy({
         id:'lime_hard_candy', 
         name: 'Lime Hard Candy', 
-        magic: [{type: 'elemental', amount: 6}],
+        magic: [{type: 'elemental', amount: 14}],
         x: -96,
         y: -14816
     }),
@@ -135,7 +135,7 @@ const ALL_CANDY= [
         name: 'Orange Hard Candy', 
         courage: 3,
         weight: 4,
-        magic: [{type: 'aligned', amount: 5}],
+        magic: [{type: 'aligned', amount: 14}],
         x: -0,
         y: -14816
     }),
@@ -143,7 +143,7 @@ const ALL_CANDY= [
         id:'mystery_hard_candy', 
         name: 'Mystery Hard Candy', 
         weight: 6,
-        magic: [{type: 'random', amount: 12}],
+        magic: [{type: 'random', amount: 18}],
         x: -160,
         y: -14816
     }),
@@ -247,6 +247,7 @@ const ALL_CANDY= [
         name: 'Blueberry Lollipop', 
         courage: 3,
         weight: 2,
+        magic: [{type: 'aligned', amount: 6}],
         actions: [
             {action: 'addCard', value: 1, what: 'rainbow_converter', to: 'handCards'}
         ],
@@ -258,6 +259,7 @@ const ALL_CANDY= [
         name: 'Cherry Lollipop', 
         courage: 3,
         weight: 2,
+        magic: [{type: 'aligned', amount: 6}],
         actions: [
             {action: 'addCard', value: 1, what: 'chaos_converter', to: 'handCards'}
         ],
@@ -269,6 +271,7 @@ const ALL_CANDY= [
         name: 'Grape Lollipop', 
         courage: 3,
         weight: 2,
+        magic: [{type: 'aligned', amount: 6}],
         actions: [
             {action: 'addCard', value: 1, what: 'dark_converter', to: 'handCards'}
         ],
@@ -280,6 +283,7 @@ const ALL_CANDY= [
         name: 'Lime Lollipop', 
         courage: 3,
         weight: 2,
+        magic: [{type: 'aligned', amount: 6}],
         actions: [
             {action: 'addCard', value: 1, what: 'elemental_converter', to: 'handCards'}
         ],
@@ -396,7 +400,7 @@ const ALL_CANDY= [
         id:'white_truffle', 
         name: 'White Truffle', 
         effects: [
-            {effect: 'conjure', amount: 5, turns: 1}
+            {effect: 'conjure', amount: 8, turns: 1}
         ],
         x: -418,
         y: -4514
@@ -687,7 +691,7 @@ const ALL_TREASURES = [
         name: "Dew of Lunya", 
         permanent: true,
         effects: [
-            {effect: 'regen', base: 6}
+            {effect: 'regen', base: 4}
         ],
         x: -480,
         y: -2688
@@ -815,7 +819,7 @@ const ALL_TREASURES = [
         name: "Candlestick", 
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'current', value: 3},
+            {action: 'stat', what: 'speed', key: 'current', value: 1},
         ],
         trigger: {counter: 0, when: 'cardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -64,
@@ -1010,7 +1014,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 4,
         effects: [
-            {effect: 'solid', amount: 3, turns: 2, persist: true}
+            {effect: 'solid', amount: 1, turns: -1, persist: true}
         ],
         trigger: {counter: 0, when: 'toolCardsPlayed', at: 3, per: 'turn', once: false, activated: false},
         x: -192,
@@ -1022,7 +1026,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 4,
         effects: [
-            {effect: 'conjure', amount: 3, turns: 2, persist: true}
+            {effect: 'conjure', amount: 2, turns: -1, persist: true}
         ],
         trigger: {counter: 0, when: 'magicCardsPlayed', at: 3, per: 'turn', once: false, activated: false},
         x: -480,
@@ -1075,7 +1079,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 2,
         effects: [
-            {effect: 'craft', amount: 10, turns: 2, persist: true}
+            {effect: 'craft', amount: 2, turns: -1, persist: true}
         ],
         trigger: {counter: 0, when: 'toolCardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -384,
@@ -1103,7 +1107,7 @@ const ALL_TREASURES = [
         abilities: [
             {ability: 'tank', turns: 2, enabled: true}
         ],
-        trigger: {counter: 0, when: 'turns', at: 3, per: 'combat', once: true, activated: false},
+        trigger: {counter: 0, when: 'turns', at: 2, per: 'combat', once: true, activated: false},
         x: -32,
         y: -13794
     }),
@@ -1114,7 +1118,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 4,
         abilities: [
-            {ability: 'stockpile', turns: 1, enabled: true}
+            {ability: 'stockpile', turns: 2, enabled: true}
         ],
         trigger: {counter: 0, when: 'turns', at: 4, per: 'combat', once: true, activated: false},
         x: -192,

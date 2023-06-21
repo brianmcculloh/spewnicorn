@@ -414,8 +414,8 @@ export default function Game() {
     let removeCardCost = 2;
     let candySlots = 3;
     let cardRewardNumber = 3;
-    let essenceThresholds = [8, 12, 14, 15]; // TODO: set this to 8, 12, 14, 15
-    let aggroThresholds = [10, 15, 20, 22]; // TODO: set this to 10, 15, 20, 22
+    let essenceThresholds = [8, 14, 20, 26]; // TODO: set this to 8, 14, 20, 26
+    let aggroThresholds = [10, 15, 19, 22, 24, 25]; // TODO: set this to 10, 15, 19, 22, 24, 25
     let currentMonsters = [];
     let targetedMonster = {};
     let previousMonsters = [];

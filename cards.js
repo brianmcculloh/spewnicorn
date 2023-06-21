@@ -1430,11 +1430,11 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'smash_and_grab', name: 'Smash & Grab', type: 'attack', target: 'monster', mana: 0, tier: 'uncommon', weight: 4, 
+        id: 'smash_and_grab', name: 'Smash & Grab', type: 'attack', vanish: true, target: 'monster', mana: 0, tier: 'uncommon', weight: 4, 
         dmg: [7],
         sound: 'attack7',
         actions: [
-            {action: 'addCard', value: 3, type: 'attack', to: 'drawCards'},
+            {action: 'addCard', value: 2, type: 'attack', to: 'drawCards'},
             {action: 'draw', value: 1},
         ],
         slots: 1,
@@ -1443,7 +1443,7 @@ const ALL_CARDS = [
         },
         iceShardUpgrades: {
             actions: [
-                {action: 'addCard', value: 3, type: 'attack', to: 'drawCards'},
+                {action: 'addCard', value: 2, type: 'attack', to: 'drawCards'},
                 {action: 'draw', value: 2},
             ],
         },
@@ -2827,7 +2827,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'healing_salve', name: 'Healing Salve', type: 'ability', mana: 1, tier: 'uncommon', weight: 6, courage: 3, 
         effects: [
-            {effect: 'heal', amount: 10}
+            {effect: 'heal', amount: 8}
         ],
         slots: 1,
         fireShardUpgrades: {
@@ -2835,14 +2835,14 @@ const ALL_CARDS = [
         },
         iceShardUpgrades: {
             effects: [
-                {effect: 'heal', amount: 15}
+                {effect: 'heal', amount: 12}
             ],
         },
     }),
     new Cards({
         id: 'stamina', name: 'Stamina', type: 'ability', mana: 1, tier: 'uncommon', weight: 6, courage: 3, 
         effects: [
-            {effect: 'regen', amount: 6}
+            {effect: 'regen', amount: 4}
         ],
         slots: 1,
         fireShardUpgrades: {
@@ -2850,7 +2850,7 @@ const ALL_CARDS = [
         },
         iceShardUpgrades: {
             effects: [
-                {effect: 'regen', amount: 10}
+                {effect: 'regen', amount: 6}
             ],
         },
     }),
@@ -4006,6 +4006,7 @@ export function Deck() {
             addCard('spewnicorn_spray');
         }
 
+        
     }
 
     function removeCard(guid) {
@@ -4620,20 +4621,16 @@ export function CombatDeck() {
     let game = window.game;
 
     function sync(deckCards, combatDeck) {
-        //combatDeck.drawCards = [];
-        combatDeck.drawCards.length = 0;
+        combatDeck.drawCards = [];
         for(let i = 0; i < deckCards.length; i++) {
             deckCards[i].mana = deckCards[i].baseMana;
             //let copiedCard = JSON.parse(JSON.stringify(deckCards[i])); // necessary to create a deep copy
             let copiedCard = $.extend(true, {}, deckCards[i]);
             combatDeck.drawCards.push(copiedCard);
         }
-        //combatDeck.handCards = [];
-        //combatDeck.discardCards = [];
-        //combatDeck.deadCards = [];
-        combatDeck.handCards.length = 0;
-        combatDeck.discardCards.length = 0;
-        combatDeck.deadCards.length = 0;
+        combatDeck.handCards = [];
+        combatDeck.discardCards = [];
+        combatDeck.deadCards = [];
            
     }
 
@@ -4654,7 +4651,6 @@ export function CombatDeck() {
     function shuffleDeck(combatDeck) {
         combatDeck.drawCards = util.shuffle(combatDeck.discardCards);
         combatDeck.discardCards = [];
-        //combatDeck.discardCards.length = 0;
     }
 
     function getNaturalCard(combatDeck) {
@@ -4955,10 +4951,8 @@ export function CombatDeck() {
             }
             util.removeCardByGuid(game.toTransmute[i].guid, 'destroyed');
         }
-        //game.toTransmute = [];
-        //combatDeck.chooseCards = [];
-        game.toTransmute.length = 0;
-        combatDeck.chooseCards.length = 0;
+        game.toTransmute = [];
+        combatDeck.chooseCards = [];
         Deck().showModifiedCards(combatDeck, player);
         if(game.playsounds) sounds.play('transmuteCard');
     }

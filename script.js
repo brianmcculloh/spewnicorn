@@ -96,9 +96,11 @@
  * --showmodifiedcards in cards.js game.toShow array has an undefined first value. i noticed shimmer stance card was not
  * added to my deck when i hit level 1. i think it was after rewards cards stopped getting added to deck.
  * --i selected unearch as my reward but then it wasn't in my deck (deck size 25, unearth was reward for ice guardian)
- * TODO: the transmute candy didn't actually transmute my cards
+ * TODO: transmuted 3 cards at the quest, got the new cards, but later at the shop the cards i transmuted were still in my deck
+ * TODO: workshop event isn't quite working correctly with excalibur
  * 
  * 
+ * TODO: [can't replicate] the transmute candy didn't actually transmute my cards
  * TODO: [can't replicate] sometimes courage screen only shows 1 ability instead of 2
  * TODO: [can't replicate] added a shard to a card, and then the next quest was the trasform 3 quest, and the sharded card was still in the show cards
  * TODO: [can't replicate] Can't select to discard a slash card that was just added by surprise attack
@@ -260,6 +262,7 @@ jQuery(document).ready(function($) {
 
 	setTimeout(function() {
 		$('#game-loading').addClass('hidden');
+		util.setSplashTooltips();
 	}, 1000);
 
 	setTimeout(function() {
@@ -620,8 +623,7 @@ jQuery(document).ready(function($) {
 		if(game.toPick == 0) {
 			$('.shard-cards-panel').removeClass('shown');
 			$('.draw-card, .end-turn').removeClass('disabled');
-			//combatDeck.chooseCards = [];
-			combatDeck.chooseCards.length = 0;
+			combatDeck.chooseCards = [];
 		}
 
 	});
@@ -863,6 +865,7 @@ jQuery(document).ready(function($) {
 				$('.choose-cards-panel .card').removeClass('pickable');
 				$('.choose-cards-panel .message').html('');
 				$('.choose-cards-panel .cards').empty();
+				$('.choose-cards-panel .done').show();
 			}
 		}
 
@@ -1057,7 +1060,7 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('gold_leaf'); // use this to manually add treasures
+	//addTreasure('excalibur'); // use this to manually add treasures
 	//addCandy('marshmallows'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
@@ -1397,8 +1400,7 @@ async function startCombat(tile) {
 	//console.clear();
 
 	// there could be residual "to show" cards that need cleared - like if combat ends with collateral damage played
-	//game.toShow = [];
-	game.toShow.length = 0;
+	game.toShow = [];
 
 	game.combatEndedFlag = false;
 
@@ -1679,6 +1681,8 @@ async function updateEssenceLevels(essence, amount) {
 }
 
 function beginTurn() {
+
+	util.clearTooltips();
 
 	updateCardDescriptions('allCards');
 
@@ -2155,8 +2159,7 @@ function endTurn(checkRetain = true) {
 		applyArmor(player.block, player);
 	}
 
-	//combatDeck.chooseCards = [];
-	combatDeck.chooseCards.length = 0;
+	combatDeck.chooseCards = [];
 	game.toPile = 'handCards';
 
 	updateCardDescriptions('allCards');
@@ -2307,15 +2310,21 @@ function clearTurnEffects(from, delay = false, offset = false) {
 function clearCombatEffects() {
 	for(let i = 0; i < game.effects.length; i++) {
 		if(player[game.effects[i].id].turns > -1 && player[game.effects[i].id].persist != true) {
-			//player[game.effects[i].id].temp = [];
-			player[game.effects[i].id].temp.length = 0;
+			player[game.effects[i].id].temp = [];
 			player[game.effects[i].id].turns = 0;
-			player[game.effects[i].id].current = 0;
+			if(game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery') {
+				player[game.effects[i].id].current = 1;
+			} else {
+				player[game.effects[i].id].current = 0;
+			}
 		} else if(player[game.effects[i].id].turns == -1) {
-			//player[game.effects[i].id].temp = [];
-			player[game.effects[i].id].temp.length = 0;
+			player[game.effects[i].id].temp = [];
 			player[game.effects[i].id].turns = 0;
-			player[game.effects[i].id].current = 0;
+			if(game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery') {
+				player[game.effects[i].id].current = 1;
+			} else {
+				player[game.effects[i].id].current = 0;
+			}
 		}
 		// if combat ended then player must have attacked which means we need to clear a fatality charge which may not have gotten cleared
 		// TODO: how does this apply when rainbow is what ends combat?
@@ -2362,8 +2371,7 @@ function removeHexes(to) {
 		} else {
 			if(to[game.effects[i].id].hexed) {
 				let current = game.effects[i].id == 'sorcery' || game.effects[i].id == 'punch' ? 1 : 0;
-				//to[game.effects[i].id].temp = [];
-				to[game.effects[i].id].temp.length = 0;
+				to[game.effects[i].id].temp = [];
 				to[game.effects[i].id].turns = 0;
 				to[game.effects[i].id].current = current;
 				to[game.effects[i].id].hexed = false;
@@ -2438,6 +2446,12 @@ function applyEffect(effect, to, turns = -1) {
 			}
 		} else if(effect.base != undefined) {
 			to[effect.effect].base += effect.base;
+
+			// the following line accounts for workshop might event + excalibur (for example). without this line, the additive nature
+			// of the effects won't combine until the second attempted combat after both sources have been activated.
+			// it's possible this breaks other things, in which case delete it and account for this elsewhere
+			to[effect.effect].current = to[effect.effect].base;
+
 			to[effect.effect].turns = turns;
 			let gameEffect = game.effects.find(({ id }) => id === effect.effect);
 			let sound = gameEffect.sound ? gameEffect.sound : 'applyEffect';
@@ -2739,8 +2753,7 @@ function rewardsScreen() {
 	$('.rewards-loot').empty();
 	$('.rewards-loot-wrapper').removeClass('shown');
 
-	//game.toExclude = [];
-	game.toExclude.length = 0;
+	game.toExclude = [];
 
 	for(let i = 0; i < game.cardRewardNumber; i++) {
 		let card = deck.decideCard();
@@ -3713,8 +3726,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					case 'addCard':
 
 						//if(game.combatEndedFlag) return; //disabled this because it was not allowing the library quest to work
-						//game.toShow = [];
-						game.toShow.length = 0;
+						game.toShow = [];
 						let addCard = '';
 						let addThisCard = {};
 						let thisCard = {};
@@ -3809,6 +3821,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						if(cards.length > 0) {
 							if(game.toPick > cards.length) game.toPick = cards.length;
 							viewChooseCards(cards, 'transmutable');
+							$('.choose-cards-panel .done').hide();
 						}
 					break;
 					case 'remove':
@@ -3822,8 +3835,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					case 'ensharden':
 						game.toPick = actions[e].select;
 						game.toPile = actions[e].from;
-						//game.toShow = [];
-						game.toShow.length = 0;
+						game.toShow = [];
 						var cards = [];
 						let shard = actions[e].type;
 						let thisShard = shard;

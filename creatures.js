@@ -998,8 +998,8 @@ export function Monster() {
         let currentMonsters = [];
 
         let excluded = game.previousMonsters;
-        //game.previousMonsters = [];
-        game.previousMonsters.length = 0;
+        
+        game.previousMonsters = [];
 
         if(game.mapType == 'arena') {
 
@@ -1239,6 +1239,7 @@ export function Monster() {
             // otherwise, set all current effects to their base values
             if(to[game.effects[i].id].current == 0) {
                 to[game.effects[i].id].current = to[game.effects[i].id].base;	
+
             }
             // effect will not persist to the next combat unless re-persisted again this combat
             to[game.effects[i].id].persist = false;
@@ -1416,7 +1417,7 @@ export function Player() {
         name: 'Player',
         armor: 0, // TODO: set to 0
         block: 0,
-        health: {base: 75, current: 75, max: 75},
+        health: {base: 75, current: 75, max: 75}, // TODO: reset all values to 75
         speed: {base: 5, current: 0, temp: [], turns: 0}, // TODO: reset base to 5
         rainbow: {base: 0, current: 0, temp: [], turns: 0, max: 20, type: 'rainbow'},
     });

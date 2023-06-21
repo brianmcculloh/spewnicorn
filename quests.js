@@ -26,12 +26,12 @@ const ALL_QUESTS = [
         desc: 'A myriad of tools adorn the walls and tables.',
         weight: 5,
         options: [
-            {id: 'explore', name: 'Explore', desc: 'Sharpen your skills.',
+            {id: 'explore', name: 'Explore', desc: 'Sharpen your skills',
                 options: [
                     {id: 'quickness', name: 'Quickness', desc: 'Gain 1 Speed'},
                     {id: 'thickness', name: 'Thickness', desc: 'Gain 2 Solid'},
                     {id: 'strength', name: 'Strength', desc: 'Gain 2 Might'},
-                    {id: 'wizardry', name: 'Wizardry', desc: 'Gain 2 Conjure'},
+                    {id: 'wizardry', name: 'Wizardry', desc: 'Gain 3 Conjure'},
                     {id: 'leave', name: 'Leave'}
                 ]
             },

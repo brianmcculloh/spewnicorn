@@ -49,8 +49,8 @@
       <div class="button music toggled-on">Music <span>On</span></div>
       <div class="button sound toggled-on">Sounds <span>On</span></div>
       <div class="button tutorial">Tutorial <span>Off</span></div>
-      <div class="button difficulty">Easy Mode <span>Off</span></div>
-      <input id="custom-seed" type="text" placeholder="Custom Seed..." />
+      <div class="button difficulty tooltip" data-powertip="Adds a <span class='highlight'>Spewnicorn Spray</span> to your deck.">Easy Mode <span>Off</span></div>
+      <input id="custom-seed" class="tooltip" data-powertip="You can enter a custom seed or keep this blank to generate a random map." type="text" placeholder="Custom Seed..." />
 
       <div class="panel-part panel-top-left"></div>
       <div class="panel-part panel-top-middle"></div>
@@ -462,13 +462,13 @@
 
         <div class="fountain-options shown buttons-wrapper">
 
-          <div class="button fountain-drink" data-amount="25" data-armor="5">Drink (+25 Health &amp; +5 Armor)</div>
+          <div class="button fountain-drink" data-amount="25" data-armor="5">Drink (+25 Health &amp; +10 Armor)</div>
 
-          <div class="button fountain-bathe" data-amount="3">Bathe (+3 Max Health)</div>
+          <div class="button fountain-bathe" data-amount="5">Bathe (+6 Max Health)</div>
 
           <div class="button fountain-search">Search (Find A Shard)</div>
 
-          <div class="button fountain-frolic" data-amount="4">Frolic (+4 Courage)</div>
+          <div class="button fountain-frolic" data-amount="4">Frolic (+5 Courage)</div>
 
           <div class="fountain-visited">This fountain has dried up.</div>
 
