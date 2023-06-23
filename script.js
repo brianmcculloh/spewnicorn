@@ -91,7 +91,6 @@
  * 
  * PHASE V:
  * 
- * TODO: tutorial
  * TODO: transmuted 3 cards at the quest, got the new cards, but later at the shop the cards i transmuted were still in my deck
  * 
  *
@@ -294,7 +293,9 @@ jQuery(document).ready(function($) {
 	});
 
 	$('#close-tutorial').click(function() {
+		game.tutorial = false;
 		$('body').removeClass('tutorial');
+		$('.starting-room.game-panel').addClass('shown');
 	});
 	$('#step1 .next-button').click(function() {
 		$(this).parent().removeClass('shown');
@@ -318,8 +319,13 @@ jQuery(document).ready(function($) {
 	});
 	$('#step6 .next-button').click(function() {
 		$(this).parent().removeClass('shown');
+		$('#step7').addClass('shown');
+	});
+	$('#step7 .next-button').click(function() {
+		$(this).parent().removeClass('shown');
 		game.tutorial = false;
 		$('body').removeClass('tutorial');	
+		$('.starting-room.game-panel').addClass('shown');
 	});
 
 	$('.button, .icon-button').click(function() {
@@ -4780,6 +4786,7 @@ function applyArmor(arm, to) {
 		arm = parseFloat(arm);
 		let armor = arm + to.craft.current;
 		let extraArmor = (to.armor + armor) - to.health.current;
+		if(armor < 0) armor = 0;
 		if(game.playsounds && armor > 0) sounds.play('gainArmor');
 		if(extraArmor > 0) {
 			to.armor = to.health.current;

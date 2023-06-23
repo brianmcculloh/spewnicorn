@@ -425,7 +425,7 @@ export default function Game() {
     let animationDmg = 250;
     let playsounds = true;
     let playmusic = true;
-    let tutorial = false;
+    let tutorial = false; // TODO: set to false
     let debug = false;
     let dev = false;
     let libraryBuilt = false;

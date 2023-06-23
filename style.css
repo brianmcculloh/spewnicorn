@@ -8,6 +8,12 @@
 	--frost_color: hsl(221, 84%, 50%);
 	--flame_color: hsl(339, 87%, 46%);
 	--both_color: hsl(282, 87%, 46%);
+	--scrollbarBG: transparent;
+	--thumbBG: rgba(0,0,0,.4);	
+	--elemental_color: rgba(3,194,144,1);
+	--dark_color: rgba(160,23,198,1);
+	--chaos_color: rgba(218,30,103,1);
+	--muddled_color: rgba(38,148,214,1);
 }
 
 body {
@@ -44,7 +50,7 @@ a:active {transition:none!important;}
 a:hover { text-decoration:none; }
 img {border:none;}
 h1, h2, h3, h4, h5, h6 {font-weight:300; margin:0px; padding:0px 0px; text-transform:capitalize; }
-
+  
 /* global elements */
 .overlay {
 	position: absolute;
@@ -316,14 +322,14 @@ h2::after {
 	pointer-events:none;
 }
 input[type="text"] {
-	background:black;
+	background:rgba(0,0,0,.5);
 	color:white;
 	font-family: 'Concert One', sans-serif;
-	font-size:20px;
+	font-size:12px;
 	display:block;
 	font-weight:100;
 	border:1px solid white;
-	padding:15px 20px;
+	padding:10px 15px;
 	margin:0;
 }
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -376,11 +382,12 @@ input[type="text"] {
 	transform:translateY(-100vh);
 	z-index:-1;
 	pointer-events:none;
-	flex-wrap:no-wrap;
+	flex-wrap:nowrap;
 	padding:0;
 }
-#splash .begin {
-	margin-top:20px;
+#splash .panel .button.begin {
+	flex-basis:50%;
+	margin-bottom:10px;
 }
 #splash.shown {
 	transform:translateY(0);
@@ -389,6 +396,7 @@ input[type="text"] {
 }
 #splash .logo {
 	display:flex;
+	margin-top:125px;
 }
 #splash .logo img {
 	width:400px;
@@ -398,15 +406,48 @@ input[type="text"] {
 	text-transform:none;
 }
 #splash .panel {
-	gap:30px;
+	gap:15px;
 	width:100%;
 }
 #splash .panel .button, #splash .panel input {
 	width:auto;
-	flex-basis:30%;
+	flex-basis:12%;
+}
+#splash .instructions {
+	width:100%;
+	flex-basis:100%;
+	height:250px;
+	overflow:auto;
+	text-align:center;
+}
+#splash .instructions::-webkit-scrollbar {
+	width: 11px;
+}
+#splash .instructions {
+	scrollbar-width: thin;
+	scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+#splash .instructions::-webkit-scrollbar-track {
+	background: var(--scrollbarBG);
+}
+#splash .instructions::-webkit-scrollbar-thumb {
+	background-color: var(--thumbBG) ;
+	border-radius: 6px;
+	border: 3px solid var(--scrollbarBG);
+}
+
+#splash .instructions h2 {
+	margin-bottom:20px;
+}
+#splash .instructions p {
+	margin:0 10% 20px 10%;
+	text-transform:none;
 }
 #splash .panel input {
-	flex-basis:calc(30% + ((18px * 3 - 1px)* 2));
+	flex-basis:15%;
+	position:fixed;
+	top:10px;
+	right:10px;
 }
 body.game-started #splash .panel .tutorial,
 body.game-started #splash .panel .difficulty {
@@ -475,7 +516,12 @@ body.game-started #splash .panel .difficulty {
 #settings-panel.shown {
 	transform:translateY(0);
 }
-
+.copyright {
+	margin-top:30px;
+	margin-bottom:30px;
+	font-size:12px;
+	text-transform:none;
+}
 
 /* UI Layout */
 .game {
@@ -1185,9 +1231,8 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 }
 
 /* grid customization */
-.tile span.icon {
+.tile span.icon, .tut span.icon {
 	display:block;
-	position:absolute;
 	left:0;
 	top:0;
 	width:48px;
@@ -1200,28 +1245,28 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 }
 
 /* tile icons */
-.tile.shimmer span.icon {
+.tile.shimmer span.icon, .tut span.icon.shimmer {
 	background-position:-144px -1536px;
 }
-.tile.sparkle span.icon {
+.tile.sparkle span.icon, .tut span.icon.sparkle {
 	background-position:-144px -1344px;
 }
-.tile.aura span.icon {
+.tile.aura span.icon, .tut span.icon.aura {
 	background-position:-144px -1488px;
 }
-.tile.fountain span.icon {
+.tile.fountain span.icon, .tut span.icon.fountain {
 	background-position:-720px -240px;
 }
-.tile.quest span.icon {
+.tile.quest span.icon, .tut span.icon.quest {
 	background-position:-624px -528px;
 }
-.tile.arena span.icon {
+.tile.arena span.icon, .tut span.icon.arena {
 	background-position:-192px -48px;
 }
-.tile.ice-gate span.icon {
+.tile.ice-gate span.icon, .tut span.icon.ice-gate {
 	background-position:-240px -9696px;
 }
-.tile.fire-gate span.icon {
+.tile.fire-gate span.icon, .tut span.icon.fire-gate {
 	background-position:-240px -9648px;
 }
 
@@ -4162,14 +4207,21 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	z-index:999999;
 	background:rgba(2, 13, 23, .6);
 	display:none;
+	justify-content:center;
+	align-items:center;
+}
+.tut span.icon {
+	left:auto;
+	top:auto;
+	margin:5px;
 }
 body.tutorial #tutorial-overlay {
 	display:flex;
 }
 #tutorial-overlay #close-tutorial {
 	position:fixed;
-	bottom:110px;
-	right:20px;
+	bottom:78px;
+	left:calc(50% - 105px);
 }
 #tutorial-overlay #close-tutorial svg.close-tutorial-svg {
 	transform:rotate(90deg);
@@ -4184,20 +4236,52 @@ body.tutorial #tutorial-overlay {
 	transition:all .15s;
 }
 #tutorial-overlay .step {
-	position:fixed;
-	z-index:9999999;
-	opacity:0;
-	z-index:0;
+	position:absolute;
 	text-align:center;
+	display:none;
+	z-index:999;
 }
 #tutorial-overlay .step.shown {
-	opacity:1;
-	z-index:999;
+	display:flex;
+	align-items:center;
+	gap:20px;
+	justify-content:center;
+	flex-wrap:wrap;
 }
 #tutorial-overlay .step .text {
 	font-size:24px;
 	display:block;
-	margin-bottom:15px;
+	text-transform:none;
+}
+#tutorial-overlay .step .text .highlight, #splash .instructions .highlight {
+	color:yellow;
+}
+#tutorial-overlay .step .text .sparkle, #splash .instructions .sparkle {
+	color:var(--sparkle_color);
+}
+#tutorial-overlay .step .text .shimmer, #splash .instructions .shimmer {
+	color:var(--shimmer_color);
+}
+#tutorial-overlay .step .text .aura, #splash .instructions .aura {
+	color:var(--aura_color);
+}
+#tutorial-overlay .step .text .aggro, #splash .instructions .aggro {
+	color:var(--aggro_color);
+}
+#tutorial-overlay .step .text .crit, #splash .instructions .crit {
+	color:var(--crit_color);
+}
+#splash .instructions .elemental {
+	color:var(--elemental_color);
+}
+#splash .instructions .chaos {
+	color:var(--chaos_color);
+}
+#splash .instructions .dark {
+	color:var(--dark_color);
+}
+#splash .instructions .muddled {
+	color:var(--muddled_color);
 }
 #tutorial-overlay .step svg.arrow {
 	width:100px;
@@ -4210,94 +4294,79 @@ body.tutorial #tutorial-overlay {
 	z-index:999;
 	display:inline-block;
 }
-#step1 {
-	bottom:280px;
-	left:50%;
-	margin-left:-160px;
-}
-#step1 svg.arrow {
-	transform:rotate(-10deg);
-	top:45px;
-	left:100px;
-}
-#step1 .button.next-button {
-	top:52px;
-	right:45px;
-}
 
-#step2 {
-	top:142px;
-	left:200px;
-	width:300px;
+.step.general {
+	width:450px;
+	padding:25px;
+	background:rgba(0,0,0,.6);
+	border:1px solid rgba(255, 255, 255, 1);
 }
-#step2 svg.arrow {
-	transform:rotate(167deg);
-	top:-110px;
-	left:100px;
+.step.general .text {
+	flex-basis:100%;
 }
-#step2 .button.next-button {
-	top:-71px;
-	right:3px;
+.step.general .icon-wrapper {
+	flex-basis:100%;
+	display:flex;
+	justify-content:center;
 }
-
-#step3 {
-	bottom: 192px;
-    left: 35px;
-    width: 300px;
-}
-#step3 svg.arrow {
-	transform: rotate(-32deg);
-    top: 78px;
-    left: 175px;
-}
-#step3 .button.next-button {
-	top: 84px;
-    right: 125px;
+#tutorial-overlay .step.general .button.next-button {
+	position:relative;
 }
 
 #step4 {
-	top: 97px;
-    left: 167px;
+	top: 152px;
+    left: 143px;
     width: 300px;
 }
 #step4 svg.arrow {
-	transform: rotate(70deg);
-    top: 27px;
-    left: -32px;
+	transform: rotate(180deg);
+    top: -102px;
+    left: 98px;
 }
 #step4 .button.next-button {
-	top: 77px;
-    right: 97px;
+	position:relative;
 }
 
 #step5 {
-	top: 300px;
-    left: 145px;
-    width: 250px;
+	top: 143px;
+    left: 599px;
+    width: 300px;
 }
 #step5 svg.arrow {
-	transform: rotate(260deg);
-    top: 5px;
-    right: -83px;
+	transform: rotate(180deg);
+    top: -102px;
+    right: 106px;
 }
 #step5 .button.next-button {
-	top: 118px;
-    right: 73px;
+	position:relative;
 }
 
 #step6 {
-	bottom: 241px;
-    right: 19px;
+	bottom: 191px;
+    left: 25px;
+    width: 300px;
 }
 #step6 svg.arrow {
-	transform: rotate(-32deg);
-    top: 39px;
-    right: -14px;
+	transform: rotate(22deg);
+    bottom: -106px;
+    left: 15px;
 }
 #step6 .button.next-button {
-	top: 49px;
-    width: 165px;
-    right: 87px;
+	position:relative;
+}
+
+#step7 {
+	bottom: 191px;
+    right: 25px;
+    width: 300px;
+}
+#step7 svg.arrow {
+	transform: rotate(-22deg);
+    bottom: -106px;
+    right: 15px;
+}
+#step7 .button.next-button {
+	position:relative;
 }
 
 
@@ -4375,14 +4444,14 @@ body.tutorial #tutorial-overlay {
 	color:yellow;
 }
 #powerTip span.elemental {
-	color:rgba(3,194,144,1);
+	color:var(--elemental_color);
 }
 #powerTip span.dark {
-	color:rgba(160,23,198,1);
+	color:var(--dark_color);
 }
 #powerTip span.chaos {
-	color:rgba(218,30,103,1);
+	color:var(--chaos_color);
 }
 #powerTip span.muddled {
-	color:rgba(38,148,214,1);
+	color:var(--muddled_color);
 }
