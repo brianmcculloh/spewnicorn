@@ -1175,7 +1175,7 @@ const ALL_TREASURES = [
         weight: 2,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 2}
+            {action: 'stat', what: 'speed', key: 'base', value: 1}
         ],
         x: -288,
         y: -2208
@@ -1188,7 +1188,7 @@ const ALL_TREASURES = [
         weight: 2,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 2}
+            {action: 'stat', what: 'speed', key: 'base', value: 1}
         ],
         x: -288,
         y: -2144
@@ -1201,7 +1201,7 @@ const ALL_TREASURES = [
         weight: 2,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 2}
+            {action: 'stat', what: 'speed', key: 'base', value: 1}
         ],
         x: -288,
         y: -1888
@@ -1365,8 +1365,8 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 3},
-            {action: 'stat', what: 'sparkle', key: 'current', value: -4}
+            {action: 'stat', what: 'speed', key: 'base', value: 2},
+            {action: 'stat', what: 'sparkle', key: 'current', value: -5}
         ],
         x: -192,
         y: -13120
@@ -1379,8 +1379,8 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 3},
-            {action: 'stat', what: 'shimmer', key: 'current', value: -4}
+            {action: 'stat', what: 'speed', key: 'base', value: 2},
+            {action: 'stat', what: 'shimmer', key: 'current', value: -5}
         ],
         x: -320,
         y: -13120
@@ -1393,8 +1393,8 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 3},
-            {action: 'stat', what: 'aura', key: 'current', value: -4}
+            {action: 'stat', what: 'speed', key: 'base', value: 2},
+            {action: 'stat', what: 'aura', key: 'current', value: -5}
         ],
         x: -96,
         y: -13088
@@ -1407,8 +1407,8 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 3},
-            {action: 'stat', what: 'courage', value: -6}
+            {action: 'stat', what: 'speed', key: 'base', value: 2},
+            {action: 'stat', what: 'courage', value: -7}
         ],
         x: -160,
         y: -13088

@@ -184,13 +184,13 @@ const ALL_EFFECTS = [
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'mage', amount: 2, turns: -1}
     // hex     {effect: 'mage', amount: -2, hex: true}
-    {id: 'mage', name: 'Mage', desc: 'Each time you cycle rainbow, gain x% sorcery and x conjure', x: -448, y: -6498, sound: 'effect33'},
+    {id: 'mage', name: 'Mage', desc: 'Each time you cycle rainbow, gain x% sorcery', x: -448, y: -6498, sound: 'effect33'},
 
     // Usage:
     // creature {base: 5, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'enchanter', amount: 5, turns: -1}
     // hex      {effect: 'enchanter', amount: -5, hex: true}
-    {id: 'enchanter', name: 'Enchanter', desc: 'Each time you charge your rainbow without activating it, gain x% sorcery and x conjure', x: -448, y: -6466, sound: 'effect34'},
+    {id: 'enchanter', name: 'Enchanter', desc: 'Each time you charge your rainbow without activating it, gain x conjure', x: -448, y: -6466, sound: 'effect34'},
 
     // Usage:
     // creature {base: 5, current: 0, temp: 0, turns: -1, persist: false}
@@ -275,7 +275,7 @@ const ALL_ABILITIES = [
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
     // buff     {ability: 'prepared', turns: 2, enabled: true}
     // hex      {ability: 'prepared', enabled: false, hex: true}
-    {id: 'prepared', name: 'Prepared', desc: 'If you draw 3 or less cards gain [4 - cards drawn] speed next turn', x: 0, y: -32, sound: 'effect12'},
+    {id: 'prepared', name: 'Prepared', desc: 'If you draw 3 or less cards gain [5 - cards drawn] speed next turn', x: 0, y: -32, sound: 'effect12'},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}

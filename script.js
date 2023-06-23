@@ -26,7 +26,7 @@
  * -various effects from cards/treasures/etc can cause sprites to do things like always target enemy sprites, etc.
  * 
  * SPEED: unused speed at the end of each turn converts to something based on stance
- * -no stance: unused speed converts to blocknext turn
+ * -no stance: unused speed converts to 2x block next turn
  * -aura stance: unused speed converts to mana next turn
  * -sparkle stance: unused speed converts to temporary might next turn
  * -shimmer stance: unused speed converts to block, armor, and health next turn
@@ -68,6 +68,7 @@
  * Fancy Prance: 1 block, 1 dmg, 1 armor, draw card(s) for 0 cost
  * Effect: limit number of cards played per turn, or combat, or add some sort of "beat of death" penalty for playing cards
  * --cycle can get out of control with repel upgraded, bottled speed, and mana orb card
+ * Effect: Thunder - multiplies rainbow damage (include new card "lightning", candy and treasure to match)
  * 
  * 
  * PHASE III:
@@ -90,52 +91,38 @@
  * 
  * PHASE V:
  * 
- * TODO: sometimes selected cards rom rewards are not added to my deck. happened with ruin and mystical protection.
+ * TODO: tutorial
+ * TODO: transmuted 3 cards at the quest, got the new cards, but later at the shop the cards i transmuted were still in my deck
+ * 
+ *
+ * 
+ * BUGS [can't replicate]:
+ * BUG: i had -2 aura and then chose to lose 2 aura again and ended up gaining 2 instead
+ * BUG: i chose increase rainbow base from stained glass mirror but the next fight didn't have that base increase (it WAS there on subsequent battles)
+ * BUG: courage screen straight into multiple quests, and in between the quests i got the courage screen again
+ * BUG: [might have been fixed along with other updates] sometimes selected cards rom rewards are not added to my deck. 
+ * --happened with ruin and mystical protection.
  * --actually these cards DID get added but they didn't show up in shard attach screen or combat deck right away.
  * --the number of cards in deck is correct (17) but clicking to view all deck cards only shows 15 cards
  * --showmodifiedcards in cards.js game.toShow array has an undefined first value. i noticed shimmer stance card was not
  * added to my deck when i hit level 1. i think it was after rewards cards stopped getting added to deck.
- * --i selected unearch as my reward but then it wasn't in my deck (deck size 25, unearth was reward for ice guardian)
- * TODO: transmuted 3 cards at the quest, got the new cards, but later at the shop the cards i transmuted were still in my deck
- * TODO: workshop event isn't quite working correctly with excalibur
- * 
- * 
- * TODO: [can't replicate] the transmute candy didn't actually transmute my cards
- * TODO: [can't replicate] sometimes courage screen only shows 1 ability instead of 2
- * TODO: [can't replicate] added a shard to a card, and then the next quest was the trasform 3 quest, and the sharded card was still in the show cards
- * TODO: [can't replicate] Can't select to discard a slash card that was just added by surprise attack
- * TODO: [can't replicate] quest Library not working
- * TODO: [can't replicate] Playing Scorch when hand consists of 2 flame jabs and 1 flay causes .show-cards overlay to display and not be closeable.
+ * --i selected unearth as my reward but then it wasn't in my deck (deck size 25, unearth was reward for ice guardian)
+ * BUG: the transmute candy didn't actually transmute my cards
+ * BUG: sometimes courage screen only shows 1 ability instead of 2
+ * BUG: added a shard to a card, and then the next quest was the trasform 3 quest, and the sharded card was still in the show cards
+ * BUG: can't select to discard a slash card that was just added by surprise attack
+ * BUG: quest Library not working
+ * BUG: Playing Scorch when hand consists of 2 flame jabs and 1 flay causes .show-cards overlay to display and not be closeable.
  * - similary, playing Freeze when hand consists of 1 frost jab and 1 frost shield and 1 sparkle stance (no slots) and 1 battle combo (no slots)
- * TODO: [can't replicate] attack card damage is getting reduced to 0 in combats where mystical energy and smash and grab are played, and rainbow has cycled
+ * BUG: attack card damage is getting reduced to 0 in combats where mystical energy and smash and grab are played, and rainbow has cycled
  * --also have black vial and magic dust. smash and grab has flame shard and mystical energy has double frost shards
- * TODO: [can't replicate] when purchasing relic at the store, remove card becomes too expensive even if i can still afford it
- * TODO: [can't replicate] battle Sequence was added via a card reward but it wasn't in the view deck cards until after the next combat
- * TODO: [can't replicate] sometimes highest damage roll doesn't update - crit related?
+ * BUG: when purchasing relic at the store, remove card becomes too expensive even if i can still afford it
+ * BUG: battle Sequence was added via a card reward but it wasn't in the view deck cards until after the next combat
+ * BUG: sometimes highest damage roll doesn't update - crit related?
  * 
  * 
  * Play testing
  * -debug email report or text file logging
- * Benchmarking
- * -floor 1: 6.5mb
- * -floor 2: 7.6mb
- * -floor 3: 9.2mb
- * -floor 4: 22.7mb (12 rounds)
- * -floor 5: 32.7mb (5 rounds)
- * -floor 6: 39.8mb (4 rounds)
- * -floor 7: 46.9mb (3 rounds)
- * -floor 8: 58.5mb (4 rounds)
- * -floor 9: 74.3mb (4 rounds)
- * -floor 10: 114mb (5 rounds)
- * 
- * Benchmarking 10 floors
- * -no cards drawn, no shards attached and no cards removed: 6.4mb
- * -no cards drawn, shards attached and cards removed: 7.5mb
- * -5 cards drawn per fight, no cards played, yes shards/removals: 9.8mb
- * -10 cards drawn per fight, no cards played, yes shards/removals: 13.5mb
- * -10 cards drawn per fight, draw pile and deck screens opened once per fight, no cards played, yes shards/removals: 19.5mb
- * -5 cards drawn and 3-5 played per fight, yes shards/removals: 14.9mb
- * 
  * 
  * Stress and Balance testing
  * -currently no enemies ever have vex
@@ -304,6 +291,35 @@ jQuery(document).ready(function($) {
 
 		$('body').addClass('game-started');
 
+	});
+
+	$('#close-tutorial').click(function() {
+		$('body').removeClass('tutorial');
+	});
+	$('#step1 .next-button').click(function() {
+		$(this).parent().removeClass('shown');
+		$('#step2').addClass('shown');
+	});
+	$('#step2 .next-button').click(function() {
+		$(this).parent().removeClass('shown');
+		$('#step3').addClass('shown');
+	});
+	$('#step3 .next-button').click(function() {
+		$(this).parent().removeClass('shown');
+		$('#step4').addClass('shown');
+	});
+	$('#step4 .next-button').click(function() {
+		$(this).parent().removeClass('shown');
+		$('#step5').addClass('shown');
+	});
+	$('#step5 .next-button').click(function() {
+		$(this).parent().removeClass('shown');
+		$('#step6').addClass('shown');
+	});
+	$('#step6 .next-button').click(function() {
+		$(this).parent().removeClass('shown');
+		game.tutorial = false;
+		$('body').removeClass('tutorial');	
 	});
 
 	$('.button, .icon-button').click(function() {
@@ -1065,6 +1081,10 @@ function init() {
 	//courageScreen(); // use this to manually show courage screen
 
 	if(game.debug) $('body').addClass('debug');
+	if(game.tutorial) {
+		$('body').addClass('tutorial');
+		$('.game-panel').removeClass('shown');
+	}
 
 	util.setInitialTooltips();
 
@@ -1709,13 +1729,13 @@ function beginTurn() {
 
 		// check for prepared
 		if(player.prepared.enabled && game.cardsDrawn <= 3) {
-			extraSpeed = 4 - game.cardsDrawn;
+			extraSpeed = 5 - game.cardsDrawn;
 		}
 
 		// stances only apply to speed, which can only be taken into account after turn 1
 		if(player.speed.current > 0) {
 			if(player.stance == 'none') {
-				applyBlock(player.speed.current, player);
+				applyBlock((player.speed.current * 2), player);
 			} else if(player.stance == 'aura') {
 				player.mana.current = player.mana.base + Math.round(player.speed.current * player.aura.level);
 			} else if(player.stance == 'sparkle') {
@@ -1991,12 +2011,13 @@ async function monsterAction(action = 'perform') {
 				let attackAmount = attack[key];
 
 				// apply aggro if this is a gate
-				if(game.mapType == 'ice_gate' || game.mapType == 'fire_gate') {
+				if(game.mapType == 'ice_gate' || game.mapType == 'fire_gate' || game.mapType == 'arena') {
 					attackAmount = ((player.aggro.level / 2) + 1) * attack[key];
 				}
 
 				if(action == 'query') {
 					let a = Math.round((attackAmount + thisMonster.might.current) * thisMonster.punch.current);
+					if(a < 0) a == 0;
 					intent += '<span class="tooltip" data-powertip="Attack for ' + a + ' damage"><span class="intent-dmg intent-amount">' + a + '</span><span class="intent-dmg-icon intent-icon"></span></span>';
 				} else {
 
@@ -2569,11 +2590,8 @@ function endCombat() {
 
 		heal(player, player.heal.current);
 		
-		let courageAmount = 1;
-		gainCourage(courageAmount);
-
-		let aggroAmount = 1;
-		updateAggro(aggroAmount);
+		gainCourage(1);
+		updateAggro(1);
 		
 		game.candyChance += 10;
 		game.shardChance += 5;
@@ -2638,6 +2656,7 @@ async function updateAggro(amount) {
 				if(game.aggroThresholds.includes(player.aggro.current)) {
 					player.aggro.level -= 1;
 					$('.aggro-bar span.level').html(player.aggro.level);
+					$('.aggro-bar span.current').html(player.aggro.current);
 					$('.aggro-bar').addClass('level-up');
 					await util.wait(1100);
 					$('.aggro-bar').removeClass('level-up');
@@ -2650,6 +2669,7 @@ async function updateAggro(amount) {
 					if(game.playsounds) sounds.play('aggroLevel');
 					player.aggro.level += 1;
 					$('.aggro-bar span.level').html(player.aggro.level);
+					$('.aggro-bar span.current').html(player.aggro.current);
 					$('.aggro-bar').addClass('level-up');
 					await util.wait(1100);
 					$('.aggro-bar').removeClass('level-up');
@@ -2660,6 +2680,7 @@ async function updateAggro(amount) {
 	}
 
 	$('.aggro-bar span.level').html(player.aggro.level);
+	$('.aggro-bar span.current').html(player.aggro.current);
 	util.updateAggroPercentage();
 	setStatus();
 
@@ -2760,7 +2781,7 @@ function rewardsScreen() {
 		util.appendCard(card, '.rewards-cards');
 	}
 	if(util.chance(game.candyChance)) {
-		game.candyChance -= 10;
+		game.candyChance -= 20;
 		if(game.candyChance < 0) game.candyChance = 0;
 		let candy = util.weightedRandom(treasures.candies);
 		//let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
@@ -2771,7 +2792,7 @@ function rewardsScreen() {
 		$('.rewards-loot-wrapper').addClass('shown');
 	}
 	if(util.chance(game.shardChance) && deck.numOpenSlots() > 0) {
-		game.shardChance -= 5;
+		game.shardChance -= 10;
 		if(game.shardChance < 0) game.shardChance = 0;
 		var index = util.randArrayIndex(treasures.shards);
 		util.appendShard(treasures.shards[index], '.rewards-loot');
@@ -4150,11 +4171,11 @@ async function processQuest(elem) {
 		break;
 		case 'deep_well':
 			if(option == 'wish_for_protection') {
-				await processArmor([20]);
+				await processArmor([25]);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			} else if(option == 'wish_for_healing') {
-				let actions = [{action: 'stat', what: 'health', key: 'current', value: 15}];
+				let actions = [{action: 'stat', what: 'health', key: 'current', value: 20}];
 				await processActions(actions);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
@@ -4660,7 +4681,7 @@ async function applyMagic(magic, to) {
 
 		// check for enchanter
 		if(to.enchanter.current > 0) {
-			to.sorcery.current += (to.enchanter.current / 10);
+			//to.sorcery.current += (to.enchanter.current / 10); // removed for balance
 			to.conjure.current += to.enchanter.current;
 		}
 
@@ -4698,7 +4719,7 @@ async function activateRainbow(type, to) {
 	// check for mage
 	if(to.mage.current > 0) {
 		to.sorcery.current += (to.mage.current / 10);
-		to.conjure.current += to.mage.current;
+		//to.conjure.current += to.mage.current; // removed for balance
 	}
 	
 	to.rainbow.current -= to.rainbow.max;

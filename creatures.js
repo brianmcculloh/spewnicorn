@@ -310,6 +310,7 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: -1, turns: 1, hex: true}
             ]}
         ],
+        vex: {base: 1, current: 0, temp: [], turns: -1},
     }),
     new Creatures({
         type: 'monster',
@@ -430,6 +431,7 @@ const ALL_MONSTERS = [
             ], dmg: [2, 2, 2, 2, 2]},
             {dmg: [35]},
         ],
+        vex: {base: 1, current: 0, temp: [], turns: -1},
     }),
     new Creatures({
         type: 'monster',
@@ -471,11 +473,12 @@ const ALL_MONSTERS = [
         tier: 2,
         pattern: 'fixed',
         moveSet: [
+            {dmg: [5]},
             {effects: [
                 {effect: 'might', amount: 4, turns: -1},
-                {effect: 'resistance', amount: .3, turns: 2}
-            ]},
-            {dmg: [5]},
+                {effect: 'resistance', amount: .3, turns: 2},
+                {effect: 'vex', amount: 1, turns: -1}
+            ]}
         ],
     }),
     new Creatures({
@@ -522,7 +525,7 @@ const ALL_MONSTERS = [
             ], p: .2},
             {dmg: [5, 5, 5, 5], p: .2},
         ],
-        heal: {base: 5, current: 0, temp: [], turns: -1}
+        heal: {base: 10, current: 0, temp: [], turns: -1}
     }),
     new Creatures({
         type: 'monster',
@@ -548,6 +551,7 @@ const ALL_MONSTERS = [
             {dmg: [10, 10]},
             {blk: [10], dmg: [10]},
         ],
+        vex: {base: 3, current: 0, temp: [], turns: -1},
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
     new Creatures({
@@ -559,10 +563,12 @@ const ALL_MONSTERS = [
         pattern: 'random',
         moveSet: [
             {effects: [
-                {effect: 'retaliate', amount: .5, turns: 1}
+                {effect: 'retaliate', amount: .5, turns: 1},
+                {effect: 'vex', amount: 1, turns: -1}
             ], p: .1},
             {effects: [
-                {effect: 'spikes', amount: .5, turns: 1}
+                {effect: 'spikes', amount: .5, turns: 1},
+                {effect: 'vex', amount: 1, turns: -1}
             ], armor: [20], p: .1},
             {effects: [
                 {effect: 'might', amount: 2, turns: -1}
@@ -586,10 +592,12 @@ const ALL_MONSTERS = [
         moveSet: [
             {effects: [
                 {effect: 'solid', amount: -1, turns: -1, hex: true},
-                {effect: 'resistance', amount: .2, turns: 2}
+                {effect: 'resistance', amount: .2, turns: 2},
+                {effect: 'vex', amount: 1, turns: -1}
             ], p: .1},
             {effects: [
-                {effect: 'craft', amount: -2, turns: -1, hex: true}
+                {effect: 'craft', amount: -2, turns: -1, hex: true},
+                {effect: 'vex', amount: 1, turns: -1}
             ], armor: [20], p: .1},
             {effects: [
                 {effect: 'might', amount: 1, turns: -1}
@@ -685,7 +693,9 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'might', amount: 3, turns: -1},
             ], p: .3},
-            {dmg: [25], p: .3},
+            {effects: [
+                {effect: 'vex', amount: 1, turns: -1}
+            ], dmg: [25], p: .3},
             {dmg: [45], p: .1},
             {actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
@@ -756,7 +766,8 @@ const ALL_MONSTERS = [
             ], p: .25},
             {dmg: [4, 4, 4, 4, 4], p: .25},
         ],
-        heal: {base: 5, current: 0, temp: [], turns: -1}
+        heal: {base: 10, current: 0, temp: [], turns: -1},
+        regen: {base: 5, current: 0, temp: [], turns: -1}
     }),
     
 
@@ -780,6 +791,7 @@ const ALL_MONSTERS = [
             ]},
             {effects: [
                 {effect: 'solid', amount: -1, turns: 1, hex: true},
+                {effect: 'vex', amount: 3, turns: -1}
             ]},
             {dmg: [60]},
             {dmg: [20], effects: [
@@ -817,6 +829,7 @@ const ALL_MONSTERS = [
                 {action: 'addCard', value: 1, what: 'flay', to: 'discardCards'},
             ], p: .15},
         ],
+        vex: {base: 3, current: 0, temp: [], turns: -1},
     }),
     new Creatures({
         type: 'monster',
@@ -858,6 +871,7 @@ const ALL_MONSTERS = [
             {dmg: [35], p: .1},
             {effects: [
                 {effect: 'might', amount: 10, turn: 1},
+                {effect: 'vex', amount: 1, turns: -1}
             ], dmg: [15], p: .1},
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
@@ -884,6 +898,7 @@ const ALL_MONSTERS = [
             {dmg: [4, 4, 4, 4],
             effects: [
                 {effect: 'might', amount: 4, turns: -1},
+                {effect: 'vex', amount: 3, turns: -1}
             ]},
         ],
     }),
@@ -926,8 +941,8 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'punch', amount: -.2, turns: 2, hex: true},
             ], blk: [25], p: .1},
-            
         ],
+        vex: {base: 3, current: 0, temp: [], turns: -1},
     }),
 
     

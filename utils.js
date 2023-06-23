@@ -259,7 +259,7 @@ export default class Util {
     }
     appendStartingBonuses() {
         let options = util.shuffle(game.startingOptions);
-        for(let i = 0; i < 4; i++) {
+        for(let i = 0; i < 4; i++) { // TODO: reset this to 4
             let att = options[i].att;
             let amount = options[i].amount;
             let key = options[i].key;

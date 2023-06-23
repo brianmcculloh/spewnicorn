@@ -657,7 +657,7 @@ body.game-started #splash .panel .difficulty {
 .crit-bar span.icon {
 	background-position:-241px -2496px;
 }
-.essence-bar span.level, .aggro-bar span.level, .crit-bar span.level {
+.essence-bar span.level, .aggro-bar span.level, .aggro-bar span.current, .crit-bar span.level {
 	position:absolute;
 	right:-25px;
 	width:20px;
@@ -665,6 +665,10 @@ body.game-started #splash .panel .difficulty {
 	font-size:11px;
 	line-height:10px;
 	transition:all 1.2s;
+}
+.aggro-bar span.current {
+	right:-4px;
+	width:6px;
 }
 .essence-bar.level-up, .aggro-bar.level-up {
 	scale:1;
@@ -4143,6 +4147,157 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	opacity:0;
 	transform:translateY(-50px);
 	transition:all 1s;
+}
+
+
+/* TUTORIAL */
+
+/* tutorial */
+#tutorial-overlay {
+	position:fixed;
+	top:0;
+	left:0;
+	width:100vw;
+	height:100vh;
+	z-index:999999;
+	background:rgba(2, 13, 23, .6);
+	display:none;
+}
+body.tutorial #tutorial-overlay {
+	display:flex;
+}
+#tutorial-overlay #close-tutorial {
+	position:fixed;
+	bottom:110px;
+	right:20px;
+}
+#tutorial-overlay #close-tutorial svg.close-tutorial-svg {
+	transform:rotate(90deg);
+	width:40px;
+	height:auto;
+	position:absolute;
+	top:12px;
+	right:20px;
+}
+#tutorial-overlay #close-tutorial svg.close-tutorial-svg path {
+	fill:#FFF;
+	transition:all .15s;
+}
+#tutorial-overlay .step {
+	position:fixed;
+	z-index:9999999;
+	opacity:0;
+	z-index:0;
+	text-align:center;
+}
+#tutorial-overlay .step.shown {
+	opacity:1;
+	z-index:999;
+}
+#tutorial-overlay .step .text {
+	font-size:24px;
+	display:block;
+	margin-bottom:15px;
+}
+#tutorial-overlay .step svg.arrow {
+	width:100px;
+	height:auto;
+	fill:#FFF;
+	position:absolute;
+}
+#tutorial-overlay .button.next-button {
+	position:absolute;
+	z-index:999;
+	display:inline-block;
+}
+#step1 {
+	bottom:280px;
+	left:50%;
+	margin-left:-160px;
+}
+#step1 svg.arrow {
+	transform:rotate(-10deg);
+	top:45px;
+	left:100px;
+}
+#step1 .button.next-button {
+	top:52px;
+	right:45px;
+}
+
+#step2 {
+	top:142px;
+	left:200px;
+	width:300px;
+}
+#step2 svg.arrow {
+	transform:rotate(167deg);
+	top:-110px;
+	left:100px;
+}
+#step2 .button.next-button {
+	top:-71px;
+	right:3px;
+}
+
+#step3 {
+	bottom: 192px;
+    left: 35px;
+    width: 300px;
+}
+#step3 svg.arrow {
+	transform: rotate(-32deg);
+    top: 78px;
+    left: 175px;
+}
+#step3 .button.next-button {
+	top: 84px;
+    right: 125px;
+}
+
+#step4 {
+	top: 97px;
+    left: 167px;
+    width: 300px;
+}
+#step4 svg.arrow {
+	transform: rotate(70deg);
+    top: 27px;
+    left: -32px;
+}
+#step4 .button.next-button {
+	top: 77px;
+    right: 97px;
+}
+
+#step5 {
+	top: 300px;
+    left: 145px;
+    width: 250px;
+}
+#step5 svg.arrow {
+	transform: rotate(260deg);
+    top: 5px;
+    right: -83px;
+}
+#step5 .button.next-button {
+	top: 118px;
+    right: 73px;
+}
+
+#step6 {
+	bottom: 241px;
+    right: 19px;
+}
+#step6 svg.arrow {
+	transform: rotate(-32deg);
+    top: 39px;
+    right: -14px;
+}
+#step6 .button.next-button {
+	top: 49px;
+    width: 165px;
+    right: 87px;
 }
 
 
