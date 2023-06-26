@@ -841,36 +841,36 @@ const ALL_MONSTERS = [
         pattern: 'random',
         moveSet: [
             {effects: [
-                {effect: 'rainbow', amount: -5, turns: -1, hex: true},
-                {effect: 'sorcery', amount: -.5, turns: -1, hex: true},
+                {effect: 'rainbow', amount: -5, turns: 3, hex: true},
+                {effect: 'sorcery', amount: -.5, turns: 2, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
             ], dmg: [15], p: .2},
             {effects: [
-                {effect: 'conjure', amount: -5, turns: -1, hex: true},
-                {effect: 'enchanter', amount: -5, turns: -1, hex: true},
+                {effect: 'conjure', amount: -5, turns: 2, hex: true},
+                {effect: 'enchanter', amount: -5, turns: 2, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
             ], p: .2},
             {effects: [
-                {effect: 'summon', amount: -5, turns: -1, hex: true},
-                {effect: 'wield', amount: -1, turns: -1, hex: true},
+                {effect: 'summon', amount: -5, turns: 3, hex: true},
+                {effect: 'wield', amount: -1, turns: 2, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
             ], dmg: [10], p: .2},
             {effects: [
-                {effect: 'enchanter', amount: -5, turns: -1, hex: true},
-                {effect: 'arcane', amount: -5, turns: -1, hex: true}
+                {effect: 'enchanter', amount: -5, turns: 2, hex: true},
+                {effect: 'arcane', amount: -5, turns: 2, hex: true}
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
             ], dmg: [20], p: .2},
             {dmg: [35], p: .1},
             {effects: [
-                {effect: 'might', amount: 10, turn: 1},
+                {effect: 'might', amount: 10, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
             ], dmg: [15], p: .1},
         ],

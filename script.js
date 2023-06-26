@@ -91,11 +91,11 @@
  * 
  * PHASE V:
  * 
- * TODO: transmuted 3 cards at the quest, got the new cards, but later at the shop the cards i transmuted were still in my deck
- * 
+ * TODO: cunning and stockpile are multiplicative, so take a look at how they combine and make sure that's ok
  *
  * 
  * BUGS [can't replicate]:
+ * BUG: transmuted 3 cards at the quest, got the new cards, but later at the shop the cards i transmuted were still in my deck
  * BUG: i had -2 aura and then chose to lose 2 aura again and ended up gaining 2 instead
  * BUG: i chose increase rainbow base from stained glass mirror but the next fight didn't have that base increase (it WAS there on subsequent battles)
  * BUG: courage screen straight into multiple quests, and in between the quests i got the courage screen again
@@ -1661,6 +1661,17 @@ function visitQuest(visited = false) {
 
 }
 
+function changeStance(stance) {
+	// check for stance
+	if(stance == 'sparkle') {
+		player.might.base += 2;
+		player.might.current += 2;
+	} else if(player.stance == 'sparkle') { // this mean's the player's previous stance was sparkle because it hasn't changed yet
+		player.might.base -= 2;
+		player.might.current -= 2;
+	}
+}
+
 async function updateEssenceLevels(essence, amount) {
 
 	if(essence == undefined) {
@@ -1731,6 +1742,18 @@ function beginTurn() {
 
 	let extraSpeed = 0;
 
+	// check for stance
+	if(player.stance == 'aura') {
+		player.mana.current += 1;
+	} else if(player.stance == 'sparkle') {
+		// do nothing, because base might is handled in changeStance()
+	} else if(player.stance == 'shimmer') {
+		heal(player, 1);
+		applyArmor(1, player);
+		applyBlock(2, player);
+	}
+
+	// check for spance * speed bonuses. stances only apply to speed, which can only be taken into account after turn 1
 	if(game.round > 1) {
 
 		// check for prepared
@@ -1738,14 +1761,13 @@ function beginTurn() {
 			extraSpeed = 5 - game.cardsDrawn;
 		}
 
-		// stances only apply to speed, which can only be taken into account after turn 1
 		if(player.speed.current > 0) {
 			if(player.stance == 'none') {
 				applyBlock((player.speed.current * 2), player);
 			} else if(player.stance == 'aura') {
-				player.mana.current = player.mana.base + Math.round(player.speed.current * player.aura.level);
+				player.mana.current += Math.round(player.speed.current * player.aura.level);
 			} else if(player.stance == 'sparkle') {
-				let tempMight = Math.round(player.speed.current * player.sparkle.level);
+				let tempMight = Math.round(player.speed.current * player.sparkle.level * 2);
 				if(tempMight > 0) {
 					player.might.current += tempMight;
 					player.might.temp.push(tempMight);
@@ -1753,9 +1775,9 @@ function beginTurn() {
 			} else if(player.stance == 'shimmer') {
 				//player.speed.current = player.speed.base + Math.round(player.speed.current * player.shimmer.level) + extraSpeed; // old way of doing this was speed
 				//player.health.max += Math.floor((player.speed.current / 4) * player.shimmer.level); // we determined this could be infinitely farmable
-				heal(player, Math.floor((player.speed.current / 2) * player.shimmer.level));
-				applyArmor(Math.floor((player.speed.current / 2) * player.shimmer.level), player);
-				applyBlock(Math.floor(player.speed.current * player.shimmer.level), player);
+				heal(player, Math.floor(player.speed.current * player.shimmer.level));
+				applyArmor(Math.floor(player.speed.current * player.shimmer.level), player);
+				applyBlock(Math.floor(player.speed.current * player.shimmer.level * 2), player);
 			}
 		}
 			
@@ -2277,6 +2299,7 @@ function clearTurnEffects(from, delay = false, offset = false) {
 				console.log(from[game.effects[i].id].temp);
 				console.log(index);
 				console.log(from[game.effects[i].id].temp[index]);
+				console.log(from[game.effects[i].id].turns);
 			} */
 
 			if(temp) {
@@ -3980,6 +4003,12 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						let key = actions[e].key;
 						let what = actions[e].what;
 						let value = actions[e].value;
+						// check for changing stances
+						if(what == 'stance') {
+							if(value != player.stance) {
+								changeStance(value);
+							}
+						}
 						// if essence levels are maxed out, increase alternative stats
 						if((what == 'aura' && player.aura.level > game.essences.length)) {
 							what = 'mana'; // key is already 'current' and value is already 1
@@ -4636,6 +4665,7 @@ function applyBlock(blk, to) {
 				if(game.playsounds) sounds.play('gainBlk');
 			}, 300);
 			to.block += blkActual;
+			if(to.block > 999) to.block = 999;
 		}
 		game.message(to.name + ' (' + to.guid + ') gains ' + blkActual + ' block');
 	}

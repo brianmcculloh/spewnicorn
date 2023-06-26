@@ -53,7 +53,7 @@ h1, h2, h3, h4, h5, h6 {font-weight:300; margin:0px; padding:0px 0px; text-trans
   
 /* global elements */
 .overlay {
-	position: absolute;
+	position: fixed; /* this used to be absolute - might need to set it back */
 	left: 0;
 	top: 0;
 	width: 100%;
@@ -1173,9 +1173,15 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 	--m: 2px;    /* margin */
 	--f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);
 	width:1092px;
-	height:934px;
+	height:1030px;
 	position:relative;
 	z-index:1;
+	margin-top:150px;
+}
+.map h2 {
+	position: absolute;
+    left: calc(50% - 80px);
+    top: -50px;
 }
 .start-arrow {
 	position:absolute;

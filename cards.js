@@ -624,7 +624,8 @@ const ALL_CARDS = [
         sound: 'auraAmount',
         actions: [
             {action: 'stat', what: 'stance', value: 'aura'},
-            {action: 'stat', what: 'mana', key: 'current', value: 1}
+            {action: 'stat', what: 'mana', key: 'current', value: 1},
+            {action: 'draw', value: 1}
         ],
         shardUpgrades: {
             actions: [
@@ -637,7 +638,8 @@ const ALL_CARDS = [
         id: 'sparkle_stance', name: 'Sparkle Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, retain: true,
         sound: 'sparkleAmount',
         actions: [
-            {action: 'stat', what: 'stance', value: 'sparkle'}
+            {action: 'stat', what: 'stance', value: 'sparkle'},
+            {action: 'draw', value: 1}
         ],
         effects: [
             {effect: 'might', amount: 2, turns: 1}
@@ -658,7 +660,8 @@ const ALL_CARDS = [
         blk: [5],
         actions: [
             {action: 'stat', what: 'stance', value: 'shimmer'},
-            {action: 'stat', what: 'health', key: 'current', value: 4}
+            {action: 'stat', what: 'health', key: 'current', value: 4},
+            {action: 'draw', value: 1}
         ],
         shardUpgrades: {
             actions: [
@@ -2038,8 +2041,8 @@ const ALL_CARDS = [
         shardUpgrades: {
             blk: [9],
             actions: [
-                {action: 'discard', value: 1},
                 {action: 'draw', value: 1},
+                {action: 'discard', value: 1},
             ],
         },
     }),
@@ -3437,66 +3440,66 @@ const ALL_CARDS = [
 
     new Cards({
         id: 'rainbow_charge', name: 'Rainbow Charge', type: 'magic', mana: 1, tier: 'common', 
-        magic: [{type: 'rainbow', amount: 7}], 
+        magic: [{type: 'rainbow', amount: 10}], 
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'rainbow', amount: 10}], 
+            magic: [{type: 'rainbow', amount: 15}], 
         },
     }),
     new Cards({
         id: 'chaos_charge', name: 'Chaos Charge', type: 'magic', mana: 1, tier: 'common', 
-        magic: [{type: 'chaos', amount: 7}], 
+        magic: [{type: 'chaos', amount: 10}], 
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'chaos', amount: 10}], 
+            magic: [{type: 'chaos', amount: 15}], 
         },
     }),
     new Cards({
         id: 'dark_charge', name: 'Dark Charge', type: 'magic', mana: 1, tier: 'common', 
-        magic: [{type: 'dark', amount: 7}], 
+        magic: [{type: 'dark', amount: 10}], 
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'dark', amount: 10}], 
+            magic: [{type: 'dark', amount: 15}], 
         },
     }),
     new Cards({
         id: 'elemental_charge', name: 'Elemental Charge', type: 'magic', mana: 1, tier: 'common', 
-        magic: [{type: 'elemental', amount: 7}], 
+        magic: [{type: 'elemental', amount: 10}], 
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'elemental', amount: 10}], 
+            magic: [{type: 'elemental', amount: 15}], 
         },
     }),
     new Cards({
         id: 'risky_charge', name: 'Risky Charge', type: 'magic', mana: 1, tier: 'common', 
-        magic: [{type: 'random', amount: 9}], 
+        magic: [{type: 'random', amount: 15}], 
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'random', amount: 12}], 
+            magic: [{type: 'random', amount: 20}], 
         },
     }),
     new Cards({
         id: 'aligned_charge', name: 'Aligned Charge', type: 'magic', mana: 2, tier: 'common', pack: 'rainbow', weight: 2, courage: 3, 
-        magic: [{type: 'aligned', amount: 9}], 
+        magic: [{type: 'aligned', amount: 10}], 
         sound: 'magic3',
         slots: 2,
         shardUpgrades: {
-            magic: [{type: 'aligned', amount: 12}], 
+            magic: [{type: 'aligned', amount: 15}], 
         },
         bothShardUpgrades: {
-            magic: [{type: 'aligned', amount: 15}], 
+            magic: [{type: 'aligned', amount: 20}], 
         },
     }),
     new Cards({
         id: 'delayed_charge', name: 'Delayed Charge', type: 'magic', tier: 'common', playable: false,
         sound: 'magic3',
         discard: {
-            magic: [{type: 'aligned', amount: 9}], 
+            magic: [{type: 'aligned', amount: 10}], 
         },
         slots: 1,
         shardUpgrades: {
@@ -3507,7 +3510,7 @@ const ALL_CARDS = [
         id: 'sacrificial_charge', name: 'Sacrificial Charge', type: 'magic', tier: 'common', playable: false,
         sound: 'magic3',
         destroy: {
-            magic: [{type: 'aligned', amount: 15}], 
+            magic: [{type: 'aligned', amount: 20}], 
         },
         slots: 1,
         shardUpgrades: {
@@ -3519,11 +3522,11 @@ const ALL_CARDS = [
     /* uncommon */
     new Cards({
         id: 'rainbow_charm', name: 'Rainbow Charm', type: 'magic', mana: 0, tier: 'uncommon', retain: true, use: 1,
-        magic: [{type: 'rainbow', amount: 3}], 
+        magic: [{type: 'rainbow', amount: 4}], 
         sound: 'magic2',
         slots: 1,
         fireShardUpgrades: {
-            magic: [{type: 'rainbow', amount: 6}], 
+            magic: [{type: 'rainbow', amount: 8}], 
         },
         iceShardUpgrades: {
             use: 2
@@ -3531,11 +3534,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'chaos_charm', name: 'Chaos Charm', type: 'magic', mana: 0, tier: 'uncommon', retain: true, use: 1,
-        magic: [{type: 'chaos', amount: 3}], 
+        magic: [{type: 'chaos', amount: 4}], 
         sound: 'magic2',
         slots: 1,
         fireShardUpgrades: {
-            magic: [{type: 'chaos', amount: 6}], 
+            magic: [{type: 'chaos', amount: 8}], 
         },
         iceShardUpgrades: {
             use: 2
@@ -3543,11 +3546,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'dark_charm', name: 'Dark Charm', type: 'magic', mana: 0, tier: 'uncommon', retain: true, use: 1,
-        magic: [{type: 'dark', amount: 3}],
+        magic: [{type: 'dark', amount: 4}],
         sound: 'magic2', 
         slots: 1,
         fireShardUpgrades: {
-            magic: [{type: 'dark', amount: 6}], 
+            magic: [{type: 'dark', amount: 8}], 
         },
         iceShardUpgrades: {
             use: 2
@@ -3555,11 +3558,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'elemental_charm', name: 'Elemental Charm', type: 'magic', mana: 0, tier: 'uncommon', retain: true, use: 1,
-        magic: [{type: 'elemental', amount: 3}], 
+        magic: [{type: 'elemental', amount: 4}], 
         sound: 'magic2',
         slots: 1,
         fireShardUpgrades: {
-            magic: [{type: 'elemental', amount: 6}], 
+            magic: [{type: 'elemental', amount: 8}], 
         },
         iceShardUpgrades: {
             use: 2
@@ -3567,11 +3570,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'aligned_charm', name: 'Aligned Charm', type: 'magic', mana: 1, tier: 'uncommon', retain: true, use: 1, pack: 'rainbow', weight: 2, courage: 3, 
-        magic: [{type: 'aligned', amount: 5}], 
+        magic: [{type: 'aligned', amount: 8}], 
         sound: 'magic2',
         slots: 1,
         fireShardUpgrades: {
-            magic: [{type: 'aligned', amount: 8}], 
+            magic: [{type: 'aligned', amount: 16}], 
         },
         iceShardUpgrades: {
             use: 2
@@ -3579,11 +3582,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'risky_charm', name: 'Risky Charm', type: 'magic', mana: 0, tier: 'uncommon', retain: true, use: 1, weight: 7, 
-        magic: [{type: 'random', amount: 5}], 
+        magic: [{type: 'random', amount: 10}], 
         sound: 'magic2',
         slots: 1,
         fireShardUpgrades: {
-            magic: [{type: 'random', amount: 8}], 
+            magic: [{type: 'random', amount: 15}], 
         },
         iceShardUpgrades: {
             use: 2
@@ -3631,13 +3634,13 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'mystical_protection', name: 'Mystical Protection', type: 'magic', mana: 2, tier: 'uncommon', weight: 4, courage: 4, 
-        magic: [{type: 'aligned', amount: 5}],
+        magic: [{type: 'aligned', amount: 6}],
         effects: [
             {effect: 'vex', amount: 1, turns: -1}
         ],
         slots: 1,
         fireShardUpgrades: {
-            magic: [{type: 'aligned', amount: 8}],
+            magic: [{type: 'aligned', amount: 10}],
         },
         iceShardUpgrades: {
             effects: [
@@ -3647,7 +3650,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'metamorphose', name: 'Metamorphose', type: 'magic', mana: 1, tier: 'uncommon', weight: 7, courage: 3, 
-        magic: [{type: 'random', amount: 5}],
+        magic: [{type: 'random', amount: 6}],
         sound: 'magic10',
         actions: [
             {action: 'transmute', select: 2, from: 'handCards'}
@@ -3780,13 +3783,13 @@ const ALL_CARDS = [
         id: 'delayed_spell', name: 'Delayed Spell', type: 'magic', tier: 'uncommon', playable: false,
         discard: {
             dmg: [5],
-            magic: [{type: 'aligned', amount: 5}], 
+            magic: [{type: 'aligned', amount: 8}], 
         },
         slots: 1,
         shardUpgrades: {
             discard: {
                 dmg: [7],
-                magic: [{type: 'aligned', amount: 7}], 
+                magic: [{type: 'aligned', amount: 12}], 
             },
         },
     }),
@@ -3794,13 +3797,13 @@ const ALL_CARDS = [
         id: 'sacrificial_spell', name: 'Sacrificial Spell', type: 'magic', tier: 'uncommon', playable: false,
         destroy: {
             dmg: [6],
-            magic: [{type: 'aligned', amount: 6}], 
+            magic: [{type: 'aligned', amount: 10}], 
         },
         slots: 1,
         shardUpgrades: {
             destroy: {
                 dmg: [9],
-                magic: [{type: 'aligned', amount: 9}], 
+                magic: [{type: 'aligned', amount: 15}], 
             },
         },
     }),
@@ -3812,7 +3815,7 @@ const ALL_CARDS = [
 
     new Cards({
         id: 'risky_incantation', name: 'Risky Incantation', type: 'magic', mana: 2, tier: 'rare', weight: 6, courage: 3, 
-        magic: [{type: 'random', amount: 10}], 
+        magic: [{type: 'random', amount: 12}], 
         effects: [
             {effect: 'arcane', amount: 7, turns: 2}
         ],
@@ -3831,7 +3834,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'maelstrom', name: 'Maelstrom', type: 'magic', mana: 2, tier: 'rare', weight: 6, courage: 3, 
-        magic: [{type: 'muddled', amount: 25}], 
+        magic: [{type: 'muddled', amount: 30}], 
         sound: 'magic8',
         effects: [
             {effect: 'arcane', amount: 5, turns: -1}
@@ -3841,12 +3844,12 @@ const ALL_CARDS = [
             magic: [{type: 'muddled', amount: 35}], 
         },
         bothShardUpgrades: {
-            magic: [{type: 'muddled', amount: 45}], 
+            magic: [{type: 'muddled', amount: 40}], 
         },
     }),
     new Cards({
         id: 'master_summoner', name: 'Master Summoner', type: 'magic', mana: 1, tier: 'rare', weight: 4, courage: 5, 
-        magic: [{type: 'aligned', amount: 10}], 
+        magic: [{type: 'aligned', amount: 12}], 
         sound: 'magic16',
         effects: [
             {effect: 'summon', amount: 5, turns: 2}
@@ -3858,15 +3861,15 @@ const ALL_CARDS = [
             ],
         },
         fireShardUpgrades: {
-            magic_2: [{type: 'aligned', amount: 15}], 
+            magic_2: [{type: 'aligned', amount: 16}], 
         },
         bothShardUpgrades: {
-            magic: [{type: 'aligned', amount: 13}], 
+            magic: [{type: 'aligned', amount: 16}], 
         },
     }),
     new Cards({
         id: 'master_sorcerer', name: 'Master Sorcerer', type: 'magic', mana: 1, tier: 'rare', weight: 4, courage: 5, 
-        magic: [{type: 'aligned', amount: 10}], 
+        magic: [{type: 'aligned', amount: 12}], 
         sound: 'magic16',
         effects: [
             {effect: 'sorcery', amount: .5, turns: 2}
@@ -3878,15 +3881,15 @@ const ALL_CARDS = [
             ],
         },
         iceShardUpgrades: {
-            magic_2: [{type: 'aligned', amount: 15}], 
+            magic_2: [{type: 'aligned', amount: 16}], 
         },
         bothShardUpgrades: {
-            magic: [{type: 'aligned', amount: 13}], 
+            magic: [{type: 'aligned', amount: 14}], 
         },
     }),
     new Cards({
         id: 'master_conjurer', name: 'Master Conjurer', type: 'magic', mana: 1, tier: 'rare', weight: 4, courage: 5, 
-        magic: [{type: 'aligned', amount: 10}], 
+        magic: [{type: 'aligned', amount: 12}], 
         sound: 'magic16',
         effects: [
             {effect: 'conjure', amount: 3, turns: 3}
@@ -3903,12 +3906,12 @@ const ALL_CARDS = [
             ],
         },
         bothShardUpgrades: {
-            magic: [{type: 'aligned', amount: 15}], 
+            magic: [{type: 'aligned', amount: 16}], 
         },
     }),
     new Cards({
         id: 'secret_arts', name: 'Secret Arts', type: 'magic', mana: 3, tier: 'rare', ephemeral: true, pack: 'rainbow', weight: 3, courage: 4, 
-        magic: [{type: 'aligned', amount: 5}], 
+        magic: [{type: 'aligned', amount: 7}], 
         effects: [
             {effect: 'conjure', amount: 2, turns: 2},
             {effect: 'sorcery', amount: .2, turns: 2},
@@ -3960,7 +3963,7 @@ const ALL_CARDS = [
         dmg: [10],
         blk: [15],
         armor: [8], 
-        magic: [{type: 'aligned', amount: 10}],
+        magic: [{type: 'aligned', amount: 12}],
         sound: 'magic16',
         actions: [
             {action: 'addCard', value: 2, what: 'impresa', to: 'drawCards'},
@@ -3989,7 +3992,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'mystical_energy', name: 'Mystical Energy', type: 'magic', mana: 0, tier: 'rare', linger: 1, use: 2, weight: 3, courage: 5, 
-        magic: [{type: 'aligned', amount: 5}],
+        magic: [{type: 'aligned', amount: 7}],
         actions: [
             {action: 'removeHexes', to: 'player'},
             {action: 'stat', what: 'mana', key: 'current', value: 1}
@@ -4005,12 +4008,12 @@ const ALL_CARDS = [
         },
         bothShardUpgrades: {
             linger: 3,
-            magic: [{type: 'aligned', amount: 7}],
+            magic: [{type: 'aligned', amount: 10}],
         },
     }),
     new Cards({
         id: 'mystical_maneuver', name: 'Mystical Maneuver', type: 'magic', mana: 1, tier: 'rare', use: 2, linger: 1, pack: 'cycle', courage: 3, 
-        magic: [{type: 'aligned', amount: 1}], 
+        magic: [{type: 'aligned', amount: 2}], 
         sound: 'magic17',
         actions: [
             {action: 'draw', value: 2},
@@ -4032,24 +4035,24 @@ const ALL_CARDS = [
         },
         bothShardUpgrades: {
             mana: 0,
-            magic: [{type: 'aligned', amount: 2}], 
+            magic: [{type: 'aligned', amount: 4}], 
         },
     }),
     new Cards({
         id: 'vortex', name: 'Vortex', type: 'magic', mana: '?', tier: 'rare', pack: 'rainbow', courage: 5,
-        magic: [{type: 'aligned', amount: 6}], 
+        magic: [{type: 'aligned', amount: 7}], 
         sound: 'magic7',
         slots: 2,
         shardUpgrades: {
-            magic: [{type: 'aligned', amount: 9}],  
+            magic: [{type: 'aligned', amount: 10}],  
         },
         bothShardUpgrades: {
-            magic: [{type: 'aligned', amount: 12}],  
+            magic: [{type: 'aligned', amount: 13}],  
         },
     }),
     new Cards({
         id: 'ancient_runestone', name: 'Ancient Runestone', type: 'magic', mana: 3, tier: 'rare', pack: 'rainbow', pack: 'rainbow', retain: true, weight: 3, courage: 5, 
-        magic: [{type: 'aligned', amount: 2}], 
+        magic: [{type: 'aligned', amount: 3}], 
         effects: [
             {effect: 'mage', amount: 2, turns: 2},
             {effect: 'enchanter', amount: 2, turns: 2}
@@ -4062,7 +4065,7 @@ const ALL_CARDS = [
             mana: 2
         },
         fireShardUpgrades: {
-            magic_2: [{type: 'aligned', amount: 3}], 
+            magic_2: [{type: 'aligned', amount: 4}], 
             draw_2: {
                 magic: [{type: 'aligned', amount: 2}],
             },
@@ -4076,7 +4079,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'fleeting_incantation', name: 'Fleeting Incantation', type: 'magic', mana: 0, tier: 'rare', retain: true, linger: 2, use: 2, expire: 2, pack: 'rainbow', weight: 7, courage: 4, 
-        magic: [{type: 'aligned', amount: 5}],
+        magic: [{type: 'aligned', amount: 7}],
         sound: 'magic6',
         slots: 1,
         shardUpgrades: {
@@ -4085,26 +4088,26 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'obelisk', name: 'Obelisk', type: 'magic', mana: 1, tier: 'rare', pack: 'rainbow', weight: 6, courage: 4, 
-        magic: [{type: 'aligned', amount: 2}], 
+        magic: [{type: 'aligned', amount: 3}], 
         sound: 'magic9',
         actions: [
             {action: 'addCard', value: 2, what: 'sparks', to: 'drawCards'},
         ],
         slots: 2,
         shardUpgrades: {
-            magic: [{type: 'aligned', amount: 3}], 
+            magic: [{type: 'aligned', amount: 4}], 
             actions: [
                 {action: 'addCard', value: 3, what: 'sparks', to: 'drawCards'},
             ],
         },
         iceShardUpgrades: {
-            magic_2: [{type: 'aligned', amount: 4}], 
+            magic_2: [{type: 'aligned', amount: 5}], 
             actions_2: [
                 {action: 'addCard', value: 5, what: 'sparks', to: 'drawCards', with: ['frost']},
             ],
         },
         bothShardUpgrades: {
-            magic: [{type: 'aligned', amount: 4}], 
+            magic: [{type: 'aligned', amount: 5}], 
             actions: [
                 {action: 'addCard', value: 5, what: 'sparks', to: 'drawCards'},
             ],
@@ -4646,6 +4649,7 @@ export function Deck() {
                     type = type != undefined ? ' ' + type : '';
                     tier = tier != undefined ? ' ' + tier : '';
                     from = from != undefined ? ' ' + util.getFromDisplay(from) : '';
+                    select = from == ' all cards' ? '' : select;
                     if(cardWith != undefined) {
                         if(cardWith.length > 1) {
                             cardWith = ' with ' + cardWith[0] + ' and ' + cardWith[1] + ' shards';

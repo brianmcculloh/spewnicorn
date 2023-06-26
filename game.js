@@ -5,11 +5,11 @@ const ALL_STARTING_OPTIONS = [
     {att: 'courage', name: '+5 Courage', amount: 5},
     {att: 'armor', name: '+20 Armor', amount: 20},
     {att: 'health', key: 'max', name: '+10 Max Health', amount: 10},
-    {att: 'aura', key: 'current', name: '+2 Aura', amount: 2},
-    {att: 'sparkle', key: 'current', name: '+2 Sparkle', amount: 2},
-    {att: 'shimmer', key: 'current', name: '+2 Shimmer', amount: 2},
+    {att: 'aura', key: 'current', name: '+3 Aura', amount: 3},
+    {att: 'sparkle', key: 'current', name: '+3 Sparkle', amount: 3},
+    {att: 'shimmer', key: 'current', name: '+3 Shimmer', amount: 3},
     {att: 'rainbow', key: 'base', name: '+5 Rainbow Charge', amount: 5},
-    {att: 'aggro', key: 'current', name: '-2 Aggro', entity: 'game', amount: -2},
+    {att: 'aggro', key: 'current', name: '-3 Aggro', entity: 'game', amount: -3},
     {action: 'addRare', name: 'Add a random rare card, lose 7 health'},
     {action: 'addCommonTreasure', name: 'Add a random common treasure'},
     {action: 'addUncommonTreasure', name: 'Add a random uncommon treasure, lose 10 health'},
@@ -291,7 +291,7 @@ const ALL_ABILITIES = [
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'stockpile', turns: -1, enabled: true}
-    {id: 'stockpile', name: 'Stockpile', desc: 'Any block at the end of turn converts to armor', x: -160, y: -1118, sound: 'effect14'},
+    {id: 'stockpile', name: 'Stockpile', desc: 'Any block at the end of turn converts to armor', x: -160, y: -1118, sound: 'effect14', delay: true},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
