@@ -622,6 +622,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'aura_stance', name: 'Aura Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, retain: true,
         sound: 'auraAmount',
+        slots: 1,
         actions: [
             {action: 'stat', what: 'stance', value: 'aura'},
             {action: 'stat', what: 'mana', key: 'current', value: 1},
@@ -637,6 +638,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'sparkle_stance', name: 'Sparkle Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, retain: true,
         sound: 'sparkleAmount',
+        slots: 1,
         actions: [
             {action: 'stat', what: 'stance', value: 'sparkle'},
             {action: 'draw', value: 1}
@@ -658,6 +660,7 @@ const ALL_CARDS = [
         sound: 'shimmerAmount',
         armor: [3],
         blk: [5],
+        slots: 1,
         actions: [
             {action: 'stat', what: 'stance', value: 'shimmer'},
             {action: 'stat', what: 'health', key: 'current', value: 4},
@@ -674,6 +677,7 @@ const ALL_CARDS = [
         id: 'shimmer', name: 'Shimmer', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'shimmerAmount',
         descOverride: '+1 Shimmer (+2 Speed at max level)',
+        slots: 1,
         actions: [
             {action: 'stat', what: 'shimmer', key: 'current', value: 1},
         ],
@@ -687,6 +691,7 @@ const ALL_CARDS = [
         id: 'sparkle', name: 'Sparkle', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'sparkleAmount',
         descOverride: '+1 Sparkle (+5 Health at max level)',
+        slots: 1,
         actions: [
             {action: 'stat', what: 'sparkle', key: 'current', value: 1},
         ],
@@ -700,6 +705,7 @@ const ALL_CARDS = [
         id: 'aura', name: 'Aura', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'auraAmount',
         descOverride: '+1 Aura (+1 Mana at max level)',
+        slots: 1,
         actions: [
             {action: 'stat', what: 'aura', key: 'current', value: 1},
         ],
@@ -711,6 +717,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'courage', name: 'Courage', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        slots: 1,
         actions: [
             {action: 'stat', what: 'courage', value: 1},
         ],
@@ -785,6 +792,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'impresa', name: 'Impresa', type: 'magic', mana: 1, tier: 'uncommon', addable: false, retain: true, vanish: true,
         magic: [{type: 'aligned', amount: 5}], 
+        slots: 1,
         combine: {
             magic: [{type: 'aligned', amount: 10}], 
             actions: [
@@ -803,6 +811,7 @@ const ALL_CARDS = [
         dmg: [4],
         blk: [4],
         magic: [{type: 'aligned', amount: 10}], 
+        slots: 1,
         combine: {
             actions: [
                 {action: 'addCard', value: 1, what: 'tesseract', to: 'handCards'},
@@ -822,7 +831,7 @@ const ALL_CARDS = [
         additionalDesc: 'Absolute power',
         sound: 'magic1',
         actions: [
-            {action: 'addCard', value: 4, what: 'impresa', to: 'drawCards'},
+            {action: 'addCard', value: 4, what: 'impresa', to: 'discardCards'},
         ],
         slots: 2,
         iceShardUpgrades: {
@@ -849,6 +858,7 @@ const ALL_CARDS = [
         id: 'battle_move', name: 'Battle Move', type: 'attack', mana: 1, tier: 'uncommon', target: 'monster', addable: false, retain: true, vanish: true,
         dmg: [9],
         sound: 'attack17',
+        slots: 1,
         combine: {
             actions: [
                 {action: 'addCard', value: 1, what: 'battle_combo', to: 'handCards'},
@@ -864,6 +874,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'battle_combo', name: 'Battle Combo', type: 'tool', mana: 0, addable: false, retain: true, vanish: true,
         blk: [6],
+        slots: 1,
         effects: [
             {effect: 'fierce', amount: 5, turns: 1},
             {effect: 'mastery', amount: 1.5, turns: 1},
@@ -915,7 +926,7 @@ const ALL_CARDS = [
         sound: 'attack16',
         additionalDesc: 'Finish Him!',
         actions: [
-            {action: 'addCard', value: 4, what: 'battle_move', to: 'drawCards'},
+            {action: 'addCard', value: 4, what: 'battle_move', to: 'discardCards'},
         ],
         slots: 2,
         fireShardUpgrades: {
@@ -933,6 +944,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'self_enhance', name: 'Self-Enhance', type: 'tool', mana: 1, addable: false, tier: 'uncommon', retain: true, vanish: true,
         blk: [12],
+        slots: 1,
         combine: {
             actions: [
                 {action: 'addCard', value: 1, what: 'self_advance', to: 'handCards'},
@@ -949,6 +961,7 @@ const ALL_CARDS = [
         id: 'self_advance', name: 'Self-Advance', type: 'tool', addable: false, retain: true, vanish: true,
         blk: [3],
         armor: [3],
+        slots: 1,
         actions: [
             {action: 'stat', what: 'health', key: 'current', value: 6},
         ],
@@ -969,7 +982,7 @@ const ALL_CARDS = [
         id: 'self_fulfill', name: 'Self-Fulfill', type: 'tool', mana: 3, retain: true, addable: false, vanish: true, tier: 'legendary',
         additionalDesc: 'Achievement unlocked',
         actions: [
-            {action: 'addCard', value: 4, what: 'self_enhance', to: 'drawCards'},
+            {action: 'addCard', value: 4, what: 'self_enhance', to: 'discardCards'},
             {action: 'stat', what: 'shimmer', key: 'current', value: 1},
             {action: 'stat', what: 'sparkle', key: 'current', value: 1},
             {action: 'stat', what: 'aura', key: 'current', value: 1},
@@ -978,7 +991,7 @@ const ALL_CARDS = [
         slots: 2,
         iceShardUpgrades: {
             actions: [
-                {action: 'addCard', value: 4, what: 'self_enhance', to: 'drawCards'},
+                {action: 'addCard', value: 4, what: 'self_enhance', to: 'discardCards'},
                 {action: 'stat', what: 'shimmer', key: 'current', value: 1},
                 {action: 'stat', what: 'sparkle', key: 'current', value: 1},
                 {action: 'stat', what: 'aura', key: 'current', value: 1},
@@ -986,7 +999,7 @@ const ALL_CARDS = [
                 {action: 'stat', what: 'aggro', key: 'current', value: -1},
             ],
             actions_2: [
-                {action: 'addCard', value: 4, what: 'self_enhance', to: 'drawCards'},
+                {action: 'addCard', value: 4, what: 'self_enhance', to: 'discardCards'},
                 {action: 'stat', what: 'shimmer', key: 'current', value: 1},
                 {action: 'stat', what: 'sparkle', key: 'current', value: 1},
                 {action: 'stat', what: 'aura', key: 'current', value: 1},
@@ -996,13 +1009,13 @@ const ALL_CARDS = [
         },
         fireShardUpgrades: {
             actions: [
-                {action: 'addCard', value: 4, what: 'self_enhance', to: 'drawCards'},
+                {action: 'addCard', value: 4, what: 'self_enhance', to: 'discardCards'},
                 {action: 'stat', what: 'courage', value: 3},
                 {action: 'stat', what: 'health', key: 'max', value: 1},
                 {action: 'stat', what: 'aggro', key: 'current', value: -1},
             ],
             actions_2: [
-                {action: 'addCard', value: 4, what: 'self_enhance', to: 'drawCards'},
+                {action: 'addCard', value: 4, what: 'self_enhance', to: 'discardCards'},
                 {action: 'stat', what: 'courage', value: 3},
                 {action: 'stat', what: 'health', key: 'max', value: 2},
                 {action: 'stat', what: 'aggro', key: 'current', value: -3},
@@ -1010,7 +1023,7 @@ const ALL_CARDS = [
         },
         bothShardUpgrades: {
             actions: [
-                {action: 'addCard', value: 4, what: 'self_enhance', to: 'drawCards'},
+                {action: 'addCard', value: 4, what: 'self_enhance', to: 'discardCards'},
                 {action: 'stat', what: 'health', key: 'max', value: 2},
                 {action: 'stat', what: 'aggro', key: 'current', value: -6},
             ],
@@ -1019,6 +1032,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'rainbow_converter', name: 'Rainbow Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'magic4',
+        slots: 1,
         actions: [
             {action: 'stat', what: 'rainbow', key: 'type', value: 'rainbow'},
         ],
@@ -1029,6 +1043,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'chaos_converter', name: 'Chaos Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'magic4',
+        slots: 1,
         actions: [
             {action: 'stat', what: 'rainbow', key: 'type', value: 'chaos'},
         ],
@@ -1039,6 +1054,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'dark_converter', name: 'Dark Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'magic4',
+        slots: 1,
         actions: [
             {action: 'stat', what: 'rainbow', key: 'type', value: 'dark'},
         ],
@@ -1049,6 +1065,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'elemental_converter', name: 'Elemental Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'magic4',
+        slots: 1,
         actions: [
             {action: 'stat', what: 'rainbow', key: 'type', value: 'elemental'},
         ],
@@ -1085,6 +1102,7 @@ const ALL_CARDS = [
                 {action: 'stat', what: 'speed', key: 'current', value: 5},
             ]
         },
+        slots: 1,
         shardUpgrades: {
             draw: {
                 actions: [
@@ -1120,6 +1138,7 @@ const ALL_CARDS = [
                 {action: 'stat', what: 'mana', key: 'current', value: 4},
             ]
         },
+        slots: 1,
         shardUpgrades: {
             draw: {
                 actions: [
@@ -1149,6 +1168,7 @@ const ALL_CARDS = [
         destroy: {
             armor: [15]
         },
+        slots: 1,
         shardUpgrades: {
             draw: {
                 armor: [2]
@@ -1172,6 +1192,7 @@ const ALL_CARDS = [
         destroy: {
             blk: [30]
         },
+        slots: 1,
         shardUpgrades: {
             draw: {
                 blk: [4]
@@ -1195,6 +1216,7 @@ const ALL_CARDS = [
         destroy: {
             dmg: [25]
         },
+        slots: 1,
         shardUpgrades: {
             draw: {
                 dmg: [4]
@@ -1224,6 +1246,7 @@ const ALL_CARDS = [
                 {action: 'draw', value: 6}
             ]
         },
+        slots: 1,
         shardUpgrades: {
             draw: {
                 actions: [
@@ -1253,6 +1276,7 @@ const ALL_CARDS = [
         destroy: {
             magic: [{type: 'aligned', amount: 20}], 
         },
+        slots: 1,
         shardUpgrades: {
             draw: {
                 magic: [{type: 'aligned', amount: 2}], 
@@ -1270,6 +1294,7 @@ const ALL_CARDS = [
         actions: [
             {action: 'discard', value: 1},
         ],
+        slots: 1,
         shardUpgrades: {
             actions: [
                 {action: 'discard', value: 2},
@@ -1281,6 +1306,7 @@ const ALL_CARDS = [
         actions: [
             {action: 'draw', value: 1},
         ],
+        slots: 1,
         shardUpgrades: {
             actions: [
                 {action: 'draw', value: 2},
@@ -1292,6 +1318,7 @@ const ALL_CARDS = [
         actions: [
             {action: 'destroy', value: 1},
         ],
+        slots: 1,
         shardUpgrades: {
             actions: [
                 {action: 'destroy', value: 2},
@@ -1561,49 +1588,49 @@ const ALL_CARDS = [
         id: 'rainbow_thrust', name: 'Rainbow Thrust', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', 
         dmg: [7],
         sound: 'attack4',
-        magic: [{type: 'rainbow', amount: 3}], 
+        magic: [{type: 'rainbow', amount: 7}], 
         slots: 1,
         fireShardUpgrades: {
             dmg: [12],
         },
         iceShardUpgrades: {
-            magic: [{type: 'rainbow', amount: 6}], 
+            magic: [{type: 'rainbow', amount: 12}], 
         },
     }),
     new Cards({
         id: 'chaos_thrust', name: 'Chaos Thrust', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', weight: 4, courage: 3, 
         dmg: [7],
-        magic: [{type: 'chaos', amount: 3}], 
+        magic: [{type: 'chaos', amount: 7}], 
         slots: 1,
         fireShardUpgrades: {
             dmg: [12],
         },
         iceShardUpgrades: {
-            magic: [{type: 'chaos', amount: 6}], 
+            magic: [{type: 'chaos', amount: 12}], 
         },
     }),
     new Cards({
         id: 'elemental_thrust', name: 'Elemental Thrust', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', weight: 4, courage: 3, 
         dmg: [7],
-        magic: [{type: 'elemental', amount: 3}], 
+        magic: [{type: 'elemental', amount: 7}], 
         slots: 1,
         fireShardUpgrades: {
             dmg: [12],
         },
         iceShardUpgrades: {
-            magic: [{type: 'elemental', amount: 6}], 
+            magic: [{type: 'elemental', amount: 12}], 
         },
     }),
     new Cards({
         id: 'dark_thrust', name: 'Dark Thrust', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', weight: 4, courage: 3,  
         dmg: [7],
-        magic: [{type: 'dark', amount: 3}], 
+        magic: [{type: 'dark', amount: 7}], 
         slots: 1,
         fireShardUpgrades: {
             dmg: [12],
         },
         iceShardUpgrades: {
-            magic: [{type: 'dark', amount: 6}], 
+            magic: [{type: 'dark', amount: 12}], 
         },
     }),
     new Cards({
@@ -2007,7 +2034,8 @@ const ALL_CARDS = [
         shardUpgrades: {
             dmg: [23],
             actions: [
-                {action: 'destroy', value: 2},
+                {action: 'draw', value: 1},
+                {action: 'destroy', value: 1},
             ],
         },
     }),
@@ -4847,6 +4875,12 @@ export function CombatDeck() {
         return enoughCards; 
     }
 
+    function shouldDraw(combatDeck) {
+        let enoughCards = false;
+        if(combatDeck.drawCards.length > 0) enoughCards = true;
+        return enoughCards; 
+    }
+
     function shuffleDeck(combatDeck) {
         combatDeck.drawCards = util.shuffle(combatDeck.discardCards);
         combatDeck.discardCards = [];
@@ -4906,8 +4940,8 @@ export function CombatDeck() {
                 let retain = thisRetain ? ' retained' : '';
                 let css = thisCard.playable ? 'playable' : '';
                 // some actions can add multiple cards to hand at once so we need to account for that
-                // we use 11 because the played card hasn't been discarded yet
-                if(combatDeck.handCards.length == 11) {
+                // we use > 10 because the played card hasn't been discarded yet
+                if(combatDeck.handCards.length > 10) {
                     combatDeck.discardCards.push(thisCard);
                 } else {
                     combatDeck.handCards.push(thisCard);
@@ -5040,7 +5074,7 @@ export function CombatDeck() {
                 util.appendCard(thisCard, '.player-cards', css + retain + discardable);
             }
         } else if(to=='deck') {
-            Deck().addCard(guid);
+            Deck().addCard(guid); // TODO: after changing how transmuteCards function works, this probably doesn't work anymore. needs testing.
         } else {
             combatDeck[to].push(thisCard);
         }
@@ -5116,6 +5150,7 @@ export function CombatDeck() {
     }
 
     function transmuteCards(combatDeck, deck, player) {
+        let permanent = false;
         for(let i = 0; i < game.toTransmute.length; i++) {
             let possibleCards = AllCards().getAddableCards().filter(j => j.addable == true && j.id !== game.toTransmute[i].id);
             let transmutedCard = util.randFromArray(possibleCards);
@@ -5137,7 +5172,8 @@ export function CombatDeck() {
             combatDeck.chooseCards.push(transmutedCard);
             if(game.fromPile == 'allCards') {
                 deck.cards.push(transmutedCard);
-                deck.cards = deck.cards.filter(j => j.guid !== game.toTransmute[i].guid);
+                player.cardsOwned += 1;
+                permanent = true;
             } else {
                 let card = addChooseCard(player, combatDeck, transmutedCard.guid, game.fromPile);
                 if(game.fromPile == 'handCards') {
@@ -5150,10 +5186,10 @@ export function CombatDeck() {
             }
             util.removeCardByGuid(game.toTransmute[i].guid, 'destroyed');
         }
-        game.toTransmute = [];
         combatDeck.chooseCards = [];
         Deck().showModifiedCards(combatDeck, player);
         if(game.playsounds) sounds.play('transmuteCard');
+        return permanent;
     }
 
     function activateCard(card, combatDeck) {
@@ -5233,16 +5269,20 @@ export function CombatDeck() {
         if(part == 'drawCards') {
             combatDeck[part].splice((combatDeck[part].length+1) * Math.random() | 0, 0, copiedCard);
         } else {
-            combatDeck[part].push(copiedCard);
+            if(part == 'handCards' && combatDeck.handCards.length > 10) {
+                combatDeck.discardCards.push(copiedCard);
+            } else {
+                combatDeck[part].push(copiedCard);
+                if(part == 'handCards') {
+                    let thisRetain = util.getCardAttribute(copiedCard, 'retain');
+                    let retain = thisRetain ? ' retained' : '';
+                    let css = copiedCard.playable ? 'playable' : '';
+                    util.appendCard(copiedCard, '.player-cards', css + retain);
+                }
+            }
+            
         }
         updateCardPlayability(player, combatDeck);
-
-        if(part == 'handCards') {
-            let thisRetain = util.getCardAttribute(copiedCard, 'retain');
-            let retain = thisRetain ? ' retained' : '';
-            let css = copiedCard.playable ? 'playable' : '';
-            util.appendCard(copiedCard, '.player-cards', css + retain);
-        }
 
         Deck().showModifiedCards(combatDeck, player, true);
 

@@ -450,6 +450,10 @@
 
         <div class="wisdom">wisdom: <span></span></div>
 
+        <div class="lightning">lightning: <span></span></div>
+
+        <div class="thunder">thunder: <span></span></div>
+
 
 
         <div class="unreachable">unreachable: <span></span></div>

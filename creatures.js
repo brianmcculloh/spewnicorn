@@ -43,6 +43,8 @@ class Creatures {
         mystery = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         regen = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         wisdom = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        lightning = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
+        thunder = {base: 1, current: 0, temp: [], turns: 0, persist: false, hexed: false},
 
         // abilities
         protection = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
@@ -67,6 +69,7 @@ class Creatures {
         // player specific
         courage = 0, // TODO: reset this to 0
         momentumAmount = 0,
+        mana,
 
     }) {
         this.dead = false;
@@ -110,6 +113,8 @@ class Creatures {
         this.mystery = mystery;
         this.regen = regen;
         this.wisdom = wisdom;
+        this.lightning = lightning;
+        this.thunder = thunder;
         this.effectsDom = '';
 
         // abilities
@@ -145,7 +150,7 @@ class Creatures {
         this.cardRetain = 0;
         this.treasures = [];
         this.candies = [];
-        this.mana = {base: 3, current: 0, temp: 0}; // TODO: reset to base 3
+        this.mana = mana;
         this.rainbow = rainbow;
         this.speed = speed;
         this.momentumAmount = momentumAmount;
@@ -572,6 +577,9 @@ const ALL_MONSTERS = [
             ], armor: [20], p: .1},
             {effects: [
                 {effect: 'might', amount: 2, turns: -1}
+            ], 
+            abilities: [
+                {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
             {dmg: [24], p: .1},
             {dmg: [14], p: .1},
@@ -601,6 +609,9 @@ const ALL_MONSTERS = [
             ], armor: [20], p: .1},
             {effects: [
                 {effect: 'might', amount: 1, turns: -1}
+            ], 
+            abilities: [
+                {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
             {dmg: [24], p: .1},
             {dmg: [14], p: .1},
@@ -791,9 +802,9 @@ const ALL_MONSTERS = [
             ]},
             {effects: [
                 {effect: 'solid', amount: -1, turns: 1, hex: true},
-                {effect: 'vex', amount: 3, turns: -1}
+                {effect: 'vex', amount: 1, turns: -1}
             ]},
-            {dmg: [60]},
+            {dmg: [40]},
             {dmg: [20], effects: [
                 {effect: 'might', amount: -2, turns: 3, hex: true}
             ], 
@@ -817,9 +828,9 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: 10, turn: 1},
                 {effect: 'resistance', amount: .4, turns: 2}
             ], p: .25},
-            {dmg: [35], p: .25},
-            {dmg: [18, 18], p: .1},
-            {dmg: [20], armor: [10], blk: [10], p: .1},
+            {dmg: [25], p: .25},
+            {dmg: [15, 15], p: .1},
+            {dmg: [20], armor: [20], blk: [20], p: .1},
             {actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
@@ -829,7 +840,7 @@ const ALL_MONSTERS = [
                 {action: 'addCard', value: 1, what: 'flay', to: 'discardCards'},
             ], p: .15},
         ],
-        vex: {base: 3, current: 0, temp: [], turns: -1},
+        vex: {base: 1, current: 0, temp: [], turns: -1},
     }),
     new Creatures({
         type: 'monster',
@@ -846,7 +857,7 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
-            ], dmg: [15], p: .2},
+            ], dmg: [3, 3, 3, 3, 3, 3], p: .2},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 2, hex: true},
                 {effect: 'enchanter', amount: -5, turns: 2, hex: true},
@@ -860,7 +871,7 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
-            ], dmg: [10], p: .2},
+            ], dmg: [5, 5, 5, 5, 5], p: .2},
             {effects: [
                 {effect: 'enchanter', amount: -5, turns: 2, hex: true},
                 {effect: 'arcane', amount: -5, turns: 2, hex: true}
@@ -868,11 +879,11 @@ const ALL_MONSTERS = [
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
             ], dmg: [20], p: .2},
-            {dmg: [35], p: .1},
+            {dmg: [8, 8, 8, 8], p: .1},
             {effects: [
                 {effect: 'might', amount: 10, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
-            ], dmg: [15], p: .1},
+            ], dmg: [9, 9], p: .1},
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
@@ -893,11 +904,11 @@ const ALL_MONSTERS = [
             {actions: [
                 {action: 'addCard', value: 5, what: 'execrate', to: 'drawCards'},
             ]},
-            {dmg: [25]},
-            {armor: [15], blk: [15]},
-            {dmg: [4, 4, 4, 4],
+            {dmg: [2, 2, 2, 2, 2, 2]},
+            {armor: [35], blk: [35]},
+            {dmg: [3, 3, 3, 3],
             effects: [
-                {effect: 'might', amount: 4, turns: -1},
+                {effect: 'might', amount: 3, turns: -1},
                 {effect: 'vex', amount: 3, turns: -1}
             ]},
         ],
@@ -915,32 +926,32 @@ const ALL_MONSTERS = [
         category: 'ice_guardian',
         pattern: 'random',
         moveSet: [
-            {blk: [30], armor: [30], p: .1},
-            {dmg: [45], p: .1},
+            {blk: [45], armor: [35], p: .1},
+            {dmg: [25], p: .1},
             {effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
-            ], dmg: [30], p: .1},
+            ], dmg: [10], p: .1},
             {effects: [
                 {effect: 'punch', amount: -.2, turns: 2, hex: true},
-            ], dmg: [30], p: .1},
+            ], dmg: [20], p: .1},
             {effects: [
                 {effect: 'solid', amount: -2, turns: 2, hex: true},
-            ], dmg: [30], p: .1},
+            ], dmg: [10], p: .1},
             {effects: [
                 {effect: 'speed', amount: -2, turns: 2, hex: true},
-            ], dmg: [30], p: .1},
+            ], dmg: [20], p: .1},
             {effects: [
                 {effect: 'conjure', amount: -2, turns: 2, hex: true},
-            ], dmg: [30], p: .1},
+            ], dmg: [10], p: .1},
             {effects: [
                 {effect: 'sorcery', amount: -.2, turns: 2, hex: true},
-            ], dmg: [30], p: .1},
+            ], dmg: [20], p: .1},
             {effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
-            ], blk: [25], p: .1},
+            ], blk: [45], p: .1},
             {effects: [
                 {effect: 'punch', amount: -.2, turns: 2, hex: true},
-            ], blk: [25], p: .1},
+            ], blk: [45], p: .1},
         ],
         vex: {base: 3, current: 0, temp: [], turns: -1},
     }),
@@ -1433,7 +1444,8 @@ export function Player() {
         armor: 0, // TODO: set to 0
         block: 0,
         health: {base: 75, current: 75, max: 75}, // TODO: reset all values to 75
-        speed: {base: 5, current: 0, temp: [], turns: 0}, // TODO: reset base to 5
+        speed: {base: 10, current: 0, temp: [], turns: 0}, // TODO: reset base to 5
+        mana: {base: 3, current: 0, temp: 0}, // TODO: reset to base 3
         rainbow: {base: 0, current: 0, temp: [], turns: 0, max: 20, type: 'rainbow'},
     });
 

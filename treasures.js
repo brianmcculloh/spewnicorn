@@ -1296,7 +1296,7 @@ const ALL_TREASURES = [
         permanent: true,
         actions: [
             {action: 'stat', what: 'mana', key: 'base', value: 2},
-            {action: 'stat', what: 'speed', key: 'base', value: -1}
+            {action: 'stat', what: 'health', key: 'base', value: -7}
         ],
         x: -160,
         y: -14080

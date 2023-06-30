@@ -233,6 +233,17 @@ const ALL_EFFECTS = [
     // hex      {effect: 'wisdom', amount: -1, hex: true}
     {id: 'wisdom', name: 'Wisdom', desc: 'Age boosts dmg/blk/magic amounts', x: -416, y: -6304, sound: 'effect28'},
     
+    // Usage:
+    // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
+    // buff     {effect: 'lightning', amount: 5, turns: -1}
+    // hex      {effect: 'lightning', amount: -8, hex: true}
+    {id: 'lightning', name: 'Lightning', desc: 'Magic damage points', x: -288, y: -4960},
+
+    // Usage:
+    // creature {base: 1.1, current: 0, temp: 0, turns: -1, persist: false}, // value should range from 0 (0%) to 2 (200%) - haven't tested higher
+    // buff     {effect: 'thunder', amount: .1, turns: 3} // value should increment by .1 and will be added to base
+    // hex     {effect: 'thunder', amount: -.1, turns: -1, hex: true}
+    {id: 'thunder', name: 'Thunder', desc: 'Magic damage multiplier', x: -482, y: -7072},
 ];
 /*********************************************
  * 
@@ -426,8 +437,8 @@ export default function Game() {
     let playsounds = true;
     let playmusic = true;
     let tutorial = false; // TODO: set to false
-    let debug = false;
-    let dev = false;
+    let debug = true;
+    let dev = true;
     let libraryBuilt = false;
     let essences = ALL_ESSENCES;
     let effects = ALL_EFFECTS;

@@ -68,7 +68,6 @@
  * Fancy Prance: 1 block, 1 dmg, 1 armor, draw card(s) for 0 cost
  * Effect: limit number of cards played per turn, or combat, or add some sort of "beat of death" penalty for playing cards
  * --cycle can get out of control with repel upgraded, bottled speed, and mana orb card
- * Effect: Thunder - multiplies rainbow damage (include new card "lightning", candy and treasure to match)
  * 
  * 
  * PHASE III:
@@ -92,21 +91,15 @@
  * PHASE V:
  * 
  * TODO: cunning and stockpile are multiplicative, so take a look at how they combine and make sure that's ok
+ * TODO: add treasure and candy for lightning and thunder
+ * TODO: add lightning and thunder cards
+ * TODO: lightning/thunder icons and sound effects
  *
  * 
  * BUGS [can't replicate]:
- * BUG: transmuted 3 cards at the quest, got the new cards, but later at the shop the cards i transmuted were still in my deck
  * BUG: i had -2 aura and then chose to lose 2 aura again and ended up gaining 2 instead
  * BUG: i chose increase rainbow base from stained glass mirror but the next fight didn't have that base increase (it WAS there on subsequent battles)
  * BUG: courage screen straight into multiple quests, and in between the quests i got the courage screen again
- * BUG: [might have been fixed along with other updates] sometimes selected cards rom rewards are not added to my deck. 
- * --happened with ruin and mystical protection.
- * --actually these cards DID get added but they didn't show up in shard attach screen or combat deck right away.
- * --the number of cards in deck is correct (17) but clicking to view all deck cards only shows 15 cards
- * --showmodifiedcards in cards.js game.toShow array has an undefined first value. i noticed shimmer stance card was not
- * added to my deck when i hit level 1. i think it was after rewards cards stopped getting added to deck.
- * --i selected unearth as my reward but then it wasn't in my deck (deck size 25, unearth was reward for ice guardian)
- * BUG: the transmute candy didn't actually transmute my cards
  * BUG: sometimes courage screen only shows 1 ability instead of 2
  * BUG: added a shard to a card, and then the next quest was the trasform 3 quest, and the sharded card was still in the show cards
  * BUG: can't select to discard a slash card that was just added by surprise attack
@@ -882,7 +875,13 @@ jQuery(document).ready(function($) {
 			let thisCard = util.getCardByGuid($(this).data('guid'), theseCards);
 			game.toTransmute.push(thisCard);
 			if(game.toPick == 0) {
-				combatDeck.transmuteCards(combatDeck, deck, player);
+				let permanent = combatDeck.transmuteCards(combatDeck, deck, player);
+				if(permanent) {
+					for(let i = 0; i < game.toTransmute.length; i++) {
+						removeCardFromDeck(game.toTransmute[i].guid);
+					}
+				}
+				game.toTransmute = [];
 				$('.choose-cards-panel').removeClass('shown');
 				$('.choose-cards-panel .card').removeClass('pickable');
 				$('.choose-cards-panel .message').html('');
@@ -2045,7 +2044,7 @@ async function monsterAction(action = 'perform') {
 
 				if(action == 'query') {
 					let a = Math.round((attackAmount + thisMonster.might.current) * thisMonster.punch.current);
-					if(a < 0) a == 0;
+					if(a < 0) a = 0;
 					intent += '<span class="tooltip" data-powertip="Attack for ' + a + ' damage"><span class="intent-dmg intent-amount">' + a + '</span><span class="intent-dmg-icon intent-icon"></span></span>';
 				} else {
 
@@ -2099,7 +2098,7 @@ async function monsterAction(action = 'perform') {
 					to = player;
 					prefix = 'Hex ';
 				}
-				if(effect == 'punch' || effect == 'sorcery' || effect == 'resistance') {
+				if(effect == 'punch' || effect == 'sorcery' || effect == 'resistance' || effect == 'thunder') {
 					amount = Math.round((amount + Number.EPSILON) * 100);
                     amount += '%';
 				}
@@ -2188,6 +2187,10 @@ function endTurn(checkRetain = true) {
 	// clear delayed monster effects
 	let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
 	for(let i = 0; i < currentMonsters.length; i++) {
+		// check for stockpile
+		if(currentMonsters[i].stockpile.enabled && currentMonsters[i].block > 0) {
+			applyArmor(currentMonsters[i].block, currentMonsters[i]);
+		}
 		clearTurnEffects(currentMonsters[i], true);
 		clearTurnAbilities(currentMonsters[i], true);
 		monsters.updateMonsterStats(game.currentMonsters[i]);
@@ -2202,11 +2205,6 @@ function endTurn(checkRetain = true) {
 	combatDeck.destroyExpiredCards(combatDeck);
 	// increment expiries after destroying
 	combatDeck.incrementExpiredCards(combatDeck);
-
-	// check for stockpile
-	if(player.stockpile.enabled && player.block > 0) {
-		applyArmor(player.block, player);
-	}
 
 	combatDeck.chooseCards = [];
 	game.toPile = 'handCards';
@@ -2269,12 +2267,13 @@ function endMonsterTurn() {
 
 	let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
 	for(let i = 0; i < currentMonsters.length; i++) {
-		// check for stockpile
-		if(currentMonsters[i].stockpile.enabled && currentMonsters[i].block > 0) {
-			applyArmor(currentMonsters[i].block, currentMonsters[i]);
-		}
 		game.message('End ' + currentMonsters[i].guid + ' turn ' + game.round);
 		currentMonsters[i].chosenMoveSetIndex = -1;
+	}
+
+	// check for stockpile
+	if(player.stockpile.enabled && player.block > 0) {
+		applyArmor(player.block, player);
 	}
 
 	// clear delayed player effects
@@ -2362,7 +2361,7 @@ function clearCombatEffects() {
 		if(player[game.effects[i].id].turns > -1 && player[game.effects[i].id].persist != true) {
 			player[game.effects[i].id].temp = [];
 			player[game.effects[i].id].turns = 0;
-			if(game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery') {
+			if(game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery' || game.effects[i].id == 'thunder') {
 				player[game.effects[i].id].current = 1;
 			} else {
 				player[game.effects[i].id].current = 0;
@@ -2370,7 +2369,7 @@ function clearCombatEffects() {
 		} else if(player[game.effects[i].id].turns == -1) {
 			player[game.effects[i].id].temp = [];
 			player[game.effects[i].id].turns = 0;
-			if(game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery') {
+			if(game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery' || game.effects[i].id == 'thunder') {
 				player[game.effects[i].id].current = 1;
 			} else {
 				player[game.effects[i].id].current = 0;
@@ -2420,7 +2419,7 @@ function removeHexes(to) {
 			}
 		} else {
 			if(to[game.effects[i].id].hexed) {
-				let current = game.effects[i].id == 'sorcery' || game.effects[i].id == 'punch' ? 1 : 0;
+				let current = game.effects[i].id == 'sorcery' || game.effects[i].id == 'punch' || game.effects[i].id == 'thunder' ? 1 : 0;
 				to[game.effects[i].id].temp = [];
 				to[game.effects[i].id].turns = 0;
 				to[game.effects[i].id].current = current;
@@ -2445,8 +2444,8 @@ function applyEffect(effect, to, turns = -1) {
 			// basically when monster hexes conjure we want to reduce any positive conjuring, not go negative
 			//let amt = (effect.effect == 'conjure' && effect.hex) ? 0 : Math.round(((to[effect.effect].current + effect.amount) + Number.EPSILON) * 100) / 100;
 			let amt = Math.round(((to[effect.effect].current + effect.amount) + Number.EPSILON) * 100) / 100;
-			// punch and speed should never go below 0
-			if(effect.effect == 'punch' || effect.effect == 'speed') {
+			// punch, speed, and thunder should never go below 0
+			if(effect.effect == 'punch' || effect.effect == 'speed' || effect.effect == 'thunder') {
 				if(amt < 0) {
 					amt = 0;
 				}
@@ -2461,8 +2460,8 @@ function applyEffect(effect, to, turns = -1) {
 				}
 			}
 			if(turns > -1) {
-				// punch works differently
-				/*if(effect.effect == 'punch' || effect.effect == 'solid') { // we added solid here because of the medallion treasure - any others?
+				// punch and thunder work differently
+				/*if(effect.effect == 'punch' || effect.effect == 'solid' || effect.effect == 'thunder') { // we added solid here because of the medallion treasure - any others?
 					if(turns > to[effect.effect].turns) {
 						to[effect.effect].turns = turns;
 					}
@@ -2480,7 +2479,7 @@ function applyEffect(effect, to, turns = -1) {
 			}
 			if(effect.persist) to[effect.effect].persist = effect.persist;
 			let amtShow = amt;
-			if(effect.effect == 'punch' || effect.effect == 'sorcery' || effect.effect == 'resistance') {
+			if(effect.effect == 'punch' || effect.effect == 'sorcery' || effect.effect == 'resistance' || effect.effect == 'thunder') {
 				amtShow = Math.round((amtShow + Number.EPSILON) * 100);
 				amtShow += '%';
 			}
@@ -2507,7 +2506,7 @@ function applyEffect(effect, to, turns = -1) {
 			let sound = gameEffect.sound ? gameEffect.sound : 'applyEffect';
 			if(game.playsounds) sounds.play(sound);
 			let amtShow = effect.base;
-			if(effect.effect == 'punch' || effect.effect == 'sorcery' || effect.effect == 'resistance') {
+			if(effect.effect == 'punch' || effect.effect == 'sorcery' || effect.effect == 'resistance' || effect.effect == 'thunder') {
 				amtShow = Math.round((amtShow + Number.EPSILON) * 100);
 				amtShow += '%';
 			}
@@ -3537,12 +3536,15 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 		if(freeCard != undefined) {
 			freeCard.mana = 0;
 			updateCardDescriptions('handCards');
-		}
+		}f
 	}
 
 	combatDeck.updateCardPlayability(player, combatDeck);
 
 	elem.removeClass('playing');
+
+	// it's possible draw-card button has been disabled, but this card added speed
+	if(player.speed.current > 0) $('.draw-card').removeClass('disabled');
 
 	if(card.type == 'attack') updateTreasureTriggers('attackCardsPlayed');
 	if(card.type == 'tool') updateTreasureTriggers('toolCardsPlayed');
@@ -3833,6 +3835,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								}
 							} else {
 								combatDeck.addCard(addThisCard, combatDeck, actions[e].to, player, shards);
+								thisCard = util.getCardById(addThisCard, AllCards().cards);
 								if(thisCard != undefined) {
 									let desc = deck.buildDescription(thisCard);
 									thisCard.desc = desc;
@@ -4764,6 +4767,10 @@ async function activateRainbow(type, to) {
 	let doubleDamage = to.rainbow.type == 'chaos' ? true : false;
 	let dmg = doubleDamage ? to.rainbow.max * 2 : to.rainbow.max;
 	let magicPower = util.getStatPercentage(to.rainbow.current, to.rainbow.max);
+
+	// lightning and thunder
+	dmg += player.lightning.current;
+	dmg = Math.round(dmg * player.thunder.current);
 
 	await game.rainbowAnimations(magicPower);
 	//await util.wait(game.animationDelay);
