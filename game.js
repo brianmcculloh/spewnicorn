@@ -307,7 +307,7 @@ const ALL_ABILITIES = [
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'sift', turns: -1, enabled: true}
-    {id: 'sift', name: 'Sift', desc: 'Clutter cards have a 50% chance of vanishing', x: -96, y: -1632, sound: 'effect18'},
+    {id: 'sift', name: 'Sift', desc: 'Clutter cards always vanish', x: -96, y: -1632, sound: 'effect18'},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}

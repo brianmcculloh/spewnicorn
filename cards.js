@@ -592,14 +592,14 @@ const ALL_CARDS = [
             {effect: 'wield', amount: 2, turns: 1},
             {effect: 'resistance', amount: 2, turns: 1},
             {effect: 'lemonade', amount: 2, turns: 1},
-            {effect: 'spikes', amount: 2, turns: 1},
+            {effect: 'spikes', amount: .5, turns: 1},
             {effect: 'vex', amount: 2, turns: 1},
             {effect: 'mage', amount: 2, turns: 1},
             {effect: 'enchanter', amount: 2, turns: 1},
             {effect: 'summon', amount: 2, turns: 1},
             {effect: 'arcane', amount: 2, turns: 1},
             {effect: 'fatality', amount: 2, turns: 1, persist: true},
-            {effect: 'retaliate', amount: .2, turns: 1},
+            {effect: 'retaliate', amount: .5, turns: 1},
             {effect: 'mystery', amount: 2, turns: 1},
             {effect: 'regen', amount: 2, turns: 1},
             {effect: 'wisdom', amount: 2, turns: 1},
@@ -3223,12 +3223,12 @@ const ALL_CARDS = [
     new Cards({
         id: 'vengeance', name: 'Vengeance', type: 'ability', mana: 1, tier: 'uncommon', weight: 8, 
         effects: [
-            {effect: 'retaliate', amount: .1, turns: -1}
+            {effect: 'retaliate', amount: .3, turns: -1}
         ],
         slots: 1,
         fireShardUpgrades: {
             effects: [
-                {effect: 'retaliate', amount: .2, turns: -1}
+                {effect: 'retaliate', amount: .5, turns: -1}
             ],
         },
         iceShardUpgrades: {
@@ -5172,9 +5172,9 @@ export function CombatDeck() {
             if(thisRetain == false && thisCard.tempRetain == false) {
                 // check for sift
                 if(player.sift.enabled && thisCard.type=='clutter') {
-                    if(util.chance(50)) {
+                    //if(util.chance(50)) { // used to be 50% chance to vanish but changed to always vanish
                         ephemeral = true;
-                    }
+                    //}
                 }
                 if(ephemeral) {
                     if(game.playsounds) sounds.play('removeCard');

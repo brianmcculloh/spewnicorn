@@ -721,7 +721,7 @@ const ALL_TREASURES = [
         weight: 7,
         permanent: true,
         effects: [
-            {effect: 'retaliate', base: .2}
+            {effect: 'retaliate', base: .4}
         ],
         x: -0,
         y: -5344
@@ -745,7 +745,7 @@ const ALL_TREASURES = [
         weight: 7,
         permanent: true,
         effects: [
-            {effect: 'spikes', base: .2}
+            {effect: 'spikes', base: .5}
         ],
         x: -448,
         y: -3392
