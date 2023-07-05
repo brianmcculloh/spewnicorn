@@ -447,6 +447,24 @@ const ALL_CANDY= [
         x: -320,
         y: -4224
     }),
+    new Candy({
+        id:'strawberry_gobstopper', 
+        name: 'Strawberry Gobstopper', 
+        effects: [
+            {effect: 'lightning', amount: 2, turns: -1}
+        ],
+        x: -416,
+        y: -2496
+    }),
+    new Candy({
+        id:'blueberry_gobstopper', 
+        name: 'Blueberry Gobstopper', 
+        effects: [
+            {effect: 'lightning', amount: 10, turns: 1}
+        ],
+        x: -416,
+        y: -2432
+    }),
 
     // abilities
     new Candy({
@@ -1125,6 +1143,44 @@ const ALL_TREASURES = [
         y: -418
     }),
 
+    new Treasure({
+        id:'charged_wand', 
+        name: "Charged Wand", 
+        courage: 10,
+        tier: 2,
+        weight: 4,
+        permanent: true,
+        effects: [
+            {effect: 'lightning', base: 2}
+        ],
+        x: -128,
+        y: -10112
+    }),
+    new Treasure({
+        id:'charged_gauntlet', 
+        name: "Charged Gauntlet", 
+        weight: 4,
+        effects: [
+            {effect: 'lightning', amount: 1, turns: -1, persist: true}
+        ],
+        trigger: {counter: 0, when: 'magicCardsPlayed', at: 3, per: 'turn', once: false, activated: false},
+        x: -354,
+        y: -15520
+    }),
+    new Treasure({
+        id:'thunder_cloak', 
+        name: "Thunder Cloak", 
+        courage: 12,
+        tier: 2,
+        weight: 2,
+        effects: [
+            {effect: 'thunder', amount: .5, turns: 2, persist: true}
+        ],
+        trigger: {counter: 0, when: 'magicCardsPlayed', at: 10, per: 'combat', once: false, activated: false},
+        x: -480,
+        y: -12352
+    }), 
+
 
     // TIER 3
 
@@ -1283,6 +1339,20 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: true, activated: false},
         x: -96,
         y: -2752
+    }),
+
+    new Treasure({
+        id:'thunder_blade', 
+        name: "Thunder Blade", 
+        courage: 15,
+        tier: 3,
+        weight: 2,
+        permanent: true,
+        effects: [
+            {effect: 'thunder', base: .2}
+        ],
+        x: -128,
+        y: -9824
     }),
 
 

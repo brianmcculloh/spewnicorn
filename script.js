@@ -64,8 +64,6 @@
  * Magic Type Attack - does [magic type] stuff to monster, and adds [magic type] magic if matches current magic type
  * If card doesn't kill, receive that much damage back
  * Effect: Each magic card played, gain x block
- * Need a simple single large damage attack card
- * Fancy Prance: 1 block, 1 dmg, 1 armor, draw card(s) for 0 cost
  * Effect: limit number of cards played per turn, or combat, or add some sort of "beat of death" penalty for playing cards
  * --cycle can get out of control with repel upgraded, bottled speed, and mana orb card
  * 
@@ -91,12 +89,12 @@
  * PHASE V:
  * 
  * TODO: cunning and stockpile are multiplicative, so take a look at how they combine and make sure that's ok
- * TODO: add treasure and candy for lightning and thunder
- * TODO: add lightning and thunder cards
- * TODO: lightning/thunder icons and sound effects
- *
+ * TODO: verify how player death check works. i was in a fight where i was at 0 health and armor but some block and i didn't die.
+ * 
  * 
  * BUGS [can't replicate]:
+ * BUG: metamorphose with frost shard - if choose only one card to transmute, the overlay doesn't disappear
+ * BUG: on combat where shimmer stance was added, i played unearth for the shimmer stance card and at the end of that combat i had 2 copies (didn't keep increasing on subsequent fights)
  * BUG: i had -2 aura and then chose to lose 2 aura again and ended up gaining 2 instead
  * BUG: i chose increase rainbow base from stained glass mirror but the next fight didn't have that base increase (it WAS there on subsequent battles)
  * BUG: courage screen straight into multiple quests, and in between the quests i got the courage screen again
@@ -104,8 +102,6 @@
  * BUG: added a shard to a card, and then the next quest was the trasform 3 quest, and the sharded card was still in the show cards
  * BUG: can't select to discard a slash card that was just added by surprise attack
  * BUG: quest Library not working
- * BUG: Playing Scorch when hand consists of 2 flame jabs and 1 flay causes .show-cards overlay to display and not be closeable.
- * - similary, playing Freeze when hand consists of 1 frost jab and 1 frost shield and 1 sparkle stance (no slots) and 1 battle combo (no slots)
  * BUG: attack card damage is getting reduced to 0 in combats where mystical energy and smash and grab are played, and rainbow has cycled
  * --also have black vial and magic dust. smash and grab has flame shard and mystical energy has double frost shards
  * BUG: when purchasing relic at the store, remove card becomes too expensive even if i can still afford it
@@ -119,7 +115,7 @@
  * Stress and Balance testing
  * -currently no enemies ever have vex
  * 
- * Tutorial			
+ * Tutorial	- DONE		
  * 
  * Save progress
  * 
@@ -134,6 +130,15 @@
  * Monster hexes punch down but player buffs punch up. New damage amount is larger than original but damage amount color is red - should be green.
  * Question: if player has might, should draw damage effects have might applied?
  * Question: should only one hit of a multi-attack card be affected by crit (like how fatality works)?
+ * 
+ * 
+ * NEW CARDS:
+ * Simple single large damage attack card
+ * Fancy Prance: 1 block, 1 dmg, 1 armor, draw card(s) for 0 cost
+ * 4 mana card that retains
+ * Another card that adds slashes - maybe a tool card (like a blade dance)
+ * Card that adds temp lightning/thunder
+ * ? card that adds x number of slashes, sparks, points of might, points of solid, points of lightning
  * 
  * 
  * 
@@ -460,7 +465,10 @@ jQuery(document).ready(function($) {
 		map.clickTile($(this));
 
 		$('.tile.arena.visited').removeClass('clickable');
-		if(game.arenasComplete < 2) $('.tile.gate').removeClass('clickable');
+		if(game.arenasComplete < 2) {
+			$('.tile.ice-gate').removeClass('clickable').data('powertip', 'Ice Gate: <span class="highlight">LOCKED</span>').attr('data-powertip', 'Ice Gate: <span class="highlight">LOCKED</span>');
+			$('.tile.fire-gate').removeClass('clickable').data('powertip', 'Fire Gate: <span class="highlight">LOCKED</span>').attr('data-powertip', 'Fire Gate: <span class="highlight">LOCKED</span>');
+		}
 
 		if(game.debug) $('.map-inner div').addClass('clickable');
 		
@@ -1081,8 +1089,8 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('excalibur'); // use this to manually add treasures
-	//addCandy('marshmallows'); // use this to manually add candies
+	//addTreasure('thunder_blade'); // use this to manually add treasures
+	//addCandy('strawberry_gobstopper'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
 	if(game.debug) $('body').addClass('debug');
@@ -1134,7 +1142,7 @@ function setStatus(updateCards = true) {
 	$('.discard-cards span').html(combatDeck.discardCards.length);
 	$('.dead-cards span').html(combatDeck.deadCards.length);
 	$('.game-courage span').html(player.courage);
-	$('.booster-pack span').addClass(game.boosterPack + '-pack').data('powertip', game.boosterPack).attr('data-powertip', game.boosterPack);
+	$('.booster-pack span').addClass(game.boosterPack + '-pack').data('powertip', 'Booster Pack: <span class="highlight">' + game.boosterPack.substr(0,1).toUpperCase()+game.boosterPack.substr(1) + '</span>').attr('data-powertip', 'Booster Pack: <span class="highlight">' + game.boosterPack.substr(0,1).toUpperCase()+game.boosterPack.substr(1) + '</span>');
 	util.setTooltips('.booster-pack');
 	$('.game-floor span').html(game.floor);
 	$('.game-round span').html(game.round);
@@ -2692,7 +2700,9 @@ async function updateAggro(amount) {
 			}
 		} else {
 			for(let i = 0; i < amount; i++) {
-				player.aggro.current += 1;
+				let amt = 1;
+				if(game.difficulty == 'easy') amt = util.chance(50) ? 1 : 0;
+				player.aggro.current += amt;
 				if(game.aggroThresholds.includes(player.aggro.current) || player.aggro.current > game.aggroThresholds.at(-1)) {
 					if(game.playsounds) sounds.play('aggroLevel');
 					player.aggro.level += 1;

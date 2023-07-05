@@ -3174,6 +3174,13 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-prisma .card-image {
 	background-position:calc(-780px * .92) calc(-4132px * .92);
 }
+#card-storm .card-image {
+	background-position:calc(-975px * .92) calc(-4132px * .92);
+}
+#card-high_voltage .card-image {
+	background-position:calc(-1170px * .92) calc(-4132px * .92);
+}
+
 
 /* MAGIC */
 #card-rainbow_charge .card-image {
@@ -4113,7 +4120,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .cards-panel {
 	position:fixed;
 	overflow:auto;
-	height:calc(100vh - 30px);
+	height:100vh;
 	width:100vw;
 	transform:translateY(-100vh);
 	top:0;

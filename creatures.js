@@ -14,7 +14,7 @@ class Creatures {
         solid = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         speed = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         might = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
-        punch = {base: 1, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        punch = {base: 1, current: 1, temp: [], turns: 0, persist: false, hexed: false},
         mend = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
         craft = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
         cunning = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
@@ -26,7 +26,7 @@ class Creatures {
         mastery = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
         heal = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
         conjure = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
-        sorcery = {base: 1, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
+        sorcery = {base: 1, current: 1, temp: [], turns: 0, persist: false, hexed: false}, 
         rainbow = {base: 0, current: 0, temp: [], turns: 0, max: 0, type: 'rainbow'},
         momentum = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
         wield = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
@@ -44,7 +44,7 @@ class Creatures {
         regen = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         wisdom = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         lightning = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
-        thunder = {base: 1, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        thunder = {base: 1, current: 1, temp: [], turns: 0, persist: false, hexed: false},
 
         // abilities
         protection = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
@@ -349,13 +349,15 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: 2, turns: 2},
             ],
             actions: [
-                {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'junk', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'chaff', to: 'drawCards'},
             ]},
             {dmg: [10]},
             {blk: [10]},
             {dmg: [5, 5]},
             {blk: [10], actions: [
-                {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'debris', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'chaff', to: 'drawCards'},
             ]},
             {dmg: [10]},
             {blk: [10]},
@@ -442,13 +444,13 @@ const ALL_MONSTERS = [
         type: 'monster',
         id: 'enchantress', 
         name: 'Enchantress', 
-        health: {base: 58, current: 0, max: 58},
+        health: {base: 58, current: 0, max: 50},
         tier: 2,
         armor: 5,
         pattern: 'random',
         moveSet: [
             {actions: [
-                {action: 'addCard', value: 2, what: 'execrate', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'execrate', to: 'drawCards'},
             ], p: .1},
             {actions: [
                 {action: 'addCard', value: 2, what: 'curse', to: 'drawCards'},
@@ -457,7 +459,7 @@ const ALL_MONSTERS = [
                 {action: 'addCard', value: 2, what: 'flay', to: 'drawCards'},
             ], p: .1},
             {actions: [
-                {action: 'addCard', value: 2, what: 'execrate', to: 'discardCards'},
+                {action: 'addCard', value: 1, what: 'execrate', to: 'discardCards'},
             ], p: .1},
             {actions: [
                 {action: 'addCard', value: 2, what: 'curse', to: 'discardCards'},
@@ -495,8 +497,8 @@ const ALL_MONSTERS = [
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'stout', amount: 1, turns: -1},
-                {effect: 'might', amount: 1, turns: -1},
+                {effect: 'stout', amount: 2, turns: -1},
+                {effect: 'might', amount: 3, turns: -1},
             ]},
             {dmg: [14]},
         ],
@@ -570,6 +572,9 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'retaliate', amount: .5, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
+            ], 
+            actions: [
+                {action: 'addCard', value: 2, what: 'junk', to: 'drawCards'},
             ], p: .1},
             {effects: [
                 {effect: 'spikes', amount: .5, turns: 1},
@@ -606,6 +611,9 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'craft', amount: -2, turns: -1, hex: true},
                 {effect: 'vex', amount: 1, turns: -1}
+            ], 
+            actions: [
+                {action: 'addCard', value: 2, what: 'debris', to: 'drawCards'},
             ], armor: [20], p: .1},
             {effects: [
                 {effect: 'might', amount: 1, turns: -1}
@@ -631,7 +639,7 @@ const ALL_MONSTERS = [
         tier: 3,
         moveSet: [{
             effects: [
-                {effect: 'might', amount: 5, turns: -1},
+                {effect: 'might', amount: 3, turns: -1},
             ], dmg: [1, 1, 1, 1]},
         ],
     }),
@@ -706,6 +714,9 @@ const ALL_MONSTERS = [
             ], p: .3},
             {effects: [
                 {effect: 'vex', amount: 1, turns: -1}
+            ], 
+            actions: [
+                {action: 'addCard', value: 1, what: 'junk', to: 'handCards'},
             ], dmg: [25], p: .3},
             {dmg: [45], p: .1},
             {actions: [
@@ -729,7 +740,9 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'resistance', amount: .8, turns: 1}
             ], dmg: [26], armor: [15], p: .25},
-            {blk: [10], armor: [10], p: .25},
+            {actions: [
+                {action: 'addCard', value: 1, what: 'debris', to: 'handCards'},
+            ], blk: [10], armor: [10], p: .25},
         ],
         cunning: {base: 1, current: 0, temp: [], turns: -1},
         vigor: {base: 1, current: 0, temp: [], turns: -1}
@@ -757,7 +770,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         id: 'seething_entity', 
         name: 'Seething Entity', 
-        health: {base: 215, current: 0, max: 215},
+        health: {base: 210, current: 0, max: 210},
         tier: 4,
         armor: 20,
         pattern: 'random',
@@ -766,18 +779,18 @@ const ALL_MONSTERS = [
                 {effect: 'regen', amount: 5, turns: -1},
             ], dmg: [5, 5, 5], p: .25},
             {effects: [
-                {effect: 'might', amount: 2, turns: -1},
+                {effect: 'might', amount: 1, turns: -1},
             ], p: .25},
-            {dmg: [3, 3, 3, 3, 3, 3, 3], 
+            {dmg: [3, 3, 3, 3, 3, 3], 
             effects: [
                 {effect: 'punch', amount: -.4, turns: 2, hex: true}
             ], 
             actions: [
-                {action: 'addCard', value: 1, what: 'briars', to: 'discardCards'},
+                {action: 'addCard', value: 2, what: 'briars', to: 'discardCards'},
             ], p: .25},
             {dmg: [4, 4, 4, 4, 4], p: .25},
         ],
-        heal: {base: 10, current: 0, temp: [], turns: -1},
+        heal: {base: 8, current: 0, temp: [], turns: -1},
         regen: {base: 5, current: 0, temp: [], turns: -1}
     }),
     
@@ -856,7 +869,7 @@ const ALL_MONSTERS = [
                 {effect: 'sorcery', amount: -.5, turns: 2, hex: true},
             ],
             actions: [
-                {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'junk', to: 'discardCards'},
             ], dmg: [3, 3, 3, 3, 3, 3], p: .2},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 2, hex: true},
@@ -864,6 +877,7 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'junk', to: 'discardCards'},
             ], p: .2},
             {effects: [
                 {effect: 'summon', amount: -5, turns: 3, hex: true},
@@ -871,13 +885,14 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'debris', to: 'discardCards'},
             ], dmg: [5, 5, 5, 5, 5], p: .2},
             {effects: [
                 {effect: 'enchanter', amount: -5, turns: 2, hex: true},
                 {effect: 'arcane', amount: -5, turns: 2, hex: true}
             ],
             actions: [
-                {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'debris', to: 'discardCards'},
             ], dmg: [20], p: .2},
             {dmg: [8, 8, 8, 8], p: .1},
             {effects: [
@@ -1263,9 +1278,9 @@ export function Monster() {
         for(let i = 0; i < game.effects.length; i++) {
             // sometimes there are lingering current values, like in the case of rowdy for players
             // otherwise, set all current effects to their base values
-            if(to[game.effects[i].id].current == 0) {
+            if(((game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery' || game.effects[i].id == 'thunder') && (to[game.effects[i].id].current == 1)) ||
+                ((game.effects[i].id != 'punch' && game.effects[i].id != 'sorcery' && game.effects[i].id != 'thunder') && (to[game.effects[i].id].current == 0))) {
                 to[game.effects[i].id].current = to[game.effects[i].id].base;	
-
             }
             // effect will not persist to the next combat unless re-persisted again this combat
             to[game.effects[i].id].persist = false;
@@ -1322,8 +1337,8 @@ export function Monster() {
             
             if(game.effects[i].id != 'speed' && game.effects[i].id != 'mana' && game.effects[i].id != 'rainbow') {
                 
-                if(((game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery') && (to[game.effects[i].id].current == 1)) ||
-                ((game.effects[i].id != 'punch' && game.effects[i].id != 'sorcery') && (to[game.effects[i].id].current == 0))) {
+                if(((game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery' || game.effects[i].id == 'thunder') && (to[game.effects[i].id].current == 1)) ||
+                ((game.effects[i].id != 'punch' && game.effects[i].id != 'sorcery' && game.effects[i].id != 'thunder') && (to[game.effects[i].id].current == 0))) {
 
                     // don't show anything if current value is 0, or if current value is 1 for punch/resistance/sorcery
 
@@ -1331,7 +1346,7 @@ export function Monster() {
 
                     let turns = to[game.effects[i].id].turns > 0 ? '<span class="turns">' + to[game.effects[i].id].turns + '</span>' : '';
                     let effectText = to[game.effects[i].id].current;
-                    if(game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery' || game.effects[i].id == 'resistance') {
+                    if(game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery' || game.effects[i].id == 'resistance' || game.effects[i].id == 'thunder') {
                         effectText = Math.round((effectText + Number.EPSILON) * 100);
                         effectText += '%';
                     }
@@ -1444,7 +1459,7 @@ export function Player() {
         armor: 0, // TODO: set to 0
         block: 0,
         health: {base: 75, current: 75, max: 75}, // TODO: reset all values to 75
-        speed: {base: 10, current: 0, temp: [], turns: 0}, // TODO: reset base to 5
+        speed: {base: 5, current: 0, temp: [], turns: 0}, // TODO: reset base to 5
         mana: {base: 3, current: 0, temp: 0}, // TODO: reset to base 3
         rainbow: {base: 0, current: 0, temp: [], turns: 0, max: 20, type: 'rainbow'},
     });

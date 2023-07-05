@@ -342,7 +342,7 @@ export default class Util {
             case 'destroyed':
                 $('.card[data-guid=' + guid + ']').parent()
                 .addClass('destroying')
-                .delay(1000)
+                .delay(2000)
                 .queue(function() {
                     $(this).remove().dequeue();
                 });
@@ -1007,8 +1007,10 @@ export default class Util {
                 effect32: [230137, 1863],
                 effect33: [232000, 1725],
                 effect34: [233725, 1758],
-                effect35: [235483, 2003],
-                effect36: [237486, ],
+                effect35: [235483, 1999],
+                effect36: [237482, 2212],
+                effect37: [239694, 2246],
+                effect38: [241940, ]
 
 
 
@@ -1065,7 +1067,6 @@ export default class Util {
                 SkywardHero_UI (39)
 
                 ESM_Fantasy_Game_...
-                Magic_Debuff_Spell_D
                 Magic_Ice_Instant_Cast_Spell_A
                 Magic_Ice_Instant_Cast_Spell_C
                 Magic_Fire_Instant_Cast_Spell_D
@@ -1080,6 +1081,8 @@ export default class Util {
                 Magic_Key_Pick_Up_1
                 Magic_Key_Pick_Up_3
                 Magic_Debuff_Spell_A
+                Magic_Debuff_Spell_B
+                Magic_Debuff_Spell_D
                 Magic_Ring_Pickup_B
                 Organic_Magic_Poof_Buff_Hit
                 Organic_Magic_Poof_Buff_Hit_2
@@ -1118,6 +1121,7 @@ export default class Util {
                 Skill_Knife_Throw_B
                 Skill_Axe_Throw_B
                 Large_Gate_Close_2_Medium_Small
+                Felflame_1_Fire_Flame
                 
                 Material_Stone_Touch_7_Magic
                 Material_Stone_Pickup_3_Magic
