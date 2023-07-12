@@ -90,11 +90,15 @@
  * 
  * TODO: cunning and stockpile are multiplicative, so take a look at how they combine and make sure that's ok
  * TODO: verify how player death check works. i was in a fight where i was at 0 health and armor but some block and i didn't die.
+ * TODO: card and relic that add lemonade and random clutter each turn
+ * TODO: need more ways to get vex
+ * TODO: add some legendary cards for the gatekeeper fights
+ * --card that adds a variety of slash cards
+ * TODO: treasures that do dmg/armor/block on certain turns - not sure the engine currently allows for this
  * 
  * 
  * BUGS [can't replicate]:
  * BUG: metamorphose with frost shard - if choose only one card to transmute, the overlay doesn't disappear
- * BUG: on combat where shimmer stance was added, i played unearth for the shimmer stance card and at the end of that combat i had 2 copies (didn't keep increasing on subsequent fights)
  * BUG: i had -2 aura and then chose to lose 2 aura again and ended up gaining 2 instead
  * BUG: i chose increase rainbow base from stained glass mirror but the next fight didn't have that base increase (it WAS there on subsequent battles)
  * BUG: courage screen straight into multiple quests, and in between the quests i got the courage screen again
@@ -113,7 +117,6 @@
  * -debug email report or text file logging
  * 
  * Stress and Balance testing
- * -currently no enemies ever have vex
  * 
  * Tutorial	- DONE		
  * 
@@ -132,14 +135,21 @@
  * Question: should only one hit of a multi-attack card be affected by crit (like how fatality works)?
  * 
  * 
- * NEW CARDS:
- * Simple single large damage attack card
- * Fancy Prance: 1 block, 1 dmg, 1 armor, draw card(s) for 0 cost
- * 4 mana card that retains
- * Another card that adds slashes - maybe a tool card (like a blade dance)
- * Card that adds temp lightning/thunder
- * ? card that adds x number of slashes, sparks, points of might, points of solid, points of lightning
- * 
+ * NEW CARDS & TREASURES:
+ * Card: Fancy Prance: 1 block, 1 dmg, 1 armor, draw card(s) for 0 cost
+ * Card: 4, 5, or even 6 cost card that retains (synergizes with aura stance)
+ * Card: Another card that adds slashes - maybe a tool card (like a blade dance)
+ * Card: Card that adds temp lightning/thunder
+ * Card: ? card that adds x number of slashes, sparks, points of might, points of solid, points of lightning
+ * Card: 0 cost vanishing card that adds 1 mana and loses 10 armor - shard upgrade adds 2 mana (rare)
+ * Card: 0 cost vanishing card that adds 1 speed and loses 10 armor - shard upgrade adds 2 mana (rare)
+ * Treasure: 3 magic cards per turn adds lightning/thunder
+ * Treasure: 3 attack cards per turn adds punch
+ * Treasure: 3 tool cards per turn adds stout
+ * Treasure: 5 attack cards per turn adds momentum
+ * Treasure: 10 attack cards per combat adds momentum
+ * Treasure: 5 tool cards per turn adds wisdom
+ * Treasure: 5 tool cards per turn adds tank (1 turn)
  * 
  * 
  * 
@@ -408,8 +418,17 @@ jQuery(document).ready(function($) {
 		if(game.playsounds) sounds.play('startingBonus');
 		$('.starting-options').removeClass('shown');
 		$('.starting-room').removeClass('shown');
-		$('.choose-booster-pack').addClass('shown');
+		$('.starting-treasure').addClass('shown');
 		startingBonus($(this));
+
+	});
+
+	$(document).on('click', '.starting-treasure .treasure, .starting-treasure .done', function(e) {
+
+		if(game.playsounds) sounds.play('startingBonus');
+		$('.starting-treasure').removeClass('shown');
+		$('.choose-booster-pack').addClass('shown');
+		startingTreasure($(this));
 
 	});
 
@@ -813,6 +832,15 @@ jQuery(document).ready(function($) {
 
 	});
 
+	$(document).on('click', '.library-panel .library-treasures .treasure', function(e) {
+
+		if(game.debug) {
+			if(game.playsounds) sounds.play('drawCard');
+			addTreasure($(this).data('id'));
+		}
+
+	});
+
 	$(document).on('click', '.draw-cards-panel .pickable', function(e) {
 
 		game.toPick -= 1;
@@ -1089,7 +1117,7 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('thunder_blade'); // use this to manually add treasures
+	//addTreasure('slashy'); // use this to manually add treasures
 	//addCandy('strawberry_gobstopper'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
@@ -1110,6 +1138,8 @@ function init() {
 	deck.buildDeck();
 
 	util.appendStartingBonuses();
+
+	appendStartingTreasures();
 
 	util.appendBoosterPacks();
 
@@ -1343,7 +1373,24 @@ function viewAllCards() {
 	updateCardDescriptions('allCards');
 }
 function viewLibrary() {
-	allCards.buildLibrary();
+	if(!game.libraryBuilt) {
+		game.libraryBuilt = true;
+		$('.library-panel .cards, .library-treasures, .library-candies').empty();
+		// load candies
+		for(let i = 0; i < treasures.candies.length; i++) {
+			let candy = treasures.candies[i];
+			candy.desc = deck.buildDescription(candy);
+			util.appendCandy(candy, '.library-candies', false);
+		}
+		// load treasures
+		for(let i = 0; i < treasures.treasures.length; i++) {
+			let treasure = treasures.treasures[i];
+			treasure.desc = deck.buildDescription(treasure);
+			util.appendTreasure(treasure, '.library-treasures');
+		}
+		// load cards
+		allCards.buildLibrary();
+	}
 }
 function loadLibrary() {
 	// mock AJAX request, just for this demo
@@ -1482,7 +1529,8 @@ async function startCombat(tile) {
 	$('.combat').addClass('shown');
 	$('.candy').removeClass('trashable').addClass('clickable');
 	$('body').addClass('combating');
-	$('.player-cards').removeClass('unavailable');
+	$('.player-cards').removeClass('unavailable').empty();
+
 	
 	if(!tile.hasClass('visited')) {
 		await updateEssenceLevels(tile.attr('data-essence'), tile.attr('data-amount'));
@@ -1582,6 +1630,26 @@ function startingBonus(elem) {
 
 	setStatus();
 
+}
+
+function appendStartingTreasures() {
+	let possibleTreasures = treasures.treasures.filter(i => i.starting == true);
+	possibleTreasures = util.shuffle(possibleTreasures);
+	if(possibleTreasures.length > 0) {
+		for(let i = 0; i < 3; i++) {
+			let treasure = possibleTreasures[i];
+			treasure.desc = deck.buildDescription(treasure);
+			util.appendTreasure(treasure, '.starting-treasures');
+		}
+	}
+}
+
+function startingTreasure(elem) {
+
+	let treasure = elem.attr('data-id');
+	addTreasure(treasure);
+	setStatus();
+		
 }
 
 function startingBoosterPack(elem) {
@@ -1695,7 +1763,7 @@ async function updateEssenceLevels(essence, amount) {
 				if(game.playsounds) sounds.play(essence + 'Amount');
 				player[essence].current += 1;
 				let current = player[essence].current;
-				if(game.essenceThresholds.includes(current)) {
+				if(game.essenceThresholds.includes(current) && player[essence].level == game.essenceThresholds.indexOf(current)) {
 					player[essence].level += 1;
 					$('.essence-bar.sparkle span.level').html(player.sparkle.level);
 					$('.essence-bar.shimmer span.level').html(player.shimmer.level);
@@ -2210,7 +2278,9 @@ function endTurn(checkRetain = true) {
 	game.message('End player turn ' + game.round);
 
 	// destroy expired cards
-	combatDeck.destroyExpiredCards(combatDeck);
+	if(!player.expirex.enabled) {
+		combatDeck.destroyExpiredCards(combatDeck);
+	}
 	// increment expiries after destroying
 	combatDeck.incrementExpiredCards(combatDeck);
 
@@ -2567,17 +2637,18 @@ function applyAbility(ability, to, turns = -1) {
 		} else {
 			to[ability.ability].baseTurns = ability.baseTurns;
 		}
+		let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
 		if(ability.hex) {
 			to[ability.ability].turns = 0;
 			to[ability.ability].enabled = false;
 			if(game.playsounds) sounds.play('hex');
-			game.statusAnimations({data: ability.ability, to: statusDom, hex: true});
+			game.statusAnimations({data: gameAbility.name, to: statusDom, hex: true});
 		} else {
 			to[ability.ability].turns += turns;
 			let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
 			let sound = gameAbility.sound ? gameAbility.sound : 'applyAbility';
 			if(game.playsounds) sounds.play(sound);
-			game.statusAnimations({data: ability.ability, to: statusDom, hex: false});
+			game.statusAnimations({data: gameAbility.name, to: statusDom, hex: false});
 		}
 		if(to[ability.ability].baseTurns < -1) to[ability.ability].baseTurns = -1;
 		if(to[ability.ability].turns < -1) to[ability.ability].turns = -1;
@@ -2754,9 +2825,12 @@ function loot(type, tier = 3) {
 		break;
 		case 'treasure':
 			if(possibleTreasures.length > 0) {
-				let treasure = util.weightedRandom(possibleTreasures);
-				treasure.desc = deck.buildDescription(treasure);
-				util.appendTreasure(treasure, '.loot-items');
+				//for(let i = 0; i < possibleTreasures.length; i++) { // use this to show all possible treasures on the loot screen
+					//let treasure = possibleTreasures[i];
+					let treasure = util.weightedRandom(possibleTreasures);
+					treasure.desc = deck.buildDescription(treasure);
+					util.appendTreasure(treasure, '.loot-items');
+				//}
 			}
 			// one or two essences
 			var numEssences = util.randFromRange(1, 2);
@@ -3844,7 +3918,13 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 									}
 								}
 							} else {
-								combatDeck.addCard(addThisCard, combatDeck, actions[e].to, player, shards);
+								// we need to pass the guid in case the card is added during combat before the decks
+								// have a chance to sync. this is the only time currently that we're actually passing a guid in
+								let guid = util.randString();
+								combatDeck.addCard(addThisCard, combatDeck, actions[e].to, player, shards, guid);
+								if(actions[e].permanent) {
+									deck.addCard(addThisCard, guid);
+								}
 								thisCard = util.getCardById(addThisCard, AllCards().cards);
 								if(thisCard != undefined) {
 									let desc = deck.buildDescription(thisCard);
@@ -4126,23 +4206,27 @@ async function processQuest(elem) {
 	switch(id) {
 		case 'workshop':
 			if(option == 'quickness') {
-				let effects = [{effect: 'speed', base: 1}];
-				await processEffects(effects);
+				//let effects = [{effect: 'speed', base: 1}];
+				//await processEffects(effects);
+				addTreasure('artisanal_boots'); 
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			} else if(option == 'thickness') {
-				let effects = [{effect: 'solid', base: 2}];
-				await processEffects(effects);
+				//let effects = [{effect: 'solid', base: 2}];
+				//await processEffects(effects);
+				addTreasure('artisanal_chestplate'); 
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			} else if(option == 'strength') {
-				let effects = [{effect: 'might', base: 2}];
-				await processEffects(effects);
+				//let effects = [{effect: 'might', base: 2}];
+				//await processEffects(effects);
+				addTreasure('artisanal_sword'); 
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			} else if(option == 'wizardry') {
-				let effects = [{effect: 'conjure', base: 2}];
-				await processEffects(effects);
+				//let effects = [{effect: 'lightning', base: 5}];
+				//await processEffects(effects);
+				addTreasure('artisanal_hat'); 
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			}

@@ -1589,6 +1589,9 @@ body.debug .status-toggle {
 	flex-direction:column;
 	margin-top:0;
 }
+.game-panel.starting-treasure .panel .buttons-wrapper {
+	flex-direction:row;
+}
 .game-panel .panel .button {
 	width:100%;
 }
@@ -2840,6 +2843,30 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-battle_finisher .card-image {
 	background-position:calc(-975px * .92) calc(-1620px * .92);
 }
+#card-pierce .card-image {
+	background-position:calc(-1365px * .92) calc(-1620px * .92);
+}
+#card-tail_whip .card-image {
+	background-position:0 calc(-1777px * .92);
+}
+#card-burning_hammer .card-image {
+	background-position:calc(-195px * .92) calc(-1777px * .92);
+}
+#card-unstable_staff .card-image {
+	background-position:calc(-390px * .92) calc(-1777px * .92);
+}
+#card-wing_beat .card-image {
+	background-position:calc(-585px * .92) calc(-1777px * .92);
+}
+#card-fleeting_slash .card-image {
+	background-position:calc(-780px * .92) calc(-1777px * .92);
+}
+#card-lingering_slash .card-image {
+	background-position:calc(-975px * .92) calc(-1777px * .92);
+}
+#card-momentous_slash .card-image {
+	background-position:calc(-1170px * .92) calc(-1777px * .92);
+}
 
 /* TOOL */
 #card-shield .card-image {
@@ -3179,6 +3206,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 #card-high_voltage .card-image {
 	background-position:calc(-1170px * .92) calc(-4132px * .92);
+}
+#card-renewal .card-image {
+	background-position:calc(-1365px * .92) calc(-4132px * .92);
 }
 
 
@@ -3698,14 +3728,23 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 .player-cards .card-wrapper.discarding {
 	transform:scale(1.4) translate(0, -300px);
+	width:0;
+	height:0;
+	pointer-events:none;
 }
 .player-cards .card-wrapper.discarded {
 	transform:scale(1) translate(1500px, 400px);
+	width:0;
+	height:0;
+	pointer-events:none;
 }
 .player-cards .card-wrapper.destroying {
 	transform:scale(.8) translate(0, -100px);
 	opacity:0;
 	transition:all 1s linear;
+	width:0;
+	height:0;
+	pointer-events:none;
 }
 .player-cards .card-wrapper.replacing {
 	pointer-events:none;
@@ -4163,6 +4202,15 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 .library-loader.shown {
 	display:block;
+}
+.library-treasures, .library-candies {
+	display:flex;
+	flex-wrap:wrap;
+	align-items:center;
+	align-content:center;
+	justify-content:center;
+	gap:5px;
+	padding:30px 50px 50px 50px;
 }
 .cards-panel .buttons-wrapper {
 	position:sticky;

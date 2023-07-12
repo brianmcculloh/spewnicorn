@@ -259,6 +259,9 @@ const ALL_CARDS = [
     Courage
     Familiar Agony
     Slash
+    Lingering Slash
+    Fleeting Slash
+    Momentous Slash
     Safety
     Energize
     Boost
@@ -314,6 +317,11 @@ const ALL_CARDS = [
     Quick Stab
     Hammer Thrust
     Clever Trick
+    Pierce
+    Tail Whip
+    Burning Hammer
+    Wing Beat
+    Unstable Staff
 
     Uncommon:
 
@@ -363,14 +371,14 @@ const ALL_CARDS = [
     Remember
     Glowing Orb
     Fractured Orb
+    Plate Armor
+    Fleeting Shelter
+    Fleeting Shield
 
     Uncommon:
 
-    Plate Armor
     Fortress
     Safeguard
-    Fleeting Shelter
-    Fleeting Shield
     Gallop
     Sprint
     Gift
@@ -442,6 +450,7 @@ const ALL_CARDS = [
     Enchanter - NEW
     Arcane - NEW
     High Voltage
+    Renewal
 
     Rare:
 
@@ -618,6 +627,7 @@ const ALL_CARDS = [
             {ability: 'stockpile', turns: 2, enabled: true},
             {ability: 'sift', turns: 2, enabled: true},
             {ability: 'panic', turns: 2, enabled: true},
+            {ability: 'expirex', turns: -1, enabled: true},
         ],
         magic: [{type: 'aligned', amount: 1}], 
     }),
@@ -743,6 +753,33 @@ const ALL_CARDS = [
     new Cards({
         id: 'slash', name: 'Slash', type: 'attack', mana: 0, addable: false, target: 'monster', vanish: true,
         dmg: [2],
+        slots: 1,
+        shardUpgrades: {
+            dmg: [4],
+        },
+    }),
+    new Cards({
+        id: 'fleeting_slash', name: 'Fleeting Slash', type: 'attack', mana: 0, addable: false, target: 'monster', vanish: true, expire: 0,
+        dmg: [2],
+        slots: 1,
+        shardUpgrades: {
+            dmg: [4],
+        },
+    }),
+    new Cards({
+        id: 'lingering_slash', name: 'Lingering Slash', type: 'attack', mana: 0, addable: false, target: 'monster', linger: 1, use: 2,
+        dmg: [2],
+        slots: 1,
+        shardUpgrades: {
+            dmg: [4],
+        },
+    }),
+    new Cards({
+        id: 'momentous_slash', name: 'Momentous Slash', type: 'attack', mana: 0, addable: false, target: 'monster', vanish: true,
+        dmg: [2],
+        effects: [
+            {effect: 'momentum', amount: 1}
+        ],
         slots: 1,
         shardUpgrades: {
             dmg: [4],
@@ -1087,6 +1124,9 @@ const ALL_CARDS = [
         ],
         shardUpgrades: {
             magic: [{type: 'aligned', amount: 4}], 
+            effects: [
+                {effect: 'lightning', amount: 1, turns: -1}
+            ],
         },
     }),
     new Cards({
@@ -1477,13 +1517,14 @@ const ALL_CARDS = [
         dmg: [12],
         sound: 'attack2',
         effects: [
-            {effect: 'punch', amount: -.25, turns: 1, hex: true}
+            {effect: 'punch', amount: -.25, turns: 1, hex: true},
+            {effect: 'might', amount: -2, turns: 1, hex: true}
         ],
         slots: 1,
         shardUpgrades: {
             effects: [
-                {effect: 'punch', amount: -.35, turns: 1, hex: true},
-                {effect: 'might', amount: -5, turns: 1, hex: true}
+                {effect: 'punch', amount: -.5, turns: 1, hex: true},
+                {effect: 'might', amount: -4, turns: 1, hex: true}
             ],
         },
     }),
@@ -1498,6 +1539,50 @@ const ALL_CARDS = [
             actions: [
                 {action: 'ensharden', type: 'random', select: -1, from: 'handCards', random: true}
             ],
+        },
+    }),
+    new Cards({
+        id: 'pierce', name: 'Pierce', type: 'attack', mana: 1, target: 'monster', vanish: true,
+        dmg: [18],
+        slots: 1,
+        shardUpgrades: {
+            vanish: false
+        },
+    }),
+    new Cards({
+        id: 'tail_whip', name: 'Tail Whip', type: 'attack', mana: 2, target: 'monster', ephemeral: true,
+        dmg: [4, 5, 6, 7, 8],
+        slots: 1,
+        shardUpgrades: {
+            ephemeral: false
+        },
+    }),
+    new Cards({
+        id: 'burning_hammer', name: 'Burning Hammer', type: 'attack', mana: 2, target: 'monster', expire: 1,
+        dmg: [40],
+        slots: 1,
+        shardUpgrades: {
+            natural: true
+        },
+    }),
+    new Cards({
+        id: 'wing_beat', name: 'Wing Beat', type: 'attack', mana: 1, target: 'monster',
+        dmg: [18],
+        actions: [
+            {action: 'stat', what: 'health', key: 'current', value: -2}
+        ],
+        slots: 1,
+        shardUpgrades: {
+            mana: 0
+        },
+    }),
+    new Cards({
+        id: 'unstable_staff', name: 'Unstable Staff', type: 'attack', mana: 1, target: 'monster', breakable: true, use: 1,
+        dmg: [18],
+        slots: 1,
+        shardUpgrades: {
+            use: 2,
+            dmg: [22],
         },
     }),
 
@@ -1772,15 +1857,15 @@ const ALL_CARDS = [
             {effect: 'momentum', amount: 2}
         ],
         actions: [
-            {action: 'addCard', value: 2, what: 'slash', to: 'handCards'},
+            {action: 'addCard', value: 3, what: 'slash', to: 'handCards'},
         ],
         slots: 2,
         iceShardUpgrades: {
             actions: [
-                {action: 'addCard', value: 3, what: 'slash', to: 'handCards'},
+                {action: 'addCard', value: 3, what: 'momentous_slash', to: 'handCards'},
             ],
             actions_2: [
-                {action: 'addCard', value: 3, what: 'slash', to: 'handCards', with: ['frost']},
+                {action: 'addCard', value: 3, what: 'momentous_slash', to: 'handCards', with: ['frost']},
             ]
         },
         fireShardUpgrades: {
@@ -1793,7 +1878,7 @@ const ALL_CARDS = [
         },
         bothShardUpgrades: {
             actions: [
-                {action: 'addCard', value: 3, what: 'slash', to: 'handCards'},
+                {action: 'addCard', value: 3, what: 'momentous_slash', to: 'handCards'},
             ],
             effects: [
                 {effect: 'momentum', amount: 3}
@@ -2190,12 +2275,8 @@ const ALL_CARDS = [
             retain: true
         },
     }),
-
-
-
-    /* Uncommon: */
     new Cards({
-        id: 'plate_armor', name: 'Plate Armor', type: 'tool', use: 2, mana: 2, tier: 'uncommon', weight: 4, courage: 3, 
+        id: 'plate_armor', name: 'Plate Armor', type: 'tool', use: 2, mana: 2, weight: 4, courage: 3, 
         armor: [10],
         slots: 2,
         shardUpgrades: {
@@ -2205,6 +2286,31 @@ const ALL_CARDS = [
             armor: [26]
         },
     }),
+    new Cards({
+        id: 'fleeting_shelter', name: 'Fleeting Shelter', type: 'tool', mana: 1, expire: 2, weight: 6, 
+        blk: [15],
+        slots: 2,
+        shardUpgrades: {
+            natural: true,
+        },
+        bothShardUpgrades: {
+            blk: [25],
+            retain: true
+        },
+    }),
+    new Cards({
+        id: 'fleeting_shield', name: 'Fleeting Shield', type: 'tool', mana: 0, expire: 3, linger: 2, use: 2, 
+        blk: [9],
+        slots: 1,
+        shardUpgrades: {
+            natural: true,
+            retain: true
+        },
+    }),
+
+
+
+    /* Uncommon: */
     new Cards({
         id: 'fortress', name: 'Fortress', type: 'tool', mana: '?', tier: 'uncommon', weight: 7, 
         blk: [9],
@@ -2235,27 +2341,6 @@ const ALL_CARDS = [
         },
         iceShardUpgrades: {
             blk: [12],
-        },
-    }),
-    new Cards({
-        id: 'fleeting_shelter', name: 'Fleeting Shelter', type: 'tool', mana: 1, expire: 2, tier: 'uncommon', weight: 6, 
-        blk: [15],
-        slots: 2,
-        shardUpgrades: {
-            natural: true,
-        },
-        bothShardUpgrades: {
-            blk: [25],
-            retain: true
-        },
-    }),
-    new Cards({
-        id: 'fleeting_shield', name: 'Fleeting Shield', type: 'tool', mana: 0, expire: 3, linger: 2, use: 2, tier: 'uncommon', 
-        blk: [9],
-        slots: 1,
-        shardUpgrades: {
-            natural: true,
-            retain: true
         },
     }),
     new Cards({
@@ -3223,12 +3308,12 @@ const ALL_CARDS = [
     new Cards({
         id: 'vengeance', name: 'Vengeance', type: 'ability', mana: 1, tier: 'uncommon', weight: 8, 
         effects: [
-            {effect: 'retaliate', amount: .3, turns: -1}
+            {effect: 'retaliate', amount: .4, turns: -1}
         ],
         slots: 1,
         fireShardUpgrades: {
             effects: [
-                {effect: 'retaliate', amount: .5, turns: -1}
+                {effect: 'retaliate', amount: .6, turns: -1}
             ],
         },
         iceShardUpgrades: {
@@ -3521,6 +3606,17 @@ const ALL_CARDS = [
             ],
         },
     }),
+    new Cards({
+        id: 'renewal', name: 'Renewal', type: 'ability', mana: 1, tier: 'rare', courage: 4, 
+        abilities: [
+            {ability: 'expirex', baseTurns: -1, enabled: true, permanent: true}
+        ],
+        slots: 1,
+        shardUpgrades: {
+            natural: true
+        }
+    }),
+
 
     
     
@@ -4267,12 +4363,8 @@ export function AllCards() {
     }
 
     function buildLibrary() {
-        if(!game.libraryBuilt) {
-            game.libraryBuilt = true;
-            $('.library-panel .cards').empty();
-            for(let i = 0; i < this.getTotalCards(); i++) {
-                util.appendCard(this.getAllCards()[i], '.library-panel .cards');
-            }
+        for(let i = 0; i < this.getTotalCards(); i++) {
+            util.appendCard(this.getAllCards()[i], '.library-panel .cards');
         }
     }
 
@@ -4316,11 +4408,15 @@ export function Deck() {
         player.cardsOwned -= 1;
     }
 
-    function addCard(add) {
+    function addCard(add, guid = false) {
         let addCard = AllCards().cards.find(({ id }) => id === add);
         //let copiedCard = JSON.parse(JSON.stringify(addCard)); // necessary to create a deep copy
         let copiedCard = $.extend(true, {}, addCard);
-        copiedCard.guid = util.randString();
+        if(guid) {
+            copiedCard.guid = guid
+        } else {
+            copiedCard.guid = util.randString();
+        }
         
         // standard card description
         let desc = buildDescription(copiedCard);
@@ -4699,11 +4795,11 @@ export function Deck() {
                     let plural = abilities[e].turns > 1 ? 's' : '';
                     let turns = abilities[e].turns > 0 ? ' for ' + abilities[e].turns + ' turn' + plural : '';
                     let desc = '';
+                    let gameAbility = game.abilities.find(({ id }) => id === abilities[e].ability);
                     if((thisCard.type == 'ability') || ((thisCard.type == 'treasure' || thisCard.type == 'candy') && thisCard.abilities.length > 0)) {
-                        let gameAbility = game.abilities.find(({ id }) => id === abilities[e].ability);
                         desc = ' <span class="ability-description">(' + gameAbility.desc + ')</span>';
                     }
-                    abilitiesDesc += '<span class="ability-text">' + abilities[e].ability + '</span>' + desc + turns + '</div>';
+                    abilitiesDesc += '<span class="ability-text">' + gameAbility.name + '</span>' + desc + turns + '</div>';
                 }
             }
         }
@@ -4720,6 +4816,7 @@ export function Deck() {
                     let name = action.name;
                     let description = action.desc; // future use
                     let what = actions[e].what;
+                    let key = actions[e].key;
                     let whatCard = util.getCardById(what, AllCards().cards);
                     let whatName = what;
                     if(whatCard != undefined) whatName = whatCard.name;
@@ -4732,6 +4829,7 @@ export function Deck() {
                     let cardWith = actions[e].with;
                     if(id == 'stat') {
                         name = whatName.toUpperCase();
+                        name = key != undefined ? key.toUpperCase() + ' ' + name : name;
                         what = '';
                         if(typeof value === 'number' && value > 0) {
                             value = value != undefined ? ' +' + value : '';
@@ -4862,11 +4960,11 @@ export function Deck() {
         let rareIncrease = Math.round((game.floor - 2) * .3);
         if(rareIncrease < 0) rareIncrease = 0;
         game.rareChance += rareIncrease;
-        if(game.rareChance > 20) game.rareChance = 20; // rare chance caps at 20
+        if(game.rareChance > 30) game.rareChance = 30; // rare chance caps at 30
         let uncommonIncrease = Math.round((game.floor - 2) * .4);
         if(uncommonIncrease < 0) uncommonIncrease = 0;
         game.uncommonChance += uncommonIncrease;
-        if(game.uncommonChance > 50) game.uncommonChance = 50; // uncommon chance caps at 50
+        if(game.uncommonChance > 60) game.uncommonChance = 60; // uncommon chance caps at 60
 
         // get array of cards to choose from
         let addableCards = AllCards().getAddableCards(tier, type, false, game.toExclude);
@@ -5319,11 +5417,15 @@ export function CombatDeck() {
         }
     }
 
-    function addCard(add, combatDeck, part, player, shards = []) {
+    function addCard(add, combatDeck, part, player, shards = [], guid = false) {
         let addCard = AllCards().cards.find(({ id }) => id === add);
         //let copiedCard = JSON.parse(JSON.stringify(addCard)); // necessary to create a deep copy
         let copiedCard = $.extend(true, {}, addCard);
-        copiedCard.guid = util.randString();
+        if(guid) {
+            copiedCard.guid = guid
+        } else {
+            copiedCard.guid = util.randString();
+        }
        
         // standard description
         let desc = Deck().buildDescription(copiedCard);

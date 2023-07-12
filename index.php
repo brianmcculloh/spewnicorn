@@ -233,7 +233,7 @@
 
       <div class="all-cards icon-button tooltip" data-powertip="Cards in your deck"><span class="icon"></span><span class="counter"></span></div>
 
-      <div class="library icon-button tooltip" data-powertip="All possible cards"><span class="icon"></span><span class="counter"></span></div>
+      <div class="library icon-button tooltip" data-powertip="All possible cards, treasures, and candies"><span class="icon"></span><span class="counter"></span></div>
 
       <div class="settings icon-button tooltip" data-powertip="Settings"><span class="icon"></span></div>
 
@@ -474,6 +474,8 @@
 
         <div class="panic">panic: <span></span></div>
 
+        <div class="expirex">expirex: <span></span></div>
+
         
 
       </div>
@@ -505,6 +507,36 @@
 
         <div class="button done">Done</div>
         <div class="button view-map" data-game-panel="starting-room">View Map</div>
+
+      </div>
+
+    </div>
+
+    <div class="starting-treasure game-panel">
+
+      <h2>Choose a starting treasure</h2>
+
+      <div class="message">A gift for you! Surely this will aid you in your journey.</div>
+
+      <div class="panel">
+
+        <div class="starting-treasures shown buttons-wrapper"></div>
+
+        <div class="panel-part panel-top-left"></div>
+        <div class="panel-part panel-top-middle"></div>
+        <div class="panel-part panel-top-right"></div>
+        <div class="panel-part panel-middle-left"></div>
+        <div class="panel-part panel-middle-right"></div>
+        <div class="panel-part panel-bottom-left"></div>
+        <div class="panel-part panel-bottom-middle"></div>
+        <div class="panel-part panel-bottom-right"></div>
+
+      </div>
+
+      <div class="buttons-wrapper">
+
+        <div class="button done">Done</div>
+        <div class="button view-map" data-game-panel="starting-treasure">View Map</div>
 
       </div>
 
@@ -923,9 +955,21 @@
 
     <div class="library-panel cards-panel">
 
-      <h2>All Cards</h2>
-
       <div class="message"></div>
+
+      <h2>All Candies</h2>
+
+      <div class="library-loader">Loading candies...</div>
+
+      <div class="library-candies"></div>
+
+      <h2>All Treasures</h2>
+
+      <div class="library-loader">Loading treasures...</div>
+
+      <div class="library-treasures"></div>
+
+      <h2>All Cards</h2>
 
       <div class="library-loader">Loading card library...</div>
 

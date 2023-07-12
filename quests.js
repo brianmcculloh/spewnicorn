@@ -31,7 +31,7 @@ const ALL_QUESTS = [
                     {id: 'quickness', name: 'Quickness', desc: 'Gain 1 Speed'},
                     {id: 'thickness', name: 'Thickness', desc: 'Gain 2 Solid'},
                     {id: 'strength', name: 'Strength', desc: 'Gain 2 Might'},
-                    {id: 'wizardry', name: 'Wizardry', desc: 'Gain 3 Conjure'},
+                    {id: 'wizardry', name: 'Wizardry', desc: 'Gain 5 Lightning'},
                     {id: 'leave', name: 'Leave'}
                 ]
             },
@@ -332,25 +332,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight111', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight1111', name: 'Go Straight',},
-                                                    {id: 'left1111', name: 'Go Left',},
-                                                    {id: 'right1111', name: 'Go Right',},
+                                                    {id: 'straight1111', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1111', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1111', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left111', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight1112', name: 'Go Straight',},
-                                                    {id: 'left1112', name: 'Go Left',},
-                                                    {id: 'right1112', name: 'Go Right',},
+                                                    {id: 'straight1112', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1112', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1112', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right111', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight1113', name: 'Go Straight',},
-                                                    {id: 'left1113', name: 'Go Left',},
-                                                    {id: 'right1113', name: 'Go Right',},
+                                                    {id: 'straight1113', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1113', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1113', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -361,25 +361,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight112', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight1121', name: 'Go Straight',},
-                                                    {id: 'left1121', name: 'Go Left',},
-                                                    {id: 'right1121', name: 'Go Right',},
+                                                    {id: 'straight1121', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1121', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1121', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left112', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight1122', name: 'Go Straight',},
-                                                    {id: 'left1122', name: 'Go Left',},
-                                                    {id: 'right1122', name: 'Go Right',},
+                                                    {id: 'straight1122', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1122', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1122', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right112', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight1123', name: 'Go Straight',},
-                                                    {id: 'left1123', name: 'Go Left',},
-                                                    {id: 'right1123', name: 'Go Right',},
+                                                    {id: 'straight1123', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1123', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1123', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -390,25 +390,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight113', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight1131', name: 'Go Straight',},
-                                                    {id: 'left1131', name: 'Go Left',},
-                                                    {id: 'right1131', name: 'Go Right',},
+                                                    {id: 'straight1131', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1131', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1131', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left113', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight1132', name: 'Go Straight',},
-                                                    {id: 'left1132', name: 'Go Left',},
-                                                    {id: 'right1132', name: 'Go Right',},
+                                                    {id: 'straight1132', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1132', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1132', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right113', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight1133', name: 'Go Straight',},
-                                                    {id: 'left1133', name: 'Go Left',},
-                                                    {id: 'right1133', name: 'Go Right',},
+                                                    {id: 'straight1133', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1133', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1133', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -424,25 +424,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight121', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight1211', name: 'Go Straight',},
-                                                    {id: 'left1211', name: 'Go Left',},
-                                                    {id: 'right1211', name: 'Go Right',},
+                                                    {id: 'straight1211', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1211', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1211', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left121', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight1212', name: 'Go Straight',},
-                                                    {id: 'left1212', name: 'Go Left',},
-                                                    {id: 'right1212', name: 'Go Right',},
+                                                    {id: 'straight1212', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1212', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1212', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right121', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight1213', name: 'Go Straight',},
-                                                    {id: 'left1213', name: 'Go Left',},
-                                                    {id: 'right1213', name: 'Go Right',},
+                                                    {id: 'straight1213', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1213', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1213', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -453,25 +453,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight122', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight1221', name: 'Go Straight',},
-                                                    {id: 'left1221', name: 'Go Left',},
-                                                    {id: 'right1221', name: 'Go Right',},
+                                                    {id: 'straight1221', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1221', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1221', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left122', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight1222', name: 'Go Straight',},
-                                                    {id: 'left1222', name: 'Go Left',},
-                                                    {id: 'right1222', name: 'Go Right',},
+                                                    {id: 'straight1222', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1222', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1222', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right122', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight1223', name: 'Go Straight',},
-                                                    {id: 'left1223', name: 'Go Left',},
-                                                    {id: 'right1223', name: 'Go Right',},
+                                                    {id: 'straight1223', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1223', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1223', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -482,25 +482,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight123', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight1231', name: 'Go Straight',},
-                                                    {id: 'left1231', name: 'Go Left',},
-                                                    {id: 'right1231', name: 'Go Right',},
+                                                    {id: 'straight1231', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1231', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1231', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left123', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight1232', name: 'Go Straight',},
-                                                    {id: 'left1232', name: 'Go Left',},
-                                                    {id: 'right1232', name: 'Go Right',},
+                                                    {id: 'straight1232', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1232', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1232', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right123', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight1233', name: 'Go Straight',},
-                                                    {id: 'left1233', name: 'Go Left',},
-                                                    {id: 'right1233', name: 'Go Right',},
+                                                    {id: 'straight1233', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1233', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1233', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -516,25 +516,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight131', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight1311', name: 'Go Straight',},
-                                                    {id: 'left1311', name: 'Go Left',},
-                                                    {id: 'right1311', name: 'Go Right',},
+                                                    {id: 'straight1311', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1311', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1311', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left131', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight1312', name: 'Go Straight',},
-                                                    {id: 'left1312', name: 'Go Left',},
-                                                    {id: 'right1312', name: 'Go Right',},
+                                                    {id: 'straight1312', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1312', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1312', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right131', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight1313', name: 'Go Straight',},
-                                                    {id: 'left1313', name: 'Go Left',},
-                                                    {id: 'right1313', name: 'Go Right',},
+                                                    {id: 'straight1313', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1313', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1313', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -545,25 +545,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight132', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight1321', name: 'Go Straight',},
-                                                    {id: 'left1321', name: 'Go Left',},
-                                                    {id: 'right1321', name: 'Go Right',},
+                                                    {id: 'straight1321', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1321', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1321', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left132', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight1322', name: 'Go Straight',},
-                                                    {id: 'left1322', name: 'Go Left',},
-                                                    {id: 'right1322', name: 'Go Right',},
+                                                    {id: 'straight1322', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1322', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1322', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right132', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight1323', name: 'Go Straight',},
-                                                    {id: 'left1323', name: 'Go Left',},
-                                                    {id: 'right1323', name: 'Go Right',},
+                                                    {id: 'straight1323', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1323', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1323', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -574,25 +574,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight133', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight1331', name: 'Go Straight',},
-                                                    {id: 'left1331', name: 'Go Left',},
-                                                    {id: 'right1331', name: 'Go Right',},
+                                                    {id: 'straight1331', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1331', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1331', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left133', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight1332', name: 'Go Straight',},
-                                                    {id: 'left1332', name: 'Go Left',},
-                                                    {id: 'right1332', name: 'Go Right',},
+                                                    {id: 'straight1332', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1332', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1332', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right133', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight1333', name: 'Go Straight',},
-                                                    {id: 'left1333', name: 'Go Left',},
-                                                    {id: 'right1333', name: 'Go Right',},
+                                                    {id: 'straight1333', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left1333', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right1333', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -613,25 +613,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight211', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight2111', name: 'Go Straight',},
-                                                    {id: 'left2111', name: 'Go Left',},
-                                                    {id: 'right2111', name: 'Go Right',},
+                                                    {id: 'straight2111', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2111', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2111', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left211', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight2112', name: 'Go Straight',},
-                                                    {id: 'left2112', name: 'Go Left',},
-                                                    {id: 'right2112', name: 'Go Right',},
+                                                    {id: 'straight2112', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2112', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2112', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right211', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight2113', name: 'Go Straight',},
-                                                    {id: 'left2113', name: 'Go Left',},
-                                                    {id: 'right2113', name: 'Go Right',},
+                                                    {id: 'straight2113', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2113', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2113', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -642,25 +642,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight212', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight2121', name: 'Go Straight',},
-                                                    {id: 'left2121', name: 'Go Left',},
-                                                    {id: 'right2121', name: 'Go Right',},
+                                                    {id: 'straight2121', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2121', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2121', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left212', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight2122', name: 'Go Straight',},
-                                                    {id: 'left2122', name: 'Go Left',},
-                                                    {id: 'right2122', name: 'Go Right',},
+                                                    {id: 'straight2122', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2122', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2122', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right212', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight2123', name: 'Go Straight',},
-                                                    {id: 'left2123', name: 'Go Left',},
-                                                    {id: 'right2123', name: 'Go Right',},
+                                                    {id: 'straight2123', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2123', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2123', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -671,25 +671,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight213', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight2131', name: 'Go Straight',},
-                                                    {id: 'left2131', name: 'Go Left',},
-                                                    {id: 'right2131', name: 'Go Right',},
+                                                    {id: 'straight2131', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2131', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2131', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left213', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight2132', name: 'Go Straight',},
-                                                    {id: 'left2132', name: 'Go Left',},
-                                                    {id: 'right2132', name: 'Go Right',},
+                                                    {id: 'straight2132', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2132', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2132', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right213', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight2133', name: 'Go Straight',},
-                                                    {id: 'left2133', name: 'Go Left',},
-                                                    {id: 'right2133', name: 'Go Right',},
+                                                    {id: 'straight2133', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2133', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2133', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -705,25 +705,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight221', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight2211', name: 'Go Straight',},
-                                                    {id: 'left2211', name: 'Go Left',},
-                                                    {id: 'right2211', name: 'Go Right',},
+                                                    {id: 'straight2211', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2211', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2211', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left221', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight2212', name: 'Go Straight',},
-                                                    {id: 'left2212', name: 'Go Left',},
-                                                    {id: 'right2212', name: 'Go Right',},
+                                                    {id: 'straight2212', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2212', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2212', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right221', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight2213', name: 'Go Straight',},
-                                                    {id: 'left2213', name: 'Go Left',},
-                                                    {id: 'right2213', name: 'Go Right',},
+                                                    {id: 'straight2213', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2213', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2213', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -734,25 +734,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight222', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight2221', name: 'Go Straight',},
-                                                    {id: 'left2221', name: 'Go Left',},
-                                                    {id: 'right2221', name: 'Go Right',},
+                                                    {id: 'straight2221', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2221', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2221', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left222', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight2222', name: 'Go Straight',},
-                                                    {id: 'left2222', name: 'Go Left',},
-                                                    {id: 'right2222', name: 'Go Right',},
+                                                    {id: 'straight2222', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2222', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2222', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right222', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight2223', name: 'Go Straight',},
-                                                    {id: 'left2223', name: 'Go Left',},
-                                                    {id: 'right2223', name: 'Go Right',},
+                                                    {id: 'straight2223', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2223', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2223', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -763,25 +763,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight223', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight2231', name: 'Go Straight',},
-                                                    {id: 'left2231', name: 'Go Left',},
-                                                    {id: 'right2231', name: 'Go Right',},
+                                                    {id: 'straight2231', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2231', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2231', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left223', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight2232', name: 'Go Straight',},
-                                                    {id: 'left2232', name: 'Go Left',},
-                                                    {id: 'right2232', name: 'Go Right',},
+                                                    {id: 'straight2232', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2232', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2232', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right223', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight2233', name: 'Go Straight',},
-                                                    {id: 'left2233', name: 'Go Left',},
-                                                    {id: 'right2233', name: 'Go Right',},
+                                                    {id: 'straight2233', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2233', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2233', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -797,25 +797,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight231', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight2311', name: 'Go Straight',},
-                                                    {id: 'left2311', name: 'Go Left',},
-                                                    {id: 'right2311', name: 'Go Right',},
+                                                    {id: 'straight2311', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2311', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2311', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left231', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight2312', name: 'Go Straight',},
-                                                    {id: 'left2312', name: 'Go Left',},
-                                                    {id: 'right2312', name: 'Go Right',},
+                                                    {id: 'straight2312', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2312', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2312', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right231', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight2313', name: 'Go Straight',},
-                                                    {id: 'left2313', name: 'Go Left',},
-                                                    {id: 'right2313', name: 'Go Right',},
+                                                    {id: 'straight2313', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2313', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2313', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -826,25 +826,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight232', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight2321', name: 'Go Straight',},
-                                                    {id: 'left2321', name: 'Go Left',},
-                                                    {id: 'right2321', name: 'Go Right',},
+                                                    {id: 'straight2321', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2321', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2321', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left232', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight2322', name: 'Go Straight',},
-                                                    {id: 'left2322', name: 'Go Left',},
-                                                    {id: 'right2322', name: 'Go Right',},
+                                                    {id: 'straight2322', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2322', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2322', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right232', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight2323', name: 'Go Straight',},
-                                                    {id: 'left2323', name: 'Go Left',},
-                                                    {id: 'right2323', name: 'Go Right',},
+                                                    {id: 'straight2323', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2323', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2323', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -855,25 +855,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight233', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight2331', name: 'Go Straight',},
-                                                    {id: 'left2331', name: 'Go Left',},
-                                                    {id: 'right2331', name: 'Go Right',},
+                                                    {id: 'straight2331', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2331', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2331', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left233', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight2332', name: 'Go Straight',},
-                                                    {id: 'left2332', name: 'Go Left',},
-                                                    {id: 'right2332', name: 'Go Right',},
+                                                    {id: 'straight2332', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2332', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2332', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right233', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight2333', name: 'Go Straight',},
-                                                    {id: 'left2333', name: 'Go Left',},
-                                                    {id: 'right2333', name: 'Go Right',},
+                                                    {id: 'straight2333', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left2333', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right2333', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -894,25 +894,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight311', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight3111', name: 'Go Straight',},
-                                                    {id: 'left3111', name: 'Go Left',},
-                                                    {id: 'right3111', name: 'Go Right',},
+                                                    {id: 'straight3111', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3111', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3111', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left311', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight3112', name: 'Go Straight',},
-                                                    {id: 'left3112', name: 'Go Left',},
-                                                    {id: 'right3112', name: 'Go Right',},
+                                                    {id: 'straight3112', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3112', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3112', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right311', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight3113', name: 'Go Straight',},
-                                                    {id: 'left3113', name: 'Go Left',},
-                                                    {id: 'right3113', name: 'Go Right',},
+                                                    {id: 'straight3113', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3113', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3113', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -923,25 +923,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight312', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight3121', name: 'Go Straight',},
-                                                    {id: 'left3121', name: 'Go Left',},
-                                                    {id: 'right3121', name: 'Go Right',},
+                                                    {id: 'straight3121', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3121', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3121', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left312', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight3122', name: 'Go Straight',},
-                                                    {id: 'left3122', name: 'Go Left',},
-                                                    {id: 'right3122', name: 'Go Right',},
+                                                    {id: 'straight3122', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3122', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3122', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right312', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight3123', name: 'Go Straight',},
-                                                    {id: 'left3123', name: 'Go Left',},
-                                                    {id: 'right3123', name: 'Go Right',},
+                                                    {id: 'straight3123', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3123', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3123', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -952,25 +952,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight313', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight3131', name: 'Go Straight',},
-                                                    {id: 'left3131', name: 'Go Left',},
-                                                    {id: 'right3131', name: 'Go Right',},
+                                                    {id: 'straight3131', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3131', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3131', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left313', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight3132', name: 'Go Straight',},
-                                                    {id: 'left3132', name: 'Go Left',},
-                                                    {id: 'right3132', name: 'Go Right',},
+                                                    {id: 'straight3132', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3132', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3132', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right313', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight3133', name: 'Go Straight',},
-                                                    {id: 'left3133', name: 'Go Left',},
-                                                    {id: 'right3133', name: 'Go Right',},
+                                                    {id: 'straight3133', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3133', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3133', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -986,25 +986,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight321', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight3211', name: 'Go Straight',},
-                                                    {id: 'left3211', name: 'Go Left',},
-                                                    {id: 'right3211', name: 'Go Right',},
+                                                    {id: 'straight3211', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3211', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3211', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left321', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight3212', name: 'Go Straight',},
-                                                    {id: 'left3212', name: 'Go Left',},
-                                                    {id: 'right3212', name: 'Go Right',},
+                                                    {id: 'straight3212', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3212', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3212', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right321', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight3213', name: 'Go Straight',},
-                                                    {id: 'left3213', name: 'Go Left',},
-                                                    {id: 'right3213', name: 'Go Right',},
+                                                    {id: 'straight3213', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3213', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3213', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -1015,25 +1015,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight322', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight3221', name: 'Go Straight',},
-                                                    {id: 'left3221', name: 'Go Left',},
-                                                    {id: 'right3221', name: 'Go Right',},
+                                                    {id: 'straight3221', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3221', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3221', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left322', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight3222', name: 'Go Straight',},
-                                                    {id: 'left3222', name: 'Go Left',},
-                                                    {id: 'right3222', name: 'Go Right',},
+                                                    {id: 'straight3222', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3222', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3222', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right322', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight3223', name: 'Go Straight',},
-                                                    {id: 'left3223', name: 'Go Left',},
-                                                    {id: 'right3223', name: 'Go Right',},
+                                                    {id: 'straight3223', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3223', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3223', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -1044,25 +1044,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight323', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight3231', name: 'Go Straight',},
-                                                    {id: 'left3231', name: 'Go Left',},
-                                                    {id: 'right3231', name: 'Go Right',},
+                                                    {id: 'straight3231', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3231', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3231', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left323', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight3232', name: 'Go Straight',},
-                                                    {id: 'left3232', name: 'Go Left',},
-                                                    {id: 'right3232', name: 'Go Right',},
+                                                    {id: 'straight3232', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3232', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3232', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right323', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight3233', name: 'Go Straight',},
-                                                    {id: 'left3233', name: 'Go Left',},
-                                                    {id: 'right3233', name: 'Go Right',},
+                                                    {id: 'straight3233', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3233', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3233', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -1078,25 +1078,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight331', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight3311', name: 'Go Straight',},
-                                                    {id: 'left3311', name: 'Go Left',},
-                                                    {id: 'right3311', name: 'Go Right',},
+                                                    {id: 'straight3311', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3311', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3311', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left331', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight3312', name: 'Go Straight',},
-                                                    {id: 'left3312', name: 'Go Left',},
-                                                    {id: 'right3312', name: 'Go Right',},
+                                                    {id: 'straight3312', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3312', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3312', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right331', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight3313', name: 'Go Straight',},
-                                                    {id: 'left3313', name: 'Go Left',},
-                                                    {id: 'right3313', name: 'Go Right',},
+                                                    {id: 'straight3313', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3313', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3313', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -1107,25 +1107,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight332', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight3321', name: 'Go Straight',},
-                                                    {id: 'left3321', name: 'Go Left',},
-                                                    {id: 'right3321', name: 'Go Right',},
+                                                    {id: 'straight3321', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3321', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3321', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left332', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight3322', name: 'Go Straight',},
-                                                    {id: 'left3322', name: 'Go Left',},
-                                                    {id: 'right3322', name: 'Go Right',},
+                                                    {id: 'straight3322', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3322', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3322', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right332', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight3323', name: 'Go Straight',},
-                                                    {id: 'left3323', name: 'Go Left',},
-                                                    {id: 'right3323', name: 'Go Right',},
+                                                    {id: 'straight3323', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3323', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3323', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
@@ -1136,25 +1136,25 @@ const ALL_QUESTS = [
                                         options: [
                                             {id: 'straight333', name: 'Go Straight',
                                                 options: [
-                                                    {id: 'straight3331', name: 'Go Straight',},
-                                                    {id: 'left3331', name: 'Go Left',},
-                                                    {id: 'right3331', name: 'Go Right',},
+                                                    {id: 'straight3331', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3331', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3331', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'left333', name: 'Go Left',
                                                 options: [
-                                                    {id: 'straight3332', name: 'Go Straight',},
-                                                    {id: 'left3332', name: 'Go Left',},
-                                                    {id: 'right3332', name: 'Go Right',},
+                                                    {id: 'straight3332', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3332', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3332', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },
                                             {id: 'right333', name: 'Go Right',
                                                 options: [
-                                                    {id: 'straight3333', name: 'Go Straight',},
-                                                    {id: 'left3333', name: 'Go Left',},
-                                                    {id: 'right3333', name: 'Go Right',},
+                                                    {id: 'straight3333', name: 'Go Straight', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'left3333', name: 'Go Left', options: [{id: 'leave', name: 'You find nothing and exit'}]},
+                                                    {id: 'right3333', name: 'Go Right', options: [{id: 'leave', name: 'You find nothing and exit'}]},
                                                     {id: 'leave', name: 'Leave'}
                                                 ]
                                             },

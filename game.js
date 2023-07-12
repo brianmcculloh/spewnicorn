@@ -64,7 +64,7 @@ const ALL_EFFECTS = [
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'might', amount: 5, turns: -1}
     // hex      {effect: 'might', amount: -8, hex: true}
-    {id: 'might', name: 'Might', desc: 'Attack damage points', x: -288, y: -4960, sound: 'effect30'},
+    {id: 'might', name: 'Might', desc: 'Your attack cards do x extra damage', x: -288, y: -4960, sound: 'effect30'},
 
     // Usage:
     // creature {base: 1.1, current: 0, temp: 0, turns: -1, persist: false}, // value should range from 0 (0%) to 2 (200%) - haven't tested higher
@@ -237,7 +237,7 @@ const ALL_EFFECTS = [
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'lightning', amount: 5, turns: -1}
     // hex      {effect: 'lightning', amount: -8, hex: true}
-    {id: 'lightning', name: 'Lightning', desc: 'Magic damage points', x: -160, y: -6496, sound: 'effect37'},
+    {id: 'lightning', name: 'Lightning', desc: 'Your magic rainbow does x extra damage', x: -160, y: -6496, sound: 'effect37'},
 
     // Usage:
     // creature {base: 1.1, current: 0, temp: 0, turns: -1, persist: false}, // value should range from 0 (0%) to 2 (200%) - haven't tested higher
@@ -313,6 +313,11 @@ const ALL_ABILITIES = [
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'panic', baseTurns: -1, enabled: true}
     {id: 'panic', name: 'Panic', desc: 'Deal damage + block but lose block', x: -416, y: -7136, sound: 'effect21'},
+
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'expirex', baseTurns: -1, enabled: true}
+    {id: 'expirex', name: 'Expire-X&trade;', desc: 'Cards no longer expire', x: -480, y: -4544},
 
 ];
 /*********************************************
@@ -401,8 +406,8 @@ export default function Game() {
     let treasureChance = 0; // TODO: set to 0
     let candyChance = 0; // TODO: set to 0
     let shardChance = 0;
-    let uncommonChance = 20;
-    let rareChance = 0;
+    let uncommonChance = 30;
+    let rareChance = 5;
     let legendaryChance = 0;
     let critChance = 0;
     let attackCardsPlayed = 0;

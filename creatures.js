@@ -57,6 +57,7 @@ class Creatures {
         stockpile = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         sift = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         panic = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
+        expirex = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         
         // monster specific
         id, 
@@ -128,6 +129,7 @@ class Creatures {
         this.stockpile = stockpile;
         this.sift = sift;
         this.panic = panic;
+        this.expirex = expirex;
         this.abilitiesDom = '';
 
         // monster specific
@@ -343,10 +345,10 @@ const ALL_MONSTERS = [
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'punch', amount: -.2, turns: 1, hex: true}
+                {effect: 'punch', amount: -.1, turns: 1, hex: true}
             ]},
             {effects: [
-                {effect: 'might', amount: 2, turns: 2},
+                {effect: 'might', amount: 1, turns: 3},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'junk', to: 'drawCards'},
@@ -366,7 +368,7 @@ const ALL_MONSTERS = [
                 {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
             ]},
         ],
-        stout: {base: 3, current: 0, temp: [], turns: -1},
+        stout: {base: 2, current: 0, temp: [], turns: -1},
     }),
     new Creatures({
         type: 'monster',
@@ -543,13 +545,13 @@ const ALL_MONSTERS = [
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'rainbow', amount: -5, turns: -1, hex: true},
-                {effect: 'conjure', amount: -2, turns: -1, hex: true},
-                {effect: 'sorcery', amount: -.5, turns: -1, hex: true},
-                {effect: 'summon', amount: -5, turns: -1, hex: true},
-                {effect: 'wield', amount: -1, turns: -1, hex: true},
-                {effect: 'enchanter', amount: -5, turns: -1, hex: true},
-                {effect: 'arcane', amount: -5, turns: -1, hex: true}
+                {effect: 'rainbow', amount: -5, turns: 5, hex: true},
+                {effect: 'conjure', amount: -2, turns: 5, hex: true},
+                {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
+                {effect: 'summon', amount: -5, turns: 5, hex: true},
+                {effect: 'wield', amount: -1, turns: 5, hex: true},
+                {effect: 'enchanter', amount: -5, turns: 5, hex: true},
+                {effect: 'arcane', amount: -5, turns: 5, hex: true}
             ]},
             {dmg: [8, 8]},
             {blk: [10], dmg: [10]},
@@ -862,7 +864,7 @@ const ALL_MONSTERS = [
         health: {base: 400, current: 0, max: 400},
         tier: 1,
         category: 'boss',
-        pattern: 'random',
+        pattern: 'fixed',
         moveSet: [
             {effects: [
                 {effect: 'rainbow', amount: -5, turns: 3, hex: true},
@@ -870,7 +872,7 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'junk', to: 'discardCards'},
-            ], dmg: [3, 3, 3, 3, 3, 3], p: .2},
+            ], dmg: [3, 3, 3, 3, 3, 3]},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 2, hex: true},
                 {effect: 'enchanter', amount: -5, turns: 2, hex: true},
@@ -878,27 +880,26 @@ const ALL_MONSTERS = [
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'junk', to: 'discardCards'},
-            ], p: .2},
+            ]},
             {effects: [
                 {effect: 'summon', amount: -5, turns: 3, hex: true},
                 {effect: 'wield', amount: -1, turns: 2, hex: true},
             ],
             actions: [
-                {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'debris', to: 'discardCards'},
-            ], dmg: [5, 5, 5, 5, 5], p: .2},
+            ], dmg: [5, 5, 5, 5, 5]},
             {effects: [
                 {effect: 'enchanter', amount: -5, turns: 2, hex: true},
                 {effect: 'arcane', amount: -5, turns: 2, hex: true}
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'debris', to: 'discardCards'},
-            ], dmg: [20], p: .2},
-            {dmg: [8, 8, 8, 8], p: .1},
+            ], dmg: [20]},
+            {dmg: [8, 8, 8, 8]},
             {effects: [
-                {effect: 'might', amount: 10, turns: 1},
+                {effect: 'might', amount: 5, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
-            ], dmg: [9, 9], p: .1},
+            ], dmg: [9, 9]},
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
@@ -1462,6 +1463,7 @@ export function Player() {
         speed: {base: 5, current: 0, temp: [], turns: 0}, // TODO: reset base to 5
         mana: {base: 3, current: 0, temp: 0}, // TODO: reset to base 3
         rainbow: {base: 0, current: 0, temp: [], turns: 0, max: 20, type: 'rainbow'},
+
     });
 
     function dead(player) {

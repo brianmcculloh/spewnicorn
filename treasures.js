@@ -355,7 +355,7 @@ const ALL_CANDY= [
         id:'chocolate_fudge', 
         name: 'Chocolate Fudge', 
         effects: [
-            {effect: 'solid', amount: 2, turns: -1}
+            {effect: 'solid', amount: 3, turns: -1}
         ],
         x: -384,
         y: -3776
@@ -364,7 +364,7 @@ const ALL_CANDY= [
         id:'white_fudge', 
         name: 'White Fudge', 
         effects: [
-            {effect: 'solid', amount: 10, turns: 1}
+            {effect: 'solid', amount: 15, turns: 1}
         ],
         x: -352,
         y: -3776
@@ -373,7 +373,7 @@ const ALL_CANDY= [
         id:'chocolate_bar', 
         name: 'Chocolate Bar', 
         effects: [
-            {effect: 'might', amount: 1, turns: -1}
+            {effect: 'might', amount: 2, turns: -1}
         ],
         x: -320,
         y: -834
@@ -382,7 +382,7 @@ const ALL_CANDY= [
         id:'white_chocolate_bar', 
         name: 'White Chocolate Bar', 
         effects: [
-            {effect: 'might', amount: 5, turns: 1}
+            {effect: 'might', amount: 10, turns: 1}
         ],
         x: -320,
         y: -962
@@ -391,7 +391,7 @@ const ALL_CANDY= [
         id:'dark_truffle', 
         name: 'Dark Truffle', 
         effects: [
-            {effect: 'conjure', amount: 1, turns: -1}
+            {effect: 'conjure', amount: 3, turns: -1}
         ],
         x: -418,
         y: -4386
@@ -400,7 +400,7 @@ const ALL_CANDY= [
         id:'white_truffle', 
         name: 'White Truffle', 
         effects: [
-            {effect: 'conjure', amount: 8, turns: 1}
+            {effect: 'conjure', amount: 15, turns: 1}
         ],
         x: -418,
         y: -4514
@@ -421,7 +421,7 @@ const ALL_CANDY= [
         name: 'Sour Bears', 
         weight: 4,
         effects: [
-            {effect: 'vex', amount: 1, turns: -1}
+            {effect: 'vex', amount: 2, turns: -1}
         ],
         x: -96,
         y: -3458
@@ -451,7 +451,7 @@ const ALL_CANDY= [
         id:'strawberry_gobstopper', 
         name: 'Strawberry Gobstopper', 
         effects: [
-            {effect: 'lightning', amount: 2, turns: -1}
+            {effect: 'lightning', amount: 3, turns: -1}
         ],
         x: -416,
         y: -2496
@@ -460,7 +460,7 @@ const ALL_CANDY= [
         id:'blueberry_gobstopper', 
         name: 'Blueberry Gobstopper', 
         effects: [
-            {effect: 'lightning', amount: 10, turns: 1}
+            {effect: 'lightning', amount: 15, turns: 1}
         ],
         x: -416,
         y: -2432
@@ -497,6 +497,7 @@ class Treasure {
        type = 'treasure',
        name,
        desc,
+       owned = false,
        weight = 5,
        tier = 1,
        courage = 9,
@@ -506,13 +507,14 @@ class Treasure {
        actions = [],
        x = 0,
        y = 0,
-       permanent = false
+       permanent = false,
+       starting = false
     }) {
         this.id = id;
         this.type = type;
         this.name = name;
         this.desc = desc;
-        this.owned = false;
+        this.owned = owned;
         this.weight = weight;
         this.tier = tier;
         this.courage = courage;
@@ -523,6 +525,7 @@ class Treasure {
         this.x = x;
         this.y = y;
         this.permanent = permanent;
+        this.starting = starting;
     }
 }
 
@@ -545,6 +548,13 @@ const ALL_TREASURES = [
         // whether the treasure should get activated only once when first obtained or every combat
         permanent: false,
 
+        // denotes the treasure is in the starting treasure pool
+        starting: true,
+
+        // whether this treasure is already owned - this is a hacky way to remove a treasure from the possible treasures pool
+        // so treasures which are explictly added by id from events typically are marked owned by default even if they are not yet owned
+        owned: false,
+
         // optional: when the treasure should fire
         trigger: {counter: 0, when: 'cardsPlayed', at: 3, per: 'turn', once: false, activated: false},
         trigger: {counter: 0, when: 'attackCardsPlayed', at: 10, per: 'combat', once: false, activated: false},
@@ -564,6 +574,130 @@ const ALL_TREASURES = [
         ]
     }),
     */
+
+    // STARTING
+    new Treasure({
+        id:'gift_of_healing', 
+        name: 'Gift Of Healing',
+        permanent: true,
+        starting: true,
+        owned: true,
+        effects: [
+            {effect: 'heal', base: 5}
+        ],
+        x: -416,
+        y: -3104
+    }),
+    new Treasure({
+        id:'gift_of_strength', 
+        name: 'Gift Of Strength',
+        permanent: true,
+        starting: true,
+        owned: true,
+        effects: [
+            {effect: 'might', base: 2}
+        ],
+        x: -416,
+        y: -2912
+    }),
+    new Treasure({
+        id:'gift_of_covering', 
+        name: 'Gift Of Covering',
+        permanent: true,
+        starting: true,
+        owned: true,
+        effects: [
+            {effect: 'muster', base: 2}
+        ],
+        x: -416,
+        y: -3200
+    }),
+    new Treasure({
+        id:'gift_of_protection', 
+        name: 'Gift Of Protection',
+        permanent: true,
+        starting: true,
+        owned: true,
+        effects: [
+            {effect: 'solid', base: 2}
+        ],
+        x: -416,
+        y: -3040
+    }),
+    new Treasure({
+        id:'gift_of_conjuring', 
+        name: 'Gift Of Conjuring',
+        permanent: true,
+        starting: true,
+        owned: true,
+        effects: [
+            {effect: 'conjure', base: 2}
+        ],
+        x: -416,
+        y: -2976
+    }),
+    new Treasure({
+        id:'gift_of_summoning', 
+        name: 'Gift Of Summoning',
+        permanent: true,
+        starting: true,
+        owned: true,
+        effects: [
+            {effect: 'summon', base: 2}
+        ],
+        x: -416,
+        y: -3008
+    }),
+    new Treasure({
+        id:'gift_of_power', 
+        name: 'Gift Of Power',
+        permanent: true,
+        starting: true,
+        owned: true,
+        effects: [
+            {effect: 'lightning', base: 3}
+        ],
+        x: -416,
+        y: -3072
+    }),
+    new Treasure({
+        id:'gift_of_longevity', 
+        name: 'Gift Of Longevity',
+        permanent: true,
+        starting: true,
+        owned: true,
+        actions: [
+            {action: 'stat', what: 'health', key: 'max', value: 8},
+            {action: 'stat', what: 'health', key: 'current', value: 8}
+        ],
+        x: -416,
+        y: -3168
+    }),
+    new Treasure({
+        id:'gift_of_the_craftsman', 
+        name: 'Gift Of The Craftsman',
+        permanent: true,
+        starting: true,
+        owned: true,
+        effects: [
+            {effect: 'craft', base: 2}
+        ],
+        x: -416,
+        y: -2880
+    }),
+    new Treasure({
+        id:'gift_of_magic', 
+        name: 'Gift Of Magic',
+        permanent: true,
+        starting: true,
+        owned: true,
+        actions: [
+            {action: 'stat', what: 'rainbow', key: 'base', value: 5},
+        ],
+        x: -416,
+        y: -2944
+    }),
+    
 
     // TIER 1
     new Treasure({
@@ -721,7 +855,7 @@ const ALL_TREASURES = [
         weight: 7,
         permanent: true,
         effects: [
-            {effect: 'retaliate', base: .4}
+            {effect: 'retaliate', base: .5}
         ],
         x: -0,
         y: -5344
@@ -761,6 +895,18 @@ const ALL_TREASURES = [
         ],
         x: -192,
         y: -1632
+    }),
+    new Treasure({
+        id:'library_card', 
+        name: 'Library Card', 
+        courage: 6,
+        weight: 8,
+        permanent: false,
+        abilities: [
+            {ability: 'expirex', baseTurns: -1, enabled: true, permanent: true}
+        ],
+        x: -64,
+        y: -384
     }),
     new Treasure({
         id:'amulet', 
@@ -842,6 +988,30 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'cardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -64,
         y: -320
+    }),
+    new Treasure({
+        id:'frozen_knife', 
+        name: "Frozen Knife", 
+        tier: 1,
+        permanent: true,
+        actions: [
+            {action: 'addCard', value: 10, what: 'fleeting_slash', to: 'handCards'}
+        ],
+        trigger: {counter: 0, when: 'turns', at: 4, per: 'combat', once: false, activated: false},
+        x: -448,
+        y: -9856
+    }),  
+    new Treasure({
+        id:'vibrating_shiv', 
+        name: "Vibrating Shiv", 
+        tier: 1,
+        permanent: true,
+        actions: [
+            {action: 'addCard', value: 1, what: 'lingering_slash', to: 'handCards'}
+        ],
+        trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
+        x: -352,
+        y: -9856
     }), 
     
 
@@ -908,7 +1078,7 @@ const ALL_TREASURES = [
         weight: 3,
         permanent: true,
         effects: [
-            {effect: 'momentum', base: 1}
+            {effect: 'momentum', base: 2}
         ],
         x: -320,
         y: -5600
@@ -920,7 +1090,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 4,
         effects: [
-            {effect: 'vex', amount: 1, turns: -1}
+            {effect: 'vex', amount: 3, turns: -1}
         ],
         x: -320,
         y: -766
@@ -1180,6 +1350,19 @@ const ALL_TREASURES = [
         x: -480,
         y: -12352
     }), 
+    new Treasure({
+        id:'myriad_staff', 
+        name: "Myriad Staff", 
+        courage: 15,
+        tier: 2,
+        weight: 1,
+        actions: [
+            {action: 'addCard', value: 1, what: 'unstable_staff', to: 'drawCards', permanent: true}
+        ],
+        trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: true, activated: false},
+        x: -32,
+        y: -10208
+    }), 
 
 
     // TIER 3
@@ -1365,8 +1548,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 2},
-            {action: 'stat', what: 'health', key: 'base', value: -7}
+            {action: 'stat', what: 'mana', key: 'base', value: 2}
         ],
         x: -160,
         y: -14080
@@ -1379,8 +1561,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 2},
-            {action: 'stat', what: 'sparkle', key: 'current', value: -5}
+            {action: 'stat', what: 'mana', key: 'base', value: 2}
         ],
         x: -256,
         y: -14112
@@ -1393,8 +1574,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 2},
-            {action: 'stat', what: 'shimmer', key: 'current', value: -5}
+            {action: 'stat', what: 'mana', key: 'base', value: 2}
         ],
         x: -448,
         y: -14048
@@ -1407,8 +1587,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 2},
-            {action: 'stat', what: 'aura', key: 'current', value: -5}
+            {action: 'stat', what: 'mana', key: 'base', value: 2}
         ],
         x: -384,
         y: -14144
@@ -1421,8 +1600,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 2},
-            {action: 'stat', what: 'courage', value: -7}
+            {action: 'stat', what: 'mana', key: 'base', value: 2}
         ],
         x: -256,
         y: -14080
@@ -1435,8 +1613,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 2},
-            {action: 'stat', what: 'sparkle', key: 'current', value: -5}
+            {action: 'stat', what: 'speed', key: 'base', value: 2}
         ],
         x: -192,
         y: -13120
@@ -1449,8 +1626,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 2},
-            {action: 'stat', what: 'shimmer', key: 'current', value: -5}
+            {action: 'stat', what: 'speed', key: 'base', value: 2}
         ],
         x: -320,
         y: -13120
@@ -1463,8 +1639,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 2},
-            {action: 'stat', what: 'aura', key: 'current', value: -5}
+            {action: 'stat', what: 'speed', key: 'base', value: 2}
         ],
         x: -96,
         y: -13088
@@ -1477,11 +1652,69 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 2},
-            {action: 'stat', what: 'courage', value: -7}
+            {action: 'stat', what: 'speed', key: 'base', value: 2}
         ],
         x: -160,
         y: -13088
+    }),
+
+
+    /* unaddable */
+    new Treasure({
+        id:'artisanal_boots', 
+        name: "Artisanal Boots", 
+        courage: 15,
+        tier: 3,
+        weight: 4,
+        permanent: true,
+        owned: true,
+        actions: [
+            {action: 'stat', what: 'speed', key: 'base', value: 1}
+        ],
+        x: -32,
+        y: -12704
+    }),
+    new Treasure({
+        id:'hartisanal_chestplate', 
+        name: "Artisanal Chestplate", 
+        courage: 15,
+        tier: 3,
+        weight: 4,
+        permanent: true,
+        owned: true,
+        effects: [
+            {effect: 'solid', base: 2}
+        ],
+        x: -192,
+        y: -12672
+    }),
+    new Treasure({
+        id:'artisanal_sword', 
+        name: "Artisanal Sword", 
+        courage: 15,
+        tier: 3,
+        weight: 4,
+        permanent: true,
+        owned: true,
+        effects: [
+            {effect: 'might', base: 2}
+        ],
+        x: -416,
+        y: -8800
+    }),
+    new Treasure({
+        id:'artisanal_hat', 
+        name: "Artisanal Hat", 
+        courage: 15,
+        tier: 3,
+        weight: 4,
+        permanent: true,
+        owned: true,
+        effects: [
+            {effect: 'lightning', base: 5}
+        ],
+        x: -352,
+        y: -12640
     }),
 
     
