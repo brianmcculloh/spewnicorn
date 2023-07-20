@@ -589,7 +589,7 @@ body.game-started #splash .panel .difficulty {
 .booster-pack span {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .6) calc(5702px * .6);
+	background-size:calc(1620px * .6) calc(6962px * .6);
 	width:calc(50px * .6);
 	height:calc(50px * .6);
 	display:flex;
@@ -1180,8 +1180,8 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 }
 .map h2 {
 	position: absolute;
-    left: calc(50% - 80px);
-    top: -50px;
+    left: calc(50% - 120px);
+    top: -55px;
 }
 .start-arrow {
 	position:absolute;
@@ -1820,7 +1820,7 @@ body.debug .status-toggle {
 	background-size:cover;
 	background-position:center center;
 	background-repeat:no-repeat;
-	background-image:url('./images/victory.png');
+	background-image:url('./images/gate-screen.png');
 }
 .gate-screen h2 {
 	margin-bottom:20px;
@@ -2024,7 +2024,7 @@ body.arena .monster-panel {
 .monster .sprite {
 	background-image:url('./images/monsters_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1250px * 1) calc(4950px * 1);
+	background-size:calc(1660px * 1) calc(11783px * 1);
 	position:absolute;
 	z-index:2;
 	transition:all .3s;
@@ -2079,9 +2079,9 @@ body.arena .monster-panel {
 	height:calc(245px * 1);
 }
 .monster.void_fairy .sprite {
-	background-position:calc(-270px * 1) calc(-219px * 1);
-	width:calc(164px * 1);
-	height:calc(250px * 1);
+	background-position:calc(-1287px * 1) calc(-3748px * 1);
+	width:calc(127px * 1);
+	height:calc(248px * 1);
 }
 .monster.enchantress .sprite {
 	background-position:calc(-459px * 1) calc(-219px * 1);
@@ -2109,14 +2109,14 @@ body.arena .monster-panel {
 	height:calc(311px * 1);
 }
 .monster.red_dragon .sprite {
-	background-position:0 calc(-793px * 1);
-	width:calc(420px * 1);
-	height:calc(407px * 1);
+	background-position:calc(-866px * 1) calc(-4066px * 1);
+	width:calc(643px * 1);
+	height:calc(665px * 1);
 }
 .monster.green_dragon .sprite {
-	background-position:calc(-413px * 1) calc(-827px * 1);
-	width:calc(445px * 1);
-	height:calc(340px * 1);
+	background-position:calc(-866px * 1) calc(-4370px * 1);
+	width:calc(645px * 1);
+	height:calc(671px * 1);
 }
 .monster.cyberskull .sprite {
 	background-position:calc(-852px * 1) calc(-840px * 1);
@@ -2178,6 +2178,260 @@ body.arena .monster-panel {
 	width:calc(895px * 1);
 	height:calc(655px * 1);
 }
+.monster.frost_pixie .sprite {
+	background-position:calc(-690px * 1) calc(-2685px * 1);
+	width:calc(265px * 1);
+	height:calc(228px * 1);
+}
+.monster.flame_pixie .sprite {
+	background-position:calc(-716px * 1) calc(-2935px * 1);
+	width:calc(359px * 1);
+	height:calc(320px * 1);
+}
+.monster.flame_mummy .sprite {
+	background-position:calc(-955px * 1) calc(-2715px * 1);
+	width:calc(121px * 1);
+	height:calc(219px * 1);
+}
+.monster.frost_mummy .sprite {
+	background-position:calc(-1076px * 1) calc(-2715px * 1);
+	width:calc(121px * 1);
+	height:calc(219px * 1);
+}
+.monster.flame_stone_walker .sprite {
+	background-position:calc(-1081px * 1) calc(-2943px * 1);
+	width:calc(277px * 1);
+	height:calc(218px * 1);
+}
+.monster.frost_stone_walker .sprite {
+	background-position:calc(-709px * 1) calc(-3255px * 1);
+	width:calc(287px * 1);
+	height:calc(283px * 1);
+}
+.monster.flame_sludge .sprite {
+	background-position:calc(-691px * 1) calc(-3568px * 1);
+	width:calc(275px * 1);
+	height:calc(180px * 1);
+}
+.monster.frost_sludge .sprite {
+	background-position:calc(-968px * 1) calc(-3577px * 1);
+	width:calc(259px * 1);
+	height:calc(162px * 1);
+}
+.monster.flame_imp .sprite {
+	background-position:calc(-422px * 1) calc(-843px * 1);
+	width:calc(425px * 1);
+	height:calc(324px * 1);
+}
+.monster.frost_imp .sprite {
+	background-position:0 calc(-843px * 1);
+	width:calc(425px * 1);
+	height:calc(324px * 1);
+}
+.monster.flame_shatter .sprite {
+	background-position:calc(-997px * 1) calc(-3194px * 1);
+	width:calc(353px * 1);
+	height:calc(324px * 1);
+}
+.monster.frost_shatter .sprite {
+	background-position:calc(-741px * 1) calc(-3748px * 1);
+	width:calc(352px * 1);
+	height:calc(258px * 1);
+}
+.monster.flame_void_fairy .sprite {
+	background-position:calc(-270px * 1) calc(-219px * 1);
+	width:calc(164px * 1);
+	height:calc(250px * 1);
+}
+.monster.frost_void_fairy .sprite {
+	background-position:calc(-1093px * 1) calc(-3748px * 1);
+	width:calc(194px * 1);
+	height:calc(240px * 1);
+}
+.monster.flame_enchantress .sprite {
+	background-position:calc(-1200px * 1) calc(-320px * 1);
+	width:calc(382px * 1);
+	height:calc(380px * 1);
+}
+.monster.frost_enchantress .sprite {
+	background-position:calc(-1175px * 1) 0;
+	width:calc(282px * 1);
+	height:calc(320px * 1);
+}
+.monster.flame_power_liche .sprite {
+	background-position:calc(-1145px * 1) calc(-700px * 1);
+	width:calc(435px * 1);
+	height:calc(263px * 1);
+}
+.monster.frost_power_liche .sprite {
+	background-position:calc(-1187px * 1) calc(-963px * 1);
+	width:calc(340px * 1);
+	height:calc(352px * 1);
+}
+.monster.frost_iron_walker .sprite {
+	background-position:calc(-1108px * 1) calc(-1315px * 1);
+	width:calc(465px * 1);
+	height:calc(395px * 1);
+}
+.monster.flame_iron_walker .sprite {
+	background-position:calc(-1187px * 1) calc(-1710px * 1);
+	width:calc(393px * 1);
+	height:calc(288px * 1);
+}
+.monster.frost_swarm .sprite {
+	background-position:0 calc(-5209px * 1);
+	width:calc(502px * 1);
+	height:calc(281px * 1);
+}
+.monster.flame_swarm .sprite {
+	background-position:0 calc(-4926px * 1);
+	width:calc(466px * 1);
+	height:calc(283px * 1);
+}
+.monster.frost_sorcerer .sprite {
+	background-position:0 calc(-5490px * 1);
+	width:calc(349px * 1);
+	height:calc(330px * 1);
+}
+.monster.flame_sorcerer .sprite {
+	background-position:calc(-349px * 1) calc(-5490px * 1);
+	width:calc(494px * 1);
+	height:calc(338px * 1);
+}
+.monster.flame_red_dragon .sprite {
+	background-position:calc(-843px * 1) calc(-5381px * 1);
+	width:calc(643px * 1);
+	height:calc(665px * 1);
+}
+.monster.frost_red_dragon .sprite {
+	background-position:0 calc(-5828px * 1);
+	width:calc(643px * 1);
+	height:calc(665px * 1);
+}
+.monster.flame_green_dragon .sprite {
+	background-position:calc(-636px * 1) calc(-6036px * 1);
+	width:calc(645px * 1);
+	height:calc(671px * 1);
+}
+.monster.frost_green_dragon .sprite {
+	background-position:0 calc(-6481px * 1);
+	width:calc(645px * 1);
+	height:calc(671px * 1);
+}
+.monster.flame_cyberskull .sprite {
+	background-position:calc(-466px * 1) calc(-4926px * 1);
+	width:calc(645px * 1);
+	height:calc(671px * 1);
+}
+.monster.frost_cyberskull .sprite {
+	background-position:calc(-637px * 1) calc(-6685px * 1);
+	width:calc(412px * 1);
+	height:calc(387px * 1);
+}
+.monster.flame_transfigurer .sprite {
+	background-position:0 calc(-7132px * 1);
+	width:calc(438px * 1);
+	height:calc(440px * 1);
+}
+.monster.frost_transfigurer .sprite {
+	background-position:calc(-1060px * 1) calc(-6685px * 1);
+	width:calc(443px * 1);
+	height:calc(432px * 1);
+}
+.monster.flame_gold_dragon .sprite {
+	background-position:calc(-441px * 1) calc(-7132px * 1);
+	width:calc(435px * 1);
+	height:calc(605px * 1);
+}
+.monster.frost_gold_dragon .sprite {
+	background-position:calc(-876px * 1) calc(-7132px * 1);
+	width:calc(435px * 1);
+	height:calc(605px * 1);
+}
+.monster.flame_black_dragon .sprite {
+	background-position:calc(-441px * 1) calc(-7737px * 1);
+	width:calc(639px * 1);
+	height:calc(435px * 1);
+}
+.monster.frost_black_dragon .sprite {
+	background-position:0 calc(-7737px * 1);
+	width:calc(639px * 1);
+	height:calc(435px * 1);
+}
+.monster.flame_obsidian_walker .sprite {
+	background-position:0 calc(-8172px * 1);
+	width:calc(627px * 1);
+	height:calc(472px * 1);
+}
+.monster.frost_obsidian_walker .sprite {
+	background-position:calc(-627px * 1) calc(-8172px * 1);
+	width:calc(556px * 1);
+	height:calc(421px * 1);
+}
+.monster.flame_seething_entity .sprite {
+	background-position:0 calc(-8644px * 1);
+	width:calc(630px * 1);
+	height:calc(364px * 1);
+}
+.monster.frost_seething_entity .sprite {
+	background-position:calc(-629px * 1) calc(-8593px * 1);
+	width:calc(596px * 1);
+	height:calc(415px * 1);
+}
+.monster.flame_ultraumaton .sprite {
+	background-position:calc(-776px * 1) calc(-9008px * 1);
+	width:calc(791px * 1);
+	height:calc(464px * 1);
+}
+.monster.frost_ultraumaton .sprite {
+	background-position:0 calc(-9008px * 1);
+	width:calc(776px * 1);
+	height:calc(459px * 1);
+}
+.monster.flame_unmaker .sprite {
+	background-position:0 calc(-9467px * 1);
+	width:calc(636px * 1);
+	height:calc(512px * 1);
+}
+.monster.frost_unmaker .sprite {
+	background-position:calc(-637px * 1) calc(-9472px * 1);
+	width:calc(492px * 1);
+	height:calc(686px * 1);
+}
+.monster.flame_arch_summoner .sprite {
+	background-position:0 calc(-9467px * 1);
+	width:calc(736px * 1);
+	height:calc(545px * 1);
+}
+.monster.frost_arch_summoner .sprite {
+	background-position:calc(-736px * 1) calc(-10158px * 1);
+	width:calc(720px * 1);
+	height:calc(565px * 1);
+}
+.monster.super_frozen_frost_guardian .sprite {
+	background-position:calc(-876px * 1) calc(-10723px * 1);
+	width:calc(784px * 1);
+	height:calc(577px * 1);
+}
+.monster.super_burning_flame_guardian .sprite {
+	background-position:0 calc(-11312px * 1);
+	width:calc(1009px * 1);
+	height:calc(471px * 1);
+}
+.monster.super_burning_frost_guardian .sprite,
+.monster.super_frozen_flame_guardian .sprite {
+	background-position:0 calc(-10723px * 1);
+	width:calc(882px * 1);
+	height:calc(524px * 1);
+}
+
+
+
+
+
+
+
+
 
 .monster-intent .intent-amount {
 	font-size:24px;
@@ -2668,7 +2922,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(5702px * .92);
+	background-size:calc(1620px * .92) calc(6962px * .92);
 	background-position:0 calc(-414px * .92);
 	width:calc(270px * .92);
 	height:calc(414px * .92);
@@ -2691,7 +2945,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	height:calc(157px * .92);
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(5702px * .92);
+	background-size:calc(1620px * .92) calc(6962px * .92);
 	background-position:calc(-1364px * .92) calc(-5545px * .92);
 	position:absolute;
 	top:68px;
@@ -2702,7 +2956,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	height:calc(164px * .92);
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(5702px * .92);
+	background-size:calc(1620px * .92) calc(6962px * .92);
 	background-position:0 calc(-828px * .92);
 	position:absolute;
 	top:66px;
@@ -2721,7 +2975,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	height:calc(33px * 1);
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * 1) calc(5702px * 1);
+	background-size:calc(1620px * 1) calc(6962px * 1);
 	background-position:calc(-800px * 1) calc(-828px * 1);
 	position:absolute;
 	top:321px;
@@ -2867,6 +3121,27 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-momentous_slash .card-image {
 	background-position:calc(-1170px * .92) calc(-1777px * .92);
 }
+#card-hinder_strike .card-image {
+	background-position:calc(-1365px * .92) calc(-1777px * .92);
+}
+#card-death_blow .card-image {
+	background-position:0 calc(-5702px * .92);
+}
+#card-overwhelming_barrage .card-image {
+	background-position:calc(-195px * .92) calc(-5702px * .92);
+}
+#card-critical_hit .card-image {
+	background-position:calc(-390px * .92) calc(-5702px * .92);
+}
+#card-erupt .card-image {
+	background-position:calc(-585px * .92) calc(-5702px * .92);
+}
+#card-monster_kill .card-image {
+	background-position:calc(-780px * .92) calc(-5702px * .92);
+}
+#card-dread_scythe .card-image {
+	background-position:calc(-975px * .92) calc(-5702px * .92);
+}
 
 /* TOOL */
 #card-shield .card-image {
@@ -2922,6 +3197,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 #card-fleeting_shield .card-image {
 	background-position:calc(-195px * .92) calc(-2248px * .92);
+}
+#card-nullify .card-image {
+	background-position:calc(-390px * .92) calc(-3502px * .92);
 }
 #card-gallop .card-image {
 	background-position:calc(-390px * .92) calc(-2248px * .92);
@@ -3115,6 +3393,34 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-bottled_magic .card-image {
 	background-position:calc(-195px * .92) calc(-3502px * .92);
 }
+#card-jester .card-image {
+	background-position:calc(-585px * .92) calc(-3502px * .92);
+}
+#card-thresh .card-image {
+	background-position:calc(-780px * .92) calc(-3502px * .92);
+}
+#card-strange_mushroom .card-image {
+	background-position:calc(-975px * .92) calc(-3502px * .92);
+}
+#card-crippling_stare .card-image {
+	background-position:calc(-1170px * .92) calc(-3502px * .92);
+}
+#card-citadel .card-image {
+	background-position:calc(-1365px * .92) calc(-3502px * .92);
+}
+#card-everarmor .card-image {
+	background-position:0 calc(-6020px * .92);
+}
+#card-adrenaline_rush .card-image {
+	background-position:calc(-195px * .92) calc(-6020px * .92);
+}
+#card-untold_contract .card-image {
+	background-position:calc(-390px * .92) calc(-6020px * .92);
+}
+#card-myriad .card-image {
+	background-position:calc(-585px * .92) calc(-6020px * .92);
+}
+
 
 /* ABILITY */
 #card-forethought .card-image {
@@ -3209,6 +3515,18 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 #card-renewal .card-image {
 	background-position:calc(-1365px * .92) calc(-4132px * .92);
+}
+#card-euphoria .card-image {
+	background-position:0 calc(-6332px * .92);
+}
+#card-strength_beyond_measure .card-image {
+	background-position:calc(-195px * .92) calc(-6332px * .92);
+}
+#card-colossus .card-image {
+	background-position:calc(-390px * .92) calc(-6332px * .92);
+}
+#card-spectrum .card-image {
+	background-position:calc(-585px * .92) calc(-6332px * .92);
 }
 
 
@@ -3363,6 +3681,26 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-elemental_converter .card-image {
 	background-position:calc(-195px * .92) calc(-5232px * .92);
 }
+#card-annihilation .card-image {
+	background-position:calc(-390px * .92) calc(-5232px * .92);
+}
+#card-flare_up .card-image {
+	background-position:calc(-585px * .92) calc(-5232px * .92);
+}
+#card-legion .card-image {
+	background-position:calc(-780px * .92) calc(-5232px * .92);
+}
+#card-ignite .card-image {
+	background-position:calc(-975px * .92) calc(-5232px * .92);
+}
+#card-perfect_storm .card-image {
+	background-position:calc(-1170px * .92) calc(-5232px * .92);
+}
+#card-eternal_runestone .card-image {
+	background-position:calc(-1365px * .92) calc(-5232px * .92);
+}
+
+
 
 /* CLUTTER */
 #card-junk .card-image {
@@ -3454,7 +3792,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	font-size:28px;
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(5702px * .92);
+	background-size:calc(1620px * .92) calc(6962px * .92);
 	background-position:calc(-800px * .92) calc(-861px * .92);
 	width:calc(74px * .92);
 	height:calc(102px * .92);
@@ -3515,7 +3853,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card.unplayable .card-age {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .6) calc(5702px * .6);
+	background-size:calc(1620px * .6) calc(6962px * .6);
 	background-position:calc(-1096px * .6) calc(-861px * .6);
 	width:calc(50px * .6);
 	height:calc(50px * .6);
@@ -3552,7 +3890,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .pack {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .9) calc(5702px * .9);
+	background-size:calc(1620px * .9) calc(6962px * .9);
 	width:calc(66px * .9);
 	height:calc(69px * .9);
 	display:flex;
@@ -3571,7 +3909,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .linger, .card .use, .card .expire {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .8) calc(5702px * .8);
+	background-size:calc(1620px * .8) calc(6962px * .8);
 	width:calc(50px * .8);
 	height:calc(50px * .8);
 	display:flex;
@@ -3590,7 +3928,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .vanish, .card .retain, .card .ephemeral, .card .breakable {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .8) calc(5702px * .8);
+	background-size:calc(1620px * .8) calc(6962px * .8);
 	width:calc(50px * .8);
 	height:calc(50px * .8);
 	display:flex;
@@ -3924,7 +4262,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .pack-button {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(5702px * .92);
+	background-size:calc(1620px * .92) calc(6962px * .92);
 	width:calc(270px * .92);
 	height:calc(414px * .92);
 	scale:1;

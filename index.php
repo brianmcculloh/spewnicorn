@@ -233,7 +233,7 @@
 
       <div class="all-cards icon-button tooltip" data-powertip="Cards in your deck"><span class="icon"></span><span class="counter"></span></div>
 
-      <div class="library icon-button tooltip" data-powertip="All possible cards, treasures, and candies"><span class="icon"></span><span class="counter"></span></div>
+      <div class="library icon-button tooltip" data-powertip="<span class='highlight'>Library: </span>All possible cards, treasures, and candies in the game"><span class="icon"></span><span class="counter"></span></div>
 
       <div class="settings icon-button tooltip" data-powertip="Settings"><span class="icon"></span></div>
 
@@ -324,7 +324,7 @@
 
     <div class="map">
 
-      <h2>The Forest</h2>
+      <h2>The Dark Forest</h2>
 
       <div class="start-arrow">
         <svg width="1200pt" height="1200pt" version="1.1" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
@@ -721,16 +721,6 @@
 
     </div>
 
-    <div class="gate-screen game-panel">
-
-      <h2>Victory!</h2>
-
-      <div class="message">You have beaten the all powerful Guardian. Rest easy, friend.</div>
-
-      <div class="button gate-done">Play Again</div>
-
-    </div>
-
     <div class="combat">
 
       <div class="monster-panel"></div>
@@ -980,6 +970,16 @@
         <div class="done button">Done</div>
 
       </div>
+
+    </div>
+
+    <div class="gate-screen game-panel">
+
+      <h2>Victory!</h2>
+
+      <div class="message">You have beaten the first Guardian, but your journey continues...</div>
+
+      <div class="button gate-done">Go Through The Gate</div>
 
     </div>
 

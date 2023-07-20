@@ -350,6 +350,8 @@ const ALL_CANDY= [
         y: -994
     }),
 
+
+
     // effects
     new Candy({
         id:'chocolate_fudge', 
@@ -388,6 +390,24 @@ const ALL_CANDY= [
         y: -962
     }),
     new Candy({
+        id:'chocolate_cookie', 
+        name: 'Chocolate Cookie', 
+        effects: [
+            {effect: 'punch', amount: .2, turns: -1}
+        ],
+        x: -128,
+        y: -3872
+    }),
+    new Candy({
+        id:'white_chocolate_cookie', 
+        name: 'White Chocolate Cookie', 
+        effects: [
+            {effect: 'punch', amount: 1, turns: 1}
+        ],
+        x: -416,
+        y: -3904
+    }),
+    new Candy({
         id:'dark_truffle', 
         name: 'Dark Truffle', 
         effects: [
@@ -404,6 +424,69 @@ const ALL_CANDY= [
         ],
         x: -418,
         y: -4514
+    }),
+    new Candy({
+        id:'chocolate_pudding', 
+        name: 'Chocolate Pudding', 
+        effects: [
+            {effect: 'sorcery', amount: .2, turns: -1}
+        ],
+        x: -480,
+        y: -3650
+    }),
+    new Candy({
+        id:'vanilla_pudding', 
+        name: 'Vanilla Pudding', 
+        effects: [
+            {effect: 'sorcery', amount: 1, turns: 1}
+        ],
+        x: -288,
+        y: -3650
+    }),
+    new Candy({
+        id:'chocolate_clusters', 
+        name: 'Chocolate Clusters', 
+        effects: [
+            {effect: 'stout', amount: 3, turns: -1}
+        ],
+        x: 0,
+        y: -832
+    }),
+    new Candy({
+        id:'white_chocolate_clusters', 
+        name: 'White Chocolate Clusters', 
+        effects: [
+            {effect: 'stout', amount: 10, turns: 2}
+        ],
+        x: 0,
+        y: -962
+    }),
+    new Candy({
+        id:'chocolate_chips', 
+        name: 'Chocolate Chips', 
+        effects: [
+            {effect: 'muster', amount: 3, turns: -1}
+        ],
+        x: -256,
+        y: -3456
+    }),
+    new Candy({
+        id:'white_chocolate_chips', 
+        name: 'White Chocolate Chips', 
+        effects: [
+            {effect: 'muster', amount: 10, turns: 2}
+        ],
+        x: -288,
+        y: -3584
+    }),
+    new Candy({
+        id:'gumball', 
+        name: 'Gumball', 
+        effects: [
+            {effect: 'momentum', amount: 2, turns: -1}
+        ],
+        x: 0,
+        y: -3360
     }),
     new Candy({
         id:'salted_caramel', 
@@ -438,8 +521,8 @@ const ALL_CANDY= [
         y: -1760
     }),
     new Candy({
-        id:'salt_water_taffy', 
-        name: 'Salt Water Taffy', 
+        id:'blueberry_taffy', 
+        name: 'Blueberry Taffy', 
         weight: 7,
         effects: [
             {effect: 'regen', amount: 5, turns: -1}
@@ -448,8 +531,8 @@ const ALL_CANDY= [
         y: -4224
     }),
     new Candy({
-        id:'strawberry_gobstopper', 
-        name: 'Strawberry Gobstopper', 
+        id:'watermelon_gobstopper', 
+        name: 'Watermelon Gobstopper', 
         effects: [
             {effect: 'lightning', amount: 3, turns: -1}
         ],
@@ -465,6 +548,80 @@ const ALL_CANDY= [
         x: -416,
         y: -2432
     }),
+    new Candy({
+        id:'grape_gobstopper', 
+        name: 'Grape Gobstopper', 
+        effects: [
+            {effect: 'thunder', amount: .2, turns: -1}
+        ],
+        x: -416,
+        y: -2464
+    }),
+    new Candy({
+        id:'orange_gobstopper', 
+        name: 'Orange Gobstopper', 
+        effects: [
+            {effect: 'thunder', amount: 1, turns: 1}
+        ],
+        x: -416,
+        y: -2528
+    }),
+    new Candy({
+        id:'pixie_sugar', 
+        name: 'Pixie Sugar', 
+        effects: [
+            {effect: 'mystery', amount: 2, turns: 1}
+        ],
+        x: -416,
+        y: -800
+    }),
+    new Candy({
+        id:'candy_lemon_slice', 
+        name: 'Candy Lemon Slice', 
+        effects: [
+            {effect: 'lemonade', amount: 4, turns: 1}
+        ],
+        x: -416,
+        y: -4160
+    }),
+    new Candy({
+        id:'sour_apple_candy', 
+        name: 'Sour Apple Candy', 
+        effects: [
+            {effect: 'spikes', amount: 7, turns: -1}
+        ],
+        x: -128,
+        y: -3584
+    }),
+    new Candy({
+        id:'spicy_cinnammon_candy', 
+        name: 'Spicy Cinnammon Candy', 
+        effects: [
+            {effect: 'retaliate', amount: 5, turns: -1}
+        ],
+        x: -288,
+        y: -3520
+    }),
+    new Candy({
+        id:'strawberry_pastry', 
+        name: 'Strawberry Pastry', 
+        effects: [
+            {effect: 'summon', amount: 3, turns: -1}
+        ],
+        x: -96,
+        y: -4224
+    }),
+    new Candy({
+        id:'peanut_butter_pastry', 
+        name: 'Peanut Butter Pastry', 
+        effects: [
+            {effect: 'summon', amount: 10, turns: 2}
+        ],
+        x: -160,
+        y: -4224
+    }),
+
+
 
     // abilities
     new Candy({
@@ -487,6 +644,51 @@ const ALL_CANDY= [
         ],
         x: -256,
         y: -736
+    }),
+    new Candy({
+        id:'kettle_corn', 
+        name: 'Kettle Corn', 
+        abilities: [
+            {ability: 'protection', turns: 2, enabled: true}
+        ],
+        x: -64,
+        y: -1568
+    }),
+    new Candy({
+        id:'caramel_corn', 
+        name: 'Caramel Corn', 
+        abilities: [
+            {ability: 'tank', turns: 2, enabled: true}
+        ],
+        x: -64,
+        y: -1696
+    }),
+    new Candy({
+        id:'swedish_fish', 
+        name: 'Swedish Fish', 
+        abilities: [
+            {ability: 'stockpile', turns: 2, enabled: true}
+        ],
+        x: -32,
+        y: -1666
+    }),
+    new Candy({
+        id:'trail_mix', 
+        name: 'Trail Mix', 
+        abilities: [
+            {ability: 'sift', turns: -1, enabled: true}
+        ],
+        x: 0,
+        y: -1760
+    }),
+    new Candy({
+        id:'cherry_taffy', 
+        name: 'Cherry Taffy', 
+        abilities: [
+            {ability: 'expirex', turns: -1, enabled: true}
+        ],
+        x: -288,
+        y: -4224
     }),
     
 ];
@@ -855,7 +1057,7 @@ const ALL_TREASURES = [
         weight: 7,
         permanent: true,
         effects: [
-            {effect: 'retaliate', base: .5}
+            {effect: 'retaliate', base: 4}
         ],
         x: -0,
         y: -5344
@@ -873,13 +1075,29 @@ const ALL_TREASURES = [
         y: -4096
     }),
     new Treasure({
+        id:'spiked_punch', 
+        name: 'Spiked Punch', 
+        courage: 8,
+        weight: 7,
+        permanent: true,
+        effects: [
+            {effect: 'lemonade', base: 1}
+        ],
+        actions: [
+            {action: 'addCard', value: 2, what: 'junk', to: 'handCards'}
+        ],
+        trigger: {counter: 0, when: 'turns', at: 3, per: 'combat', once: false, activated: false},
+        x: -64,
+        y: -4256
+    }),
+    new Treasure({
         id:'pricket', 
         name: 'Pricket', 
         courage: 8,
         weight: 7,
         permanent: true,
         effects: [
-            {effect: 'spikes', base: .5}
+            {effect: 'spikes', base: 5}
         ],
         x: -448,
         y: -3392

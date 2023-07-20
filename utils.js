@@ -871,7 +871,6 @@ export default class Util {
                 doneCards: [20597, 535],
                 takeDmg: [21132, 858],
                 toolCard: [21990, 1000],
-                abilityCard: [22991, 1959],
                 magicCard: [26309, 1828],
                 heal: [28135, 1991],
                 clickButton: [30127, 668],
@@ -905,9 +904,9 @@ export default class Util {
                 statUp: [101563, 1238],
                 statDown: [102801, 920],
                 courage: [146724, 2755],
+                jester: [22990, 1000],
 
-
-                available: [24950, 1359],
+                available: [23990, 964],
                 
 
                 // specific cards
@@ -928,6 +927,13 @@ export default class Util {
                 magic15: [118382, 1171],
                 magic16: [119553, 2616],
                 magic17: [122169, 4513],
+                magic18: [276253, 3424],
+                magic19: [281880, 7332],
+                magic20: [289212, 5873],
+                magic21: [295085, 7500],
+                magic22: [302585, 6212],
+                magic23: [276253, 5627],
+                magic24: [308797, 4591],
 
                 attack1: [126682, 876],
                 attack2: [146236, 488],
@@ -946,6 +952,11 @@ export default class Util {
                 attack15: [144720, 1520],
                 attack16: [149479, 2727],
                 attack17: [152206, 581],
+                attack18: [241940, 1791],
+                attack19: [243731, 5404],
+                attack20: [248883, 1595],
+                attack21: [250478, 2504],
+                attack22: [252982, 3296],
 
                 tool1: [152787, 3615],
                 tool2: [156402, 1836],
@@ -970,6 +981,12 @@ export default class Util {
                 tool21: [186720, 2114],
                 tool22: [188834, 2245],
                 tool23: [191079, 2000],
+                tool24: [256278, 3202],
+                tool25: [259480, 2164],
+                tool26: [261644, 2387],
+                tool27: [264031, 3998],
+                tool29: [268029, 4850],
+                tool28: [272829, 3424],
 
 
                 // specific effects
@@ -1010,7 +1027,6 @@ export default class Util {
                 effect35: [235483, 1999],
                 effect36: [237482, 2212],
                 effect37: [239694, 2246],
-                effect38: [241940, ]
 
 
 
@@ -1022,6 +1038,9 @@ export default class Util {
                 08_Step_rock_02
                 03_Heal_04
                 13_Atk_buff_01
+                33_Light_02
+                39_Ultima_02s
+                40_Ultima_03
                 68_Die_01
                 83_Whip_woosh_2
                 085_save_game_02
@@ -1031,6 +1050,7 @@ export default class Util {
                 GP_End_Turn_1 
                 GB_Begin_Tuen_1
                 GP_Select_1
+                GP_Heal_1
                 Quest_Accepted
                 Success_1
                 Quest_Clear
@@ -1057,6 +1077,7 @@ export default class Util {
                 Fantasy_UI (55)
 
                 SkywardHero_UI (1)
+                SkywardHero_UI (4)
                 SkywardHero_UI (8)
                 SkywardHero_UI (13)
                 SkywardHero_UI (19)
@@ -1069,8 +1090,12 @@ export default class Util {
                 ESM_Fantasy_Game_...
                 Magic_Ice_Instant_Cast_Spell_A
                 Magic_Ice_Instant_Cast_Spell_C
+                Magic_Ice_Long_Cast_Spell_B
                 Magic_Fire_Instant_Cast_Spell_D
+                Magic_Fire_Long_Spell_A
+                Magic_Airy_Sting_Accent
                 Magic_Arcane_Long_Cast_Spell_B
+                Magic_Arcane_Spell_B
                 Magic_Molten_Lava_Hit_Fire_Gas_Burn
                 Magic_Earth_Instant_Cast_Spell_A
                 Magic_Shadow_Instant_Cast_Spell_A
@@ -1092,6 +1117,9 @@ export default class Util {
                 Organic_Item_Slide_2_Drag_Friction
                 Organic_Collect_Spell
                 Potion_Bottle_Cork_Pop_Magic
+                Dark_Transition_2_Lightning
+                Dark_Transition_3_Airy
+                Dark_Conjure_3
 
                 Item_Collect_Dark_Magic_A
                 Item_Collect_Dark_Magic_C
@@ -1103,6 +1131,7 @@ export default class Util {
                 Item_Collect_Dark_Magic_K
                 Item_Collect_Magic_A
                 Item_Collect_Magic_D
+                Item_Collect_Magic_F
                 Item_Collect_Herbs_Organic_Grass
                 Item_Pick_Up_Magic_Metal_Armor
                 Item_Pickup_Metal_Armor
@@ -1120,6 +1149,7 @@ export default class Util {
                 Pick_Up_Orb_Touch_1
                 Skill_Knife_Throw_B
                 Skill_Axe_Throw_B
+                Skill_Rain_Of_Arrows
                 Large_Gate_Close_2_Medium_Small
                 Felflame_1_Fire_Flame
                 
@@ -1136,6 +1166,7 @@ export default class Util {
                 Material_Water_Bubble_Potion_3
                 Material_Harvest_2_Wet_Magic
                 Potion_Bottle_Cork_Pop_Magic
+                Crafting_UI_Tab_Button_6
                 Crafting_UI_Tab_Button_7
                 Crafting_Select_Ore_Metal_Impact
                 Crafting_Select_Gem_Metal_Metallic_Ring
@@ -1158,6 +1189,7 @@ export default class Util {
 
                 Backpack_Open_Close_Inventory
                 Creature_Longer_Low_Growl
+                Creature_Growl_Long_High_B
                 Creature_Crow_Distant_Monster
                 Gear_Inventory_UI_3
                 Inventory_Material_Stone_UI_3
@@ -1165,6 +1197,9 @@ export default class Util {
                 Weapon_Impact_Weapon
                 Weapon_Impact_Blood_Weapon
                 Chest_Unlock_Small_2_Switch
+                Lock_Gate_Medium_Small
+                Open_Gate_Switch_User_Interface
+                UI_Magic_Confirm_A_Spell_Cast
 
 
 

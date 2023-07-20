@@ -61,6 +61,14 @@ export default function Map() {
     }
     
     function buildMap() {
+
+        // clear previous map if needed
+        $('.tile').removeClass('gate ice-gate fire-gate arena fountain quest shimmer sparkle aura current visited clickable')
+            .attr('data-powertip', '')
+            .attr('data-essence', '')
+            .attr('data-amount', '');
+        $('.tile:first-child').addClass('clickable');
+        $('.start-arrow').show();
     
         let i = 0;
         let j = Math.round(util.randDecimal() * 100);

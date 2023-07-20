@@ -169,10 +169,10 @@ const ALL_EFFECTS = [
     {id: 'lemonade', name: 'Lemonade', desc: 'Gain x health and armor at the start of each turn for each clutter card in deck', x: -224, y: -3904},
 
     // Usage:
-    // creature {base: .5, current: 0, temp: 0, turns: -1, persist: false} // this is a multiplier, so can increment by .1
-    // buff     {effect: 'spikes', amount: .5, turns: -1}
-    // hex      {effect: 'spikes', amount: -.5, hex: true}
-    {id: 'spikes', name: 'Spikes', desc: 'Any armor lost does x times armor lost dmg back to attacker', x: -384, y: -5184, sound: 'effect15', delay: true},
+    // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
+    // buff     {effect: 'spikes', amount: 1, turns: -1}
+    // hex      {effect: 'spikes', amount: -1, hex: true}
+    {id: 'spikes', name: 'Spikes', desc: 'Any armor lost does x dmg back to attacker', x: -384, y: -5184, sound: 'effect15', delay: true},
 
     // Usage:
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
@@ -210,10 +210,10 @@ const ALL_EFFECTS = [
     {id: 'fatality', name: 'Fatality', desc: 'Your next attack card does x times your highest damage hit (fatalities do not increase highest damage hit value)', x: -288, y: -7232, sound: 'effect17'},
 
     // Usage:
-    // creature {base: 0, current: 0, temp: .5, turns: 2, persist: false} // this is a multiplier, so can increment by .1
-    // buff     {effect: 'retaliate', amount: .5, turns: -1}
-    // hex      {effect: 'retaliate', amount: -.5, hex: true}
-    {id: 'retaliate', name: 'Retaliate', desc: 'Any health lost does x times health lost dmg back to attacker', x: -256, y: -6784, delay: true},
+    // creature {base: 0, current: 0, temp: 1, turns: 2, persist: false}
+    // buff     {effect: 'retaliate', amount: 1, turns: -1}
+    // hex      {effect: 'retaliate', amount: -1, hex: true}
+    {id: 'retaliate', name: 'Retaliate', desc: 'Any damage taken does x dmg back to attacker', x: -256, y: -6784, delay: true},
 
     // Usage:
     // creature {base: 0, current: 0, temp: 1, turns: 2, persist: false}
@@ -399,6 +399,7 @@ export default function Game() {
     let round = 0;
     let map = 1;
     let mapType = 'normal';
+    let overworld = 'forest';
     let boosterPack = 'basic';
     let arenasComplete = 0;
     let fountainChance = 1.4;
@@ -415,6 +416,7 @@ export default function Game() {
     let highestDmgRoll = 0; // TODO: set to 0
     let toDiscard = 0;
     let toDestroy = 0;
+    let destroyOptional = false;
     let toPick = 0;
     let toExclude = [];
     let toShow = [];
@@ -573,6 +575,7 @@ export default function Game() {
         round,
         map,
         mapType,
+        overworld,
         boosterPack,
         arenasComplete,
         fountainChance,
@@ -589,6 +592,7 @@ export default function Game() {
         highestDmgRoll,
         toDiscard,
         toDestroy,
+        destroyOptional,
         toPick,
         toPile,
         toExclude,

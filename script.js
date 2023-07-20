@@ -66,6 +66,7 @@
  * Effect: Each magic card played, gain x block
  * Effect: limit number of cards played per turn, or combat, or add some sort of "beat of death" penalty for playing cards
  * --cycle can get out of control with repel upgraded, bottled speed, and mana orb card
+ * Mechanic: treasures that do dmg/armor/block on certain turns
  * 
  * 
  * PHASE III:
@@ -90,11 +91,6 @@
  * 
  * TODO: cunning and stockpile are multiplicative, so take a look at how they combine and make sure that's ok
  * TODO: verify how player death check works. i was in a fight where i was at 0 health and armor but some block and i didn't die.
- * TODO: card and relic that add lemonade and random clutter each turn
- * TODO: need more ways to get vex
- * TODO: add some legendary cards for the gatekeeper fights
- * --card that adds a variety of slash cards
- * TODO: treasures that do dmg/armor/block on certain turns - not sure the engine currently allows for this
  * 
  * 
  * BUGS [can't replicate]:
@@ -188,6 +184,8 @@ window.quests = quests;
 // audio
 //var musicOverworld = new Howl({src:['audio/overworld.mp3'],loop:true});
 var musicOverworld = util.music('overworld.mp3');
+var musicOverworldFrost = util.music('overworld-frost.mp3');
+var musicOverworldFlame = util.music('overworld-flame.mp3');
 var musicFountain = util.music('fountain.mp3');
 var musicVictory = util.music('victory.wav');
 var musicLoss = util.music('loss.wav');
@@ -221,6 +219,8 @@ var sounds = util.sound('soundsprite.mp3');
 
 function stopMusic() {
 	musicOverworld.pause();
+	musicOverworldFrost.pause();
+	musicOverworldFlame.pause();
 	musicFountain.stop();
 	musicVictory.stop();
 	musicLoss.stop();
@@ -265,7 +265,13 @@ jQuery(document).ready(function($) {
 
 	$('#splash .begin').click(function(e) {
 		
-		if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
+		if(game.overworld == 'frost') {
+			if(!musicOverworldFrost.playing() && game.playmusic) musicOverworldFrost.play();
+		} else if(game.overworld == 'flame') {
+			if(!musicOverworldFlame.playing() && game.playmusic) musicOverworldFlame.play();
+		} else {
+			if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
+		}
 
 		$('#splash').removeClass('shown');
 
@@ -459,7 +465,7 @@ jQuery(document).ready(function($) {
 	$(document).on('click', '.starting-room .done', function(e) {
 
 		$('.starting-room').removeClass('shown');
-		$('.choose-booster-pack').addClass('shown');
+		$('.starting-treasure').addClass('shown');
 
 	});
 
@@ -1092,7 +1098,11 @@ jQuery(document).ready(function($) {
 		$('.loot-items').empty();
 
 		if(game.mapType == 'ice_gate' || game.mapType == 'fire_gate') {
-			gateScreen();
+			if(game.map == 1) {
+				gateScreen();
+			} else {
+				endGame('victory');
+			}
 		} else {
 			courageScreen();
 		}
@@ -1101,7 +1111,7 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.gate-done', function(e) {
 
-		location.reload();
+		init_map_2();
 
 	});
 
@@ -1149,6 +1159,34 @@ function init() {
 
 	updateAggro();
 	updateEssenceLevels();
+	setStatus();
+
+}
+
+function init_map_2() {
+
+	game.map = 2;
+	player.aggro.current = 0;
+	player.aggro.level = 0;
+	heal(player, 999);
+	game.overworld = game.mapType == 'ice_gate' ? 'frost' : 'flame';
+	musicOverworld.stop();
+	if(game.overworld == 'frost') {
+		if(!musicOverworldFrost.playing() && game.playmusic) musicOverworldFrost.play();
+	} else if(game.overworld == 'flame') {
+		if(!musicOverworldFlame.playing() && game.playmusic) musicOverworldFlame.play();
+	}
+	$('.map > h2').html('The ' + game.overworld.toUpperCase() + ' World');
+	$('.gate-screen').removeClass('shown');
+	$('body').css('background-image', 'url(./images/map_' + game.mapType + '.png');
+
+	map.buildMap();
+	if(game.debug) $('.map-inner div').addClass('clickable');
+
+	util.setTooltips('.map-inner');
+	util.setTooltips('.buttons-wrapper');
+
+	updateAggro();
 	setStatus();
 
 }
@@ -1861,7 +1899,7 @@ function beginTurn() {
 	// check for lemonade
 	if(player.lemonade.current > 0) {
 		let clutterCards = combatDeck.allLiveCards(combatDeck).filter(i => i.type == 'clutter');
-		player.health.current += clutterCards.length * player.lemonade.current;
+		heal(player, clutterCards.length * player.lemonade.current);
 		if(player.health.current > player.health.max) player.health.current = player.health.max;
 		applyArmor(clutterCards.length * player.lemonade.current, player)
 	}
@@ -2677,7 +2715,13 @@ function endCombat() {
 		}
 		
 		setTimeout(function() {
-			if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
+			if(game.overworld == 'frost') {
+				if(!musicOverworldFrost.playing() && game.playmusic) musicOverworldFrost.play();
+			} else if(game.overworld == 'flame') {
+				if(!musicOverworldFlame.playing() && game.playmusic) musicOverworldFlame.play();
+			} else {
+				if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
+			}
 		}, 3000);
 
 		setTimeout(function() {
@@ -2802,7 +2846,13 @@ function loot(type, tier = 3) {
 	if(game.playsounds) sounds.play('loot');
 
 	setTimeout(function() {
-		if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
+		if(game.overworld == 'frost') {
+			if(!musicOverworldFrost.playing() && game.playmusic) musicOverworldFrost.play();
+		} else if(game.overworld == 'flame') {
+			if(!musicOverworldFlame.playing() && game.playmusic) musicOverworldFlame.play();
+		} else {
+			if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
+		}
 	}, 1000);
 
 	$('.loot-screen').addClass('shown');
@@ -3380,10 +3430,14 @@ function markDestroy(elem) {
 
 	if(elem.hasClass('destroy')) {
 		elem.removeClass('destroy');
-		$('.destroy-done').removeClass('shown');
+		if(!game.destroyOptional) {
+			$('.destroy-done').removeClass('shown');
+		}
 	} else if($('.card.destroy').length < game.toDestroy) {
 		elem.addClass('destroy');
-		$('.destroy-done').removeClass('shown');
+		if(!game.destroyOptional) {
+			$('.destroy-done').removeClass('shown');
+		}
 		// if there are not enough hand cards to satisfy requirements, or if requirements are met, show done button
 		if($('.player-cards .card:not(.destroy)').length == 0 || $('.card.destroy').length == game.toDestroy) {
 			$('.destroy-done').addClass('shown');
@@ -3439,6 +3493,7 @@ function destroyCards() {
 		$('.destroy-message').removeClass('shown');
 		if(player.speed.current > 0) $('.draw-card').removeClass('disabled');
 		game.toDestroy = 0;
+		game.destroyOptional = false;
 		combatDeck.updateCardPlayability(player, combatDeck);
 		setStatus();
 
@@ -3885,7 +3940,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								} else {
 									if(actions[e].type == 'any') {
 										possibleCards = AllCards().cards.filter(i => i.addable == true);
-									} else if(actions[e].type == 'converter' || actions[e].type == 'bottled' ) {
+									} else if(actions[e].type == 'converter' || actions[e].type == 'bottled' || actions[e].type == 'clutter') {
 										possibleCards = AllCards().cards.filter(i => i.type == actions[e].type);
 									} else {
 										possibleCards = AllCards().cards.filter(i => i.type == actions[e].type && i.addable == true);
@@ -4060,7 +4115,10 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						// currently only cards can invoke this action, so make sure invoking card isn't the only one in hand
 						if(combatDeck.handCards.length > 1) {
 							$('.destroy-message').html('choose cards to destroy').addClass('shown');
-							//$('.destroy-done').addClass('shown');
+							if(actions[e].optional) {
+								game.destroyOptional = true;
+								$('.destroy-done').addClass('shown');
+							}
 							$('.player-cards .card').addClass('destroyable').removeClass('playable');
 							$('.draw-card').addClass('disabled');
 							$('body').addClass('destroying selecting');
@@ -5072,7 +5130,7 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 				// check for spikes
 				if(thisTo.spikes.current > 0 && from != undefined) {
 
-					let spikesDmg = Math.round(thisTo.spikes.current * armorLost);
+					let spikesDmg = thisTo.spikes.current;
 					if(spikesDmg < 1) spikesDmg = 1;
 
 					await doDamage(spikesDmg, undefined, [from]);
@@ -5089,7 +5147,7 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 				// check for retaliate
 				if(thisTo.retaliate.current > 0 && from != undefined) {
 
-					let retalDmg = Math.round(thisTo.retaliate.current * healthLost);
+					let retalDmg = thisTo.retaliate.current;
 					if(retalDmg < 1) retalDmg = 1;
 					
 					await doDamage(retalDmg, undefined, [from]);

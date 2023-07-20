@@ -65,7 +65,8 @@ class Creatures {
         pattern = 'fixed',
         moveSet = [],
         tier = 1, 
-        category = 'normal', // normal, boss, ice_guardian, fire_guardian
+        context = 'forest', // forest, frost, or flame - this is matched with the game.overworld value to query for creatures
+        category = 'normal', // normal, boss, ice_guardian, or fire_guardian
 
         // player specific
         courage = 0, // TODO: reset this to 0
@@ -139,6 +140,7 @@ class Creatures {
         this.moveSet = moveSet;
         this.chosenMoveSetIndex = -1;
         this.tier = tier;
+        this.context = context;
         this.category = category;
 
         // player specific
@@ -173,6 +175,10 @@ const ALL_MONSTERS = [
         // monsters are either normal, boss (arena only), ice_guardian (ice gate), or fire_guardian (fire gate)
 
         category: 'boss',
+
+        // on frost and flame maps, monsters will be upgraded to be either flame or frost
+
+        context: 'forest',
 
         // pattern is either random or fixed. if random, p: (probability) is taken into account to determine moveset
 
@@ -267,12 +273,22 @@ const ALL_MONSTERS = [
     Arch Summoner
 
 
+    Gate:
+    -----
+    Frost Guardian
+    Flame Guardian
+    Super Frozen Frost Guardian
+    Super Burning Frost Guardian
+    Super Frozen Flame Guardian
+    Super Burning Flame Guardian
+
+
 
 
     */
     
     // TIER 1
-    
+    // NORMAL
     new Creatures({
         type: 'monster',
         id: 'pixie', 
@@ -388,9 +404,254 @@ const ALL_MONSTERS = [
             ], dmg: [15], p: .3}
         ],
     }),
-    
-    // TIER 2 
 
+    // FROST
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_pixie', 
+        name: 'Frost Pixie', 
+        health: {base: 44, current: 0, max: 44},
+        pattern: 'fixed',
+        moveSet: [
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+                {effect: 'heal', amount: 5, turns: -1}
+            ]},
+            {dmg: [1, 1, 1]},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+            ]},
+            {dmg: [1, 1, 1]},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+                {effect: 'heal', amount: 5, turns: -1},
+            ]},
+            {dmg: [1, 1, 1]},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+            ]},
+            {dmg: [1, 1, 1]},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_mummy', 
+        name: 'Frost Mummy', 
+        health: {base: 70, current: 0, max: 70},
+        pattern: 'fixed',
+        moveSet: [
+            {effects: [
+                {effect: 'might', amount: 2, turns: -1},
+                {effect: 'might', amount: -1, turns: 1, hex: true}
+            ]},
+            {dmg: [8]},
+            {dmg: [2, 2]},
+            {blk: [20], effects: [
+                {effect: 'might', amount: -1, turns: 1, hex: true}
+            ]}
+        ],
+        vex: {base: 1, current: 0, temp: [], turns: -1},
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_stone_walker', 
+        name: 'Frost Stone Walker', 
+        health: {base: 60, current: 0, max: 60},
+        armor: 20,
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'might', amount: 2, turns: 2}
+            ], p: .2},
+            {dmg: [8], blk: [8], p: .2},
+            {dmg: [4], blk: [16], p: .2},
+            {dmg: [11], armor: [6], p: .2},
+            {blk: [8], armor: [10], p: .2},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_sludge', 
+        name: 'Frost Sludge', 
+        health: {base: 40, current: 0, max: 40},
+        block: 40,
+        pattern: 'fixed',
+        moveSet: [
+            {effects: [
+                {effect: 'punch', amount: -.1, turns: 1, hex: true}
+            ]},
+            {effects: [
+                {effect: 'might', amount: 1, turns: 3},
+            ],
+            actions: [
+                {action: 'addCard', value: 1, what: 'junk', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'chaff', to: 'drawCards'},
+            ]},
+            {dmg: [10]},
+            {blk: [20]},
+            {dmg: [5, 5]},
+            {blk: [20], actions: [
+                {action: 'addCard', value: 1, what: 'debris', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'chaff', to: 'drawCards'},
+            ]},
+            {dmg: [10]},
+            {blk: [20]},
+            {dmg: [5, 5]},
+            {blk: [20], actions: [
+                {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
+            ]},
+        ],
+        stout: {base: 2, current: 0, temp: [], turns: -1},
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_imp', 
+        name: 'Frost Imp', 
+        health: {base: 70, current: 0, max: 70},
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'rainbow', amount: -5, hex: true},
+                {effect: 'solid', amount: -2, turns: 1, hex: true}
+            ], p: .2},
+            {dmg: [12], p: .2},
+            {dmg: [5], blk: [10], p: .3},
+            {abilities: [
+                {ability: 'tank', hex: true}
+            ], dmg: [15], p: .3}
+        ],
+    }),
+    
+    // FLAME
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_pixie', 
+        name: 'Flame Pixie', 
+        health: {base: 22, current: 0, max: 22},
+        pattern: 'fixed',
+        moveSet: [
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+                {effect: 'heal', amount: 5, turns: -1}
+            ]},
+            {dmg: [2, 2, 2]},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+            ]},
+            {dmg: [2, 2, 2]},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+                {effect: 'heal', amount: 5, turns: -1},
+            ]},
+            {dmg: [2, 2, 2]},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+            ]},
+            {dmg: [2, 2, 2]},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_mummy', 
+        name: 'Flame Mummy', 
+        health: {base: 35, current: 0, max: 35},
+        pattern: 'fixed',
+        moveSet: [
+            {effects: [
+                {effect: 'might', amount: 2, turns: -1},
+                {effect: 'might', amount: -1, turns: 1, hex: true}
+            ]},
+            {dmg: [16]},
+            {dmg: [4, 4]},
+            {blk: [10], effects: [
+                {effect: 'might', amount: -1, turns: 1, hex: true}
+            ]}
+        ],
+        vex: {base: 1, current: 0, temp: [], turns: -1},
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_stone_walker', 
+        name: 'Flame Stone Walker', 
+        health: {base: 30, current: 0, max: 30},
+        armor: 10,
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'might', amount: 2, turns: 2}
+            ], p: .2},
+            {dmg: [16], blk: [4], p: .2},
+            {dmg: [8], blk: [8], p: .2},
+            {dmg: [22], armor: [3], p: .2},
+            {blk: [8], armor: [5], p: .2},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_sludge', 
+        name: 'Flame Sludge', 
+        health: {base: 20, current: 0, max: 20},
+        block: 20,
+        pattern: 'fixed',
+        moveSet: [
+            {effects: [
+                {effect: 'punch', amount: -.1, turns: 1, hex: true}
+            ]},
+            {effects: [
+                {effect: 'might', amount: 1, turns: 3},
+            ],
+            actions: [
+                {action: 'addCard', value: 1, what: 'junk', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'chaff', to: 'drawCards'},
+            ]},
+            {dmg: [20]},
+            {blk: [10]},
+            {dmg: [10, 10]},
+            {blk: [10], actions: [
+                {action: 'addCard', value: 1, what: 'debris', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'chaff', to: 'drawCards'},
+            ]},
+            {dmg: [20]},
+            {blk: [10]},
+            {dmg: [10, 10]},
+            {blk: [10], actions: [
+                {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
+            ]},
+        ],
+        stout: {base: 2, current: 0, temp: [], turns: -1},
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_imp', 
+        name: 'Flame Imp', 
+        health: {base: 35, current: 0, max: 35},
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'rainbow', amount: -5, hex: true},
+                {effect: 'solid', amount: -2, turns: 1, hex: true}
+            ], p: .2},
+            {dmg: [24], p: .2},
+            {dmg: [10], blk: [5], p: .3},
+            {abilities: [
+                {ability: 'tank', hex: true}
+            ], dmg: [30], p: .3}
+        ],
+    }),
+
+
+    // TIER 2 
+    // NORMAL
     new Creatures({
         type: 'monster',
         id: 'shatter', 
@@ -400,16 +661,16 @@ const ALL_MONSTERS = [
         pattern: 'random',
         moveSet: [
             {effects: [
-                {effect: 'retaliate', amount: .2, turns: -1},
+                {effect: 'retaliate', amount: 2, turns: -1},
             ], p: .2},
             {dmg: [15], p: .2},
             {blk: [10], p: .2},
             {armor: [4], effects: [
-                {effect: 'retaliate', amount: .1, turns: -1},
+                {effect: 'retaliate', amount: 1, turns: -1},
             ], p: .2},
             {dmg: [1, 2, 3, 4], p: .2},
         ],
-        retaliate: {base: .1, current: 0, temp: [], turns: -1},
+        retaliate: {base: 1, current: 0, temp: [], turns: -1},
     }),
     new Creatures({
         type: 'monster',
@@ -446,7 +707,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         id: 'enchantress', 
         name: 'Enchantress', 
-        health: {base: 58, current: 0, max: 50},
+        health: {base: 58, current: 0, max: 58},
         tier: 2,
         armor: 5,
         pattern: 'random',
@@ -505,10 +766,253 @@ const ALL_MONSTERS = [
             {dmg: [14]},
         ],
     }),
+
+    // FROST
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_shatter', 
+        name: 'Frost Shatter', 
+        health: {base: 96, current: 0, max: 96},
+        tier: 2,
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'retaliate', amount: 2, turns: -1},
+            ], p: .2},
+            {dmg: [15], p: .2},
+            {blk: [20], p: .2},
+            {armor: [8], effects: [
+                {effect: 'retaliate', amount: 1, turns: -1},
+            ], p: .2},
+            {dmg: [1, 2, 3, 4], p: .2},
+        ],
+        retaliate: {base: 1, current: 0, temp: [], turns: -1},
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_void_fairy', 
+        name: 'Frost Void Fairy', 
+        health: {base: 74, current: 0, max: 74},
+        tier: 2,
+        pattern: 'fixed',
+        moveSet: [
+            {effects: [
+                {effect: 'resistance', amount: .5, turns: 2}
+            ]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {dmg: [7, 7]},
+            {abilities: [
+                {ability: 'unreachable', hex: true},
+            ], dmg: [1, 1, 1, 1, 1]},
+            {blk: [24]},
+            {dmg: [15], blk: [10]},
+            {effects: [
+                {effect: 'punch', amount: -.1, turns: 3, hex: true},
+            ]},
+            {abilities: [
+                {ability: 'unreachable', hex: true},
+                {ability: 'tank', hex: true}
+            ], dmg: [2, 2, 2, 2, 2]},
+            {dmg: [35]},
+        ],
+        vex: {base: 1, current: 0, temp: [], turns: -1},
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_enchantress', 
+        name: 'Frost Enchantress', 
+        health: {base: 116, current: 0, max: 116},
+        tier: 2,
+        armor: 10,
+        pattern: 'random',
+        moveSet: [
+            {actions: [
+                {action: 'addCard', value: 1, what: 'execrate', to: 'drawCards'},
+            ], p: .1},
+            {actions: [
+                {action: 'addCard', value: 2, what: 'curse', to: 'drawCards'},
+            ], p: .1},
+            {actions: [
+                {action: 'addCard', value: 2, what: 'flay', to: 'drawCards'},
+            ], p: .1},
+            {actions: [
+                {action: 'addCard', value: 1, what: 'execrate', to: 'discardCards'},
+            ], p: .1},
+            {actions: [
+                {action: 'addCard', value: 2, what: 'curse', to: 'discardCards'},
+            ], p: .1},
+            {actions: [
+                {action: 'addCard', value: 2, what: 'flay', to: 'discardCards'},
+            ], p: .1},
+            {armor: [30], dmg: [10], p: .2},
+            {blk: [30], dmg: [16], p: .2}
+        ],
+        resistance: {base: .4, current: 0, temp: [], turns: -1, persist: false},
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_power_liche', 
+        name: 'Frost Power Liche', 
+        health: {base: 118, current: 0, max: 118},
+        tier: 2,
+        pattern: 'fixed',
+        moveSet: [
+            {dmg: [5]},
+            {effects: [
+                {effect: 'might', amount: 4, turns: -1},
+                {effect: 'resistance', amount: .3, turns: 2},
+                {effect: 'vex', amount: 1, turns: -1}
+            ]}
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_iron_walker', 
+        name: 'Frost Iron Walker', 
+        health: {base: 150, current: 0, max: 150},
+        tier: 2,
+        pattern: 'fixed',
+        moveSet: [
+            {effects: [
+                {effect: 'stout', amount: 2, turns: -1},
+                {effect: 'might', amount: 3, turns: -1},
+            ]},
+            {dmg: [14]},
+        ],
+    }),
+
+    // FLAME
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_shatter', 
+        name: 'Flame Shatter', 
+        health: {base: 48, current: 0, max: 48},
+        tier: 2,
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'retaliate', amount: 2, turns: -1},
+            ], p: .2},
+            {dmg: [30], p: .2},
+            {blk: [10], p: .2},
+            {armor: [4], effects: [
+                {effect: 'retaliate', amount: 1, turns: -1},
+            ], p: .2},
+            {dmg: [2, 4, 6, 8], p: .2},
+        ],
+        retaliate: {base: 1, current: 0, temp: [], turns: -1},
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_void_fairy', 
+        name: 'Flame Void Fairy', 
+        health: {base: 38, current: 0, max: 38},
+        tier: 2,
+        pattern: 'fixed',
+        moveSet: [
+            {effects: [
+                {effect: 'resistance', amount: .5, turns: 2}
+            ]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {dmg: [14, 14]},
+            {abilities: [
+                {ability: 'unreachable', hex: true},
+            ], dmg: [2, 2, 2, 2, 2]},
+            {blk: [12]},
+            {dmg: [30], blk: [5]},
+            {effects: [
+                {effect: 'punch', amount: -.1, turns: 3, hex: true},
+            ]},
+            {abilities: [
+                {ability: 'unreachable', hex: true},
+                {ability: 'tank', hex: true}
+            ], dmg: [4, 4, 4, 4, 4]},
+            {dmg: [70]},
+        ],
+        vex: {base: 1, current: 0, temp: [], turns: -1},
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_enchantress', 
+        name: 'Flame Enchantress', 
+        health: {base: 58, current: 0, max: 58},
+        tier: 2,
+        armor: 5,
+        pattern: 'random',
+        moveSet: [
+            {actions: [
+                {action: 'addCard', value: 1, what: 'execrate', to: 'drawCards'},
+            ], p: .1},
+            {actions: [
+                {action: 'addCard', value: 2, what: 'curse', to: 'drawCards'},
+            ], p: .1},
+            {actions: [
+                {action: 'addCard', value: 2, what: 'flay', to: 'drawCards'},
+            ], p: .1},
+            {actions: [
+                {action: 'addCard', value: 1, what: 'execrate', to: 'discardCards'},
+            ], p: .1},
+            {actions: [
+                {action: 'addCard', value: 2, what: 'curse', to: 'discardCards'},
+            ], p: .1},
+            {actions: [
+                {action: 'addCard', value: 2, what: 'flay', to: 'discardCards'},
+            ], p: .1},
+            {armor: [15], dmg: [20], p: .2},
+            {blk: [15], dmg: [32], p: .2}
+        ],
+        resistance: {base: .4, current: 0, temp: [], turns: -1, persist: false},
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_power_liche', 
+        name: 'Flame Power Liche', 
+        health: {base: 59, current: 0, max: 59},
+        tier: 2,
+        pattern: 'fixed',
+        moveSet: [
+            {dmg: [10]},
+            {effects: [
+                {effect: 'might', amount: 4, turns: -1},
+                {effect: 'resistance', amount: .3, turns: 2},
+                {effect: 'vex', amount: 1, turns: -1}
+            ]}
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_iron_walker', 
+        name: 'Flame Iron Walker', 
+        health: {base: 75, current: 0, max: 75},
+        tier: 2,
+        pattern: 'fixed',
+        moveSet: [
+            {effects: [
+                {effect: 'stout', amount: 2, turns: -1},
+                {effect: 'might', amount: 3, turns: -1},
+            ]},
+            {dmg: [28]},
+        ],
+    }),
     
 
-    // TIER 3 
 
+    // TIER 3 
+    // NORMAL
     new Creatures({
         type: 'monster',
         id: 'swarm', 
@@ -572,14 +1076,14 @@ const ALL_MONSTERS = [
         pattern: 'random',
         moveSet: [
             {effects: [
-                {effect: 'retaliate', amount: .5, turns: 1},
+                {effect: 'retaliate', amount: 7, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
             ], 
             actions: [
                 {action: 'addCard', value: 2, what: 'junk', to: 'drawCards'},
             ], p: .1},
             {effects: [
-                {effect: 'spikes', amount: .5, turns: 1},
+                {effect: 'spikes', amount: 10, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
             ], armor: [20], p: .1},
             {effects: [
@@ -646,9 +1150,297 @@ const ALL_MONSTERS = [
         ],
     }),
 
+    // FROST
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_swarm', 
+        name: 'Frost Swarm', 
+        health: {base: 140, current: 0, max: 140},
+        tier: 3,
+        armor: 60,
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'regen', amount: 5, turns: -1},
+            ], p: .2},
+            {effects: [
+                {effect: 'craft', amount: 3, turns: -1},
+            ], p: .2},
+            {effects: [
+                {effect: 'vigor', amount: 1, turns: -1},
+            ], p: .2},
+            {dmg: [3, 3, 3, 3, 3, 3], 
+            effects: [
+                {effect: 'punch', amount: -.1, turns: -1, hex: true},
+                {effect: 'might', amount: -1, turns: -1, hex: true},
+            ], p: .2},
+            {dmg: [5, 5, 5, 5], p: .2},
+        ],
+        heal: {base: 10, current: 0, temp: [], turns: -1}
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_sorcerer', 
+        name: 'Frost Sorcerer', 
+        health: {base: 190, current: 0, max: 190},
+        tier: 3,
+        pattern: 'fixed',
+        moveSet: [
+            {effects: [
+                {effect: 'rainbow', amount: -5, turns: 5, hex: true},
+                {effect: 'conjure', amount: -2, turns: 5, hex: true},
+                {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
+                {effect: 'summon', amount: -5, turns: 5, hex: true},
+                {effect: 'wield', amount: -1, turns: 5, hex: true},
+                {effect: 'enchanter', amount: -5, turns: 5, hex: true},
+                {effect: 'arcane', amount: -5, turns: 5, hex: true}
+            ]},
+            {dmg: [8, 8]},
+            {blk: [20], dmg: [10]},
+            {dmg: [9, 9]},
+            {blk: [20], dmg: [10]},
+            {dmg: [10, 10]},
+            {blk: [20], dmg: [10]},
+        ],
+        vex: {base: 3, current: 0, temp: [], turns: -1},
+        resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_red_dragon', 
+        name: 'Frost Red Dragon', 
+        health: {base: 370, current: 0, max: 370},
+        tier: 3,
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'retaliate', amount: 7, turns: 1},
+                {effect: 'vex', amount: 1, turns: -1}
+            ], 
+            actions: [
+                {action: 'addCard', value: 2, what: 'junk', to: 'drawCards'},
+            ], p: .1},
+            {effects: [
+                {effect: 'spikes', amount: 10, turns: 1},
+                {effect: 'vex', amount: 1, turns: -1}
+            ], armor: [40], p: .1},
+            {effects: [
+                {effect: 'might', amount: 2, turns: -1}
+            ], 
+            abilities: [
+                {ability: 'stockpile', turns: -1, enabled: true},
+            ], p: .1},
+            {dmg: [24], p: .1},
+            {dmg: [14], p: .1},
+            {dmg: [18], p: .1},
+            {dmg: [12], p: .1},
+            {dmg: [8], armor: [20], blk: [20], p: .1},
+            {dmg: [5], armor: [10], blk: [40], p: .1},
+            {blk: [40], p: .1},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_green_dragon', 
+        name: 'Frost Green Dragon', 
+        health: {base: 370, current: 0, max: 370},
+        tier: 3,
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'solid', amount: -1, turns: -1, hex: true},
+                {effect: 'resistance', amount: .2, turns: 2},
+                {effect: 'vex', amount: 1, turns: -1}
+            ], p: .1},
+            {effects: [
+                {effect: 'craft', amount: -2, turns: -1, hex: true},
+                {effect: 'vex', amount: 1, turns: -1}
+            ], 
+            actions: [
+                {action: 'addCard', value: 2, what: 'debris', to: 'drawCards'},
+            ], armor: [40], p: .1},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1}
+            ], 
+            abilities: [
+                {ability: 'stockpile', turns: -1, enabled: true},
+            ], p: .1},
+            {dmg: [24], p: .1},
+            {dmg: [14], p: .1},
+            {dmg: [18], p: .1},
+            {dmg: [12], p: .1},
+            {dmg: [8], armor: [20], blk: [20], p: .1},
+            {dmg: [5], armor: [10], blk: [40], p: .1},
+            {blk: [40], p: .1},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_cyberskull', 
+        name: 'Frost Cyberskull', 
+        health: {base: 240, current: 0, max: 240},
+        pattern: 'fixed',
+        tier: 3,
+        moveSet: [{
+            effects: [
+                {effect: 'might', amount: 3, turns: -1},
+            ], dmg: [1, 1, 1, 1]},
+        ],
+    }),
+
+    // FLAME
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_swarm', 
+        name: 'Flame Swarm', 
+        health: {base: 70, current: 0, max: 70},
+        tier: 3,
+        armor: 30,
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'regen', amount: 5, turns: -1},
+            ], p: .2},
+            {effects: [
+                {effect: 'craft', amount: 3, turns: -1},
+            ], p: .2},
+            {effects: [
+                {effect: 'vigor', amount: 1, turns: -1},
+            ], p: .2},
+            {dmg: [6, 6, 6, 6, 6, 6], 
+            effects: [
+                {effect: 'punch', amount: -.1, turns: -1, hex: true},
+                {effect: 'might', amount: -1, turns: -1, hex: true},
+            ], p: .2},
+            {dmg: [10, 10, 10, 10], p: .2},
+        ],
+        heal: {base: 10, current: 0, temp: [], turns: -1}
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_sorcerer', 
+        name: 'Flame Sorcerer', 
+        health: {base: 95, current: 0, max: 95},
+        tier: 3,
+        pattern: 'fixed',
+        moveSet: [
+            {effects: [
+                {effect: 'rainbow', amount: -5, turns: 5, hex: true},
+                {effect: 'conjure', amount: -2, turns: 5, hex: true},
+                {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
+                {effect: 'summon', amount: -5, turns: 5, hex: true},
+                {effect: 'wield', amount: -1, turns: 5, hex: true},
+                {effect: 'enchanter', amount: -5, turns: 5, hex: true},
+                {effect: 'arcane', amount: -5, turns: 5, hex: true}
+            ]},
+            {dmg: [16, 16]},
+            {blk: [10], dmg: [20]},
+            {dmg: [18, 18]},
+            {blk: [10], dmg: [20]},
+            {dmg: [20, 20]},
+            {blk: [10], dmg: [20]},
+        ],
+        vex: {base: 3, current: 0, temp: [], turns: -1},
+        resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_red_dragon', 
+        name: 'Flame Red Dragon', 
+        health: {base: 185, current: 0, max: 185},
+        tier: 3,
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'retaliate', amount: 7, turns: 1},
+                {effect: 'vex', amount: 1, turns: -1}
+            ], 
+            actions: [
+                {action: 'addCard', value: 2, what: 'junk', to: 'drawCards'},
+            ], p: .1},
+            {effects: [
+                {effect: 'spikes', amount: 10, turns: 1},
+                {effect: 'vex', amount: 1, turns: -1}
+            ], armor: [20], p: .1},
+            {effects: [
+                {effect: 'might', amount: 2, turns: -1}
+            ], 
+            abilities: [
+                {ability: 'stockpile', turns: -1, enabled: true},
+            ], p: .1},
+            {dmg: [48], p: .1},
+            {dmg: [28], p: .1},
+            {dmg: [36], p: .1},
+            {dmg: [24], p: .1},
+            {dmg: [16], armor: [10], blk: [10], p: .1},
+            {dmg: [10], armor: [5], blk: [20], p: .1},
+            {blk: [20], p: .1},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_green_dragon', 
+        name: 'Flame Green Dragon', 
+        health: {base: 185, current: 0, max: 185},
+        tier: 3,
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'solid', amount: -1, turns: -1, hex: true},
+                {effect: 'resistance', amount: .2, turns: 2},
+                {effect: 'vex', amount: 1, turns: -1}
+            ], p: .1},
+            {effects: [
+                {effect: 'craft', amount: -2, turns: -1, hex: true},
+                {effect: 'vex', amount: 1, turns: -1}
+            ], 
+            actions: [
+                {action: 'addCard', value: 2, what: 'debris', to: 'drawCards'},
+            ], armor: [20], p: .1},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1}
+            ], 
+            abilities: [
+                {ability: 'stockpile', turns: -1, enabled: true},
+            ], p: .1},
+            {dmg: [48], p: .1},
+            {dmg: [28], p: .1},
+            {dmg: [36], p: .1},
+            {dmg: [24], p: .1},
+            {dmg: [16], armor: [10], blk: [10], p: .1},
+            {dmg: [10], armor: [5], blk: [20], p: .1},
+            {blk: [20], p: .1},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_cyberskull', 
+        name: 'Flame Cyberskull', 
+        health: {base: 120, current: 0, max: 120},
+        pattern: 'fixed',
+        tier: 3,
+        moveSet: [{
+            effects: [
+                {effect: 'might', amount: 3, turns: -1},
+            ], dmg: [2, 2, 2, 2]},
+        ],
+    }),
+
+
+
 
     // TIER 4
-
+    // NORMAL
     new Creatures({
         type: 'monster',
         id: 'transfigurer', 
@@ -795,10 +1587,318 @@ const ALL_MONSTERS = [
         heal: {base: 8, current: 0, temp: [], turns: -1},
         regen: {base: 5, current: 0, temp: [], turns: -1}
     }),
+
+    // FROST
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_transfigurer', 
+        name: 'Frost Transfigurer', 
+        health: {base: 420, current: 0, max: 420},
+        pattern: 'fixed',
+        tier: 4,
+        moveSet: [
+            {effects: [
+                {effect: 'punch', amount: -.25, turns: -1, hex: true},
+            ]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [10], dmg: [25]},
+            {armor: [16], dmg: [15]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [10], dmg: [25]},
+            {armor: [16], dmg: [15]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [10], dmg: [35]},
+            {armor: [16], dmg: [25]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [10], dmg: [35]},
+            {armor: [16], dmg: [25]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [10], dmg: [25]},
+            {armor: [16], dmg: [15]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [10], dmg: [25]},
+            {armor: [16], dmg: [15]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [10], dmg: [35]},
+            {armor: [16], dmg: [25]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [10], dmg: [35]},
+            {armor: [16], dmg: [25]},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_gold_dragon', 
+        name: 'Frost Gold Dragon', 
+        health: {base: 520, current: 0, max: 520},
+        armor: 60,
+        tier: 4,
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'might', amount: 3, turns: -1},
+            ], p: .3},
+            {effects: [
+                {effect: 'vex', amount: 1, turns: -1}
+            ], 
+            actions: [
+                {action: 'addCard', value: 1, what: 'junk', to: 'handCards'},
+            ], dmg: [25], p: .3},
+            {dmg: [45], p: .1},
+            {actions: [
+                {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
+                {action: 'addCard', value: 1, what: 'broken', to: 'handCards'},
+            ], p: .3},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_black_dragon', 
+        name: 'Frost Black Dragon', 
+        health: {base: 390, current: 0, max: 390},
+        armor: 136,
+        tier: 4,
+        pattern: 'random',
+        moveSet: [
+            {dmg: [12], armor: [20], p: .25},
+            {dmg: [24], armor: [10], p: .25},
+            {effects: [
+                {effect: 'resistance', amount: .8, turns: 1}
+            ], dmg: [26], armor: [30], p: .25},
+            {actions: [
+                {action: 'addCard', value: 1, what: 'debris', to: 'handCards'},
+            ], blk: [20], armor: [20], p: .25},
+        ],
+        cunning: {base: 1, current: 0, temp: [], turns: -1},
+        vigor: {base: 1, current: 0, temp: [], turns: -1}
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_obsidian_walker', 
+        name: 'Frost Obsidian Walker', 
+        health: {base: 660, current: 0, max: 660},
+        tier: 4,
+        pattern: 'fixed',
+        moveSet: [
+            {actions: [
+                {action: 'addCard', value: 5, what: 'chaff', to: 'drawCards'},
+            ], dmg: [5, 5]},
+            {effects: [
+                {effect: 'stout', amount: 5, turns: -1},
+                {effect: 'solid', amount: 2, turns: -1},
+            ]},
+            {blk: [36]},
+            {dmg: [36]},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_seething_entity', 
+        name: 'Frost Seething Entity', 
+        health: {base: 420, current: 0, max: 420},
+        tier: 4,
+        armor: 40,
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'regen', amount: 5, turns: -1},
+            ], dmg: [5, 5, 5], p: .25},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+            ], p: .25},
+            {dmg: [3, 3, 3, 3, 3, 3], 
+            effects: [
+                {effect: 'punch', amount: -.4, turns: 2, hex: true}
+            ], 
+            actions: [
+                {action: 'addCard', value: 2, what: 'briars', to: 'discardCards'},
+            ], p: .25},
+            {dmg: [4, 4, 4, 4, 4], p: .25},
+        ],
+        heal: {base: 8, current: 0, temp: [], turns: -1},
+        regen: {base: 5, current: 0, temp: [], turns: -1}
+    }),
+
+    // FLAME
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_transfigurer', 
+        name: 'Flame Transfigurer', 
+        health: {base: 210, current: 0, max: 210},
+        pattern: 'fixed',
+        tier: 4,
+        moveSet: [
+            {effects: [
+                {effect: 'punch', amount: -.25, turns: -1, hex: true},
+            ]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [5], dmg: [50]},
+            {armor: [8], dmg: [30]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [5], dmg: [50]},
+            {armor: [8], dmg: [30]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [5], dmg: [70]},
+            {armor: [8], dmg: [50]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [5], dmg: [70]},
+            {armor: [8], dmg: [50]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [5], dmg: [50]},
+            {armor: [8], dmg: [30]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [5], dmg: [50]},
+            {armor: [8], dmg: [30]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [5], dmg: [70]},
+            {armor: [8], dmg: [50]},
+            {abilities: [
+                {ability: 'unreachable', turns: 1, enabled: true},
+            ]},
+            {armor: [5], dmg: [70]},
+            {armor: [8], dmg: [50]},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_gold_dragon', 
+        name: 'Flame Gold Dragon', 
+        health: {base: 260, current: 0, max: 260},
+        armor: 30,
+        tier: 4,
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'might', amount: 3, turns: -1},
+            ], p: .3},
+            {effects: [
+                {effect: 'vex', amount: 1, turns: -1}
+            ], 
+            actions: [
+                {action: 'addCard', value: 1, what: 'junk', to: 'handCards'},
+            ], dmg: [50], p: .3},
+            {dmg: [90], p: .1},
+            {actions: [
+                {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
+                {action: 'addCard', value: 1, what: 'broken', to: 'handCards'},
+            ], p: .3},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_black_dragon', 
+        name: 'Flame Black Dragon', 
+        health: {base: 195, current: 0, max: 195},
+        armor: 68,
+        tier: 4,
+        pattern: 'random',
+        moveSet: [
+            {dmg: [24], armor: [10], p: .25},
+            {dmg: [48], armor: [5], p: .25},
+            {effects: [
+                {effect: 'resistance', amount: .8, turns: 1}
+            ], dmg: [52], armor: [15], p: .25},
+            {actions: [
+                {action: 'addCard', value: 1, what: 'debris', to: 'handCards'},
+            ], blk: [10], armor: [10], p: .25},
+        ],
+        cunning: {base: 1, current: 0, temp: [], turns: -1},
+        vigor: {base: 1, current: 0, temp: [], turns: -1}
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_obsidian_walker', 
+        name: 'Flame Obsidian Walker', 
+        health: {base: 330, current: 0, max: 330},
+        tier: 4,
+        pattern: 'fixed',
+        moveSet: [
+            {actions: [
+                {action: 'addCard', value: 5, what: 'chaff', to: 'drawCards'},
+            ], dmg: [10, 10]},
+            {effects: [
+                {effect: 'stout', amount: 5, turns: -1},
+                {effect: 'solid', amount: 2, turns: -1},
+            ]},
+            {blk: [18]},
+            {dmg: [72]},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_seething_entity', 
+        name: 'Flame Seething Entity', 
+        health: {base: 210, current: 0, max: 210},
+        tier: 4,
+        armor: 20,
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'regen', amount: 5, turns: -1},
+            ], dmg: [10, 10, 10], p: .25},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+            ], p: .25},
+            {dmg: [6, 6, 6, 6, 6, 6], 
+            effects: [
+                {effect: 'punch', amount: -.4, turns: 2, hex: true}
+            ], 
+            actions: [
+                {action: 'addCard', value: 2, what: 'briars', to: 'discardCards'},
+            ], p: .25},
+            {dmg: [8, 8, 8, 8, 8], p: .25},
+        ],
+        heal: {base: 8, current: 0, temp: [], turns: -1},
+        regen: {base: 5, current: 0, temp: [], turns: -1}
+    }),
     
 
-    // ARENA BOSS
 
+
+    // ARENA BOSS
+    // NORMAL
     new Creatures({
         type: 'monster',
         id: 'ultraumaton', 
@@ -903,11 +2003,231 @@ const ALL_MONSTERS = [
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
+
+
+    // FROST
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_ultraumaton', 
+        name: 'Frost Ultraumaton', 
+        health: {base: 760, current: 0, max: 760},
+        tier: 1,
+        category: 'boss',
+        pattern: 'fixed',
+        moveSet: [
+            {blk: [60]},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+            ]},
+            {effects: [
+                {effect: 'punch', amount: .1, turns: -1},
+            ]},
+            {effects: [
+                {effect: 'solid', amount: -1, turns: 1, hex: true},
+                {effect: 'vex', amount: 1, turns: -1}
+            ]},
+            {dmg: [40]},
+            {dmg: [20], effects: [
+                {effect: 'might', amount: -2, turns: 3, hex: true}
+            ], 
+            actions: [
+                {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'briars', to: 'discardCards'},
+            ]},
+            {dmg: [30]},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_unmaker', 
+        name: 'Frost Unmaker', 
+        health: {base: 950, current: 0, max: 950},
+        tier: 1,
+        category: 'boss',
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'might', amount: 10, turn: 1},
+                {effect: 'resistance', amount: .4, turns: 2}
+            ], p: .25},
+            {dmg: [25], p: .25},
+            {dmg: [15, 15], p: .1},
+            {dmg: [20], armor: [40], blk: [40], p: .1},
+            {actions: [
+                {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
+            ], p: .15},
+            {actions: [
+                {action: 'addCard', value: 1, what: 'execrate', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'flay', to: 'discardCards'},
+            ], p: .15},
+        ],
+        vex: {base: 1, current: 0, temp: [], turns: -1},
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'frost_arch_summoner', 
+        name: 'Frost Arch Summoner', 
+        health: {base: 800, current: 0, max: 800},
+        tier: 1,
+        category: 'boss',
+        pattern: 'fixed',
+        moveSet: [
+            {effects: [
+                {effect: 'rainbow', amount: -5, turns: 3, hex: true},
+                {effect: 'sorcery', amount: -.5, turns: 2, hex: true},
+            ],
+            actions: [
+                {action: 'addCard', value: 1, what: 'junk', to: 'discardCards'},
+            ], dmg: [3, 3, 3, 3, 3, 3]},
+            {effects: [
+                {effect: 'conjure', amount: -5, turns: 2, hex: true},
+                {effect: 'enchanter', amount: -5, turns: 2, hex: true},
+            ],
+            actions: [
+                {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'junk', to: 'discardCards'},
+            ]},
+            {effects: [
+                {effect: 'summon', amount: -5, turns: 3, hex: true},
+                {effect: 'wield', amount: -1, turns: 2, hex: true},
+            ],
+            actions: [
+                {action: 'addCard', value: 1, what: 'debris', to: 'discardCards'},
+            ], dmg: [5, 5, 5, 5, 5]},
+            {effects: [
+                {effect: 'enchanter', amount: -5, turns: 2, hex: true},
+                {effect: 'arcane', amount: -5, turns: 2, hex: true}
+            ],
+            actions: [
+                {action: 'addCard', value: 1, what: 'debris', to: 'discardCards'},
+            ], dmg: [20]},
+            {dmg: [8, 8, 8, 8]},
+            {effects: [
+                {effect: 'might', amount: 5, turns: 1},
+                {effect: 'vex', amount: 1, turns: -1}
+            ], dmg: [9, 9]},
+        ],
+        resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
+    }),
+
+    // FLAME
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_ultraumaton', 
+        name: 'Flame Ultraumaton', 
+        health: {base: 380, current: 0, max: 380},
+        tier: 1,
+        category: 'boss',
+        pattern: 'fixed',
+        moveSet: [
+            {blk: [30]},
+            {effects: [
+                {effect: 'might', amount: 1, turns: -1},
+            ]},
+            {effects: [
+                {effect: 'punch', amount: .1, turns: -1},
+            ]},
+            {effects: [
+                {effect: 'solid', amount: -1, turns: 1, hex: true},
+                {effect: 'vex', amount: 1, turns: -1}
+            ]},
+            {dmg: [80]},
+            {dmg: [40], effects: [
+                {effect: 'might', amount: -2, turns: 3, hex: true}
+            ], 
+            actions: [
+                {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'briars', to: 'discardCards'},
+            ]},
+            {dmg: [60]},
+        ],
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_unmaker', 
+        name: 'Flame Unmaker', 
+        health: {base: 425, current: 0, max: 425},
+        tier: 1,
+        category: 'boss',
+        pattern: 'random',
+        moveSet: [
+            {effects: [
+                {effect: 'might', amount: 10, turn: 1},
+                {effect: 'resistance', amount: .4, turns: 2}
+            ], p: .25},
+            {dmg: [50], p: .25},
+            {dmg: [30, 30], p: .1},
+            {dmg: [40], armor: [20], blk: [20], p: .1},
+            {actions: [
+                {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
+            ], p: .15},
+            {actions: [
+                {action: 'addCard', value: 1, what: 'execrate', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'flay', to: 'discardCards'},
+            ], p: .15},
+        ],
+        vex: {base: 1, current: 0, temp: [], turns: -1},
+    }),
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'flame_arch_summoner', 
+        name: 'Flame Arch Summoner', 
+        health: {base: 400, current: 0, max: 400},
+        tier: 1,
+        category: 'boss',
+        pattern: 'fixed',
+        moveSet: [
+            {effects: [
+                {effect: 'rainbow', amount: -5, turns: 3, hex: true},
+                {effect: 'sorcery', amount: -.5, turns: 2, hex: true},
+            ],
+            actions: [
+                {action: 'addCard', value: 1, what: 'junk', to: 'discardCards'},
+            ], dmg: [6, 6, 6, 6, 6, 6]},
+            {effects: [
+                {effect: 'conjure', amount: -5, turns: 2, hex: true},
+                {effect: 'enchanter', amount: -5, turns: 2, hex: true},
+            ],
+            actions: [
+                {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'junk', to: 'discardCards'},
+            ]},
+            {effects: [
+                {effect: 'summon', amount: -5, turns: 3, hex: true},
+                {effect: 'wield', amount: -1, turns: 2, hex: true},
+            ],
+            actions: [
+                {action: 'addCard', value: 1, what: 'debris', to: 'discardCards'},
+            ], dmg: [10, 10, 10, 10, 10]},
+            {effects: [
+                {effect: 'enchanter', amount: -5, turns: 2, hex: true},
+                {effect: 'arcane', amount: -5, turns: 2, hex: true}
+            ],
+            actions: [
+                {action: 'addCard', value: 1, what: 'debris', to: 'discardCards'},
+            ], dmg: [40]},
+            {dmg: [16, 16, 16, 16]},
+            {effects: [
+                {effect: 'might', amount: 5, turns: 1},
+                {effect: 'vex', amount: 1, turns: -1}
+            ], dmg: [18, 18]},
+        ],
+        resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
+    }),
     
 
 
-    // FIRE GUARDIAN
 
+    // FIRE GUARDIAN
+    // NORMAL
     new Creatures({
         type: 'monster',
         id: 'flame_guardian', 
@@ -930,9 +2250,59 @@ const ALL_MONSTERS = [
         ],
     }),
 
+    // FROST
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'super_frozen_flame_guardian', 
+        name: 'Super Frozen Flame Guardian', 
+        health: {base: 1200, current: 0, max: 1200},
+        tier: 1,
+        category: 'fire_guardian',
+        pattern: 'fixed',
+        moveSet: [
+            {actions: [
+                {action: 'addCard', value: 5, what: 'execrate', to: 'drawCards'},
+            ]},
+            {dmg: [2, 2, 2, 2, 2, 2]},
+            {armor: [70], blk: [70]},
+            {dmg: [3, 3, 3, 3],
+            effects: [
+                {effect: 'might', amount: 3, turns: -1},
+                {effect: 'vex', amount: 3, turns: -1}
+            ]},
+        ],
+    }),
+
+    // FLAME
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'super_burning_flame_guardian', 
+        name: 'Super Burning Flame Guardian', 
+        health: {base: 600, current: 0, max: 600},
+        tier: 1,
+        category: 'fire_guardian',
+        pattern: 'fixed',
+        moveSet: [
+            {actions: [
+                {action: 'addCard', value: 5, what: 'execrate', to: 'drawCards'},
+            ]},
+            {dmg: [4, 4, 4, 4, 4, 4]},
+            {armor: [35], blk: [35]},
+            {dmg: [6, 6, 6, 6],
+            effects: [
+                {effect: 'might', amount: 3, turns: -1},
+                {effect: 'vex', amount: 3, turns: -1}
+            ]},
+        ],
+    }),
+
+
+
 
     // ICE GUARDIAN
-
+    // NORMAL
     new Creatures({
         type: 'monster',
         id: 'frost_guardian', 
@@ -962,6 +2332,88 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'sorcery', amount: -.2, turns: 2, hex: true},
             ], dmg: [20], p: .1},
+            {effects: [
+                {effect: 'might', amount: -2, turns: 2, hex: true},
+            ], blk: [45], p: .1},
+            {effects: [
+                {effect: 'punch', amount: -.2, turns: 2, hex: true},
+            ], blk: [45], p: .1},
+        ],
+        vex: {base: 3, current: 0, temp: [], turns: -1},
+    }),
+
+    // FROST
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'super_frozen_frost_guardian', 
+        name: 'Super Frozen Frost Guardian', 
+        health: {base: 1200, current: 0, max: 1200},
+        tier: 1,
+        category: 'ice_guardian',
+        pattern: 'random',
+        moveSet: [
+            {blk: [90], armor: [70], p: .1},
+            {dmg: [25], p: .1},
+            {effects: [
+                {effect: 'might', amount: -2, turns: 2, hex: true},
+            ], dmg: [10], p: .1},
+            {effects: [
+                {effect: 'punch', amount: -.2, turns: 2, hex: true},
+            ], dmg: [20], p: .1},
+            {effects: [
+                {effect: 'solid', amount: -2, turns: 2, hex: true},
+            ], dmg: [10], p: .1},
+            {effects: [
+                {effect: 'speed', amount: -2, turns: 2, hex: true},
+            ], dmg: [20], p: .1},
+            {effects: [
+                {effect: 'conjure', amount: -2, turns: 2, hex: true},
+            ], dmg: [10], p: .1},
+            {effects: [
+                {effect: 'sorcery', amount: -.2, turns: 2, hex: true},
+            ], dmg: [20], p: .1},
+            {effects: [
+                {effect: 'might', amount: -2, turns: 2, hex: true},
+            ], blk: [90], p: .1},
+            {effects: [
+                {effect: 'punch', amount: -.2, turns: 2, hex: true},
+            ], blk: [90], p: .1},
+        ],
+        vex: {base: 3, current: 0, temp: [], turns: -1},
+    }),
+
+    // FLAME
+    new Creatures({
+        type: 'monster',
+        context: 'flame',
+        id: 'super_burning_frost_guardian', 
+        name: 'Super Burning Frost Guardian', 
+        health: {base: 600, current: 0, max: 600},
+        tier: 1,
+        category: 'ice_guardian',
+        pattern: 'random',
+        moveSet: [
+            {blk: [45], armor: [35], p: .1},
+            {dmg: [50], p: .1},
+            {effects: [
+                {effect: 'might', amount: -2, turns: 2, hex: true},
+            ], dmg: [20], p: .1},
+            {effects: [
+                {effect: 'punch', amount: -.2, turns: 2, hex: true},
+            ], dmg: [40], p: .1},
+            {effects: [
+                {effect: 'solid', amount: -2, turns: 2, hex: true},
+            ], dmg: [20], p: .1},
+            {effects: [
+                {effect: 'speed', amount: -2, turns: 2, hex: true},
+            ], dmg: [40], p: .1},
+            {effects: [
+                {effect: 'conjure', amount: -2, turns: 2, hex: true},
+            ], dmg: [20], p: .1},
+            {effects: [
+                {effect: 'sorcery', amount: -.2, turns: 2, hex: true},
+            ], dmg: [40], p: .1},
             {effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
             ], blk: [45], p: .1},
@@ -1040,6 +2492,8 @@ export function Monster() {
         let currentMonsters = [];
 
         let excluded = game.previousMonsters;
+
+        let context = game.overworld;
         
         game.previousMonsters = [];
 
@@ -1051,7 +2505,10 @@ export function Monster() {
                     currentMonsters.push(thisMonster);
                 }
             } else {
-
+                for (let i = 0; i < 1; i++) {
+                    let thisMonster = createMonster(1, i, 'boss', excluded, context);
+                    currentMonsters.push(thisMonster);
+                }
             }
 
         } else if(game.mapType == 'fire_gate') {
@@ -1062,7 +2519,10 @@ export function Monster() {
                     currentMonsters.push(thisMonster);
                 }
             } else {
-
+                for (let i = 0; i < 1; i++) {
+                    let thisMonster = createMonster(1, i, 'fire_guardian', [], context);
+                    currentMonsters.push(thisMonster);
+                }
             }
 
         } else if(game.mapType == 'ice_gate') {
@@ -1073,7 +2533,10 @@ export function Monster() {
                     currentMonsters.push(thisMonster);
                 }
             } else {
-
+                for (let i = 0; i < 1; i++) {
+                    let thisMonster = createMonster(1, i, 'ice_guardian', [], context);
+                    currentMonsters.push(thisMonster);
+                }
             }
 
         } else {
@@ -1092,7 +2555,16 @@ export function Monster() {
                             currentMonsters.push(thisMonster);
                         }
                     } else {
-
+                        // 1-2 Tier 1 monsters
+                        let initial = 0;
+                        let increase = 20;
+                        let chance = util.monsterNumChance(initial, increase);
+                        let num = util.chance(chance) ? 2 : 1;
+                        if(game.floor == 1 || game.floor == 2) num = 1; // never more than one monster on floors 1 and 2
+                        for (let i = 0; i < num; i++) {
+                            let thisMonster = createMonster(1, i, 'normal', excluded, context);
+                            currentMonsters.push(thisMonster);
+                        }
                     }
 
                 break;
@@ -1102,7 +2574,9 @@ export function Monster() {
                         let thisMonster = createMonster(2, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
-
+                        // 1 Tier 2 monster
+                        let thisMonster = createMonster(2, game, 'normal', excluded, context);
+                        currentMonsters.push(thisMonster);
                     }
 
                 break;
@@ -1114,7 +2588,11 @@ export function Monster() {
                         thisMonster = createMonster(2, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
-
+                        // 1 Tier 1 monster and 1 Tier 2 monster
+                        let thisMonster = createMonster(1, game, 'normal', excluded, context);
+                        currentMonsters.push(thisMonster);
+                        thisMonster = createMonster(2, game, 'normal', excluded, context);
+                        currentMonsters.push(thisMonster);
                     }
 
                 break;
@@ -1124,7 +2602,9 @@ export function Monster() {
                         let thisMonster = createMonster(3, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
-                        
+                        // 1 Tier 3 monster
+                        let thisMonster = createMonster(3, game, 'normal', excluded, context);
+                        currentMonsters.push(thisMonster);
                     }
 
                 break;
@@ -1134,7 +2614,9 @@ export function Monster() {
                         let thisMonster = createMonster(4, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
-
+                        // 1 Tier 4 monster
+                        let thisMonster = createMonster(4, game, 'normal', excluded, context);
+                        currentMonsters.push(thisMonster);
                     }
 
                 break;
@@ -1146,7 +2628,11 @@ export function Monster() {
                         thisMonster = createMonster(2, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
-
+                        // 1 Tier 4 monster and 1 Tier 2 monster
+                        let thisMonster = createMonster(4, game, 'normal', excluded, context);
+                        currentMonsters.push(thisMonster);
+                        thisMonster = createMonster(2, game, 'normal', excluded, context);
+                        currentMonsters.push(thisMonster);
                     }
 
                 break;
@@ -1168,7 +2654,21 @@ export function Monster() {
                             }
                         }
                     } else {
-
+                        // 2 Tier 4 monsters (60%) or 3 Tier 3 monsters (40%)
+                        let initial = 40;
+                        let increase = 0;
+                        let chance = util.monsterNumChance(initial, increase);
+                        if(util.chance(chance)) {
+                            for (let i = 0; i < 3; i++) {
+                                let thisMonster = createMonster(3, i, 'normal', excluded, context);
+                                currentMonsters.push(thisMonster);
+                            }
+                        } else {
+                            for (let i = 0; i < 2; i++) {
+                                let thisMonster = createMonster(4, i, 'normal', excluded, context);
+                                currentMonsters.push(thisMonster);
+                            }
+                        }
                     }
 
                 break;
@@ -1199,7 +2699,30 @@ export function Monster() {
                             }
                         }
                     } else {
-
+                        // 2 Tier 4 monsters, 1 Tier 3 monster, 1 Tier 2 monster (60%)
+                        // or 5 Tier 2 monsters (40%)
+                        let initial = 40;
+                        let increase = 0;
+                        let chance = util.monsterNumChance(initial, increase);
+                        if(util.chance(chance)) {
+                            for (let i = 0; i < 2; i++) {
+                                let thisMonster = createMonster(4, i, 'normal', [], context);
+                                currentMonsters.push(thisMonster);
+                            }
+                            for (let i = 0; i < 1; i++) {
+                                let thisMonster = createMonster(3, i, 'normal', excluded, context);
+                                currentMonsters.push(thisMonster);
+                            }
+                            for (let i = 0; i < 1; i++) {
+                                let thisMonster = createMonster(2, i, 'normal', excluded, context);
+                                currentMonsters.push(thisMonster);
+                            }
+                        } else {
+                            for (let i = 0; i < 5; i++) {
+                                let thisMonster = createMonster(2, i, 'normal', [], context);
+                                currentMonsters.push(thisMonster);
+                            }
+                        }
                     }
 
                 break;
@@ -1211,7 +2734,11 @@ export function Monster() {
                             currentMonsters.push(thisMonster);
                         }
                     } else {
-
+                        // 3 Tier 4 monsters
+                        for (let i = 0; i < 3; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', [], context);
+                            currentMonsters.push(thisMonster);
+                        }
                     }
 
                 break;
@@ -1234,7 +2761,21 @@ export function Monster() {
                         } 
 
                     } else {
+                        // 4 Tier 4 monsters and 1 Tier 3 monster
+                        for (let i = 0; i < 4; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', [], context);
+                            currentMonsters.push(thisMonster);
+                        }
 
+                        let initial = 0;
+                        let increase = 20;
+                        let chance = util.monsterNumChance(initial, increase);
+                        if(util.chance(chance)) {
+                            for (let i = 0; i < 1; i++) {
+                                let thisMonster = createMonster(3, i, 'normal', excluded, context);
+                                currentMonsters.push(thisMonster);
+                            }
+                        } 
                     }
 
                 break;
@@ -1246,9 +2787,9 @@ export function Monster() {
     
     }
 
-    function createMonster(tier, i = 0, category = 'normal', excluded = []) {
+    function createMonster(tier, i = 0, category = 'normal', excluded = [], context = 'forest') {
 
-        let possibleMonsters = monsters.filter(i => i.tier == tier && i.category == category);
+        let possibleMonsters = monsters.filter(i => i.tier == tier && i.category == category && i.context == context);
         possibleMonsters = possibleMonsters.filter( x => !excluded.filter( y => y.id === x.id).length);
         let copiedMonsters = JSON.parse(JSON.stringify(possibleMonsters)); // necessary to create a deep copy
         let monster = util.randFromArray(copiedMonsters);
