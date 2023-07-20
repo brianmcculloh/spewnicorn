@@ -1167,6 +1167,7 @@ function init() {
 function init_map_2() {
 
 	game.map = 2;
+	game.floor = 0;
 	player.aggro.current = 0;
 	player.aggro.level = 0;
 	heal(player, 999);
