@@ -4850,9 +4850,6 @@ export function Deck() {
             addCard('spewnicorn_spray');
         }
 
-        //addCard('jester');
-
-
 
         
     }

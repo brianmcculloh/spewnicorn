@@ -2120,7 +2120,7 @@ body.arena .monster-panel {
 	height:calc(665px * 1);
 }
 .monster.green_dragon .sprite {
-	background-position:calc(-866px * 1) calc(-4370px * 1);
+	background-position:calc(-866px * 1) calc(-4730px * 1);
 	width:calc(645px * 1);
 	height:calc(671px * 1);
 }
@@ -2695,6 +2695,9 @@ body.arena .monster-panel {
 }
 .player-panel .message.shown {
 	display:block;
+}
+.player-panel .message.standard-message {
+
 }
 .player-panel .message.discard-message {
 

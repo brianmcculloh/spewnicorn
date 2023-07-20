@@ -100,7 +100,6 @@
  * BUG: courage screen straight into multiple quests, and in between the quests i got the courage screen again
  * BUG: sometimes courage screen only shows 1 ability instead of 2
  * BUG: added a shard to a card, and then the next quest was the trasform 3 quest, and the sharded card was still in the show cards
- * BUG: can't select to discard a slash card that was just added by surprise attack
  * BUG: quest Library not working
  * BUG: attack card damage is getting reduced to 0 in combats where mystical energy and smash and grab are played, and rainbow has cycled
  * --also have black vial and magic dust. smash and grab has flame shard and mystical energy has double frost shards
@@ -129,6 +128,7 @@
  * Monster hexes punch down but player buffs punch up. New damage amount is larger than original but damage amount color is red - should be green.
  * Question: if player has might, should draw damage effects have might applied?
  * Question: should only one hit of a multi-attack card be affected by crit (like how fatality works)?
+ * When playing a card that draws and discards (upgraded recoil) and the drawn card adds a card to hand (surprise attack), added card cannot be discarded
  * 
  * 
  * NEW CARDS & TREASURES:
@@ -2332,12 +2332,12 @@ function endTurn(checkRetain = true) {
 	// retain cards
 	$('.player-cards .card').removeClass('playable selected');
 	if(player.cardRetain > 0 && checkRetain) {
-		$('.player-panel .message').html('choose cards to retain').addClass('shown');
+		$('.player-panel .standard-message').html('choose cards to retain').addClass('shown');
 		$('.retain-done').addClass('shown');
 		$('.player-cards .card').addClass('retainable');
 		$('.draw-card').addClass('disabled');
 	} else {
-		$('.player-panel .message').removeClass('shown');
+		$('.player-panel .standard-message').removeClass('shown');
 		$('.retain-done').removeClass('shown');
 		$('.player-cards .card').removeClass('retain retainable');
 		combatDeck.discardHand(combatDeck, player);
@@ -3925,7 +3925,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						let thisCard = {};
 						let possibleCards = [];
 						let shards = actions[e].with != undefined ? actions[e].with : [];
-						$('.player-panel .message').html('').removeClass('shown');
+						$('.player-panel .standard-message').html('').removeClass('shown');
 
 						if(actions[e].what != undefined) {
 							addCard = actions[e].what;

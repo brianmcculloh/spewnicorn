@@ -299,7 +299,7 @@
       <div class="dead-cards icon-button tooltip" data-powertip="Dead cards"><div class="icon"></div><span class="counter"></span></div>
 
       <div class="stance">
-        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> gain +2 block, +1 armor, and +1 health, and unused speed converts to block, armor, and health next turn.<br /><br /><span class='sparkle'>Sparkle:</span> gain +2 might, and unused speed converts to might next turn.<br /><br /><span class='aura'>Aura:</span> gain +1 mana, and unused speed converts to mana next turn.<br /><br />None: unused speed converts to 2x block next turn."></div>
+        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> gain +2 block, +1 armor, and +1 health, and unused speed converts to block, armor, and health next turn.<br /><br /><span class='sparkle'>Sparkle:</span> gain +2 might, and unused speed converts to 2x might next turn.<br /><br /><span class='aura'>Aura:</span> gain +1 mana, and unused speed converts to mana next turn.<br /><br />None: unused speed converts to 2x block next turn."></div>
         <div class="icon-stance tooltip" data-stance="none" data-powertip="<span class='highlight'>Stance:</span> None"></div>
       </div>
 
@@ -741,7 +741,7 @@
 
         <div class="frame frame-top-middle"></div>
 
-        <div class="message"></div>
+        <div class="message standard-message"></div>
         <div class="message discard-message"></div>
         <div class="message destroy-message"></div>
 

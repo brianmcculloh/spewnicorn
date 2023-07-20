@@ -472,8 +472,8 @@ export default class Util {
                     // overwrite with specific shard values
                     if(util.getShardNum(card, 'frost') > 1) {
                         if(card.iceShardUpgrades != undefined) {
-                            //if(card.iceShardUpgrades[attribute + '_2'] != undefined) {
-                            if(card.iceShardUpgrades[attribute + '_2'] != undefined && !isNaN(card.iceShardUpgrades[attribute + '_2'])) {
+                            //if(card.iceShardUpgrades[attribute + '_2'] != undefined && !isNaN(card.iceShardUpgrades[attribute + '_2'])) {
+                            if(card.iceShardUpgrades[attribute + '_2'] != undefined) {
                                 data = card.iceShardUpgrades[attribute + '_2'];
                             }
                         }
