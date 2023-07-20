@@ -560,10 +560,16 @@ body.game-started #splash .panel .difficulty {
 	position:relative;
 	left:-6px;
 }
-.game-seed {
-	font-size:12px;
+.game-version {
+	font-size:14px;
 	position:absolute;
-	top:15px;
+	top:8px;
+	right:15px;
+}
+.game-seed {
+	font-size:14px;
+	position:absolute;
+	top:23px;
 	right:15px;
 }
 .game-info {

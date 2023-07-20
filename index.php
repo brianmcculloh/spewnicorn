@@ -185,6 +185,8 @@
 
       </div>
 
+      <div class="game-version">Version: <span></span></div>
+
       <div class="game-seed">Seed: <span></span></div>
 
       <div class="game-info">

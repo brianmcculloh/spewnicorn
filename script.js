@@ -287,6 +287,7 @@ jQuery(document).ready(function($) {
 			game.seed = gameseed;
 			util.setGameSeed(gameseed);
 			$('.game-seed span').html(gameseed);
+			$('.game-version span').html(game.version);
 
 			setTimeout(function() {
 				$('#game-loading').addClass('hidden');

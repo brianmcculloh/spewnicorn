@@ -392,6 +392,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
+    let version = '0.1 Alpha';
     let seed = false;
     let difficulty = 'normal';
     let floor = 0;
@@ -568,6 +569,7 @@ export default function Game() {
     }
     
     return {
+        version,
         seed,
         difficulty,
         floor,
