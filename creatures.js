@@ -61,6 +61,7 @@ class Creatures {
         
         // monster specific
         id, 
+        breed,
         name, 
         pattern = 'fixed',
         moveSet = [],
@@ -135,6 +136,7 @@ class Creatures {
 
         // monster specific
         this.id = id;
+        this.breed = breed;
         this.name = name;
         this.pattern = pattern;
         this.moveSet = moveSet;
@@ -184,6 +186,10 @@ const ALL_MONSTERS = [
 
         pattern: 'random',
 
+        // breed groups similar monsters together
+
+        breed: 'pixie',
+
         // moveset will go in order unless pattern is set to random. p would need to add up to 1 total for all movesets
 
         moveSet: [
@@ -226,7 +232,7 @@ const ALL_MONSTERS = [
         panic: {enabled: true, baseTurns: 0, turns: 4, persist: true},
     }),
 
-
+    
 
     MONSTER LIST
 
@@ -292,6 +298,7 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'pixie', 
+        breed: 'pixie',
         name: 'Pixie', 
         health: {base: 22, current: 0, max: 22},
         pattern: 'fixed',
@@ -319,6 +326,7 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'mummy', 
+        breed: 'mummy',
         name: 'Mummy', 
         health: {base: 35, current: 0, max: 35},
         pattern: 'fixed',
@@ -338,6 +346,7 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'stone_walker', 
+        breed: 'stone_walker',
         name: 'Stone Walker', 
         health: {base: 30, current: 0, max: 30},
         armor: 10,
@@ -348,13 +357,14 @@ const ALL_MONSTERS = [
             ], p: .2},
             {dmg: [8], blk: [4], p: .2},
             {dmg: [4], blk: [8], p: .2},
-            {dmg: [11], armor: [3], p: .2},
-            {blk: [8], armor: [5], p: .2},
+            {dmg: [11], p: .2},
+            {armor: [8], p: .2},
         ],
     }),
     new Creatures({
         type: 'monster',
         id: 'sludge', 
+        breed: 'sludge',
         name: 'Sludge', 
         health: {base: 20, current: 0, max: 20},
         block: 20,
@@ -389,6 +399,7 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'imp', 
+        breed: 'imp',
         name: 'Imp', 
         health: {base: 35, current: 0, max: 35},
         pattern: 'random',
@@ -410,6 +421,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_pixie', 
+        breed: 'pixie',
         name: 'Frost Pixie', 
         health: {base: 44, current: 0, max: 44},
         pattern: 'fixed',
@@ -437,7 +449,8 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_mummy', 
+        id: 'frost_mummy',
+        breed: 'mummy', 
         name: 'Frost Mummy', 
         health: {base: 70, current: 0, max: 70},
         pattern: 'fixed',
@@ -458,6 +471,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_stone_walker', 
+        breed: 'stone_walker',
         name: 'Frost Stone Walker', 
         health: {base: 60, current: 0, max: 60},
         armor: 20,
@@ -468,14 +482,15 @@ const ALL_MONSTERS = [
             ], p: .2},
             {dmg: [8], blk: [8], p: .2},
             {dmg: [4], blk: [16], p: .2},
-            {dmg: [11], armor: [6], p: .2},
-            {blk: [8], armor: [10], p: .2},
+            {dmg: [11],  p: .2},
+            {armor: [16], p: .2},
         ],
     }),
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_sludge', 
+        id: 'frost_sludge',
+        breed: 'sludge', 
         name: 'Frost Sludge', 
         health: {base: 40, current: 0, max: 40},
         block: 40,
@@ -511,6 +526,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_imp', 
+        breed: 'imp',
         name: 'Frost Imp', 
         health: {base: 70, current: 0, max: 70},
         pattern: 'random',
@@ -532,6 +548,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_pixie', 
+        breed: 'pixie',
         name: 'Flame Pixie', 
         health: {base: 22, current: 0, max: 22},
         pattern: 'fixed',
@@ -560,6 +577,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_mummy', 
+        breed: 'mummy',
         name: 'Flame Mummy', 
         health: {base: 35, current: 0, max: 35},
         pattern: 'fixed',
@@ -580,6 +598,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_stone_walker', 
+        breed: 'stone_walker',
         name: 'Flame Stone Walker', 
         health: {base: 30, current: 0, max: 30},
         armor: 10,
@@ -590,14 +609,15 @@ const ALL_MONSTERS = [
             ], p: .2},
             {dmg: [16], blk: [4], p: .2},
             {dmg: [8], blk: [8], p: .2},
-            {dmg: [22], armor: [3], p: .2},
-            {blk: [8], armor: [5], p: .2},
+            {dmg: [22], p: .2},
+            {armor: [8], p: .2},
         ],
     }),
     new Creatures({
         type: 'monster',
         context: 'flame',
         id: 'flame_sludge', 
+        breed: 'sludge',
         name: 'Flame Sludge', 
         health: {base: 20, current: 0, max: 20},
         block: 20,
@@ -633,6 +653,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_imp', 
+        breed: 'imp',
         name: 'Flame Imp', 
         health: {base: 35, current: 0, max: 35},
         pattern: 'random',
@@ -655,26 +676,28 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'shatter', 
+        breed: 'shatter',
         name: 'Shatter', 
         health: {base: 48, current: 0, max: 48},
         tier: 2,
-        pattern: 'random',
+        pattern: 'fixed',
         moveSet: [
             {effects: [
                 {effect: 'retaliate', amount: 2, turns: -1},
-            ], p: .2},
-            {dmg: [15], p: .2},
-            {blk: [10], p: .2},
+            ]},
+            {dmg: [15]},
+            {blk: [10]},
             {armor: [4], effects: [
                 {effect: 'retaliate', amount: 1, turns: -1},
-            ], p: .2},
-            {dmg: [1, 2, 3, 4], p: .2},
+            ]},
+            {dmg: [1, 2, 3, 4]},
         ],
         retaliate: {base: 1, current: 0, temp: [], turns: -1},
     }),
     new Creatures({
         type: 'monster',
         id: 'void_fairy', 
+        breed: 'void_fairy',
         name: 'Void Fairy', 
         health: {base: 38, current: 0, max: 38},
         tier: 2,
@@ -706,6 +729,7 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'enchantress', 
+        breed: 'enchantress',
         name: 'Enchantress', 
         health: {base: 58, current: 0, max: 58},
         tier: 2,
@@ -731,19 +755,20 @@ const ALL_MONSTERS = [
                 {action: 'addCard', value: 2, what: 'flay', to: 'discardCards'},
             ], p: .1},
             {armor: [15], dmg: [10], p: .2},
-            {blk: [15], dmg: [16], p: .2}
+            {blk: [15], dmg: [10], p: .2}
         ],
-        resistance: {base: .4, current: 0, temp: [], turns: -1, persist: false},
+        resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
     new Creatures({
         type: 'monster',
         id: 'power_liche', 
+        breed: 'power_liche',
         name: 'Power Liche', 
         health: {base: 59, current: 0, max: 59},
         tier: 2,
         pattern: 'fixed',
         moveSet: [
-            {dmg: [5]},
+            {dmg: [7]},
             {effects: [
                 {effect: 'might', amount: 4, turns: -1},
                 {effect: 'resistance', amount: .3, turns: 2},
@@ -754,6 +779,7 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'iron_walker', 
+        breed: 'iron_walker',
         name: 'Iron Walker', 
         health: {base: 75, current: 0, max: 75},
         tier: 2,
@@ -772,27 +798,29 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_shatter', 
+        breed: 'shatter',
         name: 'Frost Shatter', 
         health: {base: 96, current: 0, max: 96},
         tier: 2,
-        pattern: 'random',
+        pattern: 'fixed',
         moveSet: [
             {effects: [
                 {effect: 'retaliate', amount: 2, turns: -1},
-            ], p: .2},
-            {dmg: [15], p: .2},
-            {blk: [20], p: .2},
+            ]},
+            {dmg: [15]},
+            {blk: [20]},
             {armor: [8], effects: [
                 {effect: 'retaliate', amount: 1, turns: -1},
-            ], p: .2},
-            {dmg: [1, 2, 3, 4], p: .2},
+            ]},
+            {dmg: [1, 2, 3, 4]},
         ],
         retaliate: {base: 1, current: 0, temp: [], turns: -1},
     }),
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_void_fairy', 
+        id: 'frost_void_fairy',
+        breed: 'void_fairy', 
         name: 'Frost Void Fairy', 
         health: {base: 74, current: 0, max: 74},
         tier: 2,
@@ -825,6 +853,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_enchantress', 
+        breed: 'enchantress',
         name: 'Frost Enchantress', 
         health: {base: 116, current: 0, max: 116},
         tier: 2,
@@ -852,12 +881,13 @@ const ALL_MONSTERS = [
             {armor: [30], dmg: [10], p: .2},
             {blk: [30], dmg: [16], p: .2}
         ],
-        resistance: {base: .4, current: 0, temp: [], turns: -1, persist: false},
+        resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
     new Creatures({
         type: 'monster',
         context: 'frost',
         id: 'frost_power_liche', 
+        breed: 'power_liche',
         name: 'Frost Power Liche', 
         health: {base: 118, current: 0, max: 118},
         tier: 2,
@@ -875,6 +905,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_iron_walker', 
+        breed: 'iron_walker',
         name: 'Frost Iron Walker', 
         health: {base: 150, current: 0, max: 150},
         tier: 2,
@@ -893,20 +924,21 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_shatter', 
+        breed: 'shatter',
         name: 'Flame Shatter', 
         health: {base: 48, current: 0, max: 48},
         tier: 2,
-        pattern: 'random',
+        pattern: 'fixed',
         moveSet: [
             {effects: [
                 {effect: 'retaliate', amount: 2, turns: -1},
-            ], p: .2},
-            {dmg: [30], p: .2},
-            {blk: [10], p: .2},
+            ]},
+            {dmg: [30]},
+            {blk: [10]},
             {armor: [4], effects: [
                 {effect: 'retaliate', amount: 1, turns: -1},
-            ], p: .2},
-            {dmg: [2, 4, 6, 8], p: .2},
+            ]},
+            {dmg: [2, 4, 6, 8]},
         ],
         retaliate: {base: 1, current: 0, temp: [], turns: -1},
     }),
@@ -914,6 +946,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_void_fairy', 
+        breed: 'void_fairy',
         name: 'Flame Void Fairy', 
         health: {base: 38, current: 0, max: 38},
         tier: 2,
@@ -945,7 +978,8 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_enchantress', 
+        id: 'flame_enchantress',
+        breed: 'enchantress', 
         name: 'Flame Enchantress', 
         health: {base: 58, current: 0, max: 58},
         tier: 2,
@@ -973,12 +1007,13 @@ const ALL_MONSTERS = [
             {armor: [15], dmg: [20], p: .2},
             {blk: [15], dmg: [32], p: .2}
         ],
-        resistance: {base: .4, current: 0, temp: [], turns: -1, persist: false},
+        resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
     new Creatures({
         type: 'monster',
         context: 'flame',
         id: 'flame_power_liche', 
+        breed: 'power_liche',
         name: 'Flame Power Liche', 
         health: {base: 59, current: 0, max: 59},
         tier: 2,
@@ -996,6 +1031,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_iron_walker', 
+        breed: 'iron_walker',
         name: 'Flame Iron Walker', 
         health: {base: 75, current: 0, max: 75},
         tier: 2,
@@ -1016,6 +1052,7 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'swarm', 
+        breed: 'swarm',
         name: 'Swarm', 
         health: {base: 70, current: 0, max: 70},
         tier: 3,
@@ -1031,11 +1068,7 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'vigor', amount: 1, turns: -1},
             ], p: .2},
-            {dmg: [3, 3, 3, 3, 3, 3], 
-            effects: [
-                {effect: 'punch', amount: -.1, turns: -1, hex: true},
-                {effect: 'might', amount: -1, turns: -1, hex: true},
-            ], p: .2},
+            {dmg: [3, 3, 3, 3, 3, 3], p: .2},
             {dmg: [5, 5, 5, 5], p: .2},
         ],
         heal: {base: 10, current: 0, temp: [], turns: -1}
@@ -1043,13 +1076,13 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'sorcerer', 
+        breed: 'sorcerer',
         name: 'Sorcerer', 
         health: {base: 95, current: 0, max: 95},
         tier: 3,
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'rainbow', amount: -5, turns: 5, hex: true},
                 {effect: 'conjure', amount: -2, turns: 5, hex: true},
                 {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
                 {effect: 'summon', amount: -5, turns: 5, hex: true},
@@ -1058,18 +1091,19 @@ const ALL_MONSTERS = [
                 {effect: 'arcane', amount: -5, turns: 5, hex: true}
             ]},
             {dmg: [8, 8]},
-            {blk: [10], dmg: [10]},
+            {blk: [10]},
             {dmg: [9, 9]},
             {blk: [10], dmg: [10]},
             {dmg: [10, 10]},
-            {blk: [10], dmg: [10]},
+            {blk: [10]},
         ],
         vex: {base: 3, current: 0, temp: [], turns: -1},
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
     new Creatures({
         type: 'monster',
-        id: 'red_dragon', 
+        id: 'red_dragon',
+        breed: 'red_dragon', 
         name: 'Red Dragon', 
         health: {base: 185, current: 0, max: 185},
         tier: 3,
@@ -1078,9 +1112,6 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'retaliate', amount: 7, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
-            ], 
-            actions: [
-                {action: 'addCard', value: 2, what: 'junk', to: 'drawCards'},
             ], p: .1},
             {effects: [
                 {effect: 'spikes', amount: 10, turns: 1},
@@ -1093,17 +1124,18 @@ const ALL_MONSTERS = [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
             {dmg: [24], p: .1},
-            {dmg: [14], p: .1},
+            {blk: [15], p: .1},
             {dmg: [18], p: .1},
-            {dmg: [12], p: .1},
+            {blk: [15], p: .1},
             {dmg: [8], armor: [10], blk: [10], p: .1},
-            {dmg: [5], armor: [5], blk: [20], p: .1},
+            {dmg: [5], blk: [20], p: .1},
             {blk: [20], p: .1},
         ],
     }),
     new Creatures({
         type: 'monster',
         id: 'green_dragon', 
+        breed: 'green_dragon',
         name: 'Green Dragon', 
         health: {base: 185, current: 0, max: 185},
         tier: 3,
@@ -1117,9 +1149,6 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'craft', amount: -2, turns: -1, hex: true},
                 {effect: 'vex', amount: 1, turns: -1}
-            ], 
-            actions: [
-                {action: 'addCard', value: 2, what: 'debris', to: 'drawCards'},
             ], armor: [20], p: .1},
             {effects: [
                 {effect: 'might', amount: 1, turns: -1}
@@ -1128,17 +1157,18 @@ const ALL_MONSTERS = [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
             {dmg: [24], p: .1},
-            {dmg: [14], p: .1},
+            {blk: [15], p: .1},
             {dmg: [18], p: .1},
-            {dmg: [12], p: .1},
+            {blk: [15], p: .1},
             {dmg: [8], armor: [10], blk: [10], p: .1},
-            {dmg: [5], armor: [5], blk: [20], p: .1},
+            {dmg: [5], blk: [20], p: .1},
             {blk: [20], p: .1},
         ],
     }),
     new Creatures({
         type: 'monster',
         id: 'cyberskull', 
+        breed: 'cyberskull',
         name: 'Cyberskull', 
         health: {base: 120, current: 0, max: 120},
         pattern: 'fixed',
@@ -1154,7 +1184,8 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_swarm', 
+        id: 'frost_swarm',
+        breed: 'swarm',
         name: 'Frost Swarm', 
         health: {base: 140, current: 0, max: 140},
         tier: 3,
@@ -1182,14 +1213,14 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_sorcerer', 
+        id: 'frost_sorcerer',
+        breed: 'sorcerer', 
         name: 'Frost Sorcerer', 
         health: {base: 190, current: 0, max: 190},
         tier: 3,
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'rainbow', amount: -5, turns: 5, hex: true},
                 {effect: 'conjure', amount: -2, turns: 5, hex: true},
                 {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
                 {effect: 'summon', amount: -5, turns: 5, hex: true},
@@ -1198,11 +1229,11 @@ const ALL_MONSTERS = [
                 {effect: 'arcane', amount: -5, turns: 5, hex: true}
             ]},
             {dmg: [8, 8]},
-            {blk: [20], dmg: [10]},
+            {blk: [20]},
             {dmg: [9, 9]},
             {blk: [20], dmg: [10]},
             {dmg: [10, 10]},
-            {blk: [20], dmg: [10]},
+            {blk: [20]},
         ],
         vex: {base: 3, current: 0, temp: [], turns: -1},
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
@@ -1211,6 +1242,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_red_dragon', 
+        breed: 'red_dragon',
         name: 'Frost Red Dragon', 
         health: {base: 370, current: 0, max: 370},
         tier: 3,
@@ -1219,9 +1251,6 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'retaliate', amount: 7, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
-            ], 
-            actions: [
-                {action: 'addCard', value: 2, what: 'junk', to: 'drawCards'},
             ], p: .1},
             {effects: [
                 {effect: 'spikes', amount: 10, turns: 1},
@@ -1234,11 +1263,11 @@ const ALL_MONSTERS = [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
             {dmg: [24], p: .1},
-            {dmg: [14], p: .1},
+            {blk: [30], p: .1},
             {dmg: [18], p: .1},
-            {dmg: [12], p: .1},
+            {blk: [30], p: .1},
             {dmg: [8], armor: [20], blk: [20], p: .1},
-            {dmg: [5], armor: [10], blk: [40], p: .1},
+            {dmg: [5], blk: [40], p: .1},
             {blk: [40], p: .1},
         ],
     }),
@@ -1246,6 +1275,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_green_dragon', 
+        breed: 'green_dragon',
         name: 'Frost Green Dragon', 
         health: {base: 370, current: 0, max: 370},
         tier: 3,
@@ -1259,9 +1289,6 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'craft', amount: -2, turns: -1, hex: true},
                 {effect: 'vex', amount: 1, turns: -1}
-            ], 
-            actions: [
-                {action: 'addCard', value: 2, what: 'debris', to: 'drawCards'},
             ], armor: [40], p: .1},
             {effects: [
                 {effect: 'might', amount: 1, turns: -1}
@@ -1270,11 +1297,11 @@ const ALL_MONSTERS = [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
             {dmg: [24], p: .1},
-            {dmg: [14], p: .1},
+            {blk: [30], p: .1},
             {dmg: [18], p: .1},
-            {dmg: [12], p: .1},
+            {blk: [30], p: .1},
             {dmg: [8], armor: [20], blk: [20], p: .1},
-            {dmg: [5], armor: [10], blk: [40], p: .1},
+            {dmg: [5], blk: [40], p: .1},
             {blk: [40], p: .1},
         ],
     }),
@@ -1282,6 +1309,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_cyberskull', 
+        breed: 'cyberskull',
         name: 'Frost Cyberskull', 
         health: {base: 240, current: 0, max: 240},
         pattern: 'fixed',
@@ -1297,7 +1325,8 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_swarm', 
+        id: 'flame_swarm',
+        breed: 'swarm', 
         name: 'Flame Swarm', 
         health: {base: 70, current: 0, max: 70},
         tier: 3,
@@ -1326,13 +1355,13 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_sorcerer', 
+        breed: 'sorcerer',
         name: 'Flame Sorcerer', 
         health: {base: 95, current: 0, max: 95},
         tier: 3,
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'rainbow', amount: -5, turns: 5, hex: true},
                 {effect: 'conjure', amount: -2, turns: 5, hex: true},
                 {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
                 {effect: 'summon', amount: -5, turns: 5, hex: true},
@@ -1341,11 +1370,11 @@ const ALL_MONSTERS = [
                 {effect: 'arcane', amount: -5, turns: 5, hex: true}
             ]},
             {dmg: [16, 16]},
-            {blk: [10], dmg: [20]},
+            {blk: [10]},
             {dmg: [18, 18]},
             {blk: [10], dmg: [20]},
             {dmg: [20, 20]},
-            {blk: [10], dmg: [20]},
+            {blk: [10]},
         ],
         vex: {base: 3, current: 0, temp: [], turns: -1},
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
@@ -1354,6 +1383,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_red_dragon', 
+        breed: 'red_dragon',
         name: 'Flame Red Dragon', 
         health: {base: 185, current: 0, max: 185},
         tier: 3,
@@ -1362,9 +1392,6 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'retaliate', amount: 7, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
-            ], 
-            actions: [
-                {action: 'addCard', value: 2, what: 'junk', to: 'drawCards'},
             ], p: .1},
             {effects: [
                 {effect: 'spikes', amount: 10, turns: 1},
@@ -1377,11 +1404,11 @@ const ALL_MONSTERS = [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
             {dmg: [48], p: .1},
-            {dmg: [28], p: .1},
+            {blk: [15], p: .1},
             {dmg: [36], p: .1},
-            {dmg: [24], p: .1},
+            {blk: [15], p: .1},
             {dmg: [16], armor: [10], blk: [10], p: .1},
-            {dmg: [10], armor: [5], blk: [20], p: .1},
+            {dmg: [10], blk: [20], p: .1},
             {blk: [20], p: .1},
         ],
     }),
@@ -1389,6 +1416,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_green_dragon', 
+        breed: 'green_dragon',
         name: 'Flame Green Dragon', 
         health: {base: 185, current: 0, max: 185},
         tier: 3,
@@ -1402,9 +1430,6 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'craft', amount: -2, turns: -1, hex: true},
                 {effect: 'vex', amount: 1, turns: -1}
-            ], 
-            actions: [
-                {action: 'addCard', value: 2, what: 'debris', to: 'drawCards'},
             ], armor: [20], p: .1},
             {effects: [
                 {effect: 'might', amount: 1, turns: -1}
@@ -1413,11 +1438,11 @@ const ALL_MONSTERS = [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
             {dmg: [48], p: .1},
-            {dmg: [28], p: .1},
+            {blk: [15], p: .1},
             {dmg: [36], p: .1},
-            {dmg: [24], p: .1},
+            {blk: [15], p: .1},
             {dmg: [16], armor: [10], blk: [10], p: .1},
-            {dmg: [10], armor: [5], blk: [20], p: .1},
+            {dmg: [10], blk: [20], p: .1},
             {blk: [20], p: .1},
         ],
     }),
@@ -1425,6 +1450,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_cyberskull', 
+        breed: 'cyberskull',
         name: 'Flame Cyberskull', 
         health: {base: 120, current: 0, max: 120},
         pattern: 'fixed',
@@ -1444,6 +1470,7 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'transfigurer', 
+        breed: 'transfigurer',
         name: 'Transfigurer', 
         health: {base: 210, current: 0, max: 210},
         pattern: 'fixed',
@@ -1456,7 +1483,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [25]},
-            {armor: [8], dmg: [15]},
+            {armor: [8]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1466,7 +1493,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [35]},
-            {armor: [8], dmg: [25]},
+            {armor: [8]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1476,7 +1503,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [25]},
-            {armor: [8], dmg: [15]},
+            {armor: [8]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1486,7 +1513,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [35]},
-            {armor: [8], dmg: [25]},
+            {armor: [8]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1497,6 +1524,7 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'gold_dragon', 
+        breed: 'gold_dragon',
         name: 'Gold Dragon', 
         health: {base: 260, current: 0, max: 260},
         armor: 30,
@@ -1508,14 +1536,9 @@ const ALL_MONSTERS = [
             ], p: .3},
             {effects: [
                 {effect: 'vex', amount: 1, turns: -1}
-            ], 
-            actions: [
-                {action: 'addCard', value: 1, what: 'junk', to: 'handCards'},
             ], dmg: [25], p: .3},
             {dmg: [45], p: .1},
-            {actions: [
-                {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
-                {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
+            {blk: [10], actions: [
                 {action: 'addCard', value: 1, what: 'broken', to: 'handCards'},
             ], p: .3},
         ],
@@ -1523,20 +1546,19 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'black_dragon', 
+        breed: 'black_dragon',
         name: 'Black Dragon', 
         health: {base: 195, current: 0, max: 195},
         armor: 68,
         tier: 4,
         pattern: 'random',
         moveSet: [
-            {dmg: [12], armor: [10], p: .25},
+            {blk: [12], armor: [10], p: .25},
             {dmg: [24], armor: [5], p: .25},
             {effects: [
                 {effect: 'resistance', amount: .8, turns: 1}
             ], dmg: [26], armor: [15], p: .25},
-            {actions: [
-                {action: 'addCard', value: 1, what: 'debris', to: 'handCards'},
-            ], blk: [10], armor: [10], p: .25},
+            {blk: [10], armor: [10], p: .25},
         ],
         cunning: {base: 1, current: 0, temp: [], turns: -1},
         vigor: {base: 1, current: 0, temp: [], turns: -1}
@@ -1544,6 +1566,7 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'obsidian_walker', 
+        breed: 'obsidian_walker',
         name: 'Obsidian Walker', 
         health: {base: 330, current: 0, max: 330},
         tier: 4,
@@ -1557,12 +1580,13 @@ const ALL_MONSTERS = [
                 {effect: 'solid', amount: 2, turns: -1},
             ]},
             {blk: [18]},
-            {dmg: [36]},
+            {dmg: [30]},
         ],
     }),
     new Creatures({
         type: 'monster',
         id: 'seething_entity', 
+        breed: 'seething_entity',
         name: 'Seething Entity', 
         health: {base: 210, current: 0, max: 210},
         tier: 4,
@@ -1571,7 +1595,7 @@ const ALL_MONSTERS = [
         moveSet: [
             {effects: [
                 {effect: 'regen', amount: 5, turns: -1},
-            ], dmg: [5, 5, 5], p: .25},
+            ], blk: [15], p: .25},
             {effects: [
                 {effect: 'might', amount: 1, turns: -1},
             ], p: .25},
@@ -1593,6 +1617,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_transfigurer', 
+        breed: 'transfigurer',
         name: 'Frost Transfigurer', 
         health: {base: 420, current: 0, max: 420},
         pattern: 'fixed',
@@ -1605,7 +1630,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [10], dmg: [25]},
-            {armor: [16], dmg: [15]},
+            {armor: [16]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1615,7 +1640,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [10], dmg: [35]},
-            {armor: [16], dmg: [25]},
+            {armor: [16]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1625,7 +1650,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [10], dmg: [25]},
-            {armor: [16], dmg: [15]},
+            {armor: [16]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1635,7 +1660,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [10], dmg: [35]},
-            {armor: [16], dmg: [25]},
+            {armor: [16]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1647,6 +1672,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_gold_dragon', 
+        breed: 'gold_dragon',
         name: 'Frost Gold Dragon', 
         health: {base: 520, current: 0, max: 520},
         armor: 60,
@@ -1658,14 +1684,9 @@ const ALL_MONSTERS = [
             ], p: .3},
             {effects: [
                 {effect: 'vex', amount: 1, turns: -1}
-            ], 
-            actions: [
-                {action: 'addCard', value: 1, what: 'junk', to: 'handCards'},
             ], dmg: [25], p: .3},
             {dmg: [45], p: .1},
-            {actions: [
-                {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
-                {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
+            {blk: [20], actions: [
                 {action: 'addCard', value: 1, what: 'broken', to: 'handCards'},
             ], p: .3},
         ],
@@ -1674,20 +1695,19 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_black_dragon', 
+        breed: 'black_dragon',
         name: 'Frost Black Dragon', 
         health: {base: 390, current: 0, max: 390},
         armor: 136,
         tier: 4,
         pattern: 'random',
         moveSet: [
-            {dmg: [12], armor: [20], p: .25},
+            {blk: [24], armor: [20], p: .25},
             {dmg: [24], armor: [10], p: .25},
             {effects: [
                 {effect: 'resistance', amount: .8, turns: 1}
             ], dmg: [26], armor: [30], p: .25},
-            {actions: [
-                {action: 'addCard', value: 1, what: 'debris', to: 'handCards'},
-            ], blk: [20], armor: [20], p: .25},
+            {blk: [20], armor: [20], p: .25},
         ],
         cunning: {base: 1, current: 0, temp: [], turns: -1},
         vigor: {base: 1, current: 0, temp: [], turns: -1}
@@ -1696,6 +1716,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_obsidian_walker', 
+        breed: 'obsidian_walker',
         name: 'Frost Obsidian Walker', 
         health: {base: 660, current: 0, max: 660},
         tier: 4,
@@ -1709,13 +1730,14 @@ const ALL_MONSTERS = [
                 {effect: 'solid', amount: 2, turns: -1},
             ]},
             {blk: [36]},
-            {dmg: [36]},
+            {dmg: [30]},
         ],
     }),
     new Creatures({
         type: 'monster',
         context: 'frost',
         id: 'frost_seething_entity', 
+        breed: 'seething_entity',
         name: 'Frost Seething Entity', 
         health: {base: 420, current: 0, max: 420},
         tier: 4,
@@ -1724,7 +1746,7 @@ const ALL_MONSTERS = [
         moveSet: [
             {effects: [
                 {effect: 'regen', amount: 5, turns: -1},
-            ], dmg: [5, 5, 5], p: .25},
+            ], blk: [30], p: .25},
             {effects: [
                 {effect: 'might', amount: 1, turns: -1},
             ], p: .25},
@@ -1746,6 +1768,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_transfigurer', 
+        breed: 'transfigurer',
         name: 'Flame Transfigurer', 
         health: {base: 210, current: 0, max: 210},
         pattern: 'fixed',
@@ -1758,7 +1781,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [50]},
-            {armor: [8], dmg: [30]},
+            {armor: [8]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1768,7 +1791,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [70]},
-            {armor: [8], dmg: [50]},
+            {armor: [8]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1778,7 +1801,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [50]},
-            {armor: [8], dmg: [30]},
+            {armor: [8]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1788,7 +1811,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [70]},
-            {armor: [8], dmg: [50]},
+            {armor: [8]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1800,6 +1823,7 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_gold_dragon', 
+        breed: 'gold_dragon',
         name: 'Flame Gold Dragon', 
         health: {base: 260, current: 0, max: 260},
         armor: 30,
@@ -1811,14 +1835,9 @@ const ALL_MONSTERS = [
             ], p: .3},
             {effects: [
                 {effect: 'vex', amount: 1, turns: -1}
-            ], 
-            actions: [
-                {action: 'addCard', value: 1, what: 'junk', to: 'handCards'},
             ], dmg: [50], p: .3},
             {dmg: [90], p: .1},
-            {actions: [
-                {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
-                {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
+            {blk: [20], actions: [
                 {action: 'addCard', value: 1, what: 'broken', to: 'handCards'},
             ], p: .3},
         ],
@@ -1827,20 +1846,19 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_black_dragon', 
+        breed: 'black_dragon',
         name: 'Flame Black Dragon', 
         health: {base: 195, current: 0, max: 195},
         armor: 68,
         tier: 4,
         pattern: 'random',
         moveSet: [
-            {dmg: [24], armor: [10], p: .25},
+            {blk: [12], armor: [10], p: .25},
             {dmg: [48], armor: [5], p: .25},
             {effects: [
                 {effect: 'resistance', amount: .8, turns: 1}
             ], dmg: [52], armor: [15], p: .25},
-            {actions: [
-                {action: 'addCard', value: 1, what: 'debris', to: 'handCards'},
-            ], blk: [10], armor: [10], p: .25},
+            {blk: [10], armor: [10], p: .25},
         ],
         cunning: {base: 1, current: 0, temp: [], turns: -1},
         vigor: {base: 1, current: 0, temp: [], turns: -1}
@@ -1848,7 +1866,8 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_obsidian_walker', 
+        id: 'flame_obsidian_walker',
+        breed: 'obsidian_walker', 
         name: 'Flame Obsidian Walker', 
         health: {base: 330, current: 0, max: 330},
         tier: 4,
@@ -1862,13 +1881,14 @@ const ALL_MONSTERS = [
                 {effect: 'solid', amount: 2, turns: -1},
             ]},
             {blk: [18]},
-            {dmg: [72]},
+            {dmg: [60]},
         ],
     }),
     new Creatures({
         type: 'monster',
         context: 'flame',
         id: 'flame_seething_entity', 
+        breed: 'seething_entity',
         name: 'Flame Seething Entity', 
         health: {base: 210, current: 0, max: 210},
         tier: 4,
@@ -1877,7 +1897,7 @@ const ALL_MONSTERS = [
         moveSet: [
             {effects: [
                 {effect: 'regen', amount: 5, turns: -1},
-            ], dmg: [10, 10, 10], p: .25},
+            ], blk: [15], p: .25},
             {effects: [
                 {effect: 'might', amount: 1, turns: -1},
             ], p: .25},
@@ -1902,9 +1922,10 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'ultraumaton', 
+        breed: 'ultraumaton',
         name: 'Ultraumaton', 
         health: {base: 380, current: 0, max: 380},
-        tier: 1,
+        tier: 5,
         category: 'boss',
         pattern: 'fixed',
         moveSet: [
@@ -1927,15 +1948,16 @@ const ALL_MONSTERS = [
                 {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'briars', to: 'discardCards'},
             ]},
-            {dmg: [30]},
+            {dmg: [20]},
         ],
     }),
     new Creatures({
         type: 'monster',
         id: 'unmaker', 
+        breed: 'unmaker',
         name: 'Unmaker', 
         health: {base: 425, current: 0, max: 425},
-        tier: 1,
+        tier: 5,
         category: 'boss',
         pattern: 'random',
         moveSet: [
@@ -1945,7 +1967,7 @@ const ALL_MONSTERS = [
             ], p: .25},
             {dmg: [25], p: .25},
             {dmg: [15, 15], p: .1},
-            {dmg: [20], armor: [20], blk: [20], p: .1},
+            {armor: [20], blk: [20], p: .1},
             {actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
@@ -1960,18 +1982,16 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'arch_summoner', 
+        breed: 'arch_summoner',
         name: 'Arch Summoner', 
         health: {base: 400, current: 0, max: 400},
-        tier: 1,
+        tier: 5,
         category: 'boss',
         pattern: 'fixed',
         moveSet: [
             {effects: [
                 {effect: 'rainbow', amount: -5, turns: 3, hex: true},
                 {effect: 'sorcery', amount: -.5, turns: 2, hex: true},
-            ],
-            actions: [
-                {action: 'addCard', value: 1, what: 'junk', to: 'discardCards'},
             ], dmg: [3, 3, 3, 3, 3, 3]},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 2, hex: true},
@@ -1979,27 +1999,23 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
-                {action: 'addCard', value: 1, what: 'junk', to: 'discardCards'},
             ]},
             {effects: [
                 {effect: 'summon', amount: -5, turns: 3, hex: true},
                 {effect: 'wield', amount: -1, turns: 2, hex: true},
-            ],
-            actions: [
-                {action: 'addCard', value: 1, what: 'debris', to: 'discardCards'},
             ], dmg: [5, 5, 5, 5, 5]},
             {effects: [
                 {effect: 'enchanter', amount: -5, turns: 2, hex: true},
                 {effect: 'arcane', amount: -5, turns: 2, hex: true}
             ],
             actions: [
-                {action: 'addCard', value: 1, what: 'debris', to: 'discardCards'},
-            ], dmg: [20]},
-            {dmg: [8, 8, 8, 8]},
+                {action: 'addCard', value: 1, what: 'curse', to: 'discardCards'},
+            ]},
+            {dmg: [6, 6, 6, 6]},
             {effects: [
                 {effect: 'might', amount: 5, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
-            ], dmg: [9, 9]},
+            ], dmg: [7, 7]},
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
@@ -2010,9 +2026,10 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_ultraumaton', 
+        breed: 'ultraumaton',
         name: 'Frost Ultraumaton', 
         health: {base: 760, current: 0, max: 760},
-        tier: 1,
+        tier: 5,
         category: 'boss',
         pattern: 'fixed',
         moveSet: [
@@ -2035,16 +2052,17 @@ const ALL_MONSTERS = [
                 {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'briars', to: 'discardCards'},
             ]},
-            {dmg: [30]},
+            {dmg: [20]},
         ],
     }),
     new Creatures({
         type: 'monster',
         context: 'frost',
         id: 'frost_unmaker', 
+        breed: 'unmaker',
         name: 'Frost Unmaker', 
         health: {base: 950, current: 0, max: 950},
-        tier: 1,
+        tier: 5,
         category: 'boss',
         pattern: 'random',
         moveSet: [
@@ -2054,7 +2072,7 @@ const ALL_MONSTERS = [
             ], p: .25},
             {dmg: [25], p: .25},
             {dmg: [15, 15], p: .1},
-            {dmg: [20], armor: [40], blk: [40], p: .1},
+            {armor: [40], blk: [40], p: .1},
             {actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
@@ -2070,18 +2088,16 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_arch_summoner', 
+        breed: 'arch_summoner',
         name: 'Frost Arch Summoner', 
         health: {base: 800, current: 0, max: 800},
-        tier: 1,
+        tier: 5,
         category: 'boss',
         pattern: 'fixed',
         moveSet: [
             {effects: [
                 {effect: 'rainbow', amount: -5, turns: 3, hex: true},
                 {effect: 'sorcery', amount: -.5, turns: 2, hex: true},
-            ],
-            actions: [
-                {action: 'addCard', value: 1, what: 'junk', to: 'discardCards'},
             ], dmg: [3, 3, 3, 3, 3, 3]},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 2, hex: true},
@@ -2089,27 +2105,23 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
-                {action: 'addCard', value: 1, what: 'junk', to: 'discardCards'},
             ]},
             {effects: [
                 {effect: 'summon', amount: -5, turns: 3, hex: true},
                 {effect: 'wield', amount: -1, turns: 2, hex: true},
-            ],
-            actions: [
-                {action: 'addCard', value: 1, what: 'debris', to: 'discardCards'},
             ], dmg: [5, 5, 5, 5, 5]},
             {effects: [
                 {effect: 'enchanter', amount: -5, turns: 2, hex: true},
                 {effect: 'arcane', amount: -5, turns: 2, hex: true}
             ],
             actions: [
-                {action: 'addCard', value: 1, what: 'debris', to: 'discardCards'},
-            ], dmg: [20]},
-            {dmg: [8, 8, 8, 8]},
+                {action: 'addCard', value: 1, what: 'curse', to: 'discardCards'},
+            ]},
+            {dmg: [6, 6, 6, 6]},
             {effects: [
                 {effect: 'might', amount: 5, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
-            ], dmg: [9, 9]},
+            ], dmg: [7, 7]},
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
@@ -2119,9 +2131,10 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_ultraumaton', 
+        breed: 'ultraumaton',
         name: 'Flame Ultraumaton', 
         health: {base: 380, current: 0, max: 380},
-        tier: 1,
+        tier: 5,
         category: 'boss',
         pattern: 'fixed',
         moveSet: [
@@ -2144,16 +2157,17 @@ const ALL_MONSTERS = [
                 {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'briars', to: 'discardCards'},
             ]},
-            {dmg: [60]},
+            {dmg: [40]},
         ],
     }),
     new Creatures({
         type: 'monster',
         context: 'flame',
         id: 'flame_unmaker', 
+        breed: 'unmaker',
         name: 'Flame Unmaker', 
         health: {base: 425, current: 0, max: 425},
-        tier: 1,
+        tier: 5,
         category: 'boss',
         pattern: 'random',
         moveSet: [
@@ -2163,7 +2177,7 @@ const ALL_MONSTERS = [
             ], p: .25},
             {dmg: [50], p: .25},
             {dmg: [30, 30], p: .1},
-            {dmg: [40], armor: [20], blk: [20], p: .1},
+            {armor: [20], blk: [20], p: .1},
             {actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
@@ -2179,18 +2193,16 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_arch_summoner', 
+        breed: 'arch_summoner',
         name: 'Flame Arch Summoner', 
         health: {base: 400, current: 0, max: 400},
-        tier: 1,
+        tier: 5,
         category: 'boss',
         pattern: 'fixed',
         moveSet: [
             {effects: [
                 {effect: 'rainbow', amount: -5, turns: 3, hex: true},
                 {effect: 'sorcery', amount: -.5, turns: 2, hex: true},
-            ],
-            actions: [
-                {action: 'addCard', value: 1, what: 'junk', to: 'discardCards'},
             ], dmg: [6, 6, 6, 6, 6, 6]},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 2, hex: true},
@@ -2198,27 +2210,23 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
-                {action: 'addCard', value: 1, what: 'junk', to: 'discardCards'},
             ]},
             {effects: [
                 {effect: 'summon', amount: -5, turns: 3, hex: true},
                 {effect: 'wield', amount: -1, turns: 2, hex: true},
-            ],
-            actions: [
-                {action: 'addCard', value: 1, what: 'debris', to: 'discardCards'},
             ], dmg: [10, 10, 10, 10, 10]},
             {effects: [
                 {effect: 'enchanter', amount: -5, turns: 2, hex: true},
                 {effect: 'arcane', amount: -5, turns: 2, hex: true}
             ],
             actions: [
-                {action: 'addCard', value: 1, what: 'debris', to: 'discardCards'},
-            ], dmg: [40]},
-            {dmg: [16, 16, 16, 16]},
+                {action: 'addCard', value: 1, what: 'curse', to: 'discardCards'},
+            ]},
+            {dmg: [12, 12, 12, 12]},
             {effects: [
                 {effect: 'might', amount: 5, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
-            ], dmg: [18, 18]},
+            ], dmg: [14, 14]},
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
@@ -2231,21 +2239,20 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'flame_guardian', 
+        breed: 'flame_guardian',
         name: 'Flame Guardian', 
         health: {base: 600, current: 0, max: 600},
-        tier: 1,
+        tier: 6,
         category: 'fire_guardian',
         pattern: 'fixed',
         moveSet: [
-            {actions: [
-                {action: 'addCard', value: 5, what: 'execrate', to: 'drawCards'},
-            ]},
+            {dmg: [20]},
             {dmg: [2, 2, 2, 2, 2, 2]},
-            {armor: [35], blk: [35]},
+            {armor: [30], blk: [30]},
             {dmg: [3, 3, 3, 3],
             effects: [
-                {effect: 'might', amount: 3, turns: -1},
-                {effect: 'vex', amount: 3, turns: -1}
+                {effect: 'might', amount: 2, turns: -1},
+                {effect: 'vex', amount: 2, turns: -1}
             ]},
         ],
     }),
@@ -2255,21 +2262,20 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'super_frozen_flame_guardian', 
+        breed: 'flame_guardian',
         name: 'Super Frozen Flame Guardian', 
         health: {base: 1200, current: 0, max: 1200},
-        tier: 1,
+        tier: 6,
         category: 'fire_guardian',
         pattern: 'fixed',
         moveSet: [
-            {actions: [
-                {action: 'addCard', value: 5, what: 'execrate', to: 'drawCards'},
-            ]},
+            {dmg: [20]},
             {dmg: [2, 2, 2, 2, 2, 2]},
-            {armor: [70], blk: [70]},
+            {armor: [60], blk: [60]},
             {dmg: [3, 3, 3, 3],
             effects: [
-                {effect: 'might', amount: 3, turns: -1},
-                {effect: 'vex', amount: 3, turns: -1}
+                {effect: 'might', amount: 2, turns: -1},
+                {effect: 'vex', amount: 2, turns: -1}
             ]},
         ],
     }),
@@ -2279,21 +2285,20 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'super_burning_flame_guardian', 
+        breed: 'flame_guardian',
         name: 'Super Burning Flame Guardian', 
         health: {base: 600, current: 0, max: 600},
-        tier: 1,
+        tier: 6,
         category: 'fire_guardian',
         pattern: 'fixed',
         moveSet: [
-            {actions: [
-                {action: 'addCard', value: 5, what: 'execrate', to: 'drawCards'},
-            ]},
+            {dmg: [40]},
             {dmg: [4, 4, 4, 4, 4, 4]},
-            {armor: [35], blk: [35]},
+            {armor: [30], blk: [30]},
             {dmg: [6, 6, 6, 6],
             effects: [
-                {effect: 'might', amount: 3, turns: -1},
-                {effect: 'vex', amount: 3, turns: -1}
+                {effect: 'might', amount: 2, turns: -1},
+                {effect: 'vex', amount: 2, turns: -1}
             ]},
         ],
     }),
@@ -2306,40 +2311,41 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'frost_guardian', 
+        breed: 'frost_guardian',
         name: 'Frost Guardian', 
         health: {base: 600, current: 0, max: 600},
-        tier: 1,
+        tier: 6,
         category: 'ice_guardian',
-        pattern: 'random',
+        pattern: 'fixed',
         moveSet: [
-            {blk: [45], armor: [35], p: .1},
-            {dmg: [25], p: .1},
+            {blk: [40], armor: [30]},
+            {dmg: [25]},
             {effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
-            ], dmg: [10], p: .1},
+            ], dmg: [20]},
             {effects: [
                 {effect: 'punch', amount: -.2, turns: 2, hex: true},
-            ], dmg: [20], p: .1},
+            ]},
             {effects: [
                 {effect: 'solid', amount: -2, turns: 2, hex: true},
-            ], dmg: [10], p: .1},
+            ], dmg: [10]},
             {effects: [
                 {effect: 'speed', amount: -2, turns: 2, hex: true},
-            ], dmg: [20], p: .1},
+            ]},
             {effects: [
                 {effect: 'conjure', amount: -2, turns: 2, hex: true},
-            ], dmg: [10], p: .1},
+            ], dmg: [20]},
             {effects: [
                 {effect: 'sorcery', amount: -.2, turns: 2, hex: true},
-            ], dmg: [20], p: .1},
+            ], dmg: [30]},
             {effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
-            ], blk: [45], p: .1},
+            ], blk: [45]},
             {effects: [
                 {effect: 'punch', amount: -.2, turns: 2, hex: true},
-            ], blk: [45], p: .1},
+            ], dmg: [10], blk: [45]},
         ],
-        vex: {base: 3, current: 0, temp: [], turns: -1},
+        vex: {base: 2, current: 0, temp: [], turns: -1},
     }),
 
     // FROST
@@ -2347,40 +2353,41 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'super_frozen_frost_guardian', 
+        breed: 'frost_guardian',
         name: 'Super Frozen Frost Guardian', 
         health: {base: 1200, current: 0, max: 1200},
-        tier: 1,
+        tier: 6,
         category: 'ice_guardian',
-        pattern: 'random',
+        pattern: 'fixed',
         moveSet: [
-            {blk: [90], armor: [70], p: .1},
-            {dmg: [25], p: .1},
+            {blk: [80], armor: [60]},
+            {dmg: [25]},
             {effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
-            ], dmg: [10], p: .1},
+            ], dmg: [20]},
             {effects: [
                 {effect: 'punch', amount: -.2, turns: 2, hex: true},
-            ], dmg: [20], p: .1},
+            ]},
             {effects: [
                 {effect: 'solid', amount: -2, turns: 2, hex: true},
-            ], dmg: [10], p: .1},
+            ], dmg: [10]},
             {effects: [
                 {effect: 'speed', amount: -2, turns: 2, hex: true},
-            ], dmg: [20], p: .1},
+            ]},
             {effects: [
                 {effect: 'conjure', amount: -2, turns: 2, hex: true},
-            ], dmg: [10], p: .1},
+            ], dmg: [20]},
             {effects: [
                 {effect: 'sorcery', amount: -.2, turns: 2, hex: true},
-            ], dmg: [20], p: .1},
+            ], dmg: [30]},
             {effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
-            ], blk: [90], p: .1},
+            ], blk: [90]},
             {effects: [
                 {effect: 'punch', amount: -.2, turns: 2, hex: true},
-            ], blk: [90], p: .1},
+            ], dmg: [10], blk: [90]},
         ],
-        vex: {base: 3, current: 0, temp: [], turns: -1},
+        vex: {base: 2, current: 0, temp: [], turns: -1},
     }),
 
     // FLAME
@@ -2388,40 +2395,41 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'super_burning_frost_guardian', 
+        breed: 'frost_guardian',
         name: 'Super Burning Frost Guardian', 
         health: {base: 600, current: 0, max: 600},
-        tier: 1,
+        tier: 6,
         category: 'ice_guardian',
-        pattern: 'random',
+        pattern: 'fixed',
         moveSet: [
-            {blk: [45], armor: [35], p: .1},
-            {dmg: [50], p: .1},
+            {blk: [40], armor: [30]},
+            {dmg: [50]},
             {effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
-            ], dmg: [20], p: .1},
+            ], dmg: [40]},
             {effects: [
                 {effect: 'punch', amount: -.2, turns: 2, hex: true},
-            ], dmg: [40], p: .1},
+            ]},
             {effects: [
                 {effect: 'solid', amount: -2, turns: 2, hex: true},
-            ], dmg: [20], p: .1},
+            ], dmg: [20]},
             {effects: [
                 {effect: 'speed', amount: -2, turns: 2, hex: true},
-            ], dmg: [40], p: .1},
+            ]},
             {effects: [
                 {effect: 'conjure', amount: -2, turns: 2, hex: true},
-            ], dmg: [20], p: .1},
+            ], dmg: [40]},
             {effects: [
                 {effect: 'sorcery', amount: -.2, turns: 2, hex: true},
-            ], dmg: [40], p: .1},
+            ], dmg: [60]},
             {effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
-            ], blk: [45], p: .1},
+            ], blk: [45]},
             {effects: [
                 {effect: 'punch', amount: -.2, turns: 2, hex: true},
-            ], blk: [45], p: .1},
+            ], dmg: [20], blk: [45]},
         ],
-        vex: {base: 3, current: 0, temp: [], turns: -1},
+        vex: {base: 2, current: 0, temp: [], turns: -1},
     }),
 
     
@@ -2501,12 +2509,12 @@ export function Monster() {
 
             if(game.map==1) {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(1, i, 'boss', excluded);
+                    let thisMonster = createMonster(5, i, 'boss', excluded);
                     currentMonsters.push(thisMonster);
                 }
             } else {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(1, i, 'boss', excluded, context);
+                    let thisMonster = createMonster(5, i, 'boss', excluded, context);
                     currentMonsters.push(thisMonster);
                 }
             }
@@ -2515,12 +2523,12 @@ export function Monster() {
 
             if(game.map==1) {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(1, i, 'fire_guardian');
+                    let thisMonster = createMonster(6, i, 'fire_guardian');
                     currentMonsters.push(thisMonster);
                 }
             } else {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(1, i, 'fire_guardian', [], context);
+                    let thisMonster = createMonster(6, i, 'fire_guardian', [], context);
                     currentMonsters.push(thisMonster);
                 }
             }
@@ -2529,12 +2537,12 @@ export function Monster() {
 
             if(game.map==1) {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(1, i, 'ice_guardian');
+                    let thisMonster = createMonster(6, i, 'ice_guardian');
                     currentMonsters.push(thisMonster);
                 }
             } else {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(1, i, 'ice_guardian', [], context);
+                    let thisMonster = createMonster(6, i, 'ice_guardian', [], context);
                     currentMonsters.push(thisMonster);
                 }
             }
@@ -2555,15 +2563,59 @@ export function Monster() {
                             currentMonsters.push(thisMonster);
                         }
                     } else {
-                        // 1-2 Tier 1 monsters
-                        let initial = 0;
-                        let increase = 20;
-                        let chance = util.monsterNumChance(initial, increase);
-                        let num = util.chance(chance) ? 2 : 1;
-                        if(game.floor == 1 || game.floor == 2) num = 1; // never more than one monster on floors 1 and 2
-                        for (let i = 0; i < num; i++) {
-                            let thisMonster = createMonster(1, i, 'normal', excluded, context);
-                            currentMonsters.push(thisMonster);
+                        switch(game.floor) {
+                            case 1:
+                                // 3/2 super pixies, 2/1 standard pixies
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 3 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'pixie');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'pixie');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                            case 2:
+                                // 3/2 super mummies, 3/2 standard mummies
+                                var numStandard = util.chance(75) ? 3 : 2;
+                                var numSuper = util.chance(75) ? 3 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'mummy');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'mummy');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                            case 3:
+                                // 3/2 super stone walkers, 2/1 standard stone walkers
+                                var numStandard = util.chance(80) ? 2 : 1;
+                                var numSuper = util.chance(80) ? 3 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'stone_walker');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'stone_walker');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                            case 4:
+                                // 3/2 super sludges, 2/1 standard sludges
+                                var numStandard = util.chance(80) ? 2 : 1;
+                                var numSuper = util.chance(80) ? 3 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'sludge');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'sludge');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
                         }
                     }
 
@@ -2574,9 +2626,47 @@ export function Monster() {
                         let thisMonster = createMonster(2, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
-                        // 1 Tier 2 monster
-                        let thisMonster = createMonster(2, game, 'normal', excluded, context);
-                        currentMonsters.push(thisMonster);
+                        switch(game.floor) {
+                            case 5:
+                                // 3/2 super imps, 2/1 standard imps
+                                var numStandard = util.chance(80) ? 2 : 1;
+                                var numSuper = util.chance(80) ? 3 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'imp');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'imp');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                            case 6:
+                                // 3/2 super shatters, 2/1 standard shatters
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 3 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'shatter');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'shatter');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                            case 7:
+                                // 3/2 super void fairies, 2/1 standard void fairies
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 3 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'void_fairy');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'void_fairy');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                        }
                     }
 
                 break;
@@ -2588,11 +2678,47 @@ export function Monster() {
                         thisMonster = createMonster(2, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
-                        // 1 Tier 1 monster and 1 Tier 2 monster
-                        let thisMonster = createMonster(1, game, 'normal', excluded, context);
-                        currentMonsters.push(thisMonster);
-                        thisMonster = createMonster(2, game, 'normal', excluded, context);
-                        currentMonsters.push(thisMonster);
+                        switch(game.floor) {
+                            case 8:
+                                // 3/2 super enchantresses, 2 standard enchantresses
+                                var numStandard = util.chance(75) ? 2 : 2;
+                                var numSuper = util.chance(75) ? 3 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'enchantress');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'enchantress');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                            case 9:
+                                // 3/2 super power liches, 2 standard power liches
+                                var numStandard = util.chance(80) ? 2 : 2;
+                                var numSuper = util.chance(80) ? 3 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'power_liche');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'power_liche');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                            case 10:
+                                // 3/2 super iron walkers, 2 standard iron walkers
+                                var numStandard = util.chance(80) ? 2 : 2;
+                                var numSuper = util.chance(80) ? 3 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'iron_walker');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'iron_walker');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                        }
                     }
 
                 break;
@@ -2602,9 +2728,47 @@ export function Monster() {
                         let thisMonster = createMonster(3, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
-                        // 1 Tier 3 monster
-                        let thisMonster = createMonster(3, game, 'normal', excluded, context);
-                        currentMonsters.push(thisMonster);
+                        switch(game.floor) {
+                            case 11:
+                                // 2/1 super swarms, 2/1 standard swarms
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 2 : 1;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'swarm');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'swarm');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                            case 12:
+                                // 2/1 super sorcerer, 2/1 standard sorcerers
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 2 : 1;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'sorcerer');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'sorcerer');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                            case 13:
+                                // 2 super red dragons, 2/1 standard red dragons
+                                var numStandard = util.chance(50) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 2 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'red_dragon');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'red_dragon');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                        }
                     }
 
                 break;
@@ -2614,9 +2778,47 @@ export function Monster() {
                         let thisMonster = createMonster(4, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
-                        // 1 Tier 4 monster
-                        let thisMonster = createMonster(4, game, 'normal', excluded, context);
-                        currentMonsters.push(thisMonster);
+                        switch(game.floor) {
+                            case 14:
+                                // 2 super green dragons, 2/1 standard green dragons
+                                var numStandard = util.chance(50) ? 2 : 1;
+                                var numSuper = util.chance(80) ? 2 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'green_dragon');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'green_dragon');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                            case 15:
+                                // 2 super cyberskulls, 2/1 standard cyberskulls
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(80) ? 2 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'cyberskull');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'cyberskull');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                            case 16:
+                                // 2 super transfigurers, 1 standard transfigurer
+                                var numStandard = util.chance(75) ? 1 : 1;
+                                var numSuper = util.chance(80) ? 2 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'transfigurer');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'transfigurer');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                        }
                     }
 
                 break;
@@ -2628,68 +2830,103 @@ export function Monster() {
                         thisMonster = createMonster(2, game, 'normal', excluded);
                         currentMonsters.push(thisMonster);
                     } else {
-                        // 1 Tier 4 monster and 1 Tier 2 monster
-                        let thisMonster = createMonster(4, game, 'normal', excluded, context);
-                        currentMonsters.push(thisMonster);
-                        thisMonster = createMonster(2, game, 'normal', excluded, context);
-                        currentMonsters.push(thisMonster);
+                        switch(game.floor) {
+                            case 17:
+                                // 2 super gold dragons, 1 standard gold dragon
+                                var numStandard = util.chance(75) ? 1 : 1;
+                                var numSuper = util.chance(80) ? 2 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'gold_dragon');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'gold_dragon');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                            case 18:
+                                // 2 super black dragon, 1 standard black dragon
+                                var numStandard = util.chance(75) ? 1 : 1;
+                                var numSuper = util.chance(80) ? 2 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'black_dragon');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'black_dragon');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                            case 19:
+                                // 2 super obsidian walkers, 1 standard obsidian walker
+                                var numStandard = util.chance(75) ? 1 : 1;
+                                var numSuper = util.chance(80) ? 2 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'obsidian_walker');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'obsidian_walker');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                        }
                     }
 
                 break;
                 case 7:
                     if(game.map==1) {
-                        // 2 Tier 4 monsters (60%) or 3 Tier 3 monsters (40%)
+                        // 1 Tier 4 monster and 1 Tier 3 monster (60%) or 1 Tier 4 monster and 2 Tier 2 monsters (40%)
                         let initial = 40;
                         let increase = 0;
                         let chance = util.monsterNumChance(initial, increase);
                         if(util.chance(chance)) {
-                            for (let i = 0; i < 3; i++) {
-                                let thisMonster = createMonster(3, i, 'normal', excluded);
+                            let thisMonster = createMonster(4, game, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
+                            for (let i = 0; i < 2; i++) {
+                                let thisMonster = createMonster(2, i, 'normal', excluded);
                                 currentMonsters.push(thisMonster);
                             }
                         } else {
-                            for (let i = 0; i < 2; i++) {
-                                let thisMonster = createMonster(4, i, 'normal', excluded);
-                                currentMonsters.push(thisMonster);
-                            }
+                            let thisMonster = createMonster(4, game, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
+                            thisMonster = createMonster(3, game, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
                         }
                     } else {
-                        // 2 Tier 4 monsters (60%) or 3 Tier 3 monsters (40%)
-                        let initial = 40;
-                        let increase = 0;
-                        let chance = util.monsterNumChance(initial, increase);
-                        if(util.chance(chance)) {
-                            for (let i = 0; i < 3; i++) {
-                                let thisMonster = createMonster(3, i, 'normal', excluded, context);
-                                currentMonsters.push(thisMonster);
-                            }
-                        } else {
-                            for (let i = 0; i < 2; i++) {
-                                let thisMonster = createMonster(4, i, 'normal', excluded, context);
-                                currentMonsters.push(thisMonster);
-                            }
+                        switch(game.floor) {
+                            case 20:
+                                // 2 super seething entities, 1 standard seething entity
+                                var numStandard = util.chance(75) ? 1 : 1;
+                                var numSuper = util.chance(80) ? 2 : 2;
+                                for (let i = 0; i < numStandard; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'seething_entity');
+                                    currentMonsters.push(thisMonster);
+                                }
+                                for (let i = 0; i < numSuper; i++) {
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'seething_entity');
+                                    currentMonsters.push(thisMonster);
+                                }
+                            break;
+                            case 21:
+                                
+                            break;
+                            case 22:
+                                
+                            break;
                         }
                     }
 
                 break;
                 case 8:
                     if(game.map==1) {
-                        // 2 Tier 4 monsters, 1 Tier 3 monster, 1 Tier 2 monster (60%)
-                        // or 5 Tier 2 monsters (40%)
+                        // 2 Tier 4 monsters (60%) or 5 Tier 2 monsters (40%)
                         let initial = 40;
                         let increase = 0;
                         let chance = util.monsterNumChance(initial, increase);
                         if(util.chance(chance)) {
                             for (let i = 0; i < 2; i++) {
-                                let thisMonster = createMonster(4, i, 'normal');
-                                currentMonsters.push(thisMonster);
-                            }
-                            for (let i = 0; i < 1; i++) {
-                                let thisMonster = createMonster(3, i, 'normal', excluded);
-                                currentMonsters.push(thisMonster);
-                            }
-                            for (let i = 0; i < 1; i++) {
-                                let thisMonster = createMonster(2, i, 'normal', excluded);
+                                let thisMonster = createMonster(4, i, 'normal', excluded);
                                 currentMonsters.push(thisMonster);
                             }
                         } else {
@@ -2699,83 +2936,93 @@ export function Monster() {
                             }
                         }
                     } else {
-                        // 2 Tier 4 monsters, 1 Tier 3 monster, 1 Tier 2 monster (60%)
-                        // or 5 Tier 2 monsters (40%)
-                        let initial = 40;
-                        let increase = 0;
-                        let chance = util.monsterNumChance(initial, increase);
-                        if(util.chance(chance)) {
-                            for (let i = 0; i < 2; i++) {
-                                let thisMonster = createMonster(4, i, 'normal', [], context);
-                                currentMonsters.push(thisMonster);
-                            }
-                            for (let i = 0; i < 1; i++) {
-                                let thisMonster = createMonster(3, i, 'normal', excluded, context);
-                                currentMonsters.push(thisMonster);
-                            }
-                            for (let i = 0; i < 1; i++) {
-                                let thisMonster = createMonster(2, i, 'normal', excluded, context);
-                                currentMonsters.push(thisMonster);
-                            }
-                        } else {
-                            for (let i = 0; i < 5; i++) {
-                                let thisMonster = createMonster(2, i, 'normal', [], context);
-                                currentMonsters.push(thisMonster);
-                            }
+                        switch(game.floor) {
+                            case 23:
+                                
+                            break;
+                            case 24:
+                                
+                            break;
+                            case 25:
+                                
+                            break;
                         }
                     }
 
                 break;
                 case 9:
                     if(game.map==1) {
-                        // 3 Tier 4 monsters
-                        for (let i = 0; i < 3; i++) {
-                            let thisMonster = createMonster(4, i, 'normal');
+                        // 3 Tier 3 monsters (40%) or 1 Tier 3 monster and 4 Tier 2 monsters (60%)
+                        let initial = 40;
+                        let increase = 0;
+                        let chance = util.monsterNumChance(initial, increase);
+                        if(util.chance(chance)) {
+                            for (let i = 0; i < 3; i++) {
+                                let thisMonster = createMonster(3, i, 'normal');
+                                currentMonsters.push(thisMonster);
+                            }
+                        } else {
+                            let thisMonster = createMonster(3, i, 'normal', excluded);
                             currentMonsters.push(thisMonster);
+                            for (let i = 0; i < 4; i++) {
+                                let thisMonster = createMonster(2, i, 'normal');
+                                currentMonsters.push(thisMonster);
+                            }
                         }
                     } else {
-                        // 3 Tier 4 monsters
-                        for (let i = 0; i < 3; i++) {
-                            let thisMonster = createMonster(4, i, 'normal', [], context);
-                            currentMonsters.push(thisMonster);
+                        switch(game.floor) {
+                            case 26:
+                                
+                            break;
+                            case 27:
+                                
+                            break;
+                            case 28:
+                                
+                            break;
                         }
                     }
 
                 break;
                 case 10:
                     if(game.map==1) {
-                        // 4 Tier 4 monsters and 1 Tier 3 monster
-                        for (let i = 0; i < 4; i++) {
-                            let thisMonster = createMonster(4, i, 'normal');
-                            currentMonsters.push(thisMonster);
-                        }
-
-                        let initial = 0;
-                        let increase = 20;
+                        // 2 Tier 4 monsters and 1 Tier 3 monster (40%) or 1 Tier 4 monster, 1 Tier 3 monster, 2 Tier 2 monsters, and 2 Tier 1 monsters (60%)
+                        let initial = 40;
+                        let increase = 0;
                         let chance = util.monsterNumChance(initial, increase);
                         if(util.chance(chance)) {
-                            for (let i = 0; i < 1; i++) {
-                                let thisMonster = createMonster(3, i, 'normal', excluded);
+                            let thisMonster = createMonster(3, i, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
+                            for (let i = 0; i < 2; i++) {
+                                let thisMonster = createMonster(4, i, 'normal', excluded);
                                 currentMonsters.push(thisMonster);
                             }
-                        } 
-
+                        } else {
+                            for (let i = 0; i < 2; i++) {
+                                let thisMonster = createMonster(1, i, 'normal', excluded);
+                                currentMonsters.push(thisMonster);
+                            }
+                            for (let i = 0; i < 2; i++) {
+                                let thisMonster = createMonster(2, i, 'normal', excluded);
+                                currentMonsters.push(thisMonster);
+                            }
+                            let thisMonster = createMonster(3, i, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
+                            thisMonster = createMonster(4, i, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
+                        }
                     } else {
-                        // 4 Tier 4 monsters and 1 Tier 3 monster
-                        for (let i = 0; i < 4; i++) {
-                            let thisMonster = createMonster(4, i, 'normal', [], context);
-                            currentMonsters.push(thisMonster);
+                        switch(game.floor) {
+                            case 29:
+                                
+                            break;
+                            case 30:
+                                
+                            break;
+                            case 31:
+                                
+                            break;
                         }
-
-                        let initial = 0;
-                        let increase = 20;
-                        let chance = util.monsterNumChance(initial, increase);
-                        if(util.chance(chance)) {
-                            for (let i = 0; i < 1; i++) {
-                                let thisMonster = createMonster(3, i, 'normal', excluded, context);
-                                currentMonsters.push(thisMonster);
-                            }
-                        } 
                     }
 
                 break;
@@ -2787,10 +3034,15 @@ export function Monster() {
     
     }
 
-    function createMonster(tier, i = 0, category = 'normal', excluded = [], context = 'forest') {
+    function createMonster(tier, i = 0, category = 'normal', excluded = [], context = 'forest', breed = false) {
 
         let possibleMonsters = monsters.filter(i => i.tier == tier && i.category == category && i.context == context);
         possibleMonsters = possibleMonsters.filter( x => !excluded.filter( y => y.id === x.id).length);
+        
+        if(breed) { // we're calling a direct breed of monster
+            possibleMonsters = monsters.filter(i => i.breed == breed && i.context == context);
+        }
+        
         let copiedMonsters = JSON.parse(JSON.stringify(possibleMonsters)); // necessary to create a deep copy
         let monster = util.randFromArray(copiedMonsters);
 

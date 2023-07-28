@@ -127,7 +127,7 @@ export default class Util {
         let useTip = '';
         if(use > -1) {
             plural = use == 1 ? '' : 's';
-            useTip = "<span class='highlight'>Use:</span> Can be used " + use + " time" + plural + " before vanishing";
+            useTip = "<span class='highlight'>Use:</span> Can be used " + use + " extra time" + plural + " before vanishing";
             useDom += '<span class="amount use tooltip" data-powertip="' + useTip + '" data-amount="' + use + '">' + use + '</span>';
         }
 
@@ -137,7 +137,7 @@ export default class Util {
         let expireTip = '';
         if(expire > -1) {
             plural = expire == 1 ? '' : 's';
-            expireTip = "<span class='highlight'>Expire:</span> Vanishes after " + expire + " turn" + plural;
+            expireTip = "<span class='highlight'>Expire:</span> Vanishes after " + expire + " more turn" + plural;
             expireDom += '<span class="amount expire tooltip" data-powertip="' + expireTip + '" data-amount="' + expire + '">' + expire + '</span>';
         }
 
@@ -147,7 +147,7 @@ export default class Util {
         let lingerTip = '';
         if(linger > -1) {
             plural = linger == 1 ? '' : 's';
-            lingerTip = "<span class='highlight'>Linger:</span> Remains in hand for " + linger + " use" + plural;
+            lingerTip = "<span class='highlight'>Linger:</span> Remains in hand for " + linger + " more use" + plural;
             lingerDom += '<span class="amount linger tooltip" data-powertip="' + lingerTip + '" data-amount="' + linger + '">' + linger + '</span>';
         }
 
@@ -226,7 +226,7 @@ export default class Util {
             });
     }
     appendMonster(monster, id) {
-        $('<div class="monster ' + monster.id + '" data-id="' + id + '" data-guid="' + monster.guid + '"><div class="monster-stats">' + monster.statsDom + '</div><div class="sprite"></div><div class="combat-log"><div class="dmg-taken" data-amount="0"></div><div class="armor-lost" data-amount="0"></div><div class="health-gained" data-amount="0"></div><div class="health-lost" data-amount="0"></div><div class="status-text"></div></div><div class="monster-health creature-health"><div class="health-amount"><div class="armor-amount"><div class="armor-number"></div></div><div class="health-number"></div></div><div class="block-amount"><div class="block-number">' + monster.block + '</div></div></div><div class="status-bar"></div></div>')
+        $('<div class="monster ' + monster.id + '" data-id="' + id + '" data-guid="' + monster.guid + '" data-tier="' + monster.tier + '"><div class="monster-stats">' + monster.statsDom + '</div><div class="sprite"></div><div class="combat-log"><div class="dmg-taken" data-amount="0"></div><div class="armor-lost" data-amount="0"></div><div class="health-gained" data-amount="0"></div><div class="health-lost" data-amount="0"></div><div class="status-text"></div></div><div class="monster-health creature-health"><div class="health-amount"><div class="armor-amount"><div class="armor-number"></div></div><div class="health-number"></div></div><div class="block-amount"><div class="block-number">' + monster.block + '</div></div></div><div class="status-bar"></div></div>')
             .appendTo('.monster-panel')
             .hide()
             .fadeIn(1500);
@@ -720,11 +720,12 @@ export default class Util {
         $('.essence-bar.' + essence).addClass(css);
     }
     updateAggroPercentage() {
-        let threshold = game.aggroThresholds[player.aggro.level];
-        let previousThreshold = game.aggroThresholds[player.aggro.level - 1];
+        let whichThresholds = game.map == 1 ? game.aggroThresholds : game.aggroThresholds2;
+        let threshold = whichThresholds[player.aggro.level];
+        let previousThreshold = whichThresholds[player.aggro.level - 1];
         if(previousThreshold == undefined) previousThreshold = 0;
         let percentage = ((player.aggro.current - previousThreshold) / (threshold - previousThreshold)) * 100;
-        if(player.aggro.level >= (game.aggroThresholds.length)) {
+        if(player.aggro.level >= (whichThresholds.length)) {
             percentage = 100;
         }
         $('.aggro-bar .aggro-bar-inner').css('width', percentage + '%');

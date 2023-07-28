@@ -66,7 +66,10 @@ export default function Map() {
         $('.tile').removeClass('gate ice-gate fire-gate arena fountain quest shimmer sparkle aura current visited clickable')
             .attr('data-powertip', '')
             .attr('data-essence', '')
-            .attr('data-amount', '');
+            .attr('data-amount', '')
+            .data('amount', '')
+            .data('essence', '')
+            .data('powertip', '');
         $('.tile:first-child').addClass('clickable');
         $('.start-arrow').show();
     
@@ -106,24 +109,24 @@ export default function Map() {
             if (i == iceGateTiles[iceGateTile]) {
                 $(this).html('<span class="icon"></span>');
                 $(this).parent().addClass('gate ice-gate');
-                $(this).parent().attr('data-powertip', 'Ice Gate');
+                $(this).parent().attr('data-powertip', 'Ice Gate').data('powertip', 'Ice Gate');
             } else if(i == fireGateTiles[fireGateTile]) {
                 $(this).html('<span class="icon"></span>');
                 $(this).parent().addClass('gate fire-gate');
-                $(this).parent().attr('data-powertip', 'Fire Gate');
+                $(this).parent().attr('data-powertip', 'Fire Gate').data('powertip', 'Fire Gate');
             } else {
                 // arenas
                 if (i == j | i == k || i == l || i == m || i == n) {
                     $(this).html('<span class="icon"></span>');
                     $(this).parent().addClass('arena');
-                    $(this).parent().attr('data-powertip', 'Arena Battle');
+                    $(this).parent().attr('data-powertip', 'Arena Battle').data('powertip', 'Arena Battle');
                 } else {
                     fountainChance+=game.fountainChance;
                     // fountains
                     if(util.chance(fountainChance) && excludedTilesFountain.indexOf(i) < 0) {
                         $(this).html('<span class="icon"></span>');
                         $(this).parent().addClass('fountain');
-                        $(this).parent().attr('data-powertip', 'Magic Fountain');
+                        $(this).parent().attr('data-powertip', 'Magic Fountain').data('powertip', 'Magic Fountain');
                         fountainChance = 0;
                     } else {
                         questChance+=game.questChance;
@@ -131,7 +134,7 @@ export default function Map() {
                         if(util.chance(questChance) && excludedTilesQuest.indexOf(i) < 0) {
                             $(this).html('<span class="icon"></span>');
                             $(this).parent().addClass('quest');
-                            $(this).parent().attr('data-powertip', 'Quest');
+                            $(this).parent().attr('data-powertip', 'Quest').data('powertip', 'Quest');
                             questChance = 0;
                         } else {
                             // normal fights
@@ -139,9 +142,9 @@ export default function Map() {
                             let desc = "<span class='" + essence + "' style='text-transform:capitalize'>" + essence + "</span> Essence Combat";
                             //$(this).html('<span class="icon tooltip" data-powertip="' + desc + '"></span>');
                             $(this).html('<span class="icon"></span>');
-                            $(this).parent().attr('data-essence', essence);
-                            $(this).parent().attr('data-amount', 1);
-                            $(this).parent().attr('data-powertip', desc);
+                            $(this).parent().attr('data-essence', essence).data('essence', essence);
+                            $(this).parent().attr('data-amount', 1).data('amount', 1);
+                            $(this).parent().attr('data-powertip', desc).data('powertip', desc);
                             $(this).parent().addClass(essence);
                         }
                     }

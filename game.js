@@ -166,7 +166,7 @@ const ALL_EFFECTS = [
     // creature {base: 5, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'lemonade', amount: 5, turns: -1}
     // hex      {effect: 'lemonade', amount: -5, hex: true}
-    {id: 'lemonade', name: 'Lemonade', desc: 'Gain x health and armor at the start of each turn for each clutter card in deck', x: -224, y: -3904},
+    {id: 'lemonade', name: 'Lemonade', desc: 'Gain x health at the start of each turn for each clutter card in deck', x: -224, y: -3904},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
@@ -392,15 +392,15 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.11 Alpha';
+    let version = '0.12 Alpha';
     let seed = false;
     let difficulty = 'normal';
-    let floor = 0;
+    let floor = 0; // TODO: set to 0
     let combat = 0;
     let round = 0;
     let map = 1;
     let mapType = 'normal';
-    let overworld = 'forest';
+    let overworld = 'forest'; // forest, frost, flame
     let boosterPack = 'basic';
     let arenasComplete = 0;
     let fountainChance = 1.4;
@@ -433,8 +433,9 @@ export default function Game() {
     let removeCardCost = 2;
     let candySlots = 3;
     let cardRewardNumber = 3;
-    let essenceThresholds = [8, 14, 20, 26]; // TODO: set this to 8, 14, 20, 26
+    let essenceThresholds = [8, 17, 27, 38]; // TODO: set this to 8, 17, 27, 38
     let aggroThresholds = [10, 15, 19, 22, 24, 25]; // TODO: set this to 10, 15, 19, 22, 24, 25
+    let aggroThresholds2 = [6, 11, 15, 18, 20, 21]; // TODO: set this to 6, 11, 15, 18, 20, 21
     let currentMonsters = [];
     let targetedMonster = {};
     let previousMonsters = [];
@@ -447,6 +448,7 @@ export default function Game() {
     let tutorial = false; // TODO: set to false
     let debug = false;
     let dev = false;
+    let scenario = 'frost'; // normal, frost, or flame - set to normal for regular gameplay
     let libraryBuilt = false;
     let essences = ALL_ESSENCES;
     let effects = ALL_EFFECTS;
@@ -612,6 +614,7 @@ export default function Game() {
         cardRewardNumber,
         essenceThresholds,
         aggroThresholds,
+        aggroThresholds2,
         currentMonsters,
         targetedMonster,
         previousMonsters,
@@ -621,6 +624,7 @@ export default function Game() {
         animationDmg,
         debug,
         dev,
+        scenario,
         libraryBuilt,
         playsounds,
         playmusic,

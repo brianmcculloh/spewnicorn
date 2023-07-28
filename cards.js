@@ -603,66 +603,6 @@ const ALL_CARDS = [
             magic: [{type: 'rainbow', amount: 4}], 
         },
     }),
-    new Cards({
-        id: 'spewnicorn_spray', name: 'Spewnicorn Spray', type: 'tool', mana: 0, addable: false, breakable: true, use: 2, tier: 'legendary',
-        descOverride: 'Deus Ex Machina.',
-        effects: [
-            {effect: 'solid', amount: -2, turns: 1, hex: true},
-            {effect: 'might', amount: -2, turns: 1, hex: true},
-            {effect: 'punch', amount: -.5, turns: 1, hex: true},
-            {effect: 'stout', amount: -2, turns: 1, hex: true},
-            {effect: 'muster', amount: -2, turns: 1, hex: true},
-
-            {effect: 'speed', amount: 2, turns: -1},
-            {effect: 'solid', amount: 2, turns: -1},
-            {effect: 'might', amount: 2, turns: -1},
-            {effect: 'punch', amount: 2, turns: 1},
-            {effect: 'mend', amount: 2, turns: 1},
-            {effect: 'craft', amount: 2, turns: 1},
-            {effect: 'cunning', amount: 2, turns: 1},
-            {effect: 'vigor', amount: 2, turns: 1},
-            {effect: 'stout', amount: 2, turns: 1},
-            {effect: 'muster', amount: 2, turns: 1},
-            {effect: 'rowdy', amount: 2, turns: 1},
-            {effect: 'fierce', amount: 2, turns: 1},
-            {effect: 'mastery', amount: 2, turns: 1},
-            {effect: 'heal', amount: 2, turns: 1},
-            {effect: 'conjure', amount: 2, turns: 1},
-            {effect: 'sorcery', amount: 2, turns: 1},
-            {effect: 'momentum', amount: 2, turns: 1},
-            {effect: 'wield', amount: 2, turns: 1},
-            {effect: 'resistance', amount: 2, turns: 1},
-            {effect: 'lemonade', amount: 2, turns: 1},
-            {effect: 'spikes', amount: 5, turns: 1},
-            {effect: 'vex', amount: 2, turns: 1},
-            {effect: 'mage', amount: 2, turns: 1},
-            {effect: 'enchanter', amount: 2, turns: 1},
-            {effect: 'summon', amount: 2, turns: 1},
-            {effect: 'arcane', amount: 2, turns: 1},
-            {effect: 'fatality', amount: 2, turns: 1, persist: true},
-            {effect: 'retaliate', amount: 5, turns: 1},
-            {effect: 'mystery', amount: 2, turns: 1},
-            {effect: 'regen', amount: 2, turns: 1},
-            {effect: 'wisdom', amount: 2, turns: 1},
-            {effect: 'lightning', amount: 2, turns: -1},
-            {effect: 'thunder', amount: 2, turns: 1},
-
-        ],
-        abilities: [
-            {ability: 'protection', turns: 2, enabled: true},
-            {ability: 'unreachable', turns: 2, enabled: true},
-            {ability: 'tank', turns: 2, enabled: true},
-            {ability: 'toothache', turns: 2, enabled: true},
-            {ability: 'prepared', turns: 2, enabled: true},
-            {ability: 'bless', turns: 2, enabled: true},
-            {ability: 'hypnotize', turns: 2, enabled: true},
-            {ability: 'stockpile', turns: 2, enabled: true},
-            {ability: 'sift', turns: 2, enabled: true},
-            {ability: 'panic', turns: 2, enabled: true},
-            {ability: 'expirex', turns: -1, enabled: true},
-        ],
-        magic: [{type: 'aligned', amount: 1}], 
-    }),
 
     /* Cards Added By Other Cards/Events: */
     new Cards({
@@ -934,7 +874,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'battle_move', name: 'Battle Move', type: 'attack', mana: 1, tier: 'uncommon', target: 'monster', addable: false, retain: true, vanish: true,
         dmg: [9],
-        sound: 'attack17',
+        //sound: 'attack17',
         slots: 1,
         combine: {
             actions: [
@@ -1405,6 +1345,68 @@ const ALL_CARDS = [
             ],
         },
     }),
+
+    new Cards({
+        id: 'spewnicorn_spray', name: 'Spewnicorn Spray', type: 'tool', mana: 0, breakable: true, use: 3, tier: 'legendary',
+        descOverride: 'Deus Ex Machina.',
+        blk: [50],
+        effects: [
+            {effect: 'solid', amount: -5, turns: 1, hex: true},
+            {effect: 'might', amount: -5, turns: 1, hex: true},
+            {effect: 'punch', amount: -1, turns: 1, hex: true},
+            {effect: 'stout', amount: -5, turns: 1, hex: true},
+            {effect: 'muster', amount: -5, turns: 1, hex: true},
+
+            {effect: 'speed', amount: 2, turns: -1},
+            {effect: 'solid', amount: 5, turns: -1},
+            {effect: 'might', amount: 5, turns: -1},
+            {effect: 'punch', amount: 1, turns: -1},
+            {effect: 'mend', amount: 5, turns: -1},
+            {effect: 'craft', amount: 2, turns: -1},
+            {effect: 'cunning', amount: 5, turns: 2},
+            {effect: 'vigor', amount: 5, turns: 2},
+            {effect: 'stout', amount: 5, turns: 2},
+            {effect: 'muster', amount: 5, turns: 2},
+            {effect: 'rowdy', amount: 50, turns: 2},
+            {effect: 'fierce', amount: 50, turns: 2},
+            {effect: 'mastery', amount: .5, turns: 2},
+            {effect: 'heal', amount: 5, turns: 2},
+            {effect: 'conjure', amount: 5, turns: 2},
+            {effect: 'sorcery', amount: 5, turns: 2},
+            {effect: 'momentum', amount: 5, turns: 2},
+            {effect: 'wield', amount: 5, turns: 2},
+            {effect: 'resistance', amount: 5, turns: 2},
+            {effect: 'lemonade', amount: 5, turns: 2},
+            {effect: 'spikes', amount: 5, turns: 2},
+            {effect: 'vex', amount: 5, turns: 2},
+            {effect: 'mage', amount: 5, turns: 2},
+            {effect: 'enchanter', amount: 5, turns: 2},
+            {effect: 'summon', amount: 5, turns: 2},
+            {effect: 'arcane', amount: 5, turns: 2},
+            {effect: 'fatality', amount: 2, turns: 2, persist: true},
+            {effect: 'retaliate', amount: 5, turns: 2},
+            {effect: 'mystery', amount: 2, turns: -1},
+            {effect: 'regen', amount: 5, turns: 2},
+            {effect: 'wisdom', amount: 2, turns: 2},
+            {effect: 'lightning', amount: 5, turns: -1},
+            {effect: 'thunder', amount: 2, turns: 2},
+
+        ],
+        abilities: [
+            {ability: 'protection', turns: 2, enabled: true},
+            {ability: 'unreachable', turns: 2, enabled: true},
+            {ability: 'tank', turns: 2, enabled: true},
+            {ability: 'toothache', turns: 2, enabled: true},
+            {ability: 'prepared', turns: 2, enabled: true},
+            {ability: 'bless', turns: -1, enabled: true},
+            {ability: 'hypnotize', turns: 2, enabled: true},
+            {ability: 'stockpile', turns: 2, enabled: true},
+            {ability: 'sift', turns: -1, enabled: true},
+            {ability: 'panic', turns: 2, enabled: true},
+            {ability: 'expirex', turns: -1, enabled: true},
+        ],
+        magic: [{type: 'aligned', amount: 10}], 
+    }),
     
 
     /* Clutter: */
@@ -1487,22 +1489,22 @@ const ALL_CARDS = [
     /* Common: */
     new Cards({
         id: 'parry', name: 'Parry', target: 'monster', type: 'attack', mana: 1, weight: 8, 
-        blk: [5],
-        dmg: [5],
+        blk: [6],
+        dmg: [6],
         slots: 2,
         fireShardUpgrades: {
-            blk: [7],
-            dmg: [7],
-            dmg_2: [13]
+            blk: [8],
+            dmg: [8],
+            dmg_2: [16]
         },
         iceShardUpgrades: {
-            blk: [7],
-            dmg: [7],
-            blk_2: [13]
+            blk: [8],
+            dmg: [8],
+            blk_2: [16]
         },
         bothShardUpgrades: {
-            blk: [10],
-            dmg: [10]
+            blk: [12],
+            dmg: [12]
         },
     }),
     new Cards({
@@ -1545,7 +1547,7 @@ const ALL_CARDS = [
         dmg: [6],
         slots: 1,
         shardUpgrades: {
-            dmg: [9]
+            dmg: [10]
         },
     }),
     new Cards({
@@ -2361,34 +2363,39 @@ const ALL_CARDS = [
         id: 'cleanse', name: 'Cleanse', type: 'tool', mana: 1, pack: 'cycle', weight: 4, 
         sound: 'tool1',
         actions: [
-            {action: 'destroy', value: 1, optional: true},
             {action: 'draw', value: 1},
             {action: 'discard', value: 1},
+            {action: 'destroy', value: 1, optional: true},
         ],
         slots: 2,
         shardUpgrades: {
             actions: [
-                {action: 'destroy', value: 1, optional: true},
                 {action: 'draw', value: 2},
                 {action: 'discard', value: 1},
+                {action: 'destroy', value: 1, optional: true},
             ],
         },
         bothShardUpgrades: {
             actions: [
-                {action: 'destroy', value: 1, optional: true},
                 {action: 'draw', value: 3},
                 {action: 'discard', value: 2},
+                {action: 'destroy', value: 1, optional: true},
             ],
         },
     }),
     new Cards({
-        id: 'remember', name: 'Remember', type: 'tool', mana: 1, weight: 7, 
+        id: 'remember', name: 'Remember', type: 'tool', mana: 1, weight: 2, 
         actions: [
             {action: 'findDiscardCard', value: 1}
         ],
-        slots: 1,
+        slots: 2,
         shardUpgrades: {
             mana: 0,
+            actions: [
+                {action: 'findDiscardCard', value: 1}
+            ],
+        },
+        bothShardUpgrades: {
             actions: [
                 {action: 'findDiscardCard', value: 2}
             ],
@@ -2964,7 +2971,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'strange_mushroom', name: 'Strange Mushroom', type: 'tool', tier: 'uncommon', mana: 0,
+        id: 'strange_mushroom', name: 'Strange Mushroom', type: 'tool', tier: 'uncommon', mana: 0, use: 2, weight: 3, 
         effects: [
             {effect: 'lemonade', amount: 1, turns: -1}
         ],
@@ -2973,8 +2980,10 @@ const ALL_CARDS = [
         ],
         slots: 1,
         shardUpgrades: {
-            effects: [
-                {effect: 'lemonade', amount: 2, turns: -1}
+            use: 3,
+            actions: [
+                {action: 'addCard', value: 1, type: 'clutter', to: 'drawCards'},
+                {action: 'addCard', value: 1, what: 'chaff', to: 'drawCards'},
             ],
         },
     }),
@@ -3287,7 +3296,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'thresh', name: 'Thresh', type: 'tool', tier: 'rare', mana: 1, courage: 4, 
+        id: 'thresh', name: 'Thresh', type: 'tool', tier: 'rare', mana: 1, courage: 4, use: 2,
         effects: [
             {effect: 'lemonade', amount: 2, turns: -1}
         ],
@@ -3902,7 +3911,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'renewal', name: 'Renewal', type: 'ability', mana: 1, tier: 'rare', courage: 4, 
         abilities: [
-            {ability: 'expirex', baseTurns: -1, enabled: true, permanent: true}
+            {ability: 'expirex', baseTurns: -1, enabled: true}
         ],
         slots: 1,
         shardUpgrades: {
@@ -4480,7 +4489,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'dazzle', name: 'Dazzle', type: 'magic', mana: 1, tier: 'rare', vanish: true, pack: 'combine', courage: 3,
         effects: [
-            {effect: 'enchanter', amount: 3, turns: 3}
+            {effect: 'enchanter', amount: 2, turns: 3}
         ],
         actions: [
             {action: 'addCard', value: 2, what: 'impresa', to: 'drawCards'},
@@ -4488,13 +4497,14 @@ const ALL_CARDS = [
         slots: 1,
         shardUpgrades: {
             vanish: false,
+            use: 1,
             mana: 0
         },
     }),
     new Cards({
         id: 'razzle', name: 'Razzle', type: 'magic', mana: 1, tier: 'rare', vanish: true, pack: 'combine', courage: 3, 
         effects: [
-            {effect: 'mage', amount: 3, turns: 3}
+            {effect: 'mage', amount: 2, turns: 3}
         ],
         actions: [
             {action: 'addCard', value: 2, what: 'impresa', to: 'drawCards'},
@@ -4502,6 +4512,7 @@ const ALL_CARDS = [
         slots: 1,
         shardUpgrades: {
             vanish: false,
+            use: 1,
             mana: 0
         },
     }),
@@ -4849,7 +4860,6 @@ export function Deck() {
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
         }
-
 
         
     }
@@ -5610,7 +5620,11 @@ export function CombatDeck() {
                 util.appendCard(thisCard, '.player-cards', css + retain);
             }
         } else {
-            combatDeck[to].push(thisCard);
+            if(thisCard == undefined || thisCard == '' || thisCard == null || thisCard == false) {
+                alert('Failed to add card to combatDeck.' + to);
+            } else {
+                combatDeck[to].push(thisCard);
+            }
         }
         
         updateCardPlayability(player, combatDeck);
@@ -5641,7 +5655,11 @@ export function CombatDeck() {
                 util.appendCard(thisCard, '.player-cards', css + retain);
             }
         } else {
-            combatDeck[to].push(thisCard);
+            if(thisCard == undefined || thisCard == '' || thisCard == null || thisCard == false) {
+                alert('Failed to add card to combatDeck.' + to);
+            } else {
+                combatDeck[to].push(thisCard);
+            }
         }
         
         updateCardPlayability(player, combatDeck);
@@ -5672,7 +5690,11 @@ export function CombatDeck() {
                 util.appendCard(thisCard, '.player-cards', css + retain);
             }
         } else {
-            combatDeck[to].push(thisCard);
+            if(thisCard == undefined || thisCard == '' || thisCard == null || thisCard == false) {
+                alert('Failed to add card to combatDeck.' + to);
+            } else {
+                combatDeck[to].push(thisCard);
+            }
         }
 
         updateCardPlayability(player, combatDeck);
@@ -5703,7 +5725,11 @@ export function CombatDeck() {
         } else if(to=='deck') {
             Deck().addCard(guid); // TODO: after changing how transmuteCards function works, this probably doesn't work anymore. needs testing.
         } else {
-            combatDeck[to].push(thisCard);
+            if(thisCard == undefined || thisCard == '' || thisCard == null || thisCard == false) {
+                alert('Failed to add card to combatDeck.' + to);
+            } else {
+                combatDeck[to].push(thisCard);
+            }
         }
 
         updateCardPlayability(player, combatDeck);
@@ -5871,7 +5897,7 @@ export function CombatDeck() {
         }
     }
 
-    function addCard(add, combatDeck, part, player, shards = [], guid = false) {
+    function addCard(add, combatDeck, part, player, shards = [], guid = false, playedCard = true) {
         let addCard = AllCards().cards.find(({ id }) => id === add);
         //let copiedCard = JSON.parse(JSON.stringify(addCard)); // necessary to create a deep copy
         let copiedCard = $.extend(true, {}, addCard);
@@ -5892,23 +5918,29 @@ export function CombatDeck() {
         if(shards.length > 0) {
             for(let i = 0; i < shards.length; i++) {
                 Deck().attachShard(copiedCard, shards[i]);
-                game.toShow.push(copiedCard);
+                //game.toShow.push(copiedCard); // this is redundant because the card being added is already being shown - this would show it double
             }
         }
+
+        let fullHand = playedCard == false ? 9 : 10;
 
         // cards added to draw pile should always be put in a random position
         if(part == 'drawCards') {
             combatDeck[part].splice((combatDeck[part].length+1) * Math.random() | 0, 0, copiedCard);
         } else {
-            if(part == 'handCards' && combatDeck.handCards.length > 10) {
+            if(part == 'handCards' && combatDeck.handCards.length > fullHand) {
                 combatDeck.discardCards.push(copiedCard);
             } else {
-                combatDeck[part].push(copiedCard);
-                if(part == 'handCards') {
-                    let thisRetain = util.getCardAttribute(copiedCard, 'retain');
-                    let retain = thisRetain ? ' retained' : '';
-                    let css = copiedCard.playable ? 'playable' : '';
-                    util.appendCard(copiedCard, '.player-cards', css + retain);
+                if(copiedCard == undefined || copiedCard == '' || copiedCard == null || copiedCard == false) {
+                    alert('Failed to add card to combatDeck.' + part);
+                } else {
+                    combatDeck[part].push(copiedCard);
+                    if(part == 'handCards') {
+                        let thisRetain = util.getCardAttribute(copiedCard, 'retain');
+                        let retain = thisRetain ? ' retained' : '';
+                        let css = copiedCard.playable ? 'playable' : '';
+                        util.appendCard(copiedCard, '.player-cards', css + retain);
+                    }
                 }
             }
             

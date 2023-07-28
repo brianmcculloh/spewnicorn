@@ -217,7 +217,7 @@
 
       <div class="game-aggro tooltip" data-powertip="<span class='aggro'>Aggro</span> level multiplies arena monster and guardian attack damage.<br /><br /><span class='crit'>Crit</span> percentage is the chance each attack is a critical hit (increases by 1 for each attack played, resets after a critical hit)">
 
-        <div class="aggro-bar"><div class="aggro-bar-inner"><span class="current"></span></div><span class="icon"></span><span class="level"></span></div>
+        <div class="aggro-bar"><div class="aggro-bar-inner"><span class="current"></span></div><span class="icon"></span><span class="threshold"></span><span class="level"></span></div>
 
         <div class="crit-bar"><div class="crit-bar-inner"></div><span class="icon"></span><span class="level"></span></div>
 
@@ -384,6 +384,8 @@
       <div class="status-inner">
 
         <span class="status-toggle">Status</span>
+
+        <div class="map-type">map type: <span></span></div>
 
         <div class="card-retain">card retain: <span></span></div>
 

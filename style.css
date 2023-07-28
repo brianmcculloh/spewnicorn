@@ -709,9 +709,9 @@ body.game-started #splash .panel .difficulty {
 .crit-bar span.icon {
 	background-position:-241px -2496px;
 }
-.essence-bar span.level, .aggro-bar span.level, .aggro-bar span.current, .crit-bar span.level {
+.essence-bar span.level, .aggro-bar span.level, .aggro-bar span.current, .crit-bar span.level, .aggro-bar span.threshold {
 	position:absolute;
-	right:-35px;
+	right:-30px;
 	width:20px;
 	top:-4px;
 	font-size:11px;
@@ -721,6 +721,11 @@ body.game-started #splash .panel .difficulty {
 .aggro-bar span.current {
 	right:-4px;
 	width:6px;
+}
+.aggro-bar span.level {
+	color:var(--aggro_color);
+	right:-45px;
+	font-size:15px;
 }
 .essence-bar.level-up, .aggro-bar.level-up {
 	scale:1;
@@ -1090,6 +1095,9 @@ body.game-started #splash .panel .difficulty {
 	background-image:url('images/end-turn.png');
 	right:85px;
 	padding:0 32px 20px 20px;
+}
+.end-turn.icon-button.disabled {
+	pointer-events:none;
 }
 .bottom-bar .draw-cards, .bottom-bar .discard-cards, .bottom-bar .dead-cards, .draw-card, .end-turn {
 	opacity:.3;
@@ -1998,7 +2006,7 @@ body.arena .monster-panel {
 }
 
 .monster {
-	width:300px;
+	width:250px;
 	height:400px;
 	text-align:center;
 	display:flex;
@@ -2008,6 +2016,21 @@ body.arena .monster-panel {
 	position:relative;
 	transition:all .2s;
 	border-radius:20px;
+}
+.monster[data-tier="2"] {
+	width:300px;
+}
+.monster[data-tier="3"] {
+	width:350px;
+}
+.monster[data-tier="4"] {
+	width:400px;
+}
+.monster[data-tier="5"] {
+	width:500px;
+}
+.monster[data-tier="6"] {
+	width:500px;
 }
 .monster .monster-stats {
 	position:absolute;
@@ -2115,14 +2138,14 @@ body.arena .monster-panel {
 	height:calc(311px * 1);
 }
 .monster.red_dragon .sprite {
-	background-position:calc(-866px * 1) calc(-4066px * 1);
-	width:calc(643px * 1);
-	height:calc(665px * 1);
+	background-position:calc(-888px * 1) calc(-4071px * 1);
+	width:calc(630px * 1);
+	height:calc(647px * 1);
 }
 .monster.green_dragon .sprite {
-	background-position:calc(-866px * 1) calc(-4730px * 1);
-	width:calc(645px * 1);
-	height:calc(671px * 1);
+	background-position:calc(-888px * 1) calc(-4736px * 1);
+	width:calc(630px * 1);
+	height:calc(645px * 1);
 }
 .monster.cyberskull .sprite {
 	background-position:calc(-852px * 1) calc(-840px * 1);
@@ -2325,14 +2348,14 @@ body.arena .monster-panel {
 	height:calc(671px * 1);
 }
 .monster.flame_cyberskull .sprite {
-	background-position:calc(-466px * 1) calc(-4926px * 1);
-	width:calc(645px * 1);
-	height:calc(671px * 1);
-}
-.monster.frost_cyberskull .sprite {
 	background-position:calc(-637px * 1) calc(-6685px * 1);
 	width:calc(412px * 1);
 	height:calc(387px * 1);
+}
+.monster.frost_cyberskull .sprite {
+	background-position:calc(-466px * 1) calc(-4926px * 1);
+	width:calc(348px * 1);
+	height:calc(350px * 1);
 }
 .monster.flame_transfigurer .sprite {
 	background-position:0 calc(-7132px * 1);
@@ -2355,7 +2378,7 @@ body.arena .monster-panel {
 	height:calc(605px * 1);
 }
 .monster.flame_black_dragon .sprite {
-	background-position:calc(-441px * 1) calc(-7737px * 1);
+	background-position:calc(-640px * 1) calc(-7737px * 1);
 	width:calc(639px * 1);
 	height:calc(435px * 1);
 }
@@ -2405,7 +2428,7 @@ body.arena .monster-panel {
 	height:calc(686px * 1);
 }
 .monster.flame_arch_summoner .sprite {
-	background-position:0 calc(-9467px * 1);
+	background-position:0 calc(-9979px * 1);
 	width:calc(736px * 1);
 	height:calc(545px * 1);
 }
@@ -2717,7 +2740,7 @@ body.arena .monster-panel {
 	justify-content:center;
 	position:relative;
 	right:-20px;
-	max-width:1000px;
+	max-width:1150px;
 }
 .player-panel .status-bar {
 	position:absolute;

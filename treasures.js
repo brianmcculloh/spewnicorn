@@ -579,7 +579,7 @@ const ALL_CANDY= [
         id:'candy_lemon_slice', 
         name: 'Candy Lemon Slice', 
         effects: [
-            {effect: 'lemonade', amount: 4, turns: 1}
+            {effect: 'lemonade', amount: 3, turns: 1}
         ],
         x: -416,
         y: -4160
@@ -1069,7 +1069,7 @@ const ALL_TREASURES = [
         weight: 7,
         permanent: true,
         effects: [
-            {effect: 'lemonade', base: 2}
+            {effect: 'lemonade', base: 1}
         ],
         x: -0,
         y: -4096
@@ -1078,15 +1078,15 @@ const ALL_TREASURES = [
         id:'spiked_punch', 
         name: 'Spiked Punch', 
         courage: 8,
-        weight: 7,
-        permanent: true,
+        weight: 2,
+        //permanent: true,
         effects: [
-            {effect: 'lemonade', base: 1}
+            {effect: 'lemonade', amount: 1, turns: -1}
         ],
         actions: [
-            {action: 'addCard', value: 2, what: 'junk', to: 'handCards'}
+            {action: 'addCard', value: 1, what: 'junk', to: 'drawCards'}
         ],
-        trigger: {counter: 0, when: 'turns', at: 3, per: 'combat', once: false, activated: false},
+        trigger: {counter: 0, when: 'turns', at: 4, per: 'combat', once: false, activated: false},
         x: -64,
         y: -4256
     }),
@@ -1118,7 +1118,7 @@ const ALL_TREASURES = [
         id:'library_card', 
         name: 'Library Card', 
         courage: 6,
-        weight: 8,
+        weight: 2,
         permanent: false,
         abilities: [
             {ability: 'expirex', baseTurns: -1, enabled: true, permanent: true}
@@ -1530,7 +1530,6 @@ const ALL_TREASURES = [
         x: -192,
         y: -418
     }),
-
     new Treasure({
         id:'charged_wand', 
         name: "Charged Wand", 
@@ -1778,8 +1777,8 @@ const ALL_TREASURES = [
         tier: 4,
         weight: 1,
         permanent: true,
-        actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 2}
+        effects: [
+            {effect: 'punch', base: .3}
         ],
         x: -256,
         y: -14112
@@ -1791,8 +1790,8 @@ const ALL_TREASURES = [
         tier: 4,
         weight: 1,
         permanent: true,
-        actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 2}
+        effects: [
+            {effect: 'thunder', base: .3}
         ],
         x: -448,
         y: -14048
@@ -1804,8 +1803,8 @@ const ALL_TREASURES = [
         tier: 4,
         weight: 1,
         permanent: true,
-        actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 2}
+        effects: [
+            {effect: 'might', base: 5}
         ],
         x: -384,
         y: -14144
@@ -1817,8 +1816,8 @@ const ALL_TREASURES = [
         tier: 4,
         weight: 1,
         permanent: true,
-        actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 2}
+        effects: [
+            {effect: 'lightning', base: 5}
         ],
         x: -256,
         y: -14080
@@ -1843,8 +1842,8 @@ const ALL_TREASURES = [
         tier: 4,
         weight: 1,
         permanent: true,
-        actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 2}
+        effects: [
+            {effect: 'solid', base: 5}
         ],
         x: -320,
         y: -13120
@@ -1856,8 +1855,8 @@ const ALL_TREASURES = [
         tier: 4,
         weight: 1,
         permanent: true,
-        actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 2}
+        effects: [
+            {effect: 'regen', base: 8}
         ],
         x: -96,
         y: -13088
@@ -1869,8 +1868,8 @@ const ALL_TREASURES = [
         tier: 4,
         weight: 1,
         permanent: true,
-        actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 2}
+        effects: [
+            {effect: 'momentum', base: 4}
         ],
         x: -160,
         y: -13088
@@ -1893,7 +1892,7 @@ const ALL_TREASURES = [
         y: -12704
     }),
     new Treasure({
-        id:'hartisanal_chestplate', 
+        id:'artisanal_chestplate', 
         name: "Artisanal Chestplate", 
         courage: 15,
         tier: 3,
