@@ -766,15 +766,13 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'energize', name: 'Energize', type: 'tool', mana: 0, tier: 'uncommon', retain: true, vanish: true, addable: false,
+        id: 'energize', name: 'Energize', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, addable: false,
         actions: [
             {action: 'stat', what: 'mana', key: 'current', value: 1}
         ],
         slots: 1,
         shardUpgrades: {
-            actions: [
-                {action: 'stat', what: 'mana', key: 'current', value: 2}
-            ],
+            retain: true
         },
     }),
     new Cards({
@@ -2041,7 +2039,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'freeze', name: 'Freeze', type: 'attack', target: 'monster', mana: 1, tier: 'rare', weight: 3, courage: 4, 
+        id: 'freeze', name: 'Freeze', type: 'attack', target: 'monster', mana: 2, tier: 'rare', weight: 2, courage: 4, 
         dmg: [7],
         sound: 'attack10',
         actions: [
@@ -2055,7 +2053,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'scorch', name: 'Scorch', type: 'attack', target: 'monster', mana: 1, tier: 'rare', weight: 3, courage: 4, 
+        id: 'scorch', name: 'Scorch', type: 'attack', target: 'monster', mana: 2, tier: 'rare', weight: 2, courage: 4, 
         dmg: [7],
         sound: 'attack11',
         actions: [
@@ -3298,7 +3296,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'thresh', name: 'Thresh', type: 'tool', tier: 'rare', mana: 1, courage: 4, use: 2,
         effects: [
-            {effect: 'lemonade', amount: 2, turns: -1}
+            {effect: 'lemonade', amount: 2, turns: 2}
         ],
         actions: [
             {action: 'addCard', value: 4, what: 'chaff', to: 'discardCards'},
@@ -3306,7 +3304,7 @@ const ALL_CARDS = [
         slots: 1,
         shardUpgrades: {
             effects: [
-                {effect: 'lemonade', amount: 3, turns: -1}
+                {effect: 'lemonade', amount: 3, turns: 2}
             ],
             actions: [
                 {action: 'addCard', value: 5, what: 'chaff', to: 'discardCards'},
@@ -4489,7 +4487,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'dazzle', name: 'Dazzle', type: 'magic', mana: 1, tier: 'rare', vanish: true, pack: 'combine', courage: 3,
         effects: [
-            {effect: 'enchanter', amount: 2, turns: 3}
+            {effect: 'enchanter', amount: 2, turns: 1}
         ],
         actions: [
             {action: 'addCard', value: 2, what: 'impresa', to: 'drawCards'},
@@ -4616,7 +4614,7 @@ const ALL_CARDS = [
         magic: [{type: 'aligned', amount: 3}], 
         effects: [
             {effect: 'mage', amount: 2, turns: 2},
-            {effect: 'enchanter', amount: 2, turns: 2}
+            {effect: 'enchanter', amount: 2, turns: 1}
         ],
         draw: {
             magic: [{type: 'aligned', amount: 1}],
@@ -4626,7 +4624,7 @@ const ALL_CARDS = [
             magic: [{type: 'aligned', amount: 4}], 
             effects: [
                 {effect: 'mage', amount: 3, turns: 2},
-                {effect: 'enchanter', amount: 3, turns: 2}
+                {effect: 'enchanter', amount: 3, turns: 1}
             ],
         },
         fireShardUpgrades: {
@@ -4637,7 +4635,7 @@ const ALL_CARDS = [
         bothShardUpgrades: {
             effects: [
                 {effect: 'mage', amount: 4, turns: 2},
-                {effect: 'enchanter', amount: 4, turns: 2}
+                {effect: 'enchanter', amount: 4, turns: 1}
             ],
         },
     }),
@@ -4766,7 +4764,7 @@ const ALL_CARDS = [
         sound: 'magic24',
         effects: [
             {effect: 'mage', amount: 5, turns: 2},
-            {effect: 'enchanter', amount: 5, turns: 2}
+            {effect: 'enchanter', amount: 5, turns: 1}
         ],
         slots: 1,
         shardUpgrades: {
@@ -5182,10 +5180,17 @@ export function Deck() {
                 let when = trigger.when;
                 let at = trigger.at;
                 let per = trigger.per;
+                let once = trigger.once;
+                let plural = at == 1 ? '' : 's';
+                let atText = at == 1 ? '' : at;
                 triggerDesc += '<div class="desc-item">';
                 switch(when) {
                     case 'turns':
-                        triggerDesc += 'On turn ' + at;
+                        if(once) {
+                            triggerDesc += 'On turn ' + at;
+                        } else {
+                            triggerDesc += 'Every ' + atText + ' turn' + plural;
+                        }
                         break;
                     case 'cardsPlayed':
                         triggerDesc += 'Every ' + at + ' cards played';
@@ -5930,6 +5935,7 @@ export function CombatDeck() {
         } else {
             if(part == 'handCards' && combatDeck.handCards.length > fullHand) {
                 combatDeck.discardCards.push(copiedCard);
+                $('.draw-card').addClass('disabled');
             } else {
                 if(copiedCard == undefined || copiedCard == '' || copiedCard == null || copiedCard == false) {
                     alert('Failed to add card to combatDeck.' + part);

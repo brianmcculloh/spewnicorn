@@ -69,6 +69,7 @@
  * Mechanic: treasures that do dmg/armor/block on certain turns
  * Effect: block, armor, or damage synergies with destroying, discarding, and combining cards
  * Effect: each time you take damage, do something (synergizes with exposed strike)
+ * Speech: add speech bubble system to monsters - make it random chance with a set of possible texts
  * 
  * 
  * PHASE III:
@@ -91,21 +92,18 @@
  * 
  * PHASE V: 
  * 
- * TODO: cunning and stockpile are multiplicative, so take a look at how they combine and make sure that's ok
- * TODO: verify how player death check works. i was in a fight where i was at 0 health and armor but some block and i didn't die.
- * TODO: finish monster sets for map 2 above floor 20
+ * TODO: Play through the game start to finish and see if it gets too easy or hard at any point
+ * TODO: does reactor add more than 10 cards in to hand when it adds 3 Energizes?
+ * TODO: when an enemy is unreachable they are taking 0 damage instead of 1 damage (haven't checked myself yet)
  * 
  * 
  * BUGS [can't replicate]:
+ * BUG: i was in a fight where i was at 0 health and armor but some block and i didn't die.
  * BUG: scenario: gold leaf treasure, rest site shard directly into quest (can't remember - think it was remove a card?) into arena
  * --cards are doubled in the choose enshard card screen at the start of combat, and screen doesn't disappear after enshardening 3 cards
  * BUG: metamorphose with frost shard - if choose only one card to transmute, the overlay doesn't disappear
  * BUG: i had -2 aura and then chose to lose 2 aura again and ended up gaining 2 instead
  * BUG: i chose increase rainbow base from stained glass mirror but the next fight didn't have that base increase (it WAS there on subsequent battles)
- * BUG: courage screen straight into multiple quests, and in between the quests i got the courage screen again
- * BUG: sometimes courage screen only shows 1 ability instead of 2
- * BUG: added a shard to a card, and then the next quest was the trasform 3 quest, and the sharded card was still in the show cards
- * BUG: quest Library not working
  * BUG: attack card damage is getting reduced to 0 in combats where mystical energy and smash and grab are played, and rainbow has cycled
  * --also have black vial and magic dust. smash and grab has flame shard and mystical energy has double frost shards
  * BUG: when purchasing relic at the store, remove card becomes too expensive even if i can still afford it
@@ -145,6 +143,9 @@
  * Card: 0 cost vanishing card that adds 1 mana and loses 10 armor - shard upgrade adds 2 mana (rare)
  * Card: 0 cost vanishing card that adds 1 speed and loses 10 armor - shard upgrade adds 2 mana (rare)
  * Card: attack/tool/magic cards that add might/punch/lightning/thunder
+ * Card: add a random power to hand
+ * Card: add multiple turns of -might/-punch. currently Stun is the only one that does this.
+ * Card: 2 cost smaller damage attack that adds a large attack 0 cost retain vanishing card
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -510,6 +511,9 @@ jQuery(document).ready(function($) {
 		if(game.arenasComplete < 2) {
 			$('.tile.ice-gate').removeClass('clickable').data('powertip', 'Ice Gate: <span class="highlight">LOCKED</span>').attr('data-powertip', 'Ice Gate: <span class="highlight">LOCKED</span>');
 			$('.tile.fire-gate').removeClass('clickable').data('powertip', 'Fire Gate: <span class="highlight">LOCKED</span>').attr('data-powertip', 'Fire Gate: <span class="highlight">LOCKED</span>');
+		} else {
+			$('.tile.ice-gate').addClass('clickable').data('powertip', 'Ice Gate').attr('data-powertip', 'Ice Gate');
+			$('.tile.fire-gate').addClass('clickable').data('powertip', 'Fire Gate').attr('data-powertip', 'Fire Gate');
 		}
 
 		if(game.debug) $('.map-inner div').addClass('clickable');
@@ -1156,7 +1160,7 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('gold_leaf'); // use this to manually add treasures
+	//addTreasure('frozen_knife'); // use this to manually add treasures
 	//addCandy('strawberry_gobstopper'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
@@ -2034,7 +2038,8 @@ function beginTurn() {
 
 	// check for lemonade
 	if(player.lemonade.current > 0) {
-		let clutterCards = combatDeck.allLiveCards(combatDeck).filter(i => i.type == 'clutter');
+		//let clutterCards = combatDeck.allLiveCards(combatDeck).filter(i => i.type == 'clutter');
+		let clutterCards = combatDeck.drawCards.filter(i => i.type == 'clutter');
 		heal(player, clutterCards.length * player.lemonade.current);
 		if(player.health.current > player.health.max) player.health.current = player.health.max;
 		//applyArmor(clutterCards.length * player.lemonade.current, player) // gaining armor seemed a bit too OP
@@ -2322,6 +2327,7 @@ async function monsterAction(action = 'perform') {
 					intent += '<span class="tooltip" data-powertip="Gain ' + a + ' block"><span class="intent-blk intent-amount">' + a + '</span><span class="intent-blk-icon intent-icon"></span></span>';
 				} else {
 					applyBlock(defend[key], thisMonster);
+					await util.wait(300);
 				}
 			}
 		}
@@ -2333,6 +2339,7 @@ async function monsterAction(action = 'perform') {
 					intent += '<span class="tooltip" data-powertip="Gain ' + a + ' armor"><span class="intent-armor intent-amount">' + a + '</span><span class="intent-armor-icon intent-icon"></span></span>';
 				} else {
 					applyArmor(armor[key], thisMonster);
+					await util.wait(300);
 				}
 			}
 		}
@@ -2362,6 +2369,7 @@ async function monsterAction(action = 'perform') {
 				} else {
 					let turns = effects[e].turns == undefined ? -1 : effects[e].turns;
 					applyEffect(effects[e], to, turns);
+					await util.wait(300);
 				}
 			}
 		}
@@ -2385,6 +2393,7 @@ async function monsterAction(action = 'perform') {
 					}
 				} else {
 					applyAbility(abilities[e], to, turns);
+					await util.wait(300);
 				}
 			}
 		}
@@ -2409,6 +2418,7 @@ async function monsterAction(action = 'perform') {
 					}
 				} else {
 					let update = processActions(actions, currentMonsters[i]);
+					await util.wait(300);
 				}
             }
         }
@@ -2420,6 +2430,8 @@ async function monsterAction(action = 'perform') {
 		} else {
 			monsters.updateMonsterStats(thisMonster);
 		}
+
+		//await util.wait(100); // add this if we want a bit more time between monsters
 		
 	}
 
@@ -3107,7 +3119,7 @@ function rewardsScreen() {
 		util.appendCard(card, '.rewards-cards');
 	}
 	if(util.chance(game.candyChance)) {
-		game.candyChance -= 20;
+		game.candyChance -= 30;
 		if(game.candyChance < 0) game.candyChance = 0;
 		let candy = util.weightedRandom(treasures.candies);
 		//let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
@@ -3118,7 +3130,7 @@ function rewardsScreen() {
 		$('.rewards-loot-wrapper').addClass('shown');
 	}
 	if(util.chance(game.shardChance) && deck.numOpenSlots() > 0) {
-		game.shardChance -= 10;
+		game.shardChance -= 15;
 		if(game.shardChance < 0) game.shardChance = 0;
 		var index = util.randArrayIndex(treasures.shards);
 		util.appendShard(treasures.shards[index], '.rewards-loot');
@@ -3662,6 +3674,7 @@ function destroyCards() {
 		combatDeck.updateCardPlayability(player, combatDeck);
 		setStatus();
 
+		// TODO: figure out if this is firing correctly with power surge
 		if(!$('body').hasClass('discarding')) {
 			$('body').removeClass('selecting');
 		}
@@ -3743,6 +3756,7 @@ function combineCards(elem) {
 
 async function playCard(elem, monster = undefined, type = false, useMana = true) {
 
+	$('body').removeClass('discarding selecting destroying');
 	$('.monster').removeClass('clickable');
 	elem.removeClass('selected playable').addClass('playing');
 	removeArrow();
@@ -3853,7 +3867,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	elem.removeClass('playing');
 
 	// it's possible draw-card button has been disabled, but this card added speed
-	if(player.speed.current > 0) $('.draw-card').removeClass('disabled');
+	if(player.speed.current > 0 && combatDeck.handCards.length < 10) $('.draw-card').removeClass('disabled');
 
 	if(card.type == 'attack') updateTreasureTriggers('attackCardsPlayed');
 	if(card.type == 'tool') updateTreasureTriggers('toolCardsPlayed');
@@ -3931,12 +3945,11 @@ async function processDmg(dmg, currentMonster, multiply, card = false, type = fa
 		for(let i = 0; i < multiply; i++) {
 			for(let i = 0; i < dmg.length; i++) {
 				let criticalHit = type != 'draw' ? util.chance(game.critChance) : false;
-				let origDmg = dmg[i];
-				let thisDmg = dmg[i] + player.momentumAmount;
+				let thisDmg = dmg[i];
 				if(currentMonster) {
 					let fatalityHit = false;
 					// check for fatality
-					if(player.fatality.current > 0 && (game.highestDmgRoll * player.fatality.current) > origDmg && type != 'draw') {
+					if(player.fatality.current > 0 && (game.highestDmgRoll * player.fatality.current) > thisDmg && type != 'draw') {
 						thisDmg = game.highestDmgRoll * player.fatality.current;
 						fatalityHit = true;
 						// fatality is the only effect that lasts per card rather than per turn
@@ -4975,6 +4988,9 @@ async function attackMonster(monster, dmg, fatalityHit = false, hypnotizeHit = f
 		dmg = dmg * player.punch.current;
 	}
 
+	// momentum gets added after other damage increasing effects
+	dmg = dmg + player.momentumAmount;
+
 	dmg = Math.round(dmg);
 	
 	doDamage(dmg, player, [monster], false, false, fatalityHit, hypnotizeHit);
@@ -5199,6 +5215,9 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 			let dmgTaken = 0;
 			let armorLost = 0;
 			let healthLost = 0;
+			let unreachable = false;
+			unreachable = thisTo.unreachable?.enabled;
+			let tank = thisTo.tank.enabled;
 
 			// check for panic
 			if(from?.panic?.enabled) {
@@ -5207,8 +5226,9 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 			}
 
 			// is player unreachable?
-			if(thisTo.unreachable?.enabled) {
+			if(unreachable) {
 				thisDmg = 1;
+				tank = true;
 			}
 
 			let unblockedDmg = thisDmg;
@@ -5232,15 +5252,15 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 				// odd damage amounts should affect armor +1 more than health (unless no armor)
 				let odd = (armoredDmg % 2 == 0) || (thisTo.armor == 0) ? 0 : 1;
 				if(!ignoreArmor) {
-					armoredDmg = Math.round(unblockedDmg / 2);
+					armoredDmg = Math.floor(unblockedDmg / 2);
 				}
 				// if we have enough armor, reduce armor and health by 50% of damage
 				if(!ignoreArmor && armoredDmg <= thisTo.armor) {
 					armorLost += (armoredDmg + odd);
 					dmgTaken += armorLost;
 					thisTo.armor -= (armoredDmg + odd);
-					// only hit armor if tank enabled
-					if(!thisTo.tank.enabled) {
+					// also reduce health if tank is not enabled
+					if(!tank) {
 						healthLost += armoredDmg;
 						dmgTaken += armoredDmg;
 						thisTo.health.current -= armoredDmg;
@@ -5341,3 +5361,60 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 
 	}
 }
+
+
+/*
+MONSTER LIST
+
+Tier 1:
+-------
+Pixie
+Mummy
+Stone Walker
+Sludge
+Imp
+
+
+Tier 2:
+-------
+Shatter
+Void Fairy
+Enchantress
+Power Liche
+Iron Walker
+
+
+Tier 3:
+-------
+Swarm
+Sorcerer
+Red Dragon
+Green Dragon
+Cyberskull
+
+
+Tier 4:
+-------
+Transfigurer
+Gold Dragon
+Black Dragon
+Obsidian Walker
+Seething Entity
+
+
+Arena:
+------
+Ultraumaton
+Unmaker
+Arch Summoner
+
+
+Gate:
+-----
+Frost Guardian
+Flame Guardian
+Super Frozen Frost Guardian
+Super Burning Frost Guardian
+Super Frozen Flame Guardian
+Super Burning Flame Guardian
+*/

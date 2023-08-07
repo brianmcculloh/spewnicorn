@@ -957,6 +957,7 @@ const ALL_TREASURES = [
         id:'magic_dust', 
         name: 'Magic Dust',
         permanent: true, 
+        weight:2,
         effects: [
             {effect: 'enchanter', base: 1}
         ],
@@ -1129,7 +1130,7 @@ const ALL_TREASURES = [
     new Treasure({
         id:'amulet', 
         name: "Amulet", 
-        weight: 8,
+        weight: 3,
         abilities: [
             {ability: 'protection', turns: 1, enabled: true}
         ],

@@ -1028,6 +1028,7 @@ export default class Util {
                 effect35: [235483, 1999],
                 effect36: [237482, 2212],
                 effect37: [239694, 2246],
+                effect38: [313393, 1540],
 
 
 

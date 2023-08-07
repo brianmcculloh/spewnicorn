@@ -596,9 +596,9 @@
 
         <div class="fountain-options shown buttons-wrapper">
 
-          <div class="button fountain-drink" data-amount="25" data-armor="5">Drink (+25 Health &amp; +10 Armor)</div>
+          <div class="button fountain-drink" data-amount="25" data-armor="10">Drink (+25 Health &amp; +10 Armor)</div>
 
-          <div class="button fountain-bathe" data-amount="5">Bathe (+6 Max Health)</div>
+          <div class="button fountain-bathe" data-amount="10">Bathe (+10 Max Health)</div>
 
           <div class="button fountain-search">Search (Find A Shard)</div>
 

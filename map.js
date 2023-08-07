@@ -109,11 +109,11 @@ export default function Map() {
             if (i == iceGateTiles[iceGateTile]) {
                 $(this).html('<span class="icon"></span>');
                 $(this).parent().addClass('gate ice-gate');
-                $(this).parent().attr('data-powertip', 'Ice Gate').data('powertip', 'Ice Gate');
+                $(this).parent().attr('data-powertip', 'Ice Gate: <span class="highlight">LOCKED</span>').data('powertip', 'Ice Gate: <span class="highlight">LOCKED</span>');
             } else if(i == fireGateTiles[fireGateTile]) {
                 $(this).html('<span class="icon"></span>');
                 $(this).parent().addClass('gate fire-gate');
-                $(this).parent().attr('data-powertip', 'Fire Gate').data('powertip', 'Fire Gate');
+                $(this).parent().attr('data-powertip', 'Fire Gate: <span class="highlight">LOCKED</span>').data('powertip', 'Fire Gate: <span class="highlight">LOCKED</span>');
             } else {
                 // arenas
                 if (i == j | i == k || i == l || i == m || i == n) {
