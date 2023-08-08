@@ -184,7 +184,7 @@ const ALL_CANDY= [
         courage: 1,
         weight: 3,
         actions: [
-            {action: 'ensharden', type: 'flame', select: 2, from: 'handCards', random: false}
+            {action: 'ensharden', type: 'flame', select: -1, from: 'handCards', random: true}
         ],
         x: -286,
         y: -832
@@ -195,7 +195,7 @@ const ALL_CANDY= [
         courage: 1,
         weight: 3,
         actions: [
-            {action: 'ensharden', type: 'frost', select: 2, from: 'handCards', random: false}
+            {action: 'ensharden', type: 'frost', select: -1, from: 'handCards', random: true}
         ],
         x: -286,
         y: -928
@@ -206,7 +206,7 @@ const ALL_CANDY= [
         courage: 1,
         weight: 4,
         actions: [
-            {action: 'ensharden', type: 'random', select: 2, from: 'handCards', random: false}
+            {action: 'ensharden', type: 'random', select: -1, from: 'handCards', random: false}
         ],
         x: -286,
         y: -992

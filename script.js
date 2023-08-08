@@ -93,8 +93,8 @@
  * PHASE V: 
  * 
  * TODO: Play through the game start to finish and see if it gets too easy or hard at any point
- * TODO: does reactor add more than 10 cards in to hand when it adds 3 Energizes?
- * TODO: when an enemy is unreachable they are taking 0 damage instead of 1 damage (haven't checked myself yet)
+ * TODO: feels like i don't often run out of mana - maybe make a few cards have higher costs (and if necessary higher stats to match)
+ * 
  * 
  * 
  * BUGS [can't replicate]:
@@ -5255,7 +5255,7 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 					armoredDmg = Math.floor(unblockedDmg / 2);
 				}
 				// if we have enough armor, reduce armor and health by 50% of damage
-				if(!ignoreArmor && armoredDmg <= thisTo.armor) {
+				if(!ignoreArmor && armoredDmg <= thisTo.armor && thisTo.armor > 0) {
 					armorLost += (armoredDmg + odd);
 					dmgTaken += armorLost;
 					thisTo.armor -= (armoredDmg + odd);

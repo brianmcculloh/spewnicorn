@@ -759,10 +759,10 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'safety', name: 'Safety', type: 'tool', mana: 1, addable: false, retain: true,
-        blk: [11],
+        blk: [18],
         slots: 1,
         shardUpgrades: {
-            blk: [15],
+            blk: [24],
         },
     }),
     new Cards({
@@ -1871,10 +1871,7 @@ const ALL_CARDS = [
             ]
         },
         slots: 1,
-        fireShardUpgrades: {
-            dmg: [4, 5, 6]
-        },
-        iceShardUpgrades: {
+        shardUpgrades: {
             draw: {
                 dmg: [2],
                 actions: [
@@ -1938,7 +1935,7 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'weaponry', name: 'Weaponry', type: 'attack', target: 'monster', mana: 1, tier: 'rare', weight: 6, courage: 3, 
+        id: 'weaponry', name: 'Weaponry', type: 'attack', target: 'monster', mana: 2, tier: 'rare', weight: 6, courage: 3, 
         dmg: [11],
         sound: 'attack2',
         draw: {
@@ -2067,7 +2064,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'ultra_kill', name: 'Ultra Kill', type: 'attack', target: 'monster', mana: 2, tier: 'rare', weight: 2, courage: 5, 
+        id: 'ultra_kill', name: 'Ultra Kill', type: 'attack', target: 'monster', mana: 3, tier: 'rare', weight: 2, courage: 5, 
         dmg: [1],
         sound: 'attack12',
         effects: [
@@ -2098,6 +2095,7 @@ const ALL_CARDS = [
                 {action: 'draw', value: 3},
                 {action: 'addCard', value: 2, what: 'battle_move', to: 'drawCards'},
             ],
+            mana_2: 2,
         },
         bothShardUpgrades: {
             effects: [
@@ -2491,19 +2489,20 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'safeguard', name: 'Safeguard', type: 'tool', mana: 1, tier: 'uncommon', 
-        blk: [5],
+        id: 'safeguard', name: 'Safeguard', type: 'tool', mana: 2, tier: 'uncommon', 
+        blk: [12],
         actions: [
             {action: 'addCard', value: 1, what: 'safety', to: 'handCards'},
         ],
         slots: 1,
         fireShardUpgrades: {
             actions: [
-                {action: 'addCard', value: 2, what: 'safety', to: 'handCards'},
+                {action: 'addCard', value: 1, what: 'safety', to: 'handCards'},
+                {action: 'addCard', value: 1, what: 'safety', to: 'handCards', with: ['flame']},
             ],
         },
         iceShardUpgrades: {
-            blk: [12],
+            blk: [22],
         },
     }),
     new Cards({
@@ -2951,7 +2950,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'jester', name: 'Jester', type: 'tool', tier: 'uncommon', mana: 0, use: 2,
+        id: 'jester', name: 'Jester', type: 'tool', tier: 'uncommon', mana: 1, use: 1,
         sound: 'jester',
         effects: [
             {effect: 'lemonade', amount: 1, turns: -1}
@@ -3425,10 +3424,7 @@ const ALL_CARDS = [
             {ability: 'bless', enabled: true, baseTurns: -1}
         ],
         slots: 1,
-        fireShardUpgrades: {
-            mana: 1
-        },
-        iceShardUpgrades: {
+        shardUpgrades: {
             natural: true
         },
     }),
@@ -4858,7 +4854,7 @@ export function Deck() {
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
         }
-
+        
         
     }
 
