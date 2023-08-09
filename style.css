@@ -1099,11 +1099,11 @@ body.game-started #splash .panel .difficulty {
 .end-turn.icon-button.disabled {
 	pointer-events:none;
 }
-.bottom-bar .draw-cards, .bottom-bar .discard-cards, .bottom-bar .dead-cards, .draw-card, .end-turn {
+.bottom-bar .draw-cards, .bottom-bar .discard-cards, .bottom-bar .dead-cards, .draw-card, .end-turn, .draw-all {
 	opacity:.3;
 	pointer-events:none;
 }
-body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-cards, body.combating .bottom-bar .dead-cards, body.combating .draw-card, body.combating .end-turn {
+body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-cards, body.combating .bottom-bar .dead-cards, body.combating .draw-card, body.combating .draw-all, body.combating .end-turn {
 	opacity:1;
 	pointer-events:auto;
 }
@@ -2945,7 +2945,7 @@ body.arena .monster-panel {
 }
 
 /* disable clicking when in selecting mode */
-body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, body.selecting .monster, body.selecting .draw-card {
+body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, body.selecting .monster, body.selecting .draw-card, body.selecting .draw-all {
 	pointer-events:none;
 }
 

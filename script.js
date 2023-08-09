@@ -93,8 +93,7 @@
  * PHASE V: 
  * 
  * TODO: Play through the game start to finish and see if it gets too easy or hard at any point
- * TODO: feels like i don't often run out of mana - maybe make a few cards have higher costs (and if necessary higher stats to match)
- * 
+ * TODO: frost guardian should gain health equal to aggro ammount and flame guardian should reduce health equal to aggro level for every card played
  * 
  * 
  * BUGS [can't replicate]:
@@ -146,6 +145,7 @@
  * Card: add a random power to hand
  * Card: add multiple turns of -might/-punch. currently Stun is the only one that does this.
  * Card: 2 cost smaller damage attack that adds a large attack 0 cost retain vanishing card
+ * Card: common retaining attack (synergizes with wisdom)
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -762,6 +762,12 @@ jQuery(document).ready(function($) {
 
 	});
 
+	$(document).on('click', '.draw-all:not(.disabled)', function(e) {
+
+		drawAll();
+
+	});
+
 	$(document).on('click', '.library', function(e) {
 
 		if(game.playsounds) sounds.play('viewCards');
@@ -1094,8 +1100,11 @@ jQuery(document).ready(function($) {
 	$(document).on('click', '.all-cards-panel .card.clickable', function() {
 
 		let guid = $(this).attr('data-guid');
-		let cost = 2;
+		let cost = game.removeCardCost;
 		removeCardFromDeck(guid, cost);
+		game.removeCardCost += 1;
+		$('.courage-remove').data('amount', game.removeCardCost).attr('data-amount', game.removeCardCost);
+		$('.courage-remove span').html(game.removeCardCost);
 		$(this).addClass('disappearing')
 			.delay(1000)
 			.queue(function() {
@@ -1160,7 +1169,7 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('frozen_knife'); // use this to manually add treasures
+	//addTreasure('gift_of_the_craftsman'); // use this to manually add treasures
 	//addCandy('strawberry_gobstopper'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
@@ -1637,7 +1646,7 @@ function viewPackCards(pack) {
 }
 function chooseShardCard(shard, cards = deck.cards) {
 	$('.shard-cards-panel').addClass('shown');
-	$('.draw-card, .end-turn').addClass('disabled');
+	$('.draw-card, .end-turn, .draw-all').addClass('disabled');
 	$('.shard-cards-panel .cards').empty();
 	$('.shard-cards-panel').attr('data-shard', shard);
 	$('.shard-cards-panel h2 span').html(shard);
@@ -1886,6 +1895,7 @@ function visitQuest(visited = false) {
 	let quest = util.weightedRandom(possibleQuests);
 
 	if(visited) {
+		$('.quest-options').empty();
 		$('.quest-screen h2').html('Deja Vu');
 		$('.quest-description').html('You swear you have seen this place before...');
 		let option = {id: 'leave', name: 'Leave'};
@@ -2067,7 +2077,7 @@ function beginTurn() {
 
 	$('.card.retained:not(.unplayable').addClass('playable');
 	$('.card').removeClass('retain');
-	$('.draw-card').removeClass('disabled');
+	$('.draw-card, .draw-all').removeClass('disabled');
 	$('.crit').removeClass('shown');
 
 	combatDeck.updateCardPlayability(player, combatDeck); // necessary for cards that were retained
@@ -2171,6 +2181,13 @@ function updateTreasureTriggers(when) {
 		break;
 	}
 
+}
+
+async function drawAll() {
+	for(let i = player.speed.current; i > 0; i--) {
+		addCardTo('draw');
+		await util.wait(game.animationGap);
+	}
 }
 
 async function addCardTo(type, domCard = null, to = 'handCards', ignoreSpeed = false) {
@@ -2483,7 +2500,7 @@ async function endTurn(checkRetain = true) {
 		$('.player-panel .standard-message').html('choose cards to retain').addClass('shown');
 		$('.retain-done').addClass('shown');
 		$('.player-cards .card').addClass('retainable');
-		$('.draw-card').addClass('disabled');
+		$('.draw-card, .draw-all').addClass('disabled');
 	} else {
 		$('.player-panel .standard-message').removeClass('shown');
 		$('.retain-done').removeClass('shown');
@@ -3058,21 +3075,29 @@ function loot(type, tier = 3) {
 				//}
 			}
 			// one or two essences
-			var numEssences = util.randFromRange(1, 2);
+			var numEssences = util.chance(75) ? 1 : 2;
 			for(let i = 0; i < numEssences; i++) {
 				var index = util.randArrayIndex(game.essences);
 				util.appendEssence(game.essences[index], '.loot-items');
 			}
-			// one shard
-			var index = util.randArrayIndex(treasures.shards);
-			util.appendShard(treasures.shards[index], '.loot-items');
-			// one candy
-			let candy = util.weightedRandom(treasures.candies);
-			//let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
-			let copiedCandy = $.extend(true, {}, candy);
-			copiedCandy.desc = deck.buildDescription(copiedCandy);
-			let clickable = player.candies.length < game.candySlots ? true : false;
-			util.appendCandy(copiedCandy, '.loot-items', clickable);
+			// chance for shard
+			if(util.chance(game.shardChance) && deck.numOpenSlots() > 0) {
+				game.shardChance -= 5;
+				if(game.shardChance < 0) game.shardChance = 0;
+				var index = util.randArrayIndex(treasures.shards);
+				util.appendShard(treasures.shards[index], '.loot-items');
+			}
+			// chance for candy
+			if(util.chance(game.candyChance)) {
+				game.candyChance -= 15;
+				if(game.candyChance < 0) game.candyChance = 0;
+				let candy = util.weightedRandom(treasures.candies);
+				//let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
+				let copiedCandy = $.extend(true, {}, candy);
+				copiedCandy.desc = deck.buildDescription(copiedCandy);
+				let clickable = player.candies.length < game.candySlots ? true : false;
+				util.appendCandy(copiedCandy, '.loot-items', clickable);
+			}
 			$('.loot-screen .message').html('Spoils of war.');
 		break;
 		case 'candy':
@@ -3258,6 +3283,7 @@ function updateItemCost() {
 		}
 	});
 	let cost = game.removeCardCost;
+
 	if(cost > player.courage) {
 		$('.courage-remove').addClass('too-expensive');
 	} else {
@@ -3635,13 +3661,14 @@ function discardCards() {
 		$('.discard-done').removeClass('shown');
 		$('.card').removeClass('discard discardable');
 		$('.discard-message').removeClass('shown');
-		if(player.speed.current > 0) $('.draw-card').removeClass('disabled');
+		if(player.speed.current > 0) $('.draw-card, .draw-all').removeClass('disabled');
 		game.toDiscard = 0;
 		combatDeck.updateCardPlayability(player, combatDeck);
 		setStatus();
 
-		if(!$('body').hasClass('destroying')) {
+		if(!$('body').hasClass('destroying') || combatDeck.handCards.length == 0) {
 			$('body').removeClass('selecting');
+			$('.destroy-message').removeClass('shown');
 		}
 
 	});
@@ -3668,15 +3695,15 @@ function destroyCards() {
 		$('.destroy-done').removeClass('shown');
 		$('.card').removeClass('destroy destroyable');
 		$('.destroy-message').removeClass('shown');
-		if(player.speed.current > 0) $('.draw-card').removeClass('disabled');
+		if(player.speed.current > 0) $('.draw-card, .draw-all').removeClass('disabled');
 		game.toDestroy = 0;
 		game.destroyOptional = false;
 		combatDeck.updateCardPlayability(player, combatDeck);
 		setStatus();
 
-		// TODO: figure out if this is firing correctly with power surge
-		if(!$('body').hasClass('discarding')) {
+		if(!$('body').hasClass('discarding') || combatDeck.handCards.length == 0) {
 			$('body').removeClass('selecting');
+			$('.discard-message').removeClass('shown');
 		}
 		
 	});
@@ -3867,7 +3894,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	elem.removeClass('playing');
 
 	// it's possible draw-card button has been disabled, but this card added speed
-	if(player.speed.current > 0 && combatDeck.handCards.length < 10) $('.draw-card').removeClass('disabled');
+	if(player.speed.current > 0 && combatDeck.handCards.length < 10) $('.draw-card, .draw-all').removeClass('disabled');
 
 	if(card.type == 'attack') updateTreasureTriggers('attackCardsPlayed');
 	if(card.type == 'tool') updateTreasureTriggers('toolCardsPlayed');
@@ -4292,7 +4319,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							$('.discard-message').html('choose cards to discard').addClass('shown');
 							//$('.discard-done').addClass('shown');
 							$('.player-cards .card').addClass('discardable').removeClass('playable');
-							$('.draw-card').addClass('disabled');
+							$('.draw-card, .draw-all').addClass('disabled');
 							$('body').addClass('discarding selecting');
 							game.toDiscard = actions[e].value;
 							update = false;
@@ -4307,7 +4334,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								$('.destroy-done').addClass('shown');
 							}
 							$('.player-cards .card').addClass('destroyable').removeClass('playable');
-							$('.draw-card').addClass('disabled');
+							$('.draw-card, .draw-all').addClass('disabled');
 							$('body').addClass('destroying selecting');
 							game.toDestroy = actions[e].value;
 							update = false;
@@ -4379,7 +4406,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								}
 								// if we increased speed we might need to re-enable draw card button
 								if(what == 'speed' && value > 0) {
-									$('.draw-card').removeClass('disabled');
+									$('.draw-card, .draw-all').removeClass('disabled');
 								}
 							}
 						}
@@ -4621,32 +4648,32 @@ async function processQuest(elem) {
 		case 'oratory':
 			if(option == 'pray') {
 				let actions = [
-					{action: 'stat', what: 'health', key: 'current', value: -8}
+					{action: 'stat', what: 'health', key: 'current', value: -15}
 				];
 				await processActions(actions);
 				gainCourage(5);
 			} else if(option == 'meditate') {
 				let actions = [
-					{action: 'stat', what: 'shimmer', key: 'current', value: 2},
-					{action: 'stat', what: 'health', key: 'current', value: -8}
+					{action: 'stat', what: 'shimmer', key: 'current', value: 3},
+					{action: 'stat', what: 'health', key: 'current', value: -15}
 				];
 				await processActions(actions);
 			} else if(option == 'fast') {
 				let actions = [
-					{action: 'stat', what: 'sparkle', key: 'current', value: 2},
-					{action: 'stat', what: 'health', key: 'current', value: -8}
+					{action: 'stat', what: 'sparkle', key: 'current', value: 3},
+					{action: 'stat', what: 'health', key: 'current', value: -15}
 				];
 				await processActions(actions);
 			} else if(option == 'hold_vigil') {
 				let actions = [
-					{action: 'stat', what: 'aura', key: 'current', value: 2},
-					{action: 'stat', what: 'health', key: 'current', value: -8}
+					{action: 'stat', what: 'aura', key: 'current', value: 3},
+					{action: 'stat', what: 'health', key: 'current', value: -15}
 				];
 				await processActions(actions);
 			} else if(option == 'worship') {
 				let actions = [
-					{action: 'stat', what: 'health', key: 'max', value: 4},
-					{action: 'stat', what: 'health', key: 'current', value: -8}
+					{action: 'stat', what: 'health', key: 'max', value: 10},
+					{action: 'stat', what: 'health', key: 'current', value: -15}
 				];
 				await processActions(actions);
 			}
@@ -5167,6 +5194,7 @@ async function activateRainbow(type, to) {
 function applyArmor(arm, to) {
 	if(to != undefined) {
 		arm = parseFloat(arm);
+		if(arm <= 0) return;
 		let armor = arm + to.craft.current;
 		let extraArmor = (to.armor + armor) - to.health.current;
 		if(armor < 0) armor = 0;

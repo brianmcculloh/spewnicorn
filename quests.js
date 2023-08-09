@@ -161,11 +161,11 @@ const ALL_QUESTS = [
         desc: 'A consecrated space where you can improve yourself - at a cost.',
         weight: 5,
         options: [
-            {id: 'pray', name: 'Pray', desc: 'Lose 8 health and gain 5 courage.'},
-            {id: 'meditate', name: 'Meditate', desc: 'Lose 8 health and gain 2 shimmer.'},
-            {id: 'fast', name: 'Fast', desc: 'Lose 8 health and gain 2 sparkle.'},
-            {id: 'hold_vigil', name: 'Hold Vigil', desc: 'Lose 8 health and gain 2 aura.'},
-            {id: 'worship', name: 'Worship', desc: 'Lose 8 health and gain 4 max health.'},
+            {id: 'pray', name: 'Pray', desc: 'Lose 15 health and gain 5 courage.'},
+            {id: 'meditate', name: 'Meditate', desc: 'Lose 15 health and gain 3 shimmer.'},
+            {id: 'fast', name: 'Fast', desc: 'Lose 15 health and gain 3 sparkle.'},
+            {id: 'hold_vigil', name: 'Hold Vigil', desc: 'Lose 15 health and gain 3 aura.'},
+            {id: 'worship', name: 'Worship', desc: 'Lose 15 health and gain 10 max health.'},
             {id: 'leave', name: 'Leave'}
         ]
     }),

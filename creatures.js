@@ -1056,7 +1056,7 @@ const ALL_MONSTERS = [
         name: 'Swarm', 
         health: {base: 70, current: 0, max: 70},
         tier: 3,
-        armor: 30,
+        armor: 70,
         pattern: 'random',
         moveSet: [
             {effects: [
@@ -1189,7 +1189,7 @@ const ALL_MONSTERS = [
         name: 'Frost Swarm', 
         health: {base: 140, current: 0, max: 140},
         tier: 3,
-        armor: 60,
+        armor: 140,
         pattern: 'random',
         moveSet: [
             {effects: [
@@ -1330,7 +1330,7 @@ const ALL_MONSTERS = [
         name: 'Flame Swarm', 
         health: {base: 70, current: 0, max: 70},
         tier: 3,
-        armor: 30,
+        armor: 70,
         pattern: 'random',
         moveSet: [
             {effects: [
@@ -2975,7 +2975,7 @@ export function Monster() {
                 break;
                 case 8:
                     if(game.map==1) {
-                        // 2 Tier 4 monsters (60%) or 5 Tier 2 monsters (40%)
+                        // 2 Tier 4 monsters (60%) or 4 Tier 3 monsters (40%)
                         let initial = 40;
                         let increase = 0;
                         let chance = util.monsterNumChance(initial, increase);
@@ -2985,8 +2985,8 @@ export function Monster() {
                                 currentMonsters.push(thisMonster);
                             }
                         } else {
-                            for (let i = 0; i < 5; i++) {
-                                let thisMonster = createMonster(2, i, 'normal');
+                            for (let i = 0; i < 4; i++) {
+                                let thisMonster = createMonster(3, i, 'normal');
                                 currentMonsters.push(thisMonster);
                             }
                         }
@@ -3031,20 +3031,20 @@ export function Monster() {
                 break;
                 case 9:
                     if(game.map==1) {
-                        // 3 Tier 3 monsters (40%) or 1 Tier 3 monster and 4 Tier 2 monsters (60%)
+                        // 5 Tier 3 monsters (40%) or 1 Tier 4 monster and 3 Tier 3 monsters (60%)
                         let initial = 40;
                         let increase = 0;
                         let chance = util.monsterNumChance(initial, increase);
                         if(util.chance(chance)) {
-                            for (let i = 0; i < 3; i++) {
+                            for (let i = 0; i < 5; i++) {
                                 let thisMonster = createMonster(3, i, 'normal');
                                 currentMonsters.push(thisMonster);
                             }
                         } else {
-                            let thisMonster = createMonster(3, i, 'normal', excluded);
+                            let thisMonster = createMonster(4, i, 'normal', excluded);
                             currentMonsters.push(thisMonster);
-                            for (let i = 0; i < 4; i++) {
-                                let thisMonster = createMonster(2, i, 'normal');
+                            for (let i = 0; i < 3; i++) {
+                                let thisMonster = createMonster(3, i, 'normal');
                                 currentMonsters.push(thisMonster);
                             }
                         }
@@ -3077,30 +3077,32 @@ export function Monster() {
                 break;
                 case 10:
                     if(game.map==1) {
-                        // 2 Tier 4 monsters and 1 Tier 3 monster (40%) or 1 Tier 4 monster, 1 Tier 3 monster, 2 Tier 2 monsters, and 2 Tier 1 monsters (60%)
+                        // 2 Tier 4 monsters and 2 Tier 3 monsters (40%) or 2 Tier 4 monsters, 1 Tier 3 monster, 1 Tier 2 monster, and 2 Tier 1 monsters (60%)
                         let initial = 40;
                         let increase = 0;
                         let chance = util.monsterNumChance(initial, increase);
                         if(util.chance(chance)) {
-                            let thisMonster = createMonster(3, i, 'normal', excluded);
-                            currentMonsters.push(thisMonster);
+                            for (let i = 0; i < 2; i++) {
+                                let thisMonster = createMonster(3, i, 'normal', excluded);
+                                currentMonsters.push(thisMonster);
+                            }
                             for (let i = 0; i < 2; i++) {
                                 let thisMonster = createMonster(4, i, 'normal', excluded);
                                 currentMonsters.push(thisMonster);
                             }
                         } else {
                             for (let i = 0; i < 2; i++) {
-                                let thisMonster = createMonster(1, i, 'normal', excluded);
-                                currentMonsters.push(thisMonster);
-                            }
-                            for (let i = 0; i < 2; i++) {
-                                let thisMonster = createMonster(2, i, 'normal', excluded);
+                                let thisMonster = createMonster(4, i, 'normal', excluded);
                                 currentMonsters.push(thisMonster);
                             }
                             let thisMonster = createMonster(3, i, 'normal', excluded);
                             currentMonsters.push(thisMonster);
-                            thisMonster = createMonster(4, i, 'normal', excluded);
+                            thisMonster = createMonster(2, i, 'normal', excluded);
                             currentMonsters.push(thisMonster);
+                            for (let i = 0; i < 2; i++) {
+                                let thisMonster = createMonster(1, i, 'normal', excluded);
+                                currentMonsters.push(thisMonster);
+                            }
                         }
                     } else {
                         if(game.floor < 32) {

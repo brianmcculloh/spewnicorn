@@ -1652,7 +1652,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'spin_kick', name: 'Spin Kick', type: 'attack', target: 'monster', mana: 0, tier: 'uncommon', weight: 6, 
+        id: 'spin_kick', name: 'Spin Kick', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', weight: 6, 
         dmg: [2, 2, 2],
         sound: 'attack1',
         actions: [
@@ -3779,17 +3779,17 @@ const ALL_CARDS = [
     new Cards({
         id: 'guzzle', name: 'Guzzle', type: 'ability', mana: 1, tier: 'rare', weight: 4, courage: 5,
         effects: [
-            {effect: 'vigor', amount: .75, turns: -1}
+            {effect: 'vigor', amount: .5, turns: -1}
         ],
         slots: 2,
         shardUpgrades: {
             effects: [
-                {effect: 'vigor', amount: 1, turns: -1}
+                {effect: 'vigor', amount: .75, turns: -1}
             ],
         },
         bothShardUpgrades: {
             effects: [
-                {effect: 'vigor', amount: 1.25, turns: -1}
+                {effect: 'vigor', amount: 1, turns: -1}
             ],
         },
     }),
@@ -4543,7 +4543,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'mystical_energy', name: 'Mystical Energy', type: 'magic', mana: 0, tier: 'rare', linger: 1, use: 2, weight: 3, courage: 5, 
+        id: 'mystical_energy', name: 'Mystical Energy', type: 'magic', mana: 0, tier: 'rare', vanish: true, weight: 3, courage: 5, 
         magic: [{type: 'aligned', amount: 7}],
         actions: [
             {action: 'removeHexes', to: 'player'},
@@ -4555,12 +4555,15 @@ const ALL_CARDS = [
         },
         slots: 2,
         shardUpgrades: {
-            linger: 2,
-            use: 3
+            vanish: false,
+            linger: 1,
+            use: 1
         },
         bothShardUpgrades: {
-            linger: 3,
-            magic: [{type: 'aligned', amount: 10}],
+            vanish: false,
+            linger: 1,
+            use: 2,
+            magic: [{type: 'aligned', amount: 9}],
         },
     }),
     new Cards({
@@ -4854,6 +4857,7 @@ export function Deck() {
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
         }
+
         
         
     }

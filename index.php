@@ -287,7 +287,7 @@
 
       <div class="end-turn icon-button">End Turn</div>
 
-      <div class="mana-speed speed tooltip" data-powertip="<span class='highlight'>Speed:</span> how many cards you can draw per turn. Unused speed converts to block next turn by default.">
+      <div class="mana-speed speed tooltip draw-all" data-powertip="<span class='highlight'>Speed:</span> how many cards you can draw per turn. Unused speed converts to block next turn by default.">
         <div class="icon"></div>
         <span></span>
       </div>

@@ -1284,7 +1284,7 @@ const ALL_TREASURES = [
         weight: 4,
         permanent: true,
         effects: [
-            {effect: 'vigor', base: 1}
+            {effect: 'vigor', base: .5}
         ],
         x: -96,
         y: -14976
@@ -1593,7 +1593,9 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 1}
+            {action: 'stat', what: 'mana', key: 'base', value: 1},
+            {action: 'stat', what: 'health', key: 'max', value: -6},
+            {action: 'stat', what: 'health', key: 'current', value: -6}
         ],
         x: -352,
         y: -10112
@@ -1606,7 +1608,8 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 1}
+            {action: 'stat', what: 'mana', key: 'base', value: 1},
+            {action: 'stat', what: 'courage', value: -4},
         ],
         x: -192,
         y: -9792
@@ -1619,7 +1622,10 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 1}
+            {action: 'stat', what: 'mana', key: 'base', value: 1},
+            {action: 'stat', what: 'shimmer', key: 'current', value: -1},
+            {action: 'stat', what: 'sparkle', key: 'current', value: -1},
+            {action: 'stat', what: 'aura', key: 'current', value: -1},
         ],
         x: -256,
         y: -9568
@@ -1632,7 +1638,9 @@ const ALL_TREASURES = [
         weight: 2,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 1}
+            {action: 'stat', what: 'speed', key: 'base', value: 1},
+            {action: 'stat', what: 'health', key: 'max', value: -5},
+            {action: 'stat', what: 'health', key: 'current', value: -5}
         ],
         x: -288,
         y: -2208
@@ -1645,7 +1653,8 @@ const ALL_TREASURES = [
         weight: 2,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 1}
+            {action: 'stat', what: 'speed', key: 'base', value: 1},
+            {action: 'stat', what: 'courage', value: -4},
         ],
         x: -288,
         y: -2144
@@ -1658,7 +1667,10 @@ const ALL_TREASURES = [
         weight: 2,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 1}
+            {action: 'stat', what: 'speed', key: 'base', value: 1},
+            {action: 'stat', what: 'shimmer', key: 'current', value: -1},
+            {action: 'stat', what: 'sparkle', key: 'current', value: -1},
+            {action: 'stat', what: 'aura', key: 'current', value: -1},
         ],
         x: -288,
         y: -1888
@@ -1671,7 +1683,7 @@ const ALL_TREASURES = [
         weight: 2,
         permanent: true,
         effects: [
-            {effect: 'punch', base: .2}
+            {effect: 'punch', base: .1}
         ],
         x: -96,
         y: -10240
@@ -1722,7 +1734,7 @@ const ALL_TREASURES = [
         tier: 3,
         weight: 1,
         effects: [
-            {effect: 'fatality', amount: 1.3, turns: 1, persist: true}
+            {effect: 'fatality', amount: 1.2, turns: 1, persist: true}
         ],
         trigger: {counter: 0, when: 'turns', at: 3, per: 'combat', once: true, activated: false},
         x: -192,
@@ -1750,7 +1762,7 @@ const ALL_TREASURES = [
         weight: 2,
         permanent: true,
         effects: [
-            {effect: 'thunder', base: .2}
+            {effect: 'thunder', base: .1}
         ],
         x: -128,
         y: -9824
@@ -1766,7 +1778,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 2}
+            {action: 'stat', what: 'mana', key: 'base', value: 1}
         ],
         x: -160,
         y: -14080
@@ -1779,7 +1791,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         effects: [
-            {effect: 'punch', base: .3}
+            {effect: 'punch', base: .2}
         ],
         x: -256,
         y: -14112
@@ -1792,7 +1804,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         effects: [
-            {effect: 'thunder', base: .3}
+            {effect: 'thunder', base: .2}
         ],
         x: -448,
         y: -14048
@@ -1805,7 +1817,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         effects: [
-            {effect: 'might', base: 5}
+            {effect: 'might', base: 3}
         ],
         x: -384,
         y: -14144
@@ -1818,7 +1830,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         effects: [
-            {effect: 'lightning', base: 5}
+            {effect: 'lightning', base: 3}
         ],
         x: -256,
         y: -14080
@@ -1831,7 +1843,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'base', value: 2}
+            {action: 'stat', what: 'speed', key: 'base', value: 1}
         ],
         x: -192,
         y: -13120
@@ -1844,7 +1856,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         effects: [
-            {effect: 'solid', base: 5}
+            {effect: 'solid', base: 3}
         ],
         x: -320,
         y: -13120
@@ -1857,7 +1869,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         effects: [
-            {effect: 'regen', base: 8}
+            {effect: 'regen', base: 6}
         ],
         x: -96,
         y: -13088
@@ -1870,7 +1882,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         effects: [
-            {effect: 'momentum', base: 4}
+            {effect: 'momentum', base: 3}
         ],
         x: -160,
         y: -13088
