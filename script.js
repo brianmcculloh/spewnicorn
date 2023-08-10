@@ -1735,7 +1735,15 @@ async function startCombat(tile) {
 
 	setStatus();
 
+	monsters.updateMonsterGroup();
+	monsters.loadMonsters();
+
 	// setup rainbow
+	if(player.rainbow.current >= player.rainbow.max) {
+		await util.wait(1500);
+		await activateRainbow(player.rainbow.type, player);
+		updateRainbowDom(player);
+	}
 	let magicPower = util.getStatPercentage(player.rainbow.current, player.rainbow.max);
 	$('.magic-rainbow .rainbow-power').css('width', magicPower + '%');
 	$('.magic-rainbow .rainbow-power-current').html(player.rainbow.current);
@@ -1746,8 +1754,6 @@ async function startCombat(tile) {
 	$('.magic-rainbow .magic-type span').attr('data-type', player.rainbow.type);
 	$('.magic-rainbow .semi-circle--mask').css('transform', 'rotate(' + (magicPower * 1.8) + 'deg) translate3d(0, 0, 0)').removeClass('activated'); 
 
-	monsters.updateMonsterGroup();
-	monsters.loadMonsters();
 	beginTurn();
 
 	// manually process actions at start of combat - DEBUGGING ONLY

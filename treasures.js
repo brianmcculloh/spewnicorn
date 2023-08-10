@@ -206,7 +206,7 @@ const ALL_CANDY= [
         courage: 1,
         weight: 4,
         actions: [
-            {action: 'ensharden', type: 'random', select: -1, from: 'handCards', random: false}
+            {action: 'ensharden', type: 'random', select: -1, from: 'handCards', random: true}
         ],
         x: -286,
         y: -992
