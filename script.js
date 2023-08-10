@@ -70,6 +70,7 @@
  * Effect: block, armor, or damage synergies with destroying, discarding, and combining cards
  * Effect: each time you take damage, do something (synergizes with exposed strike)
  * Speech: add speech bubble system to monsters - make it random chance with a set of possible texts
+ * Mechanic: frost guardian should gain health equal to aggro ammount and flame guardian should reduce health equal to aggro level for every card played
  * 
  * 
  * PHASE III:
@@ -93,7 +94,6 @@
  * PHASE V: 
  * 
  * TODO: Play through the game start to finish and see if it gets too easy or hard at any point
- * TODO: frost guardian should gain health equal to aggro ammount and flame guardian should reduce health equal to aggro level for every card played
  * 
  * 
  * BUGS [can't replicate]:
@@ -2567,7 +2567,9 @@ function endMonsterTurn() {
 	clearTurnAbilities(player, true);
 	monsters.updateStatusBar(player);
 	
-	beginTurn();
+	if(!Player().dead(player)) {
+		beginTurn();
+	}
 
 }
 

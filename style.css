@@ -2194,8 +2194,8 @@ body.arena .monster-panel {
 }
 .monster.arch_summoner .sprite {
 	background-position:0 calc(-3000px * 1);
-	width:calc(742px * 1);
-	height:calc(598px * 1);
+	width:calc(700px * 1);
+	height:calc(611px * 1);
 }
 .monster.frost_guardian .sprite {
 	background-position:0 calc(-3610px * 1);

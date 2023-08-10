@@ -4557,12 +4557,12 @@ const ALL_CARDS = [
         shardUpgrades: {
             vanish: false,
             linger: 1,
-            use: 1
+            use: 2
         },
         bothShardUpgrades: {
             vanish: false,
-            linger: 1,
-            use: 2,
+            linger: 2,
+            use: 3,
             magic: [{type: 'aligned', amount: 9}],
         },
     }),

@@ -869,8 +869,8 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         actions: [
-            {action: 'stat', what: 'health', key: 'max', value: 8},
-            {action: 'stat', what: 'health', key: 'current', value: 8}
+            {action: 'stat', what: 'health', key: 'max', value: 10},
+            {action: 'stat', what: 'health', key: 'current', value: 10}
         ],
         x: -416,
         y: -3168
