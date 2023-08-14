@@ -231,7 +231,7 @@ const ALL_EFFECTS = [
     // creature {base: 1, current: 0, temp: 2, turns: 2, persist: false} // base is default 1 (100%), so 1 would be 200% and -1 would be 0%
     // buff     {effect: 'wisdom', amount: 1, turns: -1}
     // hex      {effect: 'wisdom', amount: -1, hex: true}
-    {id: 'wisdom', name: 'Wisdom', desc: 'Age boosts dmg/blk/magic amounts', x: -416, y: -6304, sound: 'effect28'},
+    {id: 'wisdom', name: 'Wisdom', desc: 'Card age boosts damage, block, and magic', x: -416, y: -6304, sound: 'effect28'},
     
     // Usage:
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
@@ -392,7 +392,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.17 Alpha';
+    let version = '0.18 Alpha';
     let seed = false;
     let difficulty = 'normal';
     let floor = 0; // TODO: set to 0

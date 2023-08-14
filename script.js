@@ -691,7 +691,7 @@ jQuery(document).ready(function($) {
 		}
 		if(game.toPick == 0) {
 			$('.shard-cards-panel').removeClass('shown');
-			$('.draw-card, .end-turn').removeClass('disabled');
+			$('.draw-card, .draw-all, .end-turn').removeClass('disabled');
 			combatDeck.chooseCards = [];
 		}
 
@@ -1169,7 +1169,7 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('gift_of_the_craftsman'); // use this to manually add treasures
+	//addTreasure('frozen_knife'); // use this to manually add treasures
 	//addCandy('strawberry_gobstopper'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
@@ -2081,12 +2081,12 @@ function beginTurn() {
 
 	applyArmor(player.muster.current, player);
 
+	combatDeck.updateCardPlayability(player, combatDeck); // necessary for cards that were retained
+
 	$('.card.retained:not(.unplayable').addClass('playable');
 	$('.card').removeClass('retain');
 	$('.draw-card, .draw-all').removeClass('disabled');
 	$('.crit').removeClass('shown');
-
-	combatDeck.updateCardPlayability(player, combatDeck); // necessary for cards that were retained
 
 	updateTreasureTriggers('turns');
 
@@ -2216,7 +2216,7 @@ async function addCardTo(type, domCard = null, to = 'handCards', ignoreSpeed = f
 
 		}
 		if(game.playsounds) sounds.play('drawCard');
-		card = combatDeck.drawCard(player, combatDeck, ignoreSpeed);
+		card = combatDeck.drawCard(player, combatDeck);
 		game.cardsDrawn += 1;
 	} else if(type=='drawCards') {
 		card = combatDeck.addDrawCard(player, combatDeck, guid, to);
@@ -2842,42 +2842,52 @@ function clearCombatAbilities() {
 }
 
 function applyAbility(ability, to, turns = -1) {
-	if(ability.hex || to[ability.ability].enabled == false) {
-		to[ability.ability].enabled = ability.enabled;
-		let statusDom = $('.player .status-text');
-		if(to.type=='monster') {
-			statusDom = $('.monster[data-guid=' + to.guid + '] .status-text');
-		}
+
+	let active = to[ability.ability].enabled && to[ability.ability].baseTurns == -1;
+	let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
+
+	to[ability.ability].enabled = ability.enabled;
+	let statusDom = $('.player .status-text');
+	if(to.type=='monster') {
+		statusDom = $('.monster[data-guid=' + to.guid + '] .status-text');
+	}
+	if(!active) {
 		if(to[ability.ability].permanent) {
 			to[ability.ability].baseTurns += turns;
 		} else {
 			to[ability.ability].baseTurns = ability.baseTurns;
 		}
-		let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
-		if(ability.hex) {
-			to[ability.ability].turns = 0;
-			to[ability.ability].enabled = false;
-			if(game.playsounds) sounds.play('hex');
-			game.statusAnimations({data: gameAbility.name, to: statusDom, hex: true});
-		} else {
-			to[ability.ability].turns += turns;
-			let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
-			let sound = gameAbility.sound ? gameAbility.sound : 'applyAbility';
-			if(game.playsounds) sounds.play(sound);
-			game.statusAnimations({data: gameAbility.name, to: statusDom, hex: false});
-		}
-		if(to[ability.ability].baseTurns < -1) to[ability.ability].baseTurns = -1;
-		if(to[ability.ability].turns < -1) to[ability.ability].turns = -1;
-		if(ability.persist) {
-			to[ability.ability].persist = ability.persist;
-		}
-		if(ability.permanent) {
-			to[ability.ability].permanent = ability.permanent;
-		}
-		if(to.type == 'monster') monsters.updateStatusBar();
-
-		setStatus();
 	}
+	if(ability.hex) {
+		to[ability.ability].turns = 0;
+		to[ability.ability].enabled = false;
+		if(game.playsounds) sounds.play('hex');
+		game.statusAnimations({data: gameAbility.name, to: statusDom, hex: true});
+	} else {
+		if(!active) {
+			if(ability.baseTurns == -1) { // if we're applying a temporary ability on top of a permanent one
+				to[ability.ability].turns = -1;
+			} else {
+				to[ability.ability].turns += turns;
+			}
+		}
+		let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
+		let sound = gameAbility.sound ? gameAbility.sound : 'applyAbility';
+		if(game.playsounds) sounds.play(sound);
+		game.statusAnimations({data: gameAbility.name, to: statusDom, hex: false});
+	}
+	if(to[ability.ability].baseTurns < -1) to[ability.ability].baseTurns = -1;
+	if(to[ability.ability].turns < -1) to[ability.ability].turns = -1;
+	if(ability.persist) {
+		to[ability.ability].persist = ability.persist;
+	}
+	if(ability.permanent) {
+		to[ability.ability].permanent = ability.permanent;
+	}
+	if(to.type == 'monster') monsters.updateStatusBar();
+
+	setStatus();
+
 }
 
 function endCombat() {
@@ -5027,6 +5037,9 @@ async function attackMonster(monster, dmg, fatalityHit = false, hypnotizeHit = f
 	dmg = dmg + player.momentumAmount;
 
 	dmg = Math.round(dmg);
+
+	// it's possible damage is negative if player has negative might
+	dmg = dmg < 0 ? 0 : dmg;
 	
 	doDamage(dmg, player, [monster], false, false, fatalityHit, hypnotizeHit);
 	

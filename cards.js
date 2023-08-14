@@ -1731,13 +1731,11 @@ const ALL_CARDS = [
         id: 'rainbow_thrust', name: 'Rainbow Thrust', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', 
         dmg: [7],
         sound: 'attack4',
-        magic: [{type: 'rainbow', amount: 7}], 
+        magic: [{type: 'rainbow', amount: 10}], 
         slots: 1,
-        fireShardUpgrades: {
+        shardUpgrades: {
             dmg: [12],
-        },
-        iceShardUpgrades: {
-            magic: [{type: 'rainbow', amount: 12}], 
+            magic: [{type: 'rainbow', amount: 15}], 
         },
     }),
     new Cards({
@@ -1745,10 +1743,8 @@ const ALL_CARDS = [
         dmg: [7],
         magic: [{type: 'chaos', amount: 7}], 
         slots: 1,
-        fireShardUpgrades: {
+        shardUpgrades: {
             dmg: [12],
-        },
-        iceShardUpgrades: {
             magic: [{type: 'chaos', amount: 12}], 
         },
     }),
@@ -1757,11 +1753,9 @@ const ALL_CARDS = [
         dmg: [7],
         magic: [{type: 'elemental', amount: 7}], 
         slots: 1,
-        fireShardUpgrades: {
+        shardUpgrades: {
             dmg: [12],
-        },
-        iceShardUpgrades: {
-            magic: [{type: 'elemental', amount: 12}], 
+            magic: [{type: 'elemental', amount: 12}],
         },
     }),
     new Cards({
@@ -1769,10 +1763,8 @@ const ALL_CARDS = [
         dmg: [7],
         magic: [{type: 'dark', amount: 7}], 
         slots: 1,
-        fireShardUpgrades: {
+        shardUpgrades: {
             dmg: [12],
-        },
-        iceShardUpgrades: {
             magic: [{type: 'dark', amount: 12}], 
         },
     }),
@@ -3985,11 +3977,11 @@ const ALL_CARDS = [
 
     new Cards({
         id: 'rainbow_charge', name: 'Rainbow Charge', type: 'magic', mana: 1, tier: 'common', 
-        magic: [{type: 'rainbow', amount: 10}], 
+        magic: [{type: 'rainbow', amount: 12}], 
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'rainbow', amount: 15}], 
+            magic: [{type: 'rainbow', amount: 18}], 
         },
     }),
     new Cards({
@@ -4076,11 +4068,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'rainbow_charm', name: 'Rainbow Charm', type: 'magic', mana: 0, tier: 'common', retain: true, use: 1,
-        magic: [{type: 'rainbow', amount: 4}], 
+        magic: [{type: 'rainbow', amount: 5}], 
         sound: 'magic2',
         slots: 1,
         fireShardUpgrades: {
-            magic: [{type: 'rainbow', amount: 8}], 
+            magic: [{type: 'rainbow', amount: 10}], 
         },
         iceShardUpgrades: {
             use: 2
@@ -4857,7 +4849,6 @@ export function Deck() {
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
         }
-
         
         
     }
@@ -5518,9 +5509,9 @@ export function CombatDeck() {
     }
 
     function shouldDraw(combatDeck) {
-        let enoughCards = false;
-        if(combatDeck.drawCards.length > 0) enoughCards = true;
-        return enoughCards; 
+        let spaceAvailable = true;
+        if(combatDeck.handCards.length > 9) spaceAvailable = false;
+        return spaceAvailable; 
     }
 
     function shuffleDeck(combatDeck) {
@@ -5565,6 +5556,10 @@ export function CombatDeck() {
 
     function drawCard(player, combatDeck, ignoreSpeed = false) {
 
+        if(!shouldDraw(combatDeck)) {
+            return false;
+        }
+
         if(!canDraw(combatDeck)) {
             shuffleDeck(combatDeck);
         }
@@ -5595,7 +5590,7 @@ export function CombatDeck() {
                 
             }
 
-            if(player.speed.current == 0 || combatDeck.handCards.length == 10) $('.draw-card').addClass('disabled');
+            if(player.speed.current == 0 || combatDeck.handCards.length == 10) $('.draw-card, .draw-all').addClass('disabled');
 
             updateCardPlayability(player, combatDeck);
 
@@ -5810,7 +5805,7 @@ export function CombatDeck() {
     function transmuteCards(combatDeck, deck, player) {
         let permanent = false;
         for(let i = 0; i < game.toTransmute.length; i++) {
-            let possibleCards = AllCards().getAddableCards().filter(j => j.addable == true && j.id !== game.toTransmute[i].id);
+            let possibleCards = AllCards().getAddableCards().filter(j => j.addable == true && j.id !== game.toTransmute[i].id && j.tier !== 'legendary');
             let transmutedCard = util.randFromArray(possibleCards);
             //transmutedCard = JSON.parse(JSON.stringify(transmutedCard)); // necessary to create a deep copy
             transmutedCard = $.extend(true, {}, transmutedCard);
@@ -5935,7 +5930,7 @@ export function CombatDeck() {
         } else {
             if(part == 'handCards' && combatDeck.handCards.length > fullHand) {
                 combatDeck.discardCards.push(copiedCard);
-                $('.draw-card').addClass('disabled');
+                $('.draw-card, .draw-all').addClass('disabled');
             } else {
                 if(copiedCard == undefined || copiedCard == '' || copiedCard == null || copiedCard == false) {
                     alert('Failed to add card to combatDeck.' + part);
@@ -5949,7 +5944,10 @@ export function CombatDeck() {
                     }
                 }
             }
-            
+            // check to see if hand is full after adding the last card and disable drawing cards if so
+            if(part == 'handCards' && combatDeck.handCards.length > fullHand) {
+                $('.draw-card, .draw-all').addClass('disabled');
+            }
         }
         updateCardPlayability(player, combatDeck);
 
@@ -6001,6 +5999,7 @@ export function CombatDeck() {
         allCards,
         sync,
         canDraw,
+        shouldDraw,
         getNaturalCard,
         getOldestCard,
         getOldestPlayableCard,

@@ -3376,7 +3376,7 @@ export function Player() {
         health: {base: 75, current: 75, max: 75}, // TODO: reset all values to 75
         speed: {base: 5, current: 0, temp: [], turns: 0}, // TODO: reset base to 5
         mana: {base: 3, current: 0, temp: 0}, // TODO: reset to base 3
-        rainbow: {base: 25, current: 0, temp: [], turns: 0, max: 20, type: 'rainbow'},
+        rainbow: {base: 0, current: 0, temp: [], turns: 0, max: 20, type: 'rainbow'},
         //unning: {base: 2, current: 2, temp: [], turns: 0, persist: false, hexed: false}, // how to add a default effect
         //stockpile: {enabled: true, baseTurns: 0, turns: 10, persist: false, permanent: true}, // how to add a default ability
     });

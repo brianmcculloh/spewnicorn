@@ -869,8 +869,8 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         actions: [
-            {action: 'stat', what: 'health', key: 'max', value: 10},
-            {action: 'stat', what: 'health', key: 'current', value: 10}
+            {action: 'stat', what: 'health', key: 'max', value: 20},
+            {action: 'stat', what: 'health', key: 'current', value: 20}
         ],
         x: -416,
         y: -3168
@@ -1722,7 +1722,7 @@ const ALL_TREASURES = [
         weight: 2,
         permanent: true,
         effects: [
-            {effect: 'wisdom', base: 3}
+            {effect: 'wisdom', base: 4}
         ],
         x: -416,
         y: -13088
