@@ -1595,18 +1595,15 @@ const ALL_MONSTERS = [
         moveSet: [
             {effects: [
                 {effect: 'regen', amount: 5, turns: -1},
-            ], blk: [15], p: .25},
+            ], blk: [15], p: .1},
             {effects: [
                 {effect: 'might', amount: 1, turns: -1},
             ], p: .25},
             {dmg: [3, 3, 3, 3, 3, 3], 
             effects: [
                 {effect: 'punch', amount: -.4, turns: 2, hex: true}
-            ], 
-            actions: [
-                {action: 'addCard', value: 2, what: 'briars', to: 'discardCards'},
             ], p: .25},
-            {dmg: [4, 4, 4, 4, 4], p: .25},
+            {dmg: [4, 4, 4, 4, 4], p: .4},
         ],
         heal: {base: 8, current: 0, temp: [], turns: -1},
         regen: {base: 5, current: 0, temp: [], turns: -1}

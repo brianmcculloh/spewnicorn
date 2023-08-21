@@ -1,45 +1,5 @@
 /*********************************************
  * 
- * Ideas:
- * Must visit two arenas to unlock gates
- * You can visit as many tiles as you want, but the more you visit, the higher the aggro on the boss gates
- * Treasure bonus events add a chest full of a mixture of treasures, essences, shards, and cards
- * 
- * COURAGE: after every 7 battles you get offered a treasure that might cost more than 7 (functions like a shop)
- * -any purchase resets courage, or you can save it up to afford better treasures down the road
- * -works well with aggro because player has to decide if it's worth it to do 21 battles before a gate, which
- * -will increase aggro to level 3. if player is savvy at mapping, they can get 2 courage events before 
- * -aggro increases to level 2 (which is at 15). 10, 15, 20, 22 vs 7, 14, 21
- * 
- * SHARDS: can attach to cards to "upgrade" them
- * -one, two, or three slots per card
- * -shards are either fire or ice and can lead to fire and ice builds
- * -shards are permanently attached to cards, and must be equipped immediately
- * 
- * AGGRO: thresholds which when hit add strength to gates
- * -after 10 battles +1, after 15 +1, after 20 +1, after 22 +1, and then +1 every battle after that
- * 
- * SPRITES (not implemented): enemies start with 3 sprites per monster, player can cast spell cards to summon sprites
- * -daylight for butterflies, twilight for fireflies, and midnight for fairies
- * -sprites do things like buff player, heal player, block player, attack monsters, attack other sprites, etc.
- * -monster sprites can target you or your sprites
- * -various effects from cards/treasures/etc can cause sprites to do things like always target enemy sprites, etc.
- * 
- * SPEED: unused speed at the end of each turn converts to something based on stance
- * -no stance: unused speed converts to 2x block next turn
- * -aura stance: unused speed converts to mana next turn
- * -sparkle stance: unused speed converts to temporary might next turn
- * -shimmer stance: unused speed converts to block, armor, and health next turn
- * 
- * MAGIC RAINBOW: an entity that floats above the player that is magic
- * -target it with magic cards
- * -once it's full it does aoe magic damage to all enemies
- * -rainbow magic does standard aoe damage
- * -dark magic bypasses armor
- * -elemental magic bypasses block
- * -chaos magic does double damage only to one monster instead of aoe
- * -muddled magic does damage only to one monster instead of aoe
- * 
  * PHASE I: GAME ENGINE PHASE
  * PHASE II: CREATE ALL EFFECTS, ABILITIES, AND ACTIONS
  * PHASE III: BALANCE PHASE - CREATE MAP/MONSTERS/TREASURES/CARDS/CANDY
@@ -50,7 +10,8 @@
  * 
  * PHASE I:
  * 
- * Gates (down the road)
+ * Game Engine - DONE
+ * Gates - DONE
  * 
  * 
  * PHASE II:
@@ -93,7 +54,7 @@
  * 
  * PHASE V: 
  * 
- * TODO: Play through the game start to finish and see if it gets too easy or hard at any point
+ * TODO: 
  * 
  * 
  * BUGS [can't replicate]:
@@ -112,13 +73,9 @@
  * 
  * Play testing
  * -debug email report or text file logging
- * 
- * Stress and Balance testing
- * 
+ * Stress and Balance testing - DONE
  * Tutorial	- DONE		
- * 
  * Save progress
- * 
  * Record results
  * 
  * 
@@ -703,7 +660,14 @@ jQuery(document).ready(function($) {
 		let playable = $(this).hasClass('playable');
 		if(combinable) {
 			let id = $(this).data('id');
-			if($('.card.combinable[data-id="' + id + '"]').hasClass('selected') && !$(this).hasClass('selected')) {
+			let otherCombinableExists = false;
+			let otherCombinables = $('.card.combinable[data-id="' + id + '"].selected');
+			$(otherCombinables).each(function() {
+				if(!$(this).parent().hasClass('destroying')) {
+					otherCombinableExists = true;
+				}
+			});
+			if(otherCombinableExists && !$(this).hasClass('selected')) {
 				$(this).addClass('selected');
 				combineCards($(this));
 			} else {
@@ -2019,7 +1983,7 @@ function beginTurn() {
 	} else if(player.stance == 'shimmer') {
 		//heal(player, 1);
 		applyArmor(2, player);
-		applyBlock(5, player);
+		applyBlock(8, player);
 	}
 
 	// check for spance * speed bonuses. stances only apply to speed, which can only be taken into account after turn 1
@@ -2044,7 +2008,7 @@ function beginTurn() {
 			} else if(player.stance == 'shimmer') {
 				//player.speed.current = player.speed.base + Math.round(player.speed.current * player.shimmer.level) + extraSpeed; // old way of doing this was speed
 				//player.health.max += Math.floor((player.speed.current / 4) * player.shimmer.level); // we determined this could be infinitely farmable
-				//heal(player, Math.floor(player.speed.current * player.shimmer.level));
+				heal(player, Math.floor((player.speed.current * player.shimmer.level) / 2));
 				applyArmor(Math.floor(player.speed.current * player.shimmer.level), player);
 				applyBlock(Math.floor(player.speed.current * player.shimmer.level * 2), player);
 			}
@@ -2216,7 +2180,7 @@ async function addCardTo(type, domCard = null, to = 'handCards', ignoreSpeed = f
 
 		}
 		if(game.playsounds) sounds.play('drawCard');
-		card = combatDeck.drawCard(player, combatDeck);
+		card = combatDeck.drawCard(player, combatDeck, ignoreSpeed);
 		game.cardsDrawn += 1;
 	} else if(type=='drawCards') {
 		card = combatDeck.addDrawCard(player, combatDeck, guid, to);
@@ -3780,7 +3744,7 @@ function updateCritChance() {
 }
 
 function combineCards(elem) {
-	
+
 	playCard(elem, undefined, 'combine', false);
 
 	$('.card.combinable.selected').each(function() {

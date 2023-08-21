@@ -4604,9 +4604,17 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 
 /* show cards */
 .show-cards.game-panel {
-	z-index:99999;
+	z-index:-1;
+	opacity:0;
+	transform:translateY(0);
+	background:none;
 	justify-content:center;
 	flex-direction:row;
+	transition:all .2s ease-in-out;
+}
+.show-cards.game-panel.shown {
+	z-index:99999;
+	opacity:1;
 }
 .show-cards .card {
 	scale:1.6;

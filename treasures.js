@@ -1067,7 +1067,7 @@ const ALL_TREASURES = [
         id:'lemon', 
         name: 'Lemon', 
         courage: 8,
-        weight: 7,
+        weight: 2,
         permanent: true,
         effects: [
             {effect: 'lemonade', base: 1}
@@ -1593,9 +1593,9 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 1},
-            {action: 'stat', what: 'health', key: 'max', value: -6},
-            {action: 'stat', what: 'health', key: 'current', value: -6}
+            {action: 'stat', what: 'courage', value: 20},
+            {action: 'stat', what: 'health', key: 'max', value: 5},
+            {action: 'stat', what: 'health', key: 'current', value: 5}
         ],
         x: -352,
         y: -10112
@@ -1608,8 +1608,9 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 1},
-            {action: 'stat', what: 'courage', value: -4},
+            {action: 'stat', what: 'courage', value: 15},
+            {action: 'stat', what: 'health', key: 'max', value: 15},
+            {action: 'stat', what: 'health', key: 'current', value: 15}
         ],
         x: -192,
         y: -9792
@@ -1622,10 +1623,9 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'mana', key: 'base', value: 1},
-            {action: 'stat', what: 'shimmer', key: 'current', value: -1},
-            {action: 'stat', what: 'sparkle', key: 'current', value: -1},
-            {action: 'stat', what: 'aura', key: 'current', value: -1},
+            {action: 'stat', what: 'courage', value: 10},
+            {action: 'stat', what: 'health', key: 'max', value: 25},
+            {action: 'stat', what: 'health', key: 'current', value: 25}
         ],
         x: -256,
         y: -9568
@@ -1635,7 +1635,7 @@ const ALL_TREASURES = [
         name: "Falcon Feather", 
         courage: 14,
         tier: 3,
-        weight: 2,
+        weight: 1,
         permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 1},
@@ -1650,7 +1650,7 @@ const ALL_TREASURES = [
         name: "Hummingbird Feather", 
         courage: 14,
         tier: 3,
-        weight: 2,
+        weight: 1,
         permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 1},
@@ -1664,7 +1664,7 @@ const ALL_TREASURES = [
         name: "Swift Feather", 
         courage: 14,
         tier: 3,
-        weight: 2,
+        weight: 1,
         permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 1},

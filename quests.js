@@ -24,7 +24,7 @@ const ALL_QUESTS = [
         id: 'workshop',
         name: 'Workshop',
         desc: 'A myriad of tools adorn the walls and tables.',
-        weight: 5,
+        weight: 1,
         options: [
             {id: 'explore', name: 'Explore', desc: 'Sharpen your skills',
                 options: [

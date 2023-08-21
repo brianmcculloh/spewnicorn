@@ -606,7 +606,7 @@ const ALL_CARDS = [
 
     /* Cards Added By Other Cards/Events: */
     new Cards({
-        id: 'aura_stance', name: 'Aura Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, retain: true,
+        id: 'aura_stance', name: 'Aura Stance', type: 'tool', tier: 'uncommon', mana: 0, breakable: true, use: 3, vanish: true, addable: false, retain: true,
         sound: 'auraAmount',
         slots: 1,
         actions: [
@@ -615,6 +615,7 @@ const ALL_CARDS = [
             {action: 'draw', value: 1}
         ],
         shardUpgrades: {
+            use: 5,
             actions: [
                 {action: 'stat', what: 'stance', value: 'aura'},
                 {action: 'stat', what: 'mana', key: 'current', value: 2}
@@ -622,7 +623,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'sparkle_stance', name: 'Sparkle Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, retain: true,
+        id: 'sparkle_stance', name: 'Sparkle Stance', type: 'tool', tier: 'uncommon', mana: 0, breakable: true, use: 3, vanish: true, addable: false, retain: true,
         sound: 'sparkleAmount',
         slots: 1,
         actions: [
@@ -633,6 +634,7 @@ const ALL_CARDS = [
             {effect: 'might', amount: 2, turns: 1}
         ],
         shardUpgrades: {
+            use: 5,
             actions: [
                 {action: 'stat', what: 'stance', value: 'sparkle'}
             ],
@@ -642,7 +644,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'shimmer_stance', name: 'Shimmer Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, retain: true,
+        id: 'shimmer_stance', name: 'Shimmer Stance', type: 'tool', tier: 'uncommon', mana: 0, breakable: true, use: 3, vanish: true, addable: false, retain: true,
         sound: 'shimmerAmount',
         armor: [3],
         blk: [5],
@@ -653,6 +655,7 @@ const ALL_CARDS = [
             {action: 'draw', value: 1}
         ],
         shardUpgrades: {
+            use: 5,
             actions: [
                 {action: 'stat', what: 'stance', value: 'shimmer'},
                 {action: 'stat', what: 'health', key: 'current', value: 8}
@@ -3135,7 +3138,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'trade_up', name: 'Trade Up', type: 'tool', mana: 2, tier: 'rare', retain: true, vanish: true, weight: 7, courage: 3,
+        id: 'trade_up', name: 'Trade Up', type: 'tool', mana: 1, tier: 'rare', retain: true, vanish: true, weight: 7, courage: 3,
         sound: 'tool20', 
         actions: [
             {action: 'addCard', select: 1, value: 3, type: 'any', tier: 'rare', to: 'handCards'}
@@ -3285,12 +3288,12 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'thresh', name: 'Thresh', type: 'tool', tier: 'rare', mana: 1, courage: 4, use: 2,
+        id: 'thresh', name: 'Thresh', type: 'tool', tier: 'rare', mana: 1, courage: 4, use: 2, weight: 3,
         effects: [
             {effect: 'lemonade', amount: 2, turns: 2}
         ],
         actions: [
-            {action: 'addCard', value: 4, what: 'chaff', to: 'discardCards'},
+            {action: 'addCard', value: 4, what: 'chaff', to: 'drawCards'},
         ],
         slots: 1,
         shardUpgrades: {
@@ -3298,7 +3301,7 @@ const ALL_CARDS = [
                 {effect: 'lemonade', amount: 3, turns: 2}
             ],
             actions: [
-                {action: 'addCard', value: 5, what: 'chaff', to: 'discardCards'},
+                {action: 'addCard', value: 5, what: 'chaff', to: 'drawCards'},
             ],
         },
     }),
@@ -4680,14 +4683,14 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'flare_up', name: 'Flare Up', type: 'magic', mana: 0, tier: 'legendary', courage: 8, use: 1,
-        magic: [{type: 'aligned', amount: 20}], 
+        id: 'flare_up', name: 'Flare Up', type: 'magic', mana: 0, tier: 'legendary', courage: 8, use: 2, retain: true, linger: 1,
+        magic: [{type: 'aligned', amount: 25}], 
         slots: 1,
         sound: 'magic20',
         shardUpgrades: {
-            use: 2,
+            use: 4,
             retain: true,
-            linger: 1
+            linger: 2
         },
     }),
     new Cards({
@@ -4849,6 +4852,7 @@ export function Deck() {
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
         }
+
         
         
     }
