@@ -1042,6 +1042,7 @@ export default class Util {
                 33_Light_02
                 39_Ultima_02s
                 40_Ultima_03
+                44_Sleep_01
                 68_Die_01
                 83_Whip_woosh_2
                 085_save_game_02

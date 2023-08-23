@@ -894,7 +894,7 @@ const ALL_CARDS = [
         blk: [6],
         slots: 1,
         effects: [
-            {effect: 'fierce', amount: 5, turns: 1},
+            {effect: 'fierce', amount: 10, turns: 1},
             {effect: 'mastery', amount: 1.5, turns: 1},
             {effect: 'rowdy', amount: 15, turns: 1}
         ],
@@ -906,7 +906,7 @@ const ALL_CARDS = [
         shardUpgrades: {
             blk: [10],
             effects: [
-                {effect: 'fierce', amount: 7, turns: 1},
+                {effect: 'fierce', amount: 15, turns: 1},
                 {effect: 'mastery', amount: 2, turns: 1},
                 {effect: 'rowdy', amount: 20, turns: 1}
             ],
@@ -915,7 +915,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'battle_sequence', name: 'Battle Sequence', type: 'tool', mana: 3, retain: true, addable: false, vanish: true, tier: 'legendary',
         effects: [
-            {effect: 'fierce', amount: 10, turns: 1},
+            {effect: 'fierce', amount: 15, turns: 1},
             {effect: 'mastery', amount: 3, turns: 1},
             {effect: 'rowdy', amount: 30, turns: 1}
         ],
@@ -925,14 +925,14 @@ const ALL_CARDS = [
         slots: 2,
         shardUpgrades: {
             effects: [
-                {effect: 'fierce', amount: 12, turns: 1},
+                {effect: 'fierce', amount: 20, turns: 1},
                 {effect: 'mastery', amount: 4, turns: 1},
                 {effect: 'rowdy', amount: 40, turns: 1}
             ],
         },
         bothShardUpgrades: {
             effects: [
-                {effect: 'fierce', amount: 14, turns: 1},
+                {effect: 'fierce', amount: 25, turns: 1},
                 {effect: 'mastery', amount: 5, turns: 1},
                 {effect: 'rowdy', amount: 50, turns: 1}
             ],
@@ -3626,12 +3626,12 @@ const ALL_CARDS = [
     new Cards({
         id: 'explosivity', name: 'Explosivity', type: 'ability', mana: 1, tier: 'uncommon', courage: 3,
         effects: [
-            {effect: 'fierce', amount: 7, turns: -1}
+            {effect: 'fierce', amount: 12, turns: -1}
         ],
         slots: 1,
         fireShardUpgrades: {
             effects: [
-                {effect: 'fierce', amount: 12, turns: -1}
+                {effect: 'fierce', amount: 20, turns: -1}
             ],
         },
         iceShardUpgrades: {

@@ -3819,26 +3819,10 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	if(card.type == 'attack') {
 		player.momentumAmount += player.momentum.current;
 	}
-
-	let use = util.getCardAttribute(card, 'use');
-	let breakable = util.getCardAttribute(card, 'breakable');
-	if(use > 0) {
-		use -= 1;
-		reduceCardStat(card, 'use', 1);
-		if(breakable) {
-			// use needs to be permanently decreased
-			// it's possible we're decreasing use on a card added during combat (temp card) which will not be in the deck
-			if(deckCard==undefined) {
-				card.use -= 1;
-			} else {
-				deckCard.use -= 1;
-			}
-			// in the future this might need to be dealt with more holistically, because perhaps breakable
-			// could be affected by shards (although it's not now)
-		}
-	}
-
+	
 	let linger = util.getCardAttribute(card, 'linger');
+	let breakable = util.getCardAttribute(card, 'breakable');
+	let use = util.getCardAttribute(card, 'use');
 
 	// figure out what to do with card
 	if(shouldDestroyCard(card)) {
@@ -3854,6 +3838,22 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 		combatDeck.activateCard(card, combatDeck);
 	} else if(linger < 1) {
 		combatDeck.discardCard(card, combatDeck, 'played');
+	}
+
+	if(use > 0) {
+		use -= 1;
+		reduceCardStat(card, 'use', 1);
+		if(breakable) {
+			// use needs to be permanently decreased
+			// it's possible we're decreasing use on a card added during combat (temp card) which will not be in the deck
+			if(deckCard==undefined) {
+				card.use -= 1;
+			} else {
+				deckCard.use -= 1;
+			}
+			// in the future this might need to be dealt with more holistically, because perhaps breakable
+			// could be affected by shards (although it's not now)
+		}
 	}
 
 	if(linger > 0) {
@@ -5319,6 +5319,7 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 			if(thisTo.health.current <= 0) thisTo.health.current = 0;
 			if(thisTo.armor <= 0) thisTo.armor = 0;
 			if(thisTo.block <= 0) thisTo.block = 0;
+			if(thisTo.armor > thisTo.health.current) thisTo.armor = thisTo.health.current; // this can happen when ignoreArmor == true
 
 			let dmgTakenDom = $('.player .dmg-taken');
 			let armorLostDom = $('.player .armor-lost');
