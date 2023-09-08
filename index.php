@@ -38,58 +38,79 @@
 
   <div id="splash" class="game-panel shown">
 
-    <div class="logo"><img src="./images/logo.png" /></div>
+    <div class="splash-column">
 
-    <?php /* <h2>The Spewnicorn</h2> */ ?>
+      <div class="logo"><img src="./images/logo.png" /></div>
 
-    <div class="message">Build the ultimate deck of cards and wield it to defeat the Gatekeepers!</div>
+      <?php /* <h2>The Spewnicorn</h2> */ ?>
 
-    <div class="panel settings-panel">
+      <div class="panel settings-panel">
 
-      <div class="button music toggled-on">Music<span>On</span></div>
-      <div class="button sound toggled-on">Sounds<span>On</span></div>
-      <div class="button tutorial">Tutorial<span>Off</span></div>
-      <div class="button difficulty tooltip" data-powertip="Adds a <span class='highlight'>Spewnicorn Spray</span> to your deck and decreases aggro.">Easy&nbsp;Mode<span>Off</span></div>
-      <input id="custom-seed" class="tooltip" data-powertip="You can enter a custom seed or keep this blank to generate a random map." type="text" placeholder="Custom Seed..." />
+        <div class="button music toggled-on">Music<span>On</span></div>
+        <div class="button sound toggled-on">Sounds<span>On</span></div>
+        <div class="button tutorial">Tutorial<span>Off</span></div>
+        <div class="button difficulty tooltip" data-powertip="Adds a <span class='highlight'>Spewnicorn Spray</span> to your deck and decreases aggro.">Easy&nbsp;Mode<span>Off</span></div>
+        <input id="custom-seed" class="tooltip" data-powertip="You can enter a custom seed or keep this blank to generate a random game." type="text" placeholder="Custom Seed..." />
 
-      <div class="button begin">New Game</div> 
+        <div class="button begin">New Game</div> 
 
-      <div class="instructions">
-
-        <h2>How to play</h2>
-
-        <p>Your goal is to traverse the overworld and defeat a <span class="highlight">Guardian</span> at either the <span class="highlight">Ice Gate</span> or the <span class="highlight">Fire Gate</span>.</p>
-
-        <p>Along the way you will fight enemies that will increase your <span class="sparkle">Sparkle</span>, <span class="shimmer">Shimmer</span>, or <span class="aura">Aura</span> essence. Once you reach level 1, a <span class="highlight">Stance</span> card of that essence will be automatically added to your deck, and the higher your essence level, the stronger the <span class="highlight">Stance</span> effects will be.</p>
-
-        <p>If you are not in a stance, unused speed will be converted to 2x block next turn. If you are in <span class="sparkle">Sparkle</span> <span class="highlight">Stance</span>, gain +2 might per turn, and unused speed will convert to might next turn. If you are in <span class="shimmer">Shimmer</span> <span class="highlight">Stance</span>, gain +8 block and +2 armor per turn, and unused speed will convert to block, armor, and health next turn. If you are in <span class="aura">Aura</span> <span class="highlight">Stance</span>, gain +1 mana per turn, and unused speed will convert to mana next turn.</p>
-
-        <p>You will also come across <span class="highlight">Magic Fountains</span> and <span class="highlight">Quests</span> that will aid you in your journey. You must prove your worth and unlock the Gates by fighting at least two <span class="highlight">Arenas</span> with powerful enemies.</p>
-
-        <p><span class="highlight">Courage</span> is gained by winning combats and is used as currency for buying items at the market. You can always hover over things to get more information about them, such as the meters at the top that show your <span class="aggro">Aggro</span> and <span class="crit">Crit</span> levels.</p>
-
-        <p>During combat, your <span class="highlight">Speed</span> determines how many cards you can draw per turn. <span class="highlight">Mana</span> is used to play your cards. Some cards can be combined, which does not cost mana.</p>
-
-        <p><span class="aggro">Aggro</span> amount increases by 1 after each combat, and the aggro level multiplies attack damage from Arena and Guardian fights. The more aggro you create, the faster your aggro level will increase. <span>Crit</span> percentage, which increases by 1 for each attack card played, is the chance an attack is a critical hit (damage * 1.5). Crit percentage resets to 0 after a critical hit.</p>
-
-        <p><span class="highlight">Armor</span> absorbs 50% of incoming attack damage.</p>
-
-        <p>After each battle you have a chance of being rewarded with a <span class="highlight">Treasure</span>, some <span class="highlight">Essences</span>, some <span class="highlight">Shards</span>, and a <span class="highlight">Candy</span>. These chances increase with each battle, and your current reward chances can be seen at the bottom of the screen.</p>
-
-        <p>You can play cards to charge up your <span class="highlight">Magic Rainbow</span>. Each time your rainbow charges to full, it activates and does damage to your foes. The type of magic summoned dictates how you apply damage. Your magic type becomes <span class="muddled">Muddled</span> when you mix magic types. <span class="highlight">Rainbow</span> magic does damage to all monsters, <span class="elemental">Elemental</span> magic does damage to all monsters ignoring block, <span class="dark">Dark</span> magic does damage to all monsters ignorning armor, <span class="chaos">Chaos</span> magic does double damage to a random monster, and <span class="muddled">Muddled</span> magic does damage to a single random monster.</p>
-
-        <p>That's it, on with the adventure!</p>
+        <div class="panel-part panel-top-left"></div>
+        <div class="panel-part panel-top-middle"></div>
+        <div class="panel-part panel-top-right"></div>
+        <div class="panel-part panel-middle-left"></div>
+        <div class="panel-part panel-middle-right"></div>
+        <div class="panel-part panel-bottom-left"></div>
+        <div class="panel-part panel-bottom-middle"></div>
+        <div class="panel-part panel-bottom-right"></div>
 
       </div>
 
-      <div class="panel-part panel-top-left"></div>
-      <div class="panel-part panel-top-middle"></div>
-      <div class="panel-part panel-top-right"></div>
-      <div class="panel-part panel-middle-left"></div>
-      <div class="panel-part panel-middle-right"></div>
-      <div class="panel-part panel-bottom-left"></div>
-      <div class="panel-part panel-bottom-middle"></div>
-      <div class="panel-part panel-bottom-right"></div>
+    </div>
+
+    <div class="splash-column">
+
+      <div class="message">Build the ultimate deck of cards and wield it to defeat the Gatekeepers!</div>
+
+      <div class="panel settings-panel">
+
+        <div class="instructions">
+
+          <h2>How to play</h2>
+
+          <p>Your goal is to traverse the overworld and defeat a <span class="highlight">Guardian</span> at either the <span class="highlight">Ice Gate</span> or the <span class="highlight">Fire Gate</span> to get to either the FROST Forest or the FLAME Forest, respectively.</p>
+
+          <p>Along the way you will fight enemies that will increase your <span class="sparkle">Sparkle</span>, <span class="shimmer">Shimmer</span>, or <span class="aura">Aura</span> essence. Once you reach level 1, a <span class="highlight">Stance</span> card of that essence will be automatically added to your deck, and the higher your essence level, the stronger the <span class="highlight">Stance</span> effects will be.</p>
+
+          <p>If you are not in a stance, unused speed will be converted to 2x block next turn. If you are in <span class="sparkle">Sparkle</span> <span class="highlight">Stance</span>, gain +2 might per turn, and unused speed will convert to might next turn. If you are in <span class="shimmer">Shimmer</span> <span class="highlight">Stance</span>, gain +8 block and +2 armor per turn, and unused speed will convert to block, armor, and health next turn. If you are in <span class="aura">Aura</span> <span class="highlight">Stance</span>, gain +1 mana per turn, and unused speed will convert to mana next turn.</p>
+
+          <p>You will also come across <span class="highlight">Magic Fountains</span> and <span class="highlight">Quests</span> that will aid you in your journey. You must prove your worth and unlock the Gates by fighting at least two <span class="highlight">Arenas</span> with powerful enemies.</p>
+
+          <p><span class="highlight">Courage</span> is gained by winning combats and is used as currency for buying items at the market. You can always hover over things to get more information about them, such as the meters at the top that show your <span class="aggro">Aggro</span> and <span class="crit">Crit</span> levels.</p>
+
+          <p>During combat, your <span class="highlight">Speed</span> determines how many cards you can draw per turn. <span class="highlight">Mana</span> is used to play your cards. Some cards can be combined, which does not cost mana.</p>
+
+          <p><span class="aggro">Aggro</span> amount increases by 1 after each combat, and the aggro level multiplies attack damage from Arena and Guardian fights. The more aggro you create, the faster your aggro level will increase. <span>Crit</span> percentage, which increases by 1 for each attack card played, is the chance an attack is a critical hit (damage * 1.5). Crit percentage resets to 0 after a critical hit.</p>
+
+          <p><span class="highlight">Armor</span> absorbs 50% of incoming attack damage.</p>
+
+          <p>After each battle you have a chance of being rewarded with a <span class="highlight">Treasure</span>, some <span class="highlight">Essences</span>, some <span class="highlight">Shards</span>, and a <span class="highlight">Candy</span>. These chances increase with each battle, and your current reward chances can be seen at the bottom of the screen.</p>
+
+          <p>You can play cards to charge up your <span class="highlight">Magic Rainbow</span>. Each time your rainbow charges to full, it activates and does damage to your foes. The type of magic summoned dictates how you apply damage. Your magic type becomes <span class="muddled">Muddled</span> when you mix magic types. <span class="highlight">Rainbow</span> magic does damage to all monsters, <span class="elemental">Elemental</span> magic does damage to all monsters ignoring block, <span class="dark">Dark</span> magic does damage to all monsters ignorning armor, <span class="chaos">Chaos</span> magic does double damage to a random monster, and <span class="muddled">Muddled</span> magic does damage to a single random monster.</p>
+
+          <p>That's it, on with the adventure!</p>
+
+        </div>
+
+        <div class="panel-part panel-top-left"></div>
+        <div class="panel-part panel-top-middle"></div>
+        <div class="panel-part panel-top-right"></div>
+        <div class="panel-part panel-middle-left"></div>
+        <div class="panel-part panel-middle-right"></div>
+        <div class="panel-part panel-bottom-left"></div>
+        <div class="panel-part panel-bottom-middle"></div>
+        <div class="panel-part panel-bottom-right"></div>
+
+      </div>
 
     </div>
 
@@ -290,6 +311,7 @@
       <div class="mana-speed speed tooltip draw-all" data-powertip="<span class='highlight'>Speed:</span> how many cards you can draw per turn. Unused speed converts to block next turn by default.">
         <div class="icon"></div>
         <span></span>
+        <div class="draw-all-text">Draw All</div>
       </div>
 
       <div class="draw-cards icon-button tooltip" data-powertip="Draw pile"><div class="icon"></div><span class="counter"></span></div>
@@ -299,7 +321,7 @@
       <div class="dead-cards icon-button tooltip" data-powertip="Dead cards"><div class="icon"></div><span class="counter"></span></div>
 
       <div class="stance">
-        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> gain +2 block and +1 armor, and unused speed converts to block, armor, and health next turn.<br /><br /><span class='sparkle'>Sparkle:</span> gain +2 might, and unused speed converts to 2x might next turn.<br /><br /><span class='aura'>Aura:</span> gain +1 mana, and unused speed converts to mana next turn.<br /><br />None: unused speed converts to 2x block next turn."></div>
+        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> gain +6 block and +1 armor, and unused speed converts to block, armor, and health next turn.<br /><br /><span class='sparkle'>Sparkle:</span> gain +2 might, and unused speed converts to 2x might next turn.<br /><br /><span class='aura'>Aura:</span> gain +1 mana, and unused speed converts to mana next turn.<br /><br />None: unused speed converts to 2x block next turn."></div>
         <div class="icon-stance tooltip" data-stance="none" data-powertip="<span class='highlight'>Stance:</span> None"></div>
       </div>
 

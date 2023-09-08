@@ -382,12 +382,31 @@ input[type="text"] {
 	transform:translateY(-100vh);
 	z-index:-1;
 	pointer-events:none;
-	flex-wrap:nowrap;
+	flex-direction:row;
 	padding:0;
 }
+.splash-column {
+	flex-basis:calc(60% - 10px);
+	margin-top:76px;
+	padding-right:35px;
+	padding-left:10px;
+	&:first-child {
+		flex-basis:calc(40% - 10px);
+		padding-left:35px;
+		padding-right:10px;
+		margin-top:0;
+	}
+}
 #splash .panel .button.begin {
-	flex-basis:50%;
+	flex-basis:100%;
 	margin-bottom:10px;
+	scale:1;
+	animation: beginthrob 2.5s ease-in-out infinite;
+}
+@keyframes beginthrob {
+	0%, 20% {scale:.97;}
+	2% {scale:1.05;}
+	30%, 100% {scale:1;}
 }
 #splash.shown {
 	transform:translateY(0);
@@ -396,7 +415,6 @@ input[type="text"] {
 }
 #splash .logo {
 	display:flex;
-	margin-top:125px;
 }
 #splash .logo img {
 	width:400px;
@@ -413,10 +431,13 @@ input[type="text"] {
 	width:auto;
 	flex-basis:12%;
 }
+#splash .panel .button {
+	flex-basis:100%;
+}
 #splash .instructions {
 	width:100%;
 	flex-basis:100%;
-	height:250px;
+	height:calc(100vh - 320px);
 	overflow:auto;
 	text-align:center;
 }
@@ -440,8 +461,11 @@ input[type="text"] {
 	margin-bottom:20px;
 }
 #splash .instructions p {
-	margin:0 10% 20px 10%;
+	margin:0 25px 20px 0;
 	text-transform:none;
+	text-align:left;
+	font-size:18px;
+	line-height:23px;
 }
 #splash .panel input {
 	flex-basis:15%;
@@ -518,9 +542,11 @@ body.game-started #splash .panel .difficulty {
 }
 .copyright {
 	margin-top:30px;
-	margin-bottom:30px;
 	font-size:12px;
 	text-transform:none;
+	flex-basis:100%;
+	width:100%;
+	text-align:center;
 }
 
 /* UI Layout */
@@ -1003,6 +1029,11 @@ body.game-started #splash .panel .difficulty {
 .mana-speed.speed {
 	left:-23px;
 	bottom:-15px;
+	scale:1;
+	transition:all .3s;
+}
+.mana-speed.speed:hover {
+	scale:1.2;
 }
 .mana-speed .icon {
 	width:120px;
@@ -1019,6 +1050,20 @@ body.game-started #splash .panel .difficulty {
 	left:50%;
 	transform:translateX(-50%) translateY(-50%);
 	z-index:2;
+}
+.mana-speed.speed span {
+	top:calc(50% - 16px);
+}
+.mana-speed.speed .draw-all-text {
+	position: absolute;
+    z-index: 2;
+    text-transform: uppercase;
+    font-size: 15px;
+    line-height: 17px;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 37px;
+    text-align: center;
 }
 .mana-speed.mana span {
 	text-shadow: 

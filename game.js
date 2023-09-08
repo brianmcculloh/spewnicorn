@@ -2,18 +2,18 @@ import Util from './utils.js';
 const util = new Util();
 
 const ALL_STARTING_OPTIONS = [
-    {att: 'courage', name: '+5 Courage', amount: 5},
-    {att: 'armor', name: '+20 Armor', amount: 20},
-    {att: 'health', key: 'max', name: '+10 Max Health', amount: 10},
-    {att: 'aura', key: 'current', name: '+3 Aura', amount: 3},
-    {att: 'sparkle', key: 'current', name: '+3 Sparkle', amount: 3},
-    {att: 'shimmer', key: 'current', name: '+3 Shimmer', amount: 3},
-    {att: 'rainbow', key: 'base', name: '+5 Rainbow Charge', amount: 5},
-    {att: 'aggro', key: 'current', name: '-3 Aggro', entity: 'game', amount: -3},
-    {action: 'addRare', name: 'Add a random rare card, lose 7 health'},
+    {att: 'courage', name: '+8 Courage', amount: 8},
+    {att: 'armor', name: '+30 Armor', amount: 30},
+    {att: 'health', key: 'max', name: '+20 Max Health', amount: 20},
+    {att: 'aura', key: 'current', name: '+4 Aura', amount: 4},
+    {att: 'sparkle', key: 'current', name: '+4 Sparkle', amount: 4},
+    {att: 'shimmer', key: 'current', name: '+4 Shimmer', amount: 4},
+    {att: 'rainbow', key: 'base', name: '+5 Rainbow Charge', amount: 8},
+    {att: 'aggro', key: 'current', name: '-5 Aggro', entity: 'game', amount: -5},
+    {action: 'addRare', name: 'Add a random rare card, lose 12 health'},
     {action: 'addCommonTreasure', name: 'Add a random common treasure'},
-    {action: 'addUncommonTreasure', name: 'Add a random uncommon treasure, lose 10 health'},
-    {action: 'addRareTreasure', name: 'Add a random rare treasure, lose 7 max health'},
+    {action: 'addUncommonTreasure', name: 'Add a random uncommon treasure, lose 20 health'},
+    {action: 'addRareTreasure', name: 'Add a random rare treasure, lose 10 max health'},
 ];
 
 const ALL_BOOSTER_PACKS = [
@@ -392,7 +392,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.21 Alpha';
+    let version = '0.23 Alpha';
     let seed = false;
     let difficulty = 'normal';
     let floor = 0; // TODO: set to 0
@@ -408,8 +408,8 @@ export default function Game() {
     let treasureChance = 0; // TODO: set to 0
     let candyChance = 0; // TODO: set to 0
     let shardChance = 0;
-    let uncommonChance = 30;
-    let rareChance = 5;
+    let uncommonChance = 10;
+    let rareChance = 0;
     let legendaryChance = 0;
     let critChance = 0;
     let attackCardsPlayed = 0;

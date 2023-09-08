@@ -1012,8 +1012,8 @@ export default class Util {
                 effect19: [208519, 2699],
                 effect20: [211218, 2263],
                 effect21: [213481, 1519],
-                effect22: [215000, 1247],
-                effect23: [216247, 1753],
+                effect22: [215000, 1000],
+                effect23: [216000, 2000],
                 effect24: [218000, 2000],
                 effect25: [220000, 624],
                 effect26: [220624, 427],
@@ -1084,6 +1084,7 @@ export default class Util {
                 SkywardHero_UI (13)
                 SkywardHero_UI (19)
                 SkywardHero_UI (21)
+                SkywardHero_UI (23)
                 SkywardHero_UI (26)
                 SkywardHero_UI (33)
                 SkywardHero_UI (35)

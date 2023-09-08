@@ -32,6 +32,13 @@
  * Effect: each time you take damage, do something (synergizes with exposed strike)
  * Speech: add speech bubble system to monsters - make it random chance with a set of possible texts
  * Mechanic: frost guardian should gain health equal to aggro ammount and flame guardian should reduce health equal to aggro level for every card played
+ * Action: strip all buffs from monster
+ * Effect: overkill: either adds block or charges rainbow x% of extra damage done after killing a monster
+ * Effect: marked: does x damage for every card played
+ * Mechanic: monsters should be able to summon other monsters as part of moveset
+ * 
+ * 
+ * 
  * 
  * 
  * PHASE III:
@@ -71,9 +78,8 @@
  * BUG: sometimes highest damage roll doesn't update - crit related?
  * 
  * 
- * Play testing
- * -debug email report or text file logging
- * Stress and Balance testing - DONE
+ * Bug Testing playthroughs
+ * Balance Testing playthroughs
  * Tutorial	- DONE		
  * Save progress
  * Record results
@@ -102,7 +108,15 @@
  * Card: add a random power to hand
  * Card: add multiple turns of -might/-punch. currently Stun is the only one that does this.
  * Card: 2 cost smaller damage attack that adds a large attack 0 cost retain vanishing card
+ * Card: 3 cost large straight-forward damage
  * Card: common retaining attack (synergizes with wisdom)
+ * Card: remove block and armor from ALL creatures including player
+ * Card: heal player and if at max health, increase max health
+ * Card: ability that increases speed but adds briars
+ * Card: ability that increases mana but adds curses
+ * Card: aoe damage
+ * Card: aoe might/punch down
+ * Card: Ram: do damage equal to current armor, reduce armor by 10%
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -110,6 +124,8 @@
  * Treasure: 10 attack cards per combat adds momentum
  * Treasure: 5 tool cards per turn adds wisdom
  * Treasure: 5 tool cards per turn adds tank (1 turn)
+ * Treasure: add one random attack/tool/ability/magic card to hand per turn
+ * Candy: add cards to hand
  * 
  * 
  * 
@@ -1133,7 +1149,7 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('frozen_knife'); // use this to manually add treasures
+	addTreasure('death_vial'); // use this to manually add treasures
 	//addCandy('strawberry_gobstopper'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
@@ -1757,7 +1773,7 @@ function startingBonus(elem) {
 			let addedCard = util.getCardById(card.id, deck.cards);
 			game.toShow.push(addedCard);
 			deck.showModifiedCards(combatDeck, player, true);
-			entity.health.current -= 7;
+			entity.health.current -= 12;
 		} else if(action == 'addCommonTreasure') {
 			let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 1);
 			let treasure = util.weightedRandom(possibleTreasures);
@@ -1766,13 +1782,13 @@ function startingBonus(elem) {
 			let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 2);
 			let treasure = util.weightedRandom(possibleTreasures);
 			addTreasure(treasure.id); 
-			entity.health.current -= 10;
+			entity.health.current -= 20;
 		} else if(action == 'addRareTreasure') {
 			let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 3);
 			let treasure = util.weightedRandom(possibleTreasures);
 			addTreasure(treasure.id); 
-			entity.health.current -= 7;
-			entity.health.max -= 7;
+			entity.health.current -= 10;
+			entity.health.max -= 10;
 		}
 		// since treasures can add effects and abilities, need to update player statuses
 		monsters.setEffects(player);
@@ -1982,8 +1998,8 @@ function beginTurn() {
 		// do nothing, because base might is handled in changeStance()
 	} else if(player.stance == 'shimmer') {
 		//heal(player, 1);
-		applyArmor(2, player);
-		applyBlock(8, player);
+		applyArmor(1, player);
+		applyBlock(6, player);
 	}
 
 	// check for spance * speed bonuses. stances only apply to speed, which can only be taken into account after turn 1
@@ -2095,7 +2111,8 @@ function updateTreasureTriggers(when) {
 				if(trigger.counter > -1) {
 					if(trigger.when == 'cardsPlayed') {
 						trigger.counter += 1;
-						if(trigger.counter == trigger.at) {
+						let at = trigger.at == -1 ? player.speed.base : trigger.at; // value of -1 says to use max speed - very hacky!
+						if(trigger.counter == at) {
 							activateTreasure(player.treasures[i]);
 							trigger.counter = 0;
 						}
@@ -2633,21 +2650,6 @@ function clearCombatEffects() {
 				player[game.effects[i].id].current = 0;
 			}
 		}
-		// if combat ended then player must have attacked which means we need to clear a fatality charge which may not have gotten cleared
-		// TODO: how does this apply when rainbow is what ends combat?
-		if(player.fatality.turns > 0) {
-			player.fatality.turns -= 1;
-			let index = player.fatality.turns;
-			let temp = player.fatality.temp[index] != undefined ? player.fatality.temp[index] : 0;
-			if(temp > 0) {
-				player.fatality.current -= temp;
-				player.fatality.temp.splice(index, 1);
-			}
-			/*if(player.fatality.turns == 0) {
-				player.fatality.current -= player.fatality.temp[0];
-				player.fatality.temp = [];
-			}*/
-		}
 	}
 
 	// one-off resets
@@ -2713,8 +2715,16 @@ function applyEffect(effect, to, turns = -1) {
 			if(effect.effect != 'rainbow') {
 				// if turns is set to -1 it means this is not a temporary effect. this way, both permanent and temp effects can be added together
 				if(turns > -1) {
-					//to[effect.effect].temp = Math.round(((to[effect.effect].temp + effect.amount) + Number.EPSILON) * 100) / 100;
-					to[effect.effect].temp.push(effect.amount);  //TODO: test sparkle stance + excalibur against mummy: mummy hexes might which disrupts temp array
+					if(effect.effect == 'fatality') {
+						// fatality is per card, not per turn, so there should never be multiple temp values - it should always stack
+						if(to[effect.effect].temp.length == 0) {
+							to[effect.effect].temp.push(effect.amount);
+						} else {
+							to[effect.effect].temp[0] = Math.round(((to[effect.effect].temp[0] + effect.amount) + Number.EPSILON) * 100) / 100;
+						}
+					} else {
+						to[effect.effect].temp.push(effect.amount);  //TODO: test sparkle stance + excalibur against mummy: mummy hexes might which disrupts temp array
+					}
 				}
 			}
 			if(turns > -1) {
@@ -2860,8 +2870,11 @@ function endCombat() {
 
 		stopMusic();
 
+		let aggroAmount = 1;
+
 		if(game.mapType == 'arena') {
 			if(game.playsounds) sounds.play('arenaRewards');
+			aggroAmount = game.arenasComplete;
 		} else {
 			if(game.playsounds) sounds.play('rewards');
 		}
@@ -2894,7 +2907,7 @@ function endCombat() {
 		heal(player, player.heal.current);
 		
 		gainCourage(1);
-		updateAggro(1);
+		updateAggro(aggroAmount);
 		
 		game.candyChance += 10;
 		game.shardChance += 5;
@@ -3028,14 +3041,17 @@ function loot(type, tier = 3) {
 			// for arena screens, only tier 3
 			possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == tier);
 			if(possibleTreasures.length > 0) {
-				let treasure = util.weightedRandom(possibleTreasures);
-				treasure.desc = deck.buildDescription(treasure);
-				util.appendTreasure(treasure, '.loot-items');
+				possibleTreasures = util.shuffle(possibleTreasures);
+				for(let i = 0; i < 3; i++) {
+					let treasure = possibleTreasures[i];
+					treasure.desc = deck.buildDescription(treasure);
+					util.appendTreasure(treasure, '.loot-items');
+				}
 			}
 			$('.loot-screen .message').html('You found a powerful treasure.');
 		break;
 		case 'gate':
-			// for arena screens, only tier 4
+			// for gate screens, only tier 4
 			possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == tier);
 			if(possibleTreasures.length > 0) {
 				possibleTreasures = util.shuffle(possibleTreasures);
@@ -3865,8 +3881,12 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	if(card.type == 'ability' && player.bless.enabled) {
 		let possibleCards = combatDeck.handCards.filter(i => i.mana > 0);
 		let freeCard = util.randFromArray(possibleCards);
-		if(freeCard != undefined) {
+		if(freeCard != undefined) {	
 			freeCard.mana = 0;
+			if(freeCard.shardUpgrades.mana != undefined) freeCard.shardUpgrades.mana = 0;
+			if(freeCard.bothShardUpgrades.mana != undefined) freeCard.bothShardUpgrades.mana = 0;
+			if(freeCard.iceShardUpgrades.mana != undefined) freeCard.iceShardUpgrades.mana = 0;
+			if(freeCard.fireShardUpgrades.mana != undefined) freeCard.fireShardUpgrades.mana = 0;
 			updateCardDescriptions('handCards');
 		}
 	}
@@ -3908,9 +3928,12 @@ async function processCard(card, currentMonster, type, multiply = 1) {
 	// only process card draw target if monster has not been passed through
 	if(target == false || target == undefined) {
 		let cardTarget = util.getCardAttribute(card, 'target', type);
-		if(cardTarget != undefined) {
+		if(!(cardTarget == false || cardTarget == undefined)) {
 			target = cardTarget;
-			if(target == 'player') {
+			if(target == 'all') {
+				target = currentMonsters;
+				currentMonster = currentMonsters;
+			} else if(target == 'player') {
 				// processDmg wants an undefined object, but processEffects and ProcessAbilities both want the player object
 				currentMonster = [player];
 				target = undefined;
@@ -3919,6 +3942,7 @@ async function processCard(card, currentMonster, type, multiply = 1) {
 			}
 		} else {
 			target = util.shuffle(currentMonsters);
+			currentMonster = [player];
 		}
 	}
 
@@ -3952,55 +3976,57 @@ async function processCard(card, currentMonster, type, multiply = 1) {
 async function processDmg(dmg, currentMonster, multiply, card = false, type = false) {
 	if(dmg.length) {
 		for(let i = 0; i < multiply; i++) {
-			for(let i = 0; i < dmg.length; i++) {
+			for(let j = 0; j < dmg.length; j++) {
 				let criticalHit = type != 'draw' ? util.chance(game.critChance) : false;
-				let thisDmg = dmg[i];
+				let thisDmg = dmg[j];
 				if(currentMonster) {
-					let fatalityHit = false;
-					// check for fatality
-					if(player.fatality.current > 0 && (game.highestDmgRoll * player.fatality.current) > thisDmg && type != 'draw') {
-						thisDmg = game.highestDmgRoll * player.fatality.current;
-						fatalityHit = true;
-						// fatality is the only effect that lasts per card rather than per turn
-						// we also don't want to trigger fatality if the damage is coming from card draw
-						if(card.type == 'attack' && type != 'draw') {
-							if(player.fatality.turns > 0) {
-								player.fatality.turns -= 1;
-								let index = player.fatality.turns;
-								let temp = player.fatality.temp[index] != undefined ? player.fatality.temp[index] : 0;
-								if(temp > 0) {
-									player.fatality.current -= temp;
-									player.fatality.temp.splice(index, 1);
+					for(let k = 0; k < currentMonster.length; k++) {
+						let fatalityHit = false;
+						// check for fatality
+						if(player.fatality.current > 0 && (game.highestDmgRoll * player.fatality.current) > thisDmg && type != 'draw') {
+							thisDmg = game.highestDmgRoll * player.fatality.current;
+							fatalityHit = true;
+							// fatality is the only effect that lasts per card rather than per turn
+							// we also don't want to trigger fatality if the damage is coming from card draw
+							if(card.type == 'attack' && type != 'draw') {
+								if(player.fatality.turns > 0) {
+									player.fatality.turns -= 1;
+									let index = player.fatality.turns;
+									let temp = player.fatality.temp[index] != undefined ? player.fatality.temp[index] : 0;
+									if(temp > 0) {
+										player.fatality.current -= temp;
+										player.fatality.temp.splice(index, 1);
+									}
 								}
 							}
 						}
-					}
-					// check for age
-					if(card.age > 0) {
-						if(player.wisdom.current != 1 && !fatalityHit) {
-							thisDmg += Math.round(card.age * player.wisdom.current);
+						// check for age
+						if(card.age > 0) {
+							if(player.wisdom.current != 1 && !fatalityHit) {
+								thisDmg += Math.round(card.age * player.wisdom.current);
+							} else {
+								thisDmg += card.age;
+							}
+						}
+						let d = criticalHit && !fatalityHit ? crit(thisDmg) : thisDmg;
+						await attackMonster(currentMonster[k], d, fatalityHit);
+						//await util.wait(game.animationGap);
+						if(criticalHit) {
+							game.attackCardsPlayed = 0;
+							//player.rowdy.current = player.rowdy.base; // this was incorrect - rowdy should persist regardless of critical hit
+							$('.crit').addClass('shown');
 						} else {
-							thisDmg += card.age;
+							game.attackCardsPlayed += 1;
+							$('.crit').removeClass('shown');
+						}
+						if(monsters.allDead()) {
+							await util.wait(800);
+							endCombat();
+							return;
 						}
 					}
-					let d = criticalHit && !fatalityHit ? crit(thisDmg) : thisDmg;
-					await attackMonster(currentMonster[0], d, fatalityHit);
-					//await util.wait(game.animationGap);
-					if(criticalHit) {
-						game.attackCardsPlayed = 0;
-						//player.rowdy.current = player.rowdy.base; // this was incorrect - rowdy should persist regardless of critical hit
-						$('.crit').addClass('shown');
-					} else {
-						game.attackCardsPlayed += 1;
-						$('.crit').removeClass('shown');
-					}
-					if(monsters.allDead()) {
-						await util.wait(800);
-						endCombat();
-						return;
-					}
 				} else {
-					await attackPlayer(false, dmg[i]);
+					await attackPlayer(false, dmg[j]);
 				}
 				await util.wait(game.animationDmg);
 				updateCritChance();
@@ -4048,17 +4074,19 @@ async function processEffects(effects, currentMonster = false, multiply = 1, car
 	if(effects != undefined) {
 		for(let i = 0; i < multiply; i++) {
 			for(let e = 0; e < effects.length; e++) {
-				let to = player
-				if(effects[e].hex && currentMonster) {
-					to = currentMonster[0];
-				} else if(effects[e].hex) {
-					let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
-					to = util.shuffle(currentMonsters);
-					to = to[0];
+				for(let k = 0; k < currentMonster.length; k++) {
+					let to = player;
+					if(effects[e].hex && currentMonster[k]) {
+						to = currentMonster[k];
+					} else if(effects[e].hex) {
+						let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
+						to = util.shuffle(currentMonsters);
+						to = to[0];
+					}
+					let turns = effects[e].turns == undefined ? -1 : effects[e].turns;
+					applyEffect(effects[e], to, turns);
+					await util.wait(game.animationGap);
 				}
-				let turns = effects[e].turns == undefined ? -1 : effects[e].turns;
-				applyEffect(effects[e], to, turns);
-				await util.wait(game.animationGap);
 			}
 		}
 	}
@@ -4066,19 +4094,21 @@ async function processEffects(effects, currentMonster = false, multiply = 1, car
 async function processAbilities(abilities, currentMonster, card = false) {
 	if(abilities != undefined) {
 		for(let e = 0; e < abilities.length; e++) {
-			let to = player
-			let turns = abilities[e].turns == undefined ? -1 : abilities[e].turns;
-			if(abilities[e].hex && currentMonster) {
-				to = currentMonster[0];
-				turns = 0; // hexes always completely remove the buff
-			} else if(abilities[e].hex) {
-				let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
-				to = util.shuffle(currentMonsters);
-				to = to[0];
-				turns = 0;
+			for(let k = 0; k < currentMonster.length; k++) {
+				let to = player
+				let turns = abilities[e].turns == undefined ? -1 : abilities[e].turns;
+				if(abilities[e].hex && currentMonster) {
+					to = currentMonster[k];
+					turns = 0; // hexes always completely remove the buff
+				} else if(abilities[e].hex) {
+					let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
+					to = util.shuffle(currentMonsters);
+					to = to[0];
+					turns = 0;
+				}
+				applyAbility(abilities[e], to, turns);
+				await util.wait(game.animationGap);
 			}
-			applyAbility(abilities[e], to, turns);
-			await util.wait(game.animationGap);
 		}
 	}
 }

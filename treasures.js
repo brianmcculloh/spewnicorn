@@ -31,7 +31,7 @@ class Candy {
         id,
         type = 'candy',
         name,
-        desc,
+        descOverride,
         weight = 5,
         courage = 2,
         target = '',
@@ -50,7 +50,7 @@ class Candy {
         this.id = id;
         this.type = type;
         this.name = name;
-        this.desc = desc;
+        this.descOverride = descOverride;
         this.weight = weight;
         this.courage = courage;
         this.target = target;
@@ -85,7 +85,7 @@ const ALL_CANDY= [
         id:'circus_peanuts', 
         name: 'Circus Peanuts', 
         weight: 7,
-        blk: [20],
+        blk: [30],
         x: -480,
         y: -3456
     }),
@@ -447,7 +447,7 @@ const ALL_CANDY= [
         id:'chocolate_clusters', 
         name: 'Chocolate Clusters', 
         effects: [
-            {effect: 'stout', amount: 3, turns: -1}
+            {effect: 'stout', amount: 6, turns: -1}
         ],
         x: 0,
         y: -832
@@ -456,7 +456,7 @@ const ALL_CANDY= [
         id:'white_chocolate_clusters', 
         name: 'White Chocolate Clusters', 
         effects: [
-            {effect: 'stout', amount: 10, turns: 2}
+            {effect: 'stout', amount: 20, turns: 2}
         ],
         x: 0,
         y: -962
@@ -698,7 +698,7 @@ class Treasure {
        id,
        type = 'treasure',
        name,
-       desc,
+       descOverride,
        owned = false,
        weight = 5,
        tier = 1,
@@ -715,7 +715,7 @@ class Treasure {
         this.id = id;
         this.type = type;
         this.name = name;
-        this.desc = desc;
+        this.descOverride = descOverride;
         this.owned = owned;
         this.weight = weight;
         this.tier = tier;
@@ -821,7 +821,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         effects: [
-            {effect: 'solid', base: 2}
+            {effect: 'solid', base: 3}
         ],
         x: -416,
         y: -3040
@@ -993,7 +993,7 @@ const ALL_TREASURES = [
         weight: 6,
         permanent: true,
         effects: [
-            {effect: 'solid', base: 1}
+            {effect: 'solid', base: 3}
         ],
         x: -32,
         y: -15008
@@ -1026,7 +1026,7 @@ const ALL_TREASURES = [
         name: "Thunderstone", 
         permanent: true,
         effects: [
-            {effect: 'stout', base: 3}
+            {effect: 'stout', base: 6}
         ],
         x: -160,
         y: -15008
@@ -1130,11 +1130,12 @@ const ALL_TREASURES = [
     new Treasure({
         id:'amulet', 
         name: "Amulet", 
-        weight: 3,
+        weight: 1,
+        descOverride: 'Each turn, when you play at least as many cards as your maximum speed, gain protection for 1 turn.',
         abilities: [
             {ability: 'protection', turns: 1, enabled: true}
         ],
-        trigger: {counter: 0, when: 'cardsPlayed', at: 5, per: 'turn', once: false, activated: false},
+        trigger: {counter: 0, when: 'cardsPlayed', at: -1, per: 'turn', once: false, activated: false},
         x: -224,
         y: -10498
     }),
@@ -1856,7 +1857,7 @@ const ALL_TREASURES = [
         weight: 1,
         permanent: true,
         effects: [
-            {effect: 'solid', base: 3}
+            {effect: 'solid', base: 5}
         ],
         x: -320,
         y: -13120
@@ -1913,7 +1914,7 @@ const ALL_TREASURES = [
         permanent: true,
         owned: true,
         effects: [
-            {effect: 'solid', base: 2}
+            {effect: 'solid', base: 3}
         ],
         x: -192,
         y: -12672
