@@ -1085,10 +1085,6 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'conjure', amount: -2, turns: 5, hex: true},
                 {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
-                {effect: 'summon', amount: -5, turns: 5, hex: true},
-                {effect: 'wield', amount: -1, turns: 5, hex: true},
-                {effect: 'enchanter', amount: -5, turns: 5, hex: true},
-                {effect: 'arcane', amount: -5, turns: 5, hex: true}
             ]},
             {dmg: [8, 8]},
             {blk: [10]},
@@ -1223,10 +1219,6 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'conjure', amount: -2, turns: 5, hex: true},
                 {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
-                {effect: 'summon', amount: -5, turns: 5, hex: true},
-                {effect: 'wield', amount: -1, turns: 5, hex: true},
-                {effect: 'enchanter', amount: -5, turns: 5, hex: true},
-                {effect: 'arcane', amount: -5, turns: 5, hex: true}
             ]},
             {dmg: [8, 8]},
             {blk: [20]},
@@ -1364,10 +1356,6 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'conjure', amount: -2, turns: 5, hex: true},
                 {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
-                {effect: 'summon', amount: -5, turns: 5, hex: true},
-                {effect: 'wield', amount: -1, turns: 5, hex: true},
-                {effect: 'enchanter', amount: -5, turns: 5, hex: true},
-                {effect: 'arcane', amount: -5, turns: 5, hex: true}
             ]},
             {dmg: [16, 16]},
             {blk: [10]},
@@ -1987,23 +1975,21 @@ const ALL_MONSTERS = [
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'rainbow', amount: -5, turns: 3, hex: true},
-                {effect: 'sorcery', amount: -.5, turns: 2, hex: true},
+                {effect: 'rainbow', amount: -2, turns: 1, hex: true},
+                {effect: 'sorcery', amount: -.2, turns: 1, hex: true},
             ], dmg: [3, 3, 3, 3, 3, 3]},
             {effects: [
-                {effect: 'conjure', amount: -5, turns: 2, hex: true},
-                {effect: 'enchanter', amount: -5, turns: 2, hex: true},
+                {effect: 'conjure', amount: -5, turns: 1, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
             ]},
             {effects: [
-                {effect: 'summon', amount: -5, turns: 3, hex: true},
-                {effect: 'wield', amount: -1, turns: 2, hex: true},
+                {effect: 'rainbow', amount: -4, turns: 1, hex: true},
+                {effect: 'sorcery', amount: -.4, turns: 1, hex: true},
             ], dmg: [5, 5, 5, 5, 5]},
             {effects: [
-                {effect: 'enchanter', amount: -5, turns: 2, hex: true},
-                {effect: 'arcane', amount: -5, turns: 2, hex: true}
+                {effect: 'conjure', amount: -5, turns: 2, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'discardCards'},
@@ -2093,23 +2079,21 @@ const ALL_MONSTERS = [
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'rainbow', amount: -5, turns: 3, hex: true},
-                {effect: 'sorcery', amount: -.5, turns: 2, hex: true},
+                {effect: 'rainbow', amount: -2, turns: 1, hex: true},
+                {effect: 'sorcery', amount: -.2, turns: 1, hex: true},
             ], dmg: [3, 3, 3, 3, 3, 3]},
             {effects: [
-                {effect: 'conjure', amount: -5, turns: 2, hex: true},
-                {effect: 'enchanter', amount: -5, turns: 2, hex: true},
+                {effect: 'conjure', amount: -5, turns: 1, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
             ]},
             {effects: [
-                {effect: 'summon', amount: -5, turns: 3, hex: true},
-                {effect: 'wield', amount: -1, turns: 2, hex: true},
+                {effect: 'rainbow', amount: -4, turns: 1, hex: true},
+                {effect: 'sorcery', amount: -.4, turns: 1, hex: true},
             ], dmg: [5, 5, 5, 5, 5]},
             {effects: [
-                {effect: 'enchanter', amount: -5, turns: 2, hex: true},
-                {effect: 'arcane', amount: -5, turns: 2, hex: true}
+                {effect: 'conjure', amount: -5, turns: 2, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'discardCards'},
@@ -2198,23 +2182,21 @@ const ALL_MONSTERS = [
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'rainbow', amount: -5, turns: 3, hex: true},
-                {effect: 'sorcery', amount: -.5, turns: 2, hex: true},
+                {effect: 'rainbow', amount: -2, turns: 1, hex: true},
+                {effect: 'sorcery', amount: -.2, turns: 1, hex: true},
             ], dmg: [6, 6, 6, 6, 6, 6]},
             {effects: [
-                {effect: 'conjure', amount: -5, turns: 2, hex: true},
-                {effect: 'enchanter', amount: -5, turns: 2, hex: true},
+                {effect: 'conjure', amount: -5, turns: 1, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
             ]},
             {effects: [
-                {effect: 'summon', amount: -5, turns: 3, hex: true},
-                {effect: 'wield', amount: -1, turns: 2, hex: true},
+                {effect: 'rainbow', amount: -4, turns: 1, hex: true},
+                {effect: 'sorcery', amount: -.4, turns: 1, hex: true},
             ], dmg: [10, 10, 10, 10, 10]},
             {effects: [
-                {effect: 'enchanter', amount: -5, turns: 2, hex: true},
-                {effect: 'arcane', amount: -5, turns: 2, hex: true}
+                {effect: 'conjure', amount: -5, turns: 2, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'discardCards'},

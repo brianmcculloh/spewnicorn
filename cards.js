@@ -606,60 +606,63 @@ const ALL_CARDS = [
 
     /* Cards Added By Other Cards/Events: */
     new Cards({
-        id: 'aura_stance', name: 'Aura Stance', type: 'tool', tier: 'uncommon', mana: 0, breakable: true, use: 3, addable: false, ephemeral: true,
+        id: 'aura_stance', name: 'Aura Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, ephemeral: true,
         sound: 'auraAmount',
         slots: 1,
         actions: [
             {action: 'stat', what: 'stance', value: 'aura'},
-            {action: 'stat', what: 'mana', key: 'current', value: 1},
-            {action: 'draw', value: 1}
         ],
-        shardUpgrades: {
-            use: 5,
+        draw: {
             actions: [
-                {action: 'stat', what: 'stance', value: 'aura'},
-                {action: 'stat', what: 'mana', key: 'current', value: 2}
-            ],
+                {action: 'draw', value: 1}
+            ]
+        },
+        shardUpgrades: {
+            draw: {
+                actions: [
+                    {action: 'draw', value: 2}
+                ]
+            },
         },
     }),
     new Cards({
-        id: 'sparkle_stance', name: 'Sparkle Stance', type: 'tool', tier: 'uncommon', mana: 0, breakable: true, use: 3, addable: false, ephemeral: true,
+        id: 'sparkle_stance', name: 'Sparkle Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, ephemeral: true,
         sound: 'sparkleAmount',
         slots: 1,
         actions: [
             {action: 'stat', what: 'stance', value: 'sparkle'},
-            {action: 'draw', value: 1}
         ],
-        effects: [
-            {effect: 'might', amount: 2, turns: 1}
-        ],
-        shardUpgrades: {
-            use: 5,
+        draw: {
             actions: [
-                {action: 'stat', what: 'stance', value: 'sparkle'}
-            ],
-            effects: [
-                {effect: 'might', amount: 3, turns: 1}
-            ],
+                {action: 'draw', value: 1}
+            ]
+        },
+        shardUpgrades: {
+            draw: {
+                actions: [
+                    {action: 'draw', value: 2}
+                ]
+            },
         },
     }),
     new Cards({
-        id: 'shimmer_stance', name: 'Shimmer Stance', type: 'tool', tier: 'uncommon', mana: 0, breakable: true, use: 3, addable: false, ephemeral: true,
+        id: 'shimmer_stance', name: 'Shimmer Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, ephemeral: true,
         sound: 'shimmerAmount',
-        armor: [3],
-        blk: [10],
         slots: 1,
         actions: [
             {action: 'stat', what: 'stance', value: 'shimmer'},
-            {action: 'stat', what: 'health', key: 'current', value: 4},
-            {action: 'draw', value: 1}
         ],
-        shardUpgrades: {
-            use: 5,
+        draw: {
             actions: [
-                {action: 'stat', what: 'stance', value: 'shimmer'},
-                {action: 'stat', what: 'health', key: 'current', value: 8}
-            ],
+                {action: 'draw', value: 1}
+            ]
+        },
+        shardUpgrades: {
+            draw: {
+                actions: [
+                    {action: 'draw', value: 2}
+                ]
+            },
         },
     }),
     new Cards({
@@ -1120,7 +1123,7 @@ const ALL_CARDS = [
         },
         destroy: {
             actions: [
-                {action: 'stat', what: 'speed', key: 'current', value: 5},
+                {action: 'stat', what: 'speed', key: 'current', value: 4},
             ]
         },
         slots: 1,
@@ -1137,7 +1140,7 @@ const ALL_CARDS = [
             },
             destroy: {
                 actions: [
-                    {action: 'stat', what: 'speed', key: 'current', value: 10},
+                    {action: 'stat', what: 'speed', key: 'current', value: 8},
                 ]
             },
         },
@@ -1156,7 +1159,7 @@ const ALL_CARDS = [
         },
         destroy: {
             actions: [
-                {action: 'stat', what: 'mana', key: 'current', value: 4},
+                {action: 'stat', what: 'mana', key: 'current', value: 3},
             ]
         },
         slots: 1,
@@ -1173,7 +1176,7 @@ const ALL_CARDS = [
             },
             destroy: {
                 actions: [
-                    {action: 'stat', what: 'mana', key: 'current', value: 8},
+                    {action: 'stat', what: 'mana', key: 'current', value: 6},
                 ]
             },
         },
@@ -1546,6 +1549,11 @@ const ALL_CARDS = [
     new Cards({
         id: 'quick_stab', name: 'Quick Stab', type: 'attack', target: 'monster', mana: 0, weight: 6,
         dmg: [6],
+        draw: {
+            actions: [
+                {action: 'draw', value: 1}
+            ]
+        },
         slots: 1,
         shardUpgrades: {
             dmg: [10]
@@ -1616,11 +1624,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'unstable_staff', name: 'Unstable Staff', type: 'attack', mana: 1, target: 'monster', breakable: true, use: 1,
-        dmg: [18],
+        dmg: [30],
         slots: 1,
         shardUpgrades: {
             use: 2,
-            dmg: [22],
+            dmg: [35],
         },
     }),
     new Cards({
@@ -3155,25 +3163,27 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'tactics', name: 'Tactics', type: 'tool', mana: 2, tier: 'rare', pack: 'combine', weight: 4, courage: 4, 
+        id: 'tactics', name: 'Tactics', type: 'tool', mana: 3, tier: 'rare', pack: 'combine', weight: 4, courage: 4, 
         sound: 'tool2',
         actions: [
             {action: 'addCard', select: 1, value: 3, type: 'tool', tier: 'rare', to: 'handCards'},
-            {action: 'addCard', value: 2, what: 'self_enhance', to: 'drawCards'},
+            {action: 'addCard', value: 1, what: 'self_enhance', to: 'drawCards'},
             {action: 'discard', value: 1}
         ],
         slots: 2,
         shardUpgrades: {
             actions: [
-                {action: 'addCard', select: 2, value: 3, type: 'tool', tier: 'rare', to: 'handCards'},
+                {action: 'addCard', select: 1, value: 3, type: 'tool', tier: 'rare', to: 'handCards'},
                 {action: 'addCard', value: 2, what: 'self_enhance', to: 'drawCards'},
-                {action: 'discard', value: 2}
+                {action: 'discard', value: 1}
             ],
         },
         bothShardUpgrades: {
+            mana: 2,
             actions: [
-                {action: 'addCard', select: 2, value: 3, type: 'tool', tier: 'rare', to: 'handCards', with: ['flame', 'frost']},
-                {action: 'addCard', value: 4, what: 'self_enhance', to: 'drawCards'},
+                {action: 'addCard', select: 1, value: 3, type: 'tool', tier: 'rare', to: 'handCards', with: ['flame', 'frost']},
+                {action: 'addCard', value: 3, what: 'self_enhance', to: 'drawCards'},
+                {action: 'discard', value: 1}
             ],
         },
     }),
@@ -3305,7 +3315,7 @@ const ALL_CARDS = [
 
     /* Legendary */
     new Cards({
-        id: 'crippling_stare', name: 'Crippling Stare', type: 'tool', mana: 1, tier: 'legendary', courage: 8, vanish: true, retain: true,
+        id: 'crippling_stare', name: 'Crippling Stare', type: 'tool', target: 'monster', mana: 1, tier: 'legendary', courage: 8, vanish: true, retain: true,
         sound: 'tool24',
         effects: [
             {effect: 'might', amount: -2, turns: -1, hex: true},
@@ -5341,10 +5351,27 @@ export function Deck() {
                             type = type != '' ? tier + ' card' + plural + ' ' : '';
                         } else if(type == ' attack' || type == ' tool' || type == ' ability' || type == ' magic') {
                             type = type != '' ? tier + type + ' cards ' : '';
+                        } else if(type == ' clutter') {
+                            type = type != '' ? type : '';
                         } else {
-                            type = type != '' ? ' with ' + type : '';
+                            type = type != '' ? ' with' + type : '';
                         }
-                        actionsDesc += '<div class="desc-item">' + name + select + value + what + type + to + from + cardWith + '</div>';
+                        if(name == 'Ensharden') {
+                            what = from;
+                            from = '';
+                            type = type == ' with random' ? ' with random shards' : type;
+                        }
+                        actionsDesc += 
+                        '<div class="desc-item">' 
+                            + '<span class="desc-item-name">' + name + '</span>'
+                            + '<span class="desc-item-select">' + select + '</span>' 
+                            + '<span class="desc-item-value">' + value + '</span>' 
+                            + '<span class="desc-item-what">' + what + '</span>' 
+                            + '<span class="desc-item-type">' + type + '</span>' 
+                            + '<span class="desc-item-to">' + to + '</span>' 
+                            + '<span class="desc-item-from">' + from + '</span>' 
+                            + '<span class="desc-item-cardWith">' + cardWith + '</span>' 
+                        + '</div>';
                     }
                 }
             }
@@ -5788,6 +5815,7 @@ export function CombatDeck() {
     }
 
     function discardCard(card, combatDeck, played = false) {
+        if(card == undefined) return;
         if(game.playsounds) sounds.play('selectCard');
         let animation = played ? 'played' : 'discarded';
         combatDeck.discardCards.push(card);
@@ -5809,6 +5837,7 @@ export function CombatDeck() {
     }
 
     function destroyCard(card, combatDeck, skipDead = false) {
+        if(card == undefined) return;
         if(!skipDead) {
             if(game.playsounds) sounds.play('removeCard');
             combatDeck.deadCards.push(card);

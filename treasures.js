@@ -763,9 +763,9 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'turns', at: 2, per: 'combat', once: true, activated: false},
 
         // treasure effects and abilities work just like card effects and abilities
-
+        // generally speaking, when triggers are used, if turns is -1 then persist should be false
         effects: [
-            {effect: 'cunning', amount: 3, turns: -1},
+            {effect: 'cunning', amount: 3, turns: -1, persist: false},
         ],
 
         // use turns for counting turns normally, use baseTurns only for -1 (permanent this combat)
@@ -917,7 +917,7 @@ const ALL_TREASURES = [
         name: 'Gleaming Emerald', 
         permanent: true,
         effects: [
-            {effect: 'fierce', base: 10}
+            {effect: 'fierce', base: 15}
         ],
         x: -32,
         y: -674
@@ -927,7 +927,7 @@ const ALL_TREASURES = [
         name: 'Twinkling Sapphire',
         permanent: true, 
         effects: [
-            {effect: 'rowdy', base: 1}
+            {effect: 'rowdy', base: 5}
         ],
         x: -0,
         y: -674
@@ -1410,7 +1410,7 @@ const ALL_TREASURES = [
         name: "Pendant", 
         weight: 4,
         effects: [
-            {effect: 'might', amount: 1, turns: -1, persist: true}
+            {effect: 'might', amount: 1, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'attackCardsPlayed', at: 3, per: 'turn', once: false, activated: false},
         x: -320,
@@ -1422,7 +1422,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 4,
         effects: [
-            {effect: 'solid', amount: 1, turns: -1, persist: true}
+            {effect: 'solid', amount: 1, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'toolCardsPlayed', at: 3, per: 'turn', once: false, activated: false},
         x: -192,
@@ -1434,7 +1434,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 4,
         effects: [
-            {effect: 'conjure', amount: 2, turns: -1, persist: true}
+            {effect: 'conjure', amount: 2, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'magicCardsPlayed', at: 3, per: 'turn', once: false, activated: false},
         x: -480,
@@ -1487,7 +1487,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 2,
         effects: [
-            {effect: 'craft', amount: 2, turns: -1, persist: true}
+            {effect: 'craft', amount: 2, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'toolCardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -384,
@@ -1550,7 +1550,7 @@ const ALL_TREASURES = [
         name: "Charged Gauntlet", 
         weight: 4,
         effects: [
-            {effect: 'lightning', amount: 1, turns: -1, persist: true}
+            {effect: 'lightning', amount: 1, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'magicCardsPlayed', at: 3, per: 'turn', once: false, activated: false},
         x: -354,
@@ -1640,8 +1640,9 @@ const ALL_TREASURES = [
         permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 1},
-            {action: 'stat', what: 'health', key: 'max', value: -5},
-            {action: 'stat', what: 'health', key: 'current', value: -5}
+            {action: 'stat', what: 'health', key: 'current', value: -5},
+            {action: 'stat', what: 'health', key: 'max', value: -5}
+            
         ],
         x: -288,
         y: -2208

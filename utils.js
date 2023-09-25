@@ -127,7 +127,7 @@ export default class Util {
         let useTip = '';
         if(use > -1) {
             plural = use == 1 ? '' : 's';
-            useTip = "<span class='highlight'>Use:</span> Can be used " + use + " extra time" + plural + " before vanishing";
+            useTip = "<span class='highlight'>Use:</span> Number of times this card can be used without vanishing";
             useDom += '<span class="amount use tooltip" data-powertip="' + useTip + '" data-amount="' + use + '">' + use + '</span>';
         }
 
@@ -137,7 +137,7 @@ export default class Util {
         let expireTip = '';
         if(expire > -1) {
             plural = expire == 1 ? '' : 's';
-            expireTip = "<span class='highlight'>Expire:</span> Vanishes after " + expire + " more turn" + plural;
+            expireTip = "<span class='highlight'>Expire:</span> Number of turns this card remains in your deck without vanishing"
             expireDom += '<span class="amount expire tooltip" data-powertip="' + expireTip + '" data-amount="' + expire + '">' + expire + '</span>';
         }
 
@@ -147,7 +147,7 @@ export default class Util {
         let lingerTip = '';
         if(linger > -1) {
             plural = linger == 1 ? '' : 's';
-            lingerTip = "<span class='highlight'>Linger:</span> Remains in hand for " + linger + " more use" + plural;
+            lingerTip = "<span class='highlight'>Linger:</span> Number of times this card can be played before it leaves your hand";
             lingerDom += '<span class="amount linger tooltip" data-powertip="' + lingerTip + '" data-amount="' + linger + '">' + linger + '</span>';
         }
 
@@ -958,6 +958,7 @@ export default class Util {
                 attack20: [248883, 1595],
                 attack21: [250478, 2504],
                 attack22: [252982, 3296],
+                attack23: [313375, 1104],
 
                 tool1: [152787, 3615],
                 tool2: [156402, 1836],
@@ -1141,6 +1142,7 @@ export default class Util {
                 Item_Pick_Up_Leather_Armor
                 Item_Paper_Scroll_B
                 Item_Magic_Pickup_2_Spell
+                Item_Magic_Trap_Weapon
                 Item_Wooden_Chest_Open_or_Close_Medium_Small
                 Item_Crafting_Axe_B
                 Item_Crafting_Sword_B

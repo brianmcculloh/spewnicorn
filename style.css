@@ -1275,7 +1275,7 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 	clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
 	background: rgba(0,0,0,.7);
 	margin-bottom: calc(var(--m) - var(--s)*0.2885); 
-	transition:all .2s;
+	/*transition:all .2s;*/
 	position:relative;
 	z-index:1;
 }
@@ -1474,9 +1474,9 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 .status {
 	position:fixed;
 	top:60px;
-	transform:translateX(-200px);
+	transform:translateX(-300px);
 	left:0;
-	width:200px;
+	width:300px;
 	max-height:calc(100vh - 110px);
 	padding:10px 10px;
 	display:flex;
@@ -2745,11 +2745,20 @@ body.arena .monster-panel {
 }
 .player-panel .crit {
 	position:absolute;
-	top:20px;
-	right:20px;
+	top:-100px;
+	right:140px;
 	font-size:40px;
 	color:red;
 	display:none;
+	animation: crit .6s 1 cubic-bezier(0,-0.02, 0.08, 1.4);
+	scale:1;
+}
+@keyframes crit {
+	0, 100% {transform: rotate(0deg);scale:1;}
+    20% {transform: rotate(-5deg);}
+    40% {transform: rotate(0deg);scale:2.5;}
+    60% {transform: rotate(5deg);scale:.7;}
+    80% {transform: rotate(0deg);scale:1;} 
 }
 .player-panel .crit.shown {
 	display:block;
