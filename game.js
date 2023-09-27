@@ -244,6 +244,11 @@ const ALL_EFFECTS = [
     // buff     {effect: 'thunder', amount: .1, turns: 3} // value should increment by .1 and will be added to base
     // hex     {effect: 'thunder', amount: -.1, turns: -1, hex: true}
     {id: 'thunder', name: 'Thunder', desc: 'Magic damage multiplier', x: -160, y: -6528, sound: 'effect36'},
+
+    // Usage:
+    // creature {base: 1, current: 1, temp: 0, turns: -1, persist: false}
+    // buff     {effect: 'retain', amount: 1, turns: -1}
+    {id: 'retain', name: 'Retain', desc: 'Select x cards to keep in hand each turn', x: -352, y: -418, sound: 'effect38'},
 ];
 /*********************************************
  * 
@@ -392,7 +397,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.25 Alpha';
+    let version = '0.27 Alpha';
     let seed = false;
     let difficulty = 'normal';
     let floor = 0; // TODO: set to 0
@@ -435,7 +440,7 @@ export default function Game() {
     let cardRewardNumber = 3;
     let essenceThresholds = [8, 17, 27, 38]; // TODO: set this to 8, 17, 27, 38
     let aggroThresholds = [10, 15, 19, 22, 25, 28, 31, 33, 36, 39]; // TODO: set this to 10, 15, 19, 22, 25, 28, 31, 33, 36, 39
-    let aggroThresholds2 = [6, 11, 15, 18, 21, 24, 27, 30, 33, 36, 39]; // TODO: set this to 6, 11, 15, 18, 20, 22, 24, 26, 28, 30, 32
+    let aggroThresholds2 = [6, 11, 15, 18, 21, 24, 27, 30, 33, 36, 39]; // TODO: set this to 6, 11, 15, 18, 21, 24, 27, 30, 33, 36, 39
     let currentMonsters = [];
     let targetedMonster = {};
     let previousMonsters = [];

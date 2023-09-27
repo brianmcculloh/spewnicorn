@@ -1275,7 +1275,7 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 	clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
 	background: rgba(0,0,0,.7);
 	margin-bottom: calc(var(--m) - var(--s)*0.2885); 
-	/*transition:all .2s;*/
+	transition:all .2s;
 	position:relative;
 	z-index:1;
 }
@@ -3614,6 +3614,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-spectrum .card-image {
 	background-position:calc(-585px * .92) calc(-6332px * .92);
 }
+#card-dark_codex .card-image {
+	background-position:calc(-780px * .92) calc(-6332px * .92);
+}
 
 
 /* MAGIC */
@@ -4011,7 +4014,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .expire {
 	background-position:calc(-1096px * .8) calc(-911px * .8);
 }
-.card .vanish, .card .retain, .card .ephemeral, .card .breakable {
+.card .vanish, .card .retain:not(.amount), .card .ephemeral, .card .breakable, .card .combinable {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
 	background-size:calc(1620px * .8) calc(6962px * .8);
@@ -4033,7 +4036,10 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .breakable {
 	background-position:calc(-1096px * .8) calc(-861px * .8);
 }
-.card .vanish span, .card .retain span, .card .ephemeral span, .card .breakable span {
+.card .combinable {
+	background-position:calc(-1096px * .8) calc(-861px * .8);
+}
+.card .vanish span, .card .retain span, .card .ephemeral span, .card .breakable span, .card .combinable span {
 	width:calc(32px * .8);
 	height:calc(32px * .8);
 	background-image:url('images/sprites1.png');
@@ -4054,6 +4060,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 .card .breakable span {
 	background-position:calc(-256px * .8) calc(-6048px * .8);
+}
+.card .combinable span {
+	background-position:calc(-288px * .8) calc(-352px * .8);
 }
 
 .card .slots {
@@ -4119,11 +4128,11 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 .player-cards .card.retain {
 	filter: 
-		drop-shadow(1px 1px 0 green) 
-		drop-shadow(1px -1px 0 green)
-		drop-shadow(-1px 1px 0 green)
-		drop-shadow(-1px -1px 0 green)
-		drop-shadow(0 0 15px green);
+		drop-shadow(1px 1px 0 lime) 
+		drop-shadow(1px -1px 0 lime)
+		drop-shadow(-1px 1px 0 lime)
+		drop-shadow(-1px -1px 0 lime)
+		drop-shadow(0 0 15px lime);
 }
 .player-cards .card.discard,
 .player-cards .card.destroy {

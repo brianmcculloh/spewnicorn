@@ -1582,6 +1582,18 @@ const ALL_TREASURES = [
         x: -32,
         y: -10208
     }), 
+    new Treasure({
+        id:'red_envelope', 
+        name: 'Red Envelope', 
+        courage: 13,
+        weight: 2,
+        permanent: true,
+        effects: [
+            {effect: 'retain', base: 1}
+        ],
+        x: -480,
+        y: -320
+    }),
 
 
     // TIER 3

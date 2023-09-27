@@ -45,6 +45,7 @@ class Creatures {
         wisdom = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         lightning = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
         thunder = {base: 1, current: 1, temp: [], turns: 0, persist: false, hexed: false},
+        retain = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
 
         // abilities
         protection = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
@@ -118,6 +119,7 @@ class Creatures {
         this.wisdom = wisdom;
         this.lightning = lightning;
         this.thunder = thunder;
+        this.retain = retain;
         this.effectsDom = '';
 
         // abilities
@@ -153,7 +155,7 @@ class Creatures {
         this.aggro = {current: 0, level: 0};
         this.courage = courage;
         this.cardsOwned = 0;
-        this.cardRetain = 0;
+        //this.cardRetain = 0; // moved to an official effect
         this.treasures = [];
         this.candies = [];
         this.mana = mana;
@@ -3362,7 +3364,7 @@ export function Player() {
         speed: {base: 5, current: 0, temp: [], turns: 0}, // TODO: reset base to 5
         mana: {base: 3, current: 0, temp: 0}, // TODO: reset to base 3
         rainbow: {base: 0, current: 0, temp: [], turns: 0, max: 20, type: 'rainbow'},
-        //unning: {base: 2, current: 2, temp: [], turns: 0, persist: false, hexed: false}, // how to add a default effect
+        //retain: {base: 2, current: 2, temp: [], turns: 0, persist: false, hexed: false}, // how to add a default effect
         //stockpile: {enabled: true, baseTurns: 0, turns: 10, persist: false, permanent: true}, // how to add a default ability
     });
 

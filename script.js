@@ -71,7 +71,7 @@
  * 
  * PHASE V: 
  *  
- * TODO:
+ * TODO: 
  * 
  * 
  * BUGS [can't replicate]:
@@ -104,6 +104,7 @@
  * Monster hexes punch down but player buffs punch up. New damage amount is larger than original but damage amount color is red - should be green.
  * Question: if player has might, should draw damage effects have might applied?
  * Question: should only one hit of a multi-attack card be affected by crit (like how fatality works)?
+ * Question: cutting ring and bottled attack (cards that do damage when drawn) increase crit percentage for each monster each draw - is this wanted?
  * When playing a card that draws and discards (upgraded recoil) and the drawn card adds a card to hand (surprise attack), added card cannot be discarded
  * 
  * 
@@ -129,6 +130,7 @@
  * Card: aoe might/punch down
  * Card: Ram: do damage equal to current armor, reduce armor by 10%
  * Card: Cycle pack - draw 2 cards (vanish) - just a straightforward utility card 
+ * Card: Big dmg but reduce summon/solid/etc. (like hyperbeam)
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -1163,7 +1165,7 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('locket'); // use this to manually add treasures
+	//addTreasure('death_vial'); // use this to manually add treasures
 	//addCandy('strawberry_gobstopper'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
@@ -1333,7 +1335,7 @@ function buildScenario() {
 function setStatus(updateCards = true) {
 	// debug only
 	$('.status .map-type span').html(game.mapType);
-	$('.status .card-retain span').html(player.cardRetain);
+	// $('.status .card-retain span').html(player.cardRetain); // moved to an official effect
 	$('.status .momentumAmount span').html(player.momentumAmount);
 	for(let i = 0; i < game.effects.length; i++) {
 		$('.status .' + game.effects[i].id + ' span').html('[' + player[game.effects[i].id].temp.toString() + '] / ' + player[game.effects[i].id].current + ' / ' + player[game.effects[i].id].base + ' : ' + player[game.effects[i].id].turns + ' : ' + player[game.effects[i].id].persist);
@@ -1713,8 +1715,6 @@ async function startCombat(tile) {
 	if(!tile.hasClass('visited')) {
 		await updateEssenceLevels(tile.attr('data-essence'), tile.attr('data-amount'));
 	}
-
-	player.cardRetain = 0;
 
 	for(let i = 0; i < player.treasures.length; i++) {
 		if(player.treasures[i].trigger.counter < 0 && player.treasures[i].permanent == false) {
@@ -2497,7 +2497,7 @@ async function endTurn(checkRetain = true) {
 
 	// retain cards
 	$('.player-cards .card').removeClass('playable selected');
-	if(player.cardRetain > 0 && checkRetain) {
+	if(player.retain.current > 0 && checkRetain) {
 		$('.player-panel .standard-message').html('choose cards to retain').addClass('shown');
 		$('.retain-done').addClass('shown');
 		$('.player-cards .card').addClass('retainable');
@@ -3625,7 +3625,7 @@ function retainCard(elem) {
 	if(elem.hasClass('retain')) {
 		elem.removeClass('retain');
 		card.tempRetain = false;
-	} else if($('.card.retain').length < player.cardRetain) {
+	} else if($('.card.retain').length < player.retain.current) {
 		elem.addClass('retain');
 		card.tempRetain = true;
 	}
@@ -4003,18 +4003,18 @@ async function processDmg(dmg, currentMonster, multiply, card = false, type = fa
 	if(dmg.length) {
 		for(let i = 0; i < multiply; i++) {
 			for(let j = 0; j < dmg.length; j++) {
-				let criticalHit = type != 'draw' ? util.chance(game.critChance) : false;
+				let criticalHit = type != 'draw' && type != 'discard' && type != 'destroy' ? util.chance(game.critChance) : false;
 				let thisDmg = dmg[j];
 				if(currentMonster) {
 					for(let k = 0; k < currentMonster.length; k++) {
 						let fatalityHit = false;
 						// check for fatality
-						if(player.fatality.current > 0 && (game.highestDmgRoll * player.fatality.current) > thisDmg && type != 'draw') {
+						if(player.fatality.current > 0 && (game.highestDmgRoll * player.fatality.current) > thisDmg && type != 'draw' && type != 'discard' && type != 'destroy') {
 							thisDmg = game.highestDmgRoll * player.fatality.current;
 							fatalityHit = true;
 							// fatality is the only effect that lasts per card rather than per turn
-							// we also don't want to trigger fatality if the damage is coming from card draw
-							if(card.type == 'attack' && type != 'draw') {
+							// we also don't want to trigger fatality if the damage is coming from card draw/discard/destroy effects
+							if(card.type == 'attack' && type != 'draw' && type != 'discard' && type != 'destroy') {
 								if(player.fatality.turns > 0) {
 									player.fatality.turns -= 1;
 									let index = player.fatality.turns;

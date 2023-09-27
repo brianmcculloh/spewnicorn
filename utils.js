@@ -187,6 +187,14 @@ export default class Util {
             breakableDom += '<div class="breakable tooltip" data-powertip="' + breakableTip + '"><span></span></div>';
         }
 
+        let combinable = card.combine ? ' combinable' : '';
+        let combinableDom = '';
+        let combinableTip = '';
+        if(combinable != '') {
+            combinableTip = "<span class='highlight'>Combinable:</span> This card can be combined with other cards of the same type";
+            combinableDom += '<div class="combinable tooltip" data-powertip="' + combinableTip + '"><span></span></div>';
+        }
+
         let pack = false;
         pack = util.getCardAttribute(card, 'pack');
         let packDom = '';
@@ -199,12 +207,11 @@ export default class Util {
         }
         
         let unplayable = card.playable ? '' : ' unplayable';
-        let combinable = card.combine ? ' combinable' : '';
         let addable = card.addable ? ' addable' : ' unaddable';
         let tooltipClass = slots != '' ? ' tooltip' : '';
         let tooltip = slots != '' ? card.slotDesc : '';
         pack = card.pack ? ' ' + card.pack + '-pack' : '';
-        $("<div class='card-wrapper drawing'><div class='card " + card.tier + unplayable + combinable + pack + " " + card.type + " " + cssClass + "' id='card-" + card.id + "' data-id='" + card.id + "' data-guid='" + card.guid + "' data-powertip='" + tooltip + "'><div class='card-image'></div><div class='card-frame'></div><div class='card-type'>" + card.type + "</div><div class='card-rarity'></div>" + manaDom + ageDom + "<div class='bubbles-left'>" + useDom + expireDom + lingerDom + "</div><div class='bubbles-right'>" + vanishDom + retainDom + ephemeralDom + breakableDom + "</div><div class='bubbles-bottom-left'>" + packDom + "</div><div class='name'>" + card.name + "</div><div class='desc'><div class='desc-inner'>" + card.desc + "</div></div><div class='slots" + tooltipClass + "' data-powertip='" + tooltip + "'>" + slots + "</div><div class='card-courage' data-amount='" + card.courage + "'>" + card.courage + "</div></div></div>")
+        $("<div class='card-wrapper drawing'><div class='card " + card.tier + unplayable + combinable + pack + " " + card.type + " " + cssClass + "' id='card-" + card.id + "' data-id='" + card.id + "' data-guid='" + card.guid + "' data-powertip='" + tooltip + "'><div class='card-image'></div><div class='card-frame'></div><div class='card-type'>" + card.type + "</div><div class='card-rarity'></div>" + manaDom + ageDom + "<div class='bubbles-left'>" + useDom + expireDom + lingerDom + "</div><div class='bubbles-right'>" + vanishDom + retainDom + ephemeralDom + breakableDom + combinableDom + "</div><div class='bubbles-bottom-left'>" + packDom + "</div><div class='name'>" + card.name + "</div><div class='desc'><div class='desc-inner'>" + card.desc + "</div></div><div class='slots" + tooltipClass + "' data-powertip='" + tooltip + "'>" + slots + "</div><div class='card-courage' data-amount='" + card.courage + "'>" + card.courage + "</div></div></div>")
             .appendTo(to)
             .delay(1)
             .queue(function() {
@@ -1029,6 +1036,7 @@ export default class Util {
                 effect35: [235483, 1999],
                 effect36: [237482, 2212],
                 effect37: [239694, 2246],
+                effect38: [314485, 994],
 
 
 
@@ -1164,6 +1172,7 @@ export default class Util {
                 Material_Stone_Medium_Slide_Magic
                 Material_Stone_Light_Hit_1_Magic
                 Material_Wood_Crate_Break_3_Magic
+                Material_Wood_Lever_5_Switch
                 Material_Liquid_Pick_Up_2_Jug_Magic
                 Material_Liquid_Bubble_Pick_Up_1_Magic
                 Material_Liquid_Deep_Hit_1_Magic

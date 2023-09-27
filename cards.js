@@ -2862,7 +2862,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'ruin', name: 'Ruin', type: 'tool', mana: 2, tier: 'uncommon', weight: 3, courage: 3, 
+        id: 'ruin', name: 'Ruin', type: 'tool', mana: 3, tier: 'uncommon', weight: 3, courage: 3, 
         sound: 'tool9',
         actions: [
             {action: 'addCard', value: 1, what: 'dismantle', to: 'handCards'},
@@ -3480,12 +3480,12 @@ const ALL_CARDS = [
     new Cards({
         id: 'enigma_form', name: 'Enigma Form', type: 'ability', mana: 0, tier: 'uncommon', weight: 4, courage: 4, 
         effects: [
-            {effect: 'mystery', amount: 1, turns: -1}
+            {effect: 'mystery', amount: 2, turns: -1}
         ],
         slots: 1,
         fireShardUpgrades: {
             effects: [
-                {effect: 'mystery', amount: 2, turns: -1}
+                {effect: 'mystery', amount: 3, turns: -1}
             ],
         },
         iceShardUpgrades: {
@@ -3912,6 +3912,18 @@ const ALL_CARDS = [
         slots: 1,
         shardUpgrades: {
             natural: true
+        }
+    }),
+    new Cards({
+        id: 'dark_codex', name: 'Dark Codex', type: 'ability', mana: 1, tier: 'rare', courage: 6, 
+        effects: [
+            {effect: 'retain', amount: 1, turns: -1}
+        ],
+        slots: 1,
+        shardUpgrades: {
+            effects: [
+                {effect: 'retain', amount: 2, turns: -1}
+            ],
         }
     }),
 
