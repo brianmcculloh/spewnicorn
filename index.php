@@ -49,7 +49,7 @@
         <div class="button music toggled-on">Music<span>On</span></div>
         <div class="button sound toggled-on">Sounds<span>On</span></div>
         <div class="button tutorial">Tutorial<span>Off</span></div>
-        <div class="button difficulty tooltip" data-powertip="Adds a <span class='highlight'>Spewnicorn Spray</span> to your deck and decreases aggro.">Easy&nbsp;Mode<span>Off</span></div>
+        <div class="button difficulty tooltip" data-powertip="Adds a <span class='highlight'>Spewnicorn Spray</span> to your deck, decreases aggro, and heals to full after gates.">Easy&nbsp;Mode<span>Off</span></div>
         <input id="custom-seed" class="tooltip" data-powertip="You can enter a custom seed or keep this blank to generate a random game." type="text" placeholder="Custom Seed..." />
 
         <div class="button begin">New Game</div> 

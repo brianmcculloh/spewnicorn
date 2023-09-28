@@ -1208,7 +1208,10 @@ function init_map_2() {
 	player.aggro.current = 0;
 	player.aggro.level = 0;
 
-	heal(player, 999);
+	if(game.difficulty == 'easy') { 
+		heal(player, 999);
+	}
+
 	game.overworld = game.mapType == 'ice_gate' ? 'frost' : 'flame';
 	musicOverworld.stop();
 	if(game.overworld == 'frost') {
@@ -3890,8 +3893,10 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 			// it's possible we're decreasing use on a card added during combat (temp card) which will not be in the deck
 			if(deckCard==undefined) {
 				card.use -= 1;
+				card.shardUpgrades.use -= 1;
 			} else {
 				deckCard.use -= 1;
+				deckCard.shardUpgrades.use -= 1;
 			}
 			// in the future this might need to be dealt with more holistically, because perhaps breakable
 			// could be affected by shards (although it's not now)

@@ -2588,7 +2588,7 @@ body.arena .monster-panel {
 .combat-log span {
 	display:inline-block;
 	padding:0 15px;
-	scale:1;
+	scale:2;
 	opacity:1;
 	position:absolute;
 	transition:all 3s;
@@ -2604,6 +2604,7 @@ body.arena .monster-panel {
 }
 .combat-log .health-gained {
 	color:rgba(27, 224, 73, 1);
+	transform:translateY(-50px);
 }
 .combat-log .status-text span {
 	color:yellow;
@@ -2745,7 +2746,7 @@ body.arena .monster-panel {
 }
 .player-panel .crit {
 	position:absolute;
-	top:-100px;
+	top:25px;
 	right:140px;
 	font-size:40px;
 	color:red;

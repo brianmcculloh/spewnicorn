@@ -2038,8 +2038,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'freeze', name: 'Freeze', type: 'attack', target: 'monster', mana: 2, tier: 'rare', weight: 2, courage: 4, 
-        dmg: [7],
+        id: 'freeze', name: 'Freeze', type: 'attack', target: 'monster', mana: 3, tier: 'rare', weight: 2, courage: 5, 
+        dmg: [14],
         sound: 'attack10',
         actions: [
             {action: 'ensharden', type: 'frost', select: -1, from: 'handCards', random: true}
@@ -2052,8 +2052,8 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'scorch', name: 'Scorch', type: 'attack', target: 'monster', mana: 2, tier: 'rare', weight: 2, courage: 4, 
-        dmg: [7],
+        id: 'scorch', name: 'Scorch', type: 'attack', target: 'monster', mana: 3, tier: 'rare', weight: 2, courage: 5, 
+        dmg: [14],
         sound: 'attack11',
         actions: [
             {action: 'ensharden', type: 'flame', select: -1, from: 'handCards', random: true}
@@ -2070,71 +2070,56 @@ const ALL_CARDS = [
         dmg: [1],
         sound: 'attack12',
         effects: [
-            {effect: 'fatality', amount: 1.1, turns: 1, persist: true}
-        ],
-        actions: [
-            {action: 'draw', value: 1},
-            {action: 'addCard', value: 2, what: 'battle_move', to: 'drawCards'},
+            {effect: 'fatality', amount: 1.2, turns: 1, persist: true},
+            {effect: 'punch', amount: .05, turns: -1}
         ],
         slots: 2,
         shardUpgrades: {
             effects: [
-                {effect: 'fatality', amount: 1.3, turns: 1, persist: true}
+                {effect: 'fatality', amount: 1.3, turns: 1, persist: true},
+                {effect: 'punch', amount: .1, turns: -1}
             ],
         },
         iceShardUpgrades: {
             effects: [
-                {effect: 'fatality', amount: 1.3, turns: 1, persist: true}
-            ],
-            actions: [
-                {action: 'draw', value: 2},
-                {action: 'addCard', value: 2, what: 'battle_move', to: 'drawCards'},
+                {effect: 'fatality', amount: 1.3, turns: 1, persist: true},
+                {effect: 'punch', amount: .1, turns: -1}
             ],
             effects_2: [
-                {effect: 'fatality', amount: 1.7, turns: 1, persist: true}
-            ],
-            actions_2: [
-                {action: 'draw', value: 3},
-                {action: 'addCard', value: 2, what: 'battle_move', to: 'drawCards'},
+                {effect: 'fatality', amount: 1.7, turns: 1, persist: true},
+                {effect: 'punch', amount: .15, turns: -1}
             ],
             mana_2: 2,
         },
         bothShardUpgrades: {
             effects: [
-                {effect: 'fatality', amount: 1.5, turns: 1, persist: true}
-            ],
-            actions: [
-                {action: 'draw', value: 3},
-                {action: 'addCard', value: 2, what: 'battle_move', to: 'drawCards'},
+                {effect: 'fatality', amount: 1.5, turns: 1, persist: true},
+                {effect: 'punch', amount: .15, turns: -1}
             ],
         },
     }),
     new Cards({
         id: 'auxiliary_kill', name: 'Auxiliary Kill', type: 'attack', target: 'monster', mana: 2, tier: 'rare', weight: 6, courage: 3, 
-        dmg: [12],
+        dmg: [18],
         sound: 'attack13',
         actions: [
             {action: 'playOldest'},
-            {action: 'addCard', value: 2, what: 'battle_move', to: 'drawCards'},
         ],
         slots: 2,
         fireShardUpgrades: {
             actions: [
                 {action: 'playOldest'},
-                {action: 'addCard', value: 2, what: 'battle_move', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'auxiliary', to: 'handCards'},
             ],
             actions_2: [
                 {action: 'playOldest'},
-                {action: 'addCard', value: 2, what: 'battle_move', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'auxiliary', to: 'handCards', with: ['flame']},
             ],
-            dmg_2: [18]
+            dmg_2: [25]
         },
         iceShardUpgrades: {
             actions: [
                 {action: 'playOldest'},
-                {action: 'addCard', value: 2, what: 'battle_move', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'auxiliary', to: 'handCards'},
             ],
             mana_2: 1
@@ -2142,7 +2127,6 @@ const ALL_CARDS = [
         bothShardUpgrades: {
             actions: [
                 {action: 'playOldest'},
-                {action: 'addCard', value: 4, what: 'battle_move', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'auxiliary', to: 'handCards'},
             ],
         },
@@ -2413,7 +2397,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'fractured_orb', name: 'Fractured Orb', type: 'tool', playable: false, weight: 3, 
+        id: 'fractured_orb', name: 'Fractured Orb', type: 'tool', playable: false, weight: 3, pack: 'cycle',
         destroy: {
             actions: [
                 {action: 'stat', what: 'mana', key: 'current', value: 4},
@@ -2449,7 +2433,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'fleeting_shield', name: 'Fleeting Shield', type: 'tool', mana: 0, expire: 3, linger: 2, use: 2, 
+        id: 'fleeting_shield', name: 'Fleeting Shield', type: 'tool', mana: 0, expire: 3, linger: 2, use: 2, pack: 'cycle', 
         blk: [12],
         slots: 1,
         shardUpgrades: {
@@ -2458,7 +2442,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'nullify', name: 'Nullify', type: 'tool', mana: 0, vanish: true,
+        id: 'nullify', name: 'Nullify', type: 'tool', mana: 0, vanish: true, pack: 'rainbow',
         effects: [
             {effect: 'vex', amount: 2, turns: -1}
         ],
@@ -2552,7 +2536,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'gift', name: 'Gift', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, weight: 6, 
+        id: 'gift', name: 'Gift', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, weight: 6, pack: 'magic',
         sound: 'tool6',
         actions: [
             {action: 'addCard', value: 1, type: 'any', to: 'handCards'}
@@ -2617,7 +2601,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'gears_of_war', name: 'Gears of War', type: 'tool', mana: 2, tier: 'uncommon', weight: 4, courage: 3, 
+        id: 'gears_of_war', name: 'Gears of War', type: 'tool', mana: 2, tier: 'uncommon', weight: 4, courage: 3, pack: 'combine',
         sound: 'tool12',
         actions: [
             {action: 'addCard', value: 3, type: 'tool', to: 'drawCards'},
@@ -2951,7 +2935,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'jester', name: 'Jester', type: 'tool', tier: 'uncommon', mana: 1, vanish: true,
+        id: 'jester', name: 'Jester', type: 'tool', tier: 'uncommon', mana: 1, vanish: true, pack: 'combine', 
         sound: 'jester',
         effects: [
             {effect: 'lemonade', amount: 1, turns: -1}
@@ -3120,7 +3104,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'enrich', name: 'Enrich', type: 'tool', mana: 1, tier: 'rare', weight: 8, courage: 3, 
+        id: 'enrich', name: 'Enrich', type: 'tool', mana: 1, tier: 'rare', weight: 8, courage: 3, pack: 'combine',
         sound: 'tool21',
         actions: [
             {action: 'addCard', value: 2, type: 'any', tier: 'rare', to: 'drawCards'}
@@ -3275,7 +3259,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'mysterious_fissure', name: 'Mysterious Fissure', type: 'tool', tier: 'rare', playable: false, retain: true, weight: 7, courage: 3, 
+        id: 'mysterious_fissure', name: 'Mysterious Fissure', type: 'tool', tier: 'rare', playable: false, retain: true, weight: 7, courage: 3, pack: 'cycle', 
         discard: {
             dmg: [5],
             target: 'player',
@@ -3295,7 +3279,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'thresh', name: 'Thresh', type: 'tool', tier: 'rare', mana: 1, courage: 4, use: 2, weight: 3,
+        id: 'thresh', name: 'Thresh', type: 'tool', tier: 'rare', mana: 1, courage: 4, use: 2, weight: 3, pack: 'rainbow',
         effects: [
             {effect: 'lemonade', amount: 2, turns: 2}
         ],
@@ -3888,7 +3872,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'storm', name: 'Storm', type: 'ability', mana: 2, tier: 'rare', courage: 4, 
+        id: 'storm', name: 'Storm', type: 'ability', mana: 2, tier: 'rare', courage: 4, pack: 'rainbow', 
         effects: [
             {effect: 'thunder', amount: .35, turns: -1}
         ],
@@ -4410,7 +4394,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'master_summoner', name: 'Master Summoner', type: 'magic', mana: 1, tier: 'rare', weight: 4, courage: 5, 
+        id: 'master_summoner', name: 'Master Summoner', type: 'magic', mana: 1, tier: 'rare', weight: 4, courage: 5, pack: 'combine', 
         magic: [{type: 'aligned', amount: 12}], 
         sound: 'magic16',
         effects: [
@@ -4430,7 +4414,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'master_sorcerer', name: 'Master Sorcerer', type: 'magic', mana: 1, tier: 'rare', weight: 4, courage: 5, 
+        id: 'master_sorcerer', name: 'Master Sorcerer', type: 'magic', mana: 1, tier: 'rare', weight: 4, courage: 5, pack: 'rainbow', 
         magic: [{type: 'aligned', amount: 12}], 
         sound: 'magic16',
         effects: [
@@ -4450,7 +4434,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'master_conjurer', name: 'Master Conjurer', type: 'magic', mana: 2, tier: 'rare', weight: 4, courage: 5, 
+        id: 'master_conjurer', name: 'Master Conjurer', type: 'magic', mana: 2, tier: 'rare', weight: 4, courage: 5, pack: 'cycle', 
         magic: [{type: 'aligned', amount: 12}], 
         sound: 'magic16',
         effects: [
@@ -5471,11 +5455,11 @@ export function Deck() {
         if(legendaryIncrease < 0) legendaryIncrease = 0;
         //game.legendaryChance += legendaryIncrease; // enable this if we want to show legendary cards outside of gate rewards
         if(game.legendaryChance > 5) game.legendaryChance = 5; // legendary chance caps at 5
-        let rareIncrease = Math.round((game.floor - 2) * .3);
+        let rareIncrease = Math.round((game.floor - 5) * .25);
         if(rareIncrease < 0) rareIncrease = 0;
         game.rareChance += rareIncrease;
         if(game.rareChance > 25) game.rareChance = 25; // rare chance caps at 25
-        let uncommonIncrease = Math.round((game.floor - 2) * .4);
+        let uncommonIncrease = Math.round((game.floor - 3) * .35);
         if(uncommonIncrease < 0) uncommonIncrease = 0;
         game.uncommonChance += uncommonIncrease;
         if(game.uncommonChance > 50) game.uncommonChance = 50; // uncommon chance caps at 50
@@ -5488,7 +5472,7 @@ export function Deck() {
             game.legendaryChance = 0;
         } else if(game.mapType == 'arena' || rare) {
             addableCards = AllCards().getAddableCards('rare', type, false, game.toExclude);
-            game.rareChance = 0
+            game.rareChance = 0;
         } else if(uncommon) {
             addableCards = AllCards().getAddableCards('uncommon', type, false, game.toExclude);
             let uncommonDecrease = game.floor;
