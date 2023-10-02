@@ -52,7 +52,7 @@ img {border:none;}
 h1, h2, h3, h4, h5, h6 {font-weight:300; margin:0px; padding:0px 0px; text-transform:capitalize; }
   
 /* global elements */
-.overlay {
+.overlay, .combat-text {
 	position: fixed; /* this used to be absolute - might need to set it back */
 	left: 0;
 	top: 0;
@@ -61,6 +61,71 @@ h1, h2, h3, h4, h5, h6 {font-weight:300; margin:0px; padding:0px 0px; text-trans
 	pointer-events: none;
 	z-index:-1;
 	background:rgba(0,0,0,.4);
+}
+.combat-text {
+	display:flex;
+	z-index:99;
+	opacity:0;
+	align-content:center;
+	align-items:center;
+	justify-content:space-around;
+	flex-wrap:wrap;
+	flex-direction:column;
+	transition:all .5s;
+	background:none;
+}
+.combat-text.shown {
+	opacity:1;
+}
+.combat-text h2 {
+	opacity:0;
+	position:absolute;
+	transition:all .3s;
+}
+.combat-text h2.shown {
+	opacity:1;
+}
+.combat-text .draw-cards-arrow {
+	position:absolute;
+	bottom:200px;
+	left:200px;
+	opacity:0;
+	transform:translate(-50px, 50px);
+	text-align:center;
+}
+.combat-text .draw-cards-arrow span {
+	display:block;
+	font-size:40px;
+}
+.combat-text .draw-cards-arrow svg {
+	fill:#FFFFFF;
+	transform:rotate(160deg);
+	margin-right:15px;
+	width:100px;
+	height:100px;
+	filter:drop-shadow(1px 1px 0 black)
+		drop-shadow(1px -1px 0 black)
+		drop-shadow(-1px 1px 0 black)
+		drop-shadow(-1px -1px 0 black)
+		drop-shadow(0 0 20px black);
+}
+.combat-text .draw-cards-arrow.shown {
+	animation: draw-cards-arrow 1.2s ease-out;
+	transform:translate(0, 0);
+	opacity:1;
+}
+@keyframes draw-cards-arrow {
+	0% {
+		transform:translate(0, 0);
+		opacity:1;
+	}
+	70% {
+		opacity:1;
+	}
+	100% {
+		transform:translate(-50px, 50px);
+		opacity:0;
+	}
 }
 .rewards .overlay, .loot-screen .overlay {
 	background:rgba(0,0,0,.4);

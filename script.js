@@ -71,7 +71,7 @@
  * 
  * PHASE V: 
  *  
- * TODO: 
+ * TODO: Add start combat and start turn visual indicators/arrows
  * 
  * 
  * BUGS [can't replicate]:
@@ -1677,6 +1677,7 @@ async function startCombat(tile) {
 
 	$('body').removeClass('arena ice_gate fire_gate selecting destroying retaining');
 	$('.start-arrow').hide();
+	$('.combat-text, .combat-text h2.begin-combat').addClass('shown');
 
 	if(tile.hasClass('arena')) {
 		game.mapType = 'arena';
@@ -1713,7 +1714,6 @@ async function startCombat(tile) {
 	$('.candy').removeClass('trashable').addClass('clickable');
 	$('body').addClass('combating');
 	$('.player-cards').removeClass('unavailable').empty();
-
 	
 	if(!tile.hasClass('visited')) {
 		await updateEssenceLevels(tile.attr('data-essence'), tile.attr('data-amount'));
@@ -1736,7 +1736,7 @@ async function startCombat(tile) {
 	monsters.loadMonsters();
 
 	// setup rainbow
-	if(player.rainbow.current >= player.rainbow.max) {
+	if(player.rainbow.current >= player.rainbow.max && player.rainbow.max > 0) {
 		await util.wait(1500);
 		await activateRainbow(player.rainbow.type, player);
 		updateRainbowDom(player);
@@ -1751,7 +1751,12 @@ async function startCombat(tile) {
 	$('.magic-rainbow .magic-type span').attr('data-type', player.rainbow.type);
 	$('.magic-rainbow .semi-circle--mask').css('transform', 'rotate(' + (magicPower * 1.8) + 'deg) translate3d(0, 0, 0)').removeClass('activated'); 
 
-	beginTurn();
+	await util.wait(1200);
+	$('.combat-text .draw-cards-arrow').addClass('shown');
+	await util.wait(400);
+	$('.combat-text h2.begin-combat').removeClass('shown');
+
+	await beginTurn();
 
 	// manually process actions at start of combat - DEBUGGING ONLY
 	//processActions([{action: 'addCard', value: 1, what: 'energize', to: 'handCards', with: ['flame']}]);
@@ -1983,9 +1988,11 @@ async function updateEssenceLevels(essence, amount) {
 
 }
 
-function beginTurn() {
+async function beginTurn() {
 
 	util.clearTooltips();
+
+	$('.combat-text, .combat-text h2.player-turn').addClass('shown');
 
 	updateCardDescriptions('allCards');
 
@@ -2041,7 +2048,7 @@ function beginTurn() {
 			} else if(player.stance == 'shimmer') {
 				//player.speed.current = player.speed.base + Math.round(player.speed.current * player.shimmer.level) + extraSpeed; // old way of doing this was speed
 				//player.health.max += Math.floor((player.speed.current / 4) * player.shimmer.level); // we determined this could be infinitely farmable
-				heal(player, Math.floor((player.speed.current * player.shimmer.level) / 2));
+				//heal(player, Math.floor((player.speed.current * player.shimmer.level) / 2)); // too much healing overall
 				applyArmor(Math.floor(player.speed.current * player.shimmer.level), player);
 				applyBlock(Math.floor(player.speed.current * player.shimmer.level * 2), player);
 			}
@@ -2095,6 +2102,9 @@ function beginTurn() {
 	clearTurnAbilities(player, false, true);
 
 	setStatus();
+
+	await util.wait(800);
+	$('.combat-text, .combat-text h2, .combat-text .draw-cards-arrow').removeClass('shown');
 	
 }
 
@@ -2535,6 +2545,11 @@ function whichMoveSet(moveSet, pattern) {
 }
 
 async function monsterTurn() {
+
+	$('.combat-text, .combat-text h2.enemy-turn').addClass('shown');
+	await util.wait(800);
+	$('.combat-text, .combat-text h2').removeClass('shown');
+	await util.wait(500);
 
 	await monsterAction();
 
@@ -4443,6 +4458,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								// we will actually increase the essence stats within the updateEssenceLevels function called below
 								if(what != 'aura' && what != 'sparkle' && what != 'shimmer') {
 									player[what][key] += value;
+									// it's possible rainbow gets reduced below base value - don't let this happen
+									if(player.rainbow.base > player.rainbow.max) player.rainbow.max = player.rainbow.base;
 									// it's possible we had full armor and reduced health, so armor needs to reduce to match health
 									if(player.armor > player.health.current) player.armor = player.health.current;
 								}
@@ -5113,8 +5130,8 @@ async function applyMagic(magic, to) {
 	}
 
 	// don't let rainbow max get to 0
-	if(to.rainbow.max < 1) {
-		to.rainbow.max = 1;
+	if(to.rainbow.max < 0) {
+		to.rainbow.max = 0;
 	}
 
 	// set initial magic type
@@ -5139,7 +5156,7 @@ async function applyMagic(magic, to) {
 	}
 
 	// rainbow hits max, do damage and reset
-	if(to.rainbow.current >= to.rainbow.max) {
+	if(to.rainbow.current >= to.rainbow.max && to.rainbow.max > 0) {
 
 		await activateRainbow(type, to);
 
@@ -5230,8 +5247,7 @@ async function activateRainbow(type, to) {
 
 	// update rainbow magic to overflow type
 	to.rainbow.type = type;
-
-	if(to.rainbow.current >= to.rainbow.max) {
+	if(to.rainbow.current >= to.rainbow.max && to.rainbow.max > 0) {
 		activateRainbow(type, to);
 	} else {
 		$('.magic-rainbow').addClass('unavailable');

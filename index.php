@@ -81,7 +81,7 @@
 
           <p>Along the way you will fight enemies that will increase your <span class="sparkle">Sparkle</span>, <span class="shimmer">Shimmer</span>, or <span class="aura">Aura</span> essence. Once you reach level 1, a <span class="highlight">Stance</span> card of that essence will be automatically added to your deck, and the higher your essence level, the stronger the <span class="highlight">Stance</span> effects will be.</p>
 
-          <p>If you are not in a stance, unused speed will be converted to 2x block next turn. If you are in <span class="sparkle">Sparkle</span> <span class="highlight">Stance</span>, gain +2 might per turn, and unused speed will convert to might next turn. If you are in <span class="shimmer">Shimmer</span> <span class="highlight">Stance</span>, gain +8 block and +2 armor per turn, and unused speed will convert to block, armor, and health next turn. If you are in <span class="aura">Aura</span> <span class="highlight">Stance</span>, gain +1 mana per turn, and unused speed will convert to mana next turn.</p>
+          <p>If you are not in a stance, unused speed will be converted to 2x block next turn. If you are in <span class="sparkle">Sparkle</span> <span class="highlight">Stance</span>, gain +2 might per turn, and unused speed will convert to might next turn. If you are in <span class="shimmer">Shimmer</span> <span class="highlight">Stance</span>, gain +6 block and +1 armor per turn, and unused speed will convert to block and armor next turn. If you are in <span class="aura">Aura</span> <span class="highlight">Stance</span>, gain +1 mana per turn, and unused speed will convert to mana next turn.</p>
 
           <p>You will also come across <span class="highlight">Magic Fountains</span> and <span class="highlight">Quests</span> that will aid you in your journey. You must prove your worth and unlock the Gates by fighting at least two <span class="highlight">Arenas</span> with powerful enemies.</p>
 
@@ -321,7 +321,7 @@
       <div class="dead-cards icon-button tooltip" data-powertip="Dead cards"><div class="icon"></div><span class="counter"></span></div>
 
       <div class="stance">
-        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> gain +6 block and +1 armor, and unused speed converts to block, armor, and health next turn.<br /><br /><span class='sparkle'>Sparkle:</span> gain +2 might, and unused speed converts to 2x might next turn.<br /><br /><span class='aura'>Aura:</span> gain +1 mana, and unused speed converts to mana next turn.<br /><br />None: unused speed converts to 2x block next turn."></div>
+        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> gain +6 block and +1 armor, and unused speed converts to block and armor next turn.<br /><br /><span class='sparkle'>Sparkle:</span> gain +2 might, and unused speed converts to 2x might next turn.<br /><br /><span class='aura'>Aura:</span> gain +1 mana, and unused speed converts to mana next turn.<br /><br />None: unused speed converts to 2x block next turn."></div>
         <div class="icon-stance tooltip" data-stance="none" data-powertip="<span class='highlight'>Stance:</span> None"></div>
       </div>
 
@@ -752,6 +752,18 @@
       <div class="monster-panel"></div>
 
       <div class="overlay"></div>
+
+      <div class="combat-text">
+        <h2 class="begin-combat">Begin Combat!</h2>
+        <h2 class="enemy-turn">Enemy Turn</h2>
+        <h2 class="player-turn">Player Turn</h2>
+        <div class="draw-cards-arrow">
+          <span>Draw Cards</span>
+          <svg width="1200pt" height="1200pt" version="1.1" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
+            <path d="m1161.4 228.88c-85.941 162.88-154.94 288.18-206.65 376.06-51.707 87.883-86.117 138-103.59 150.88-3.5273 2.6484-7.0586 4.5898-10.586 6-2.8242 1.7656-5.8242 3.3516-8.6484 4.4102-6 2.293-11.473 3.3516-16.41 3.3516-13.766 0-24.531-8.1172-32.473-24.531-0.70703-1.4102-1.4102-3.1758-2.1172-4.7656-1.0586-2.6484-1.5898-5.2969-1.7656-8.1172-0.35156-4.5898-0.53125-10.414-0.53125-17.293 0-27.707 2.8242-73.766 8.6484-138.35-6.5312 5.1172-12.883 9.8828-19.234 14.293l-353.82 250.59-213.88 167.65c-1.2344 1.0586-2.4688 1.9414-3.8828 2.6445-3.1758 1.7656-6.3516 3.1758-9.707 4.0586-4.7656 1.4102-9.3516 2.293-13.941 2.293-12.352 0-23.293-5.8242-32.824-17.293-6.5312-7.7656-11.824-18.527-16.059-32.293l-72.707-242.65c-3.707-1.7656-7.2344-4.5898-9.8828-8.1172-9.707-12.531-7.4141-30.527 5.1172-40.059 43.586-33.527 95.824-67.766 157.06-102.53 61.234-34.766 131.12-70.41 210.18-106.41 94.766-44.293 199.59-82.941 314.47-115.94-15.707-12-39.352-28.41-70.59-49.766-1.5898-1.0586-3-2.293-4.2344-3.5312-3.3516-3.3516-6-6.5312-8.293-9.5273-3-4.2344-5.1172-8.4688-6.3516-12.883-6.1758-20.824 1.4102-34.234 22.234-40.414 1.5859-0.35156 3.1758-0.70703 4.7656-0.88281l454.06-53.473c0.70703-0.17578 1.5859-0.17578 2.293-0.17578 0.70703 0 1.4102-0.17578 2.1172-0.17578 0.88281 0 1.9414 0.17578 2.8242 0.17578 15.707 0.70703 27.176 7.2344 34.059 19.234 4.7656 8.6484 4.9414 18.883 0.35156 27.531z"/>
+          </svg>
+        </div>
+      </div>
 
       <div class="player-panel">
 
