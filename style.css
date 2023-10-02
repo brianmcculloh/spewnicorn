@@ -5025,3 +5025,33 @@ body.tutorial #tutorial-overlay {
 #powerTip span.muddled {
 	color:var(--muddled_color);
 }
+
+
+@media screen and (max-height:900px) {
+	.monster {
+		height:350px;
+	}
+	.monster .sprite {
+		scale:.9;
+	}
+	.combat-text h2 {
+		scale:1.2;
+		margin-top:100px;
+	}
+}
+@media screen and (max-height:850px) {
+	.monster {
+		height:300px;
+	}
+	.monster .sprite {
+		scale:.75;
+	}
+}
+@media screen and (max-height:800px) {
+	.monster {
+		height:250px;
+	}
+	.monster .sprite {
+		scale:.6;
+	}
+}
