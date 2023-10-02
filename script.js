@@ -71,7 +71,7 @@
  * 
  * PHASE V: 
  *  
- * TODO: Add start combat and start turn visual indicators/arrows
+ * TODO: 
  * 
  * 
  * BUGS [can't replicate]:
@@ -2103,7 +2103,7 @@ async function beginTurn() {
 
 	setStatus();
 
-	await util.wait(800);
+	await util.wait(1000);
 	$('.combat-text, .combat-text h2, .combat-text .draw-cards-arrow').removeClass('shown');
 	
 }
@@ -2547,9 +2547,9 @@ function whichMoveSet(moveSet, pattern) {
 async function monsterTurn() {
 
 	$('.combat-text, .combat-text h2.enemy-turn').addClass('shown');
-	await util.wait(800);
+	await util.wait(1000);
 	$('.combat-text, .combat-text h2').removeClass('shown');
-	await util.wait(500);
+	await util.wait(800);
 
 	await monsterAction();
 

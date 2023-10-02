@@ -1949,20 +1949,25 @@ const ALL_CARDS = [
         ],
         slots: 2,
         fireShardUpgrades: {
-            dmg: [15],
-            dmg_2: [20]
+            actions: [
+                {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'rare', to: 'handCards', with: ['flame']},
+            ],
+            actions_2: [
+                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'rare', to: 'handCards', with: ['flame']},
+            ],
         },
         iceShardUpgrades: {
             actions: [
-                {action: 'addCard', select: 2, value: 3, type: 'attack', tier: 'rare', to: 'handCards'},
+                {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'rare', to: 'handCards', with: ['frost']},
             ],
             actions_2: [
-                {action: 'addCard', select: 2, value: 4, type: 'attack', tier: 'rare', to: 'handCards', with: ['frost']},
+                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'rare', to: 'handCards', with: ['frost']},
             ],
         },
         bothShardUpgrades: {
+            dmg: [16],
             actions: [
-                {action: 'addCard', select: 2, value: 4, type: 'attack', tier: 'rare', to: 'handCards'},
+                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'rare', to: 'handCards'},
             ],
         },
     }),
@@ -2854,7 +2859,7 @@ const ALL_CARDS = [
         ],
         slots: 1,
         fireShardUpgrades: {
-            mana: 1,
+            mana: 2,
         },
         iceShardUpgrades: {
             actions: [
@@ -4843,7 +4848,7 @@ export function Deck() {
     let player = window.player;
 
     function buildDeck() {
-        /*addCard('jab');
+        addCard('jab');
         addCard('jab');
         addCard('jab');
         addCard('rainbow_orb');
@@ -4854,14 +4859,7 @@ export function Deck() {
         addCard('stun');
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
-        }*/
-
-        addCard('focus');
-        addCard('bloom');
-        addCard('focus');
-        addCard('bloom');
-        addCard('focus');
-        addCard('bloom');
+        }
 
         // this is how to add a shard on init - DEV MODE ONLY
         //attachShard(util.getCardById('leather_armor', this.cards), 'frost');

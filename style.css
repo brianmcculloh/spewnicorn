@@ -72,7 +72,6 @@ h1, h2, h3, h4, h5, h6 {font-weight:300; margin:0px; padding:0px 0px; text-trans
 	flex-wrap:wrap;
 	flex-direction:column;
 	transition:all .5s;
-	background:none;
 }
 .combat-text.shown {
 	opacity:1;
@@ -81,6 +80,8 @@ h1, h2, h3, h4, h5, h6 {font-weight:300; margin:0px; padding:0px 0px; text-trans
 	opacity:0;
 	position:absolute;
 	transition:all .3s;
+	margin-top:200px;
+	scale:1.75;
 }
 .combat-text h2.shown {
 	opacity:1;
@@ -95,7 +96,7 @@ h1, h2, h3, h4, h5, h6 {font-weight:300; margin:0px; padding:0px 0px; text-trans
 }
 .combat-text .draw-cards-arrow span {
 	display:block;
-	font-size:40px;
+	font-size:55px;
 }
 .combat-text .draw-cards-arrow svg {
 	fill:#FFFFFF;
@@ -107,10 +108,11 @@ h1, h2, h3, h4, h5, h6 {font-weight:300; margin:0px; padding:0px 0px; text-trans
 		drop-shadow(1px -1px 0 black)
 		drop-shadow(-1px 1px 0 black)
 		drop-shadow(-1px -1px 0 black)
+		drop-shadow(0 0 20px black)
 		drop-shadow(0 0 20px black);
 }
 .combat-text .draw-cards-arrow.shown {
-	animation: draw-cards-arrow 1.2s ease-out;
+	animation: draw-cards-arrow 1.4s ease-out;
 	transform:translate(0, 0);
 	opacity:1;
 }
