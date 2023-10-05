@@ -560,7 +560,7 @@ const ALL_CARDS = [
     /* Starting Cards: */
     new Cards({
         id: 'jab', name: 'Jab', type: 'attack', mana: 1, addable: false, target: 'monster',
-        dmg: [6],
+        dmg: [7],
         slots: 1,
         shardUpgrades: {
             dmg: [11],
@@ -568,10 +568,10 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'shield', name: 'Shield', type: 'tool', mana: 1, addable: false,
-        blk: [7],
+        blk: [6],
         slots: 1,
         shardUpgrades: {
-            blk: [12],
+            blk: [10],
         },
     }),
     new Cards({
@@ -3722,7 +3722,7 @@ const ALL_CARDS = [
 
     /* rare */
     new Cards({
-        id: 'bastion', name: 'Bastion', type: 'ability', mana: 3, tier: 'rare', ephemeral: true, weight: 2, courage: 6,
+        id: 'bastion', name: 'Bastion', type: 'ability', mana: 3, tier: 'rare', ephemeral: true, weight: 1, courage: 6,
         abilities: [
             {ability: 'protection', enabled: true, baseTurns: -1}
         ],
@@ -3736,7 +3736,7 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'bodiless_form', name: 'Bodiless Form', type: 'ability', mana: 3, tier: 'rare', ephemeral: true, weight: 3, courage: 5, 
+        id: 'bodiless_form', name: 'Bodiless Form', type: 'ability', mana: 3, tier: 'rare', ephemeral: true, weight: 2, courage: 5, 
         abilities: [
             {ability: 'unreachable', enabled: true, turns: 2, persist: true},
             {ability: 'toothache', enabled: true, baseTurns: -1}
@@ -4848,7 +4848,7 @@ export function Deck() {
     let player = window.player;
 
     function buildDeck() {
-        addCard('jab');
+        /*addCard('jab');
         addCard('jab');
         addCard('jab');
         addCard('rainbow_orb');
@@ -4859,7 +4859,18 @@ export function Deck() {
         addCard('stun');
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
-        }
+        }*/
+
+        addCard('reactor');
+        addCard('reactor');
+        addCard('reactor');
+        addCard('reactor');
+        addCard('reactor');
+        addCard('reactor');
+        addCard('reactor');
+        addCard('repel');
+        attachShard(util.getCardById('repel', this.cards), 'frost');
+        attachShard(util.getCardById('repel', this.cards), 'frost');
 
         // this is how to add a shard on init - DEV MODE ONLY
         //attachShard(util.getCardById('leather_armor', this.cards), 'frost');
@@ -5460,11 +5471,11 @@ export function Deck() {
         if(legendaryIncrease < 0) legendaryIncrease = 0;
         //game.legendaryChance += legendaryIncrease; // enable this if we want to show legendary cards outside of gate rewards
         if(game.legendaryChance > 5) game.legendaryChance = 5; // legendary chance caps at 5
-        let rareIncrease = Math.round((game.floor - 5) * .25);
+        let rareIncrease = Math.round((game.floor - 5) * .2);
         if(rareIncrease < 0) rareIncrease = 0;
         game.rareChance += rareIncrease;
         if(game.rareChance > 25) game.rareChance = 25; // rare chance caps at 25
-        let uncommonIncrease = Math.round((game.floor - 3) * .35);
+        let uncommonIncrease = Math.round((game.floor - 3) * .4);
         if(uncommonIncrease < 0) uncommonIncrease = 0;
         game.uncommonChance += uncommonIncrease;
         if(game.uncommonChance > 50) game.uncommonChance = 50; // uncommon chance caps at 50
@@ -5477,11 +5488,14 @@ export function Deck() {
             game.legendaryChance = 0;
         } else if(game.mapType == 'arena' || rare) {
             addableCards = AllCards().getAddableCards('rare', type, false, game.toExclude);
-            game.rareChance = 0;
+            let rareDecrease = game.floor;
+            game.rareChance -= rareDecrease;
+            if(game.rareChance < 0) game.rareChance = 0;
         } else if(uncommon) {
             addableCards = AllCards().getAddableCards('uncommon', type, false, game.toExclude);
             let uncommonDecrease = game.floor;
             game.uncommonChance -= uncommonDecrease;
+            if(game.uncommonChance < 0) game.uncommonChance = 0;
         }
         
         // get the actual card
@@ -5618,14 +5632,16 @@ export function CombatDeck() {
                 thisCard.drawn = true;
                 let thisRetain = util.getCardAttribute(thisCard, 'retain');
                 let retain = thisRetain ? ' retained' : '';
-                let css = thisCard.playable ? 'playable' : '';
+                let playable = thisCard.playable ? 'playable' : '';
+                let destroyable = $('body').hasClass('destroying') ? ' destroyable' : '';
+                let discardable = $('body').hasClass('discarding') ? ' discardable' : '';
                 // some actions can add multiple cards to hand at once so we need to account for that
                 // we use > 10 because the played card hasn't been discarded yet
                 if(combatDeck.handCards.length > 10) {
                     combatDeck.discardCards.push(thisCard);
                 } else {
                     combatDeck.handCards.push(thisCard);
-                    util.appendCard(thisCard, '.player-cards', css + retain);
+                    util.appendCard(thisCard, '.player-cards', playable + retain + destroyable + discardable);
                     if(!ignoreSpeed) player.speed.current -= 1;
                 }
                 

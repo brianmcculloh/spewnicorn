@@ -217,8 +217,8 @@ const ALL_QUESTS = [
         weight: 2,
         options: [
             {id: 'small_trunk', name: 'Small Trunk', desc: '100% to gain 1 couarge'},
-            {id: 'medium_trunk', name: 'Medium Trunk', desc: '66% to gain 3 courage'},
-            {id: 'large_trunk', name: 'Large Trunk', desc: '33% to gain 6 courage'},
+            {id: 'medium_trunk', name: 'Medium Trunk', desc: '66% to gain 4 courage'},
+            {id: 'large_trunk', name: 'Large Trunk', desc: '33% to gain 9 courage'},
             {id: 'leave', name: 'Leave'}
         ]
     }),

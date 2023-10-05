@@ -40,6 +40,7 @@
  * Ability: mix and match combineable cards which results in a random combined card
  * Mechanic: increase all card use/expire/linger values
  * Effect: retrofit resistance so that it can be hexed and go above 1 so specific monsters can be targeted to take more magic damage
+ * Mechanic: stance cards - do additional things if you're in the matching stance - for instance 0 cost card that adds 1 mana, but if you're in aura it adds 2 mana instead
  * 
  * More Quests:
  * Add special quest card(s) to deck
@@ -71,7 +72,7 @@
  * 
  * PHASE V: 
  *  
- * TODO: 
+ * TODO: played repel double sharded when cogwheel was on 9 and the card the cogwheel drew wasn't allowed to be discarded
  * 
  * 
  * BUGS [can't replicate]:
@@ -1165,7 +1166,7 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('death_vial'); // use this to manually add treasures
+	//addTreasure('greased_cogwheel'); // use this to manually add treasures
 	//addCandy('strawberry_gobstopper'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
@@ -1381,6 +1382,8 @@ function setStatus(updateCards = true) {
 	$('.treasure-chance span').html(game.treasureChance);
 	$('.candy-chance span').html(game.candyChance);
 	$('.shard-chance span').html(game.shardChance);
+	$('.uncommon-chance span').html(game.uncommonChance);
+	$('.rare-chance span').html(game.rareChance);
 
 	if(player.block == 0) {
 		$('.player-health .block-amount').removeClass('shown');
@@ -3845,6 +3848,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	let multiply = 1;
 	let numShards = util.getShardNum(card, 'any');
 	if(mana == '?' && useMana) {
+		/* not sure if this mechanic makes sense, especially since the shard upgrades add more power already
 		if(numShards==1) {
 			if(player.speed.current > player.mana.current) {
 				multiply = player.speed.current;
@@ -3855,7 +3859,9 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 			multiply = player.speed.current + player.mana.current;
 		} else {
 			multiply = player.mana.current;
-		}
+		}*/
+
+		multiply = player.mana.current;
 
 		// check for mystery
 		if(player.mystery.current > 0) {
@@ -4812,12 +4818,12 @@ async function processQuest(elem) {
 			}
 			if(option == 'medium_trunk') {
 				if(util.chance(66)) {
-					gainCourage(3);
+					gainCourage(4);
 				}
 			}
 			if(option == 'large_trunk') {
 				if(util.chance(33)) {
-					gainCourage(6);
+					gainCourage(9);
 				}
 			}
 			$('.quest-screen').removeClass('shown');

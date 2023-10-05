@@ -325,13 +325,17 @@
         <div class="icon-stance tooltip" data-stance="none" data-powertip="<span class='highlight'>Stance:</span> None"></div>
       </div>
 
-      <div class="chances tooltip" data-powertip="Chances of seeing treasure rooms, candies, and shards after combats.">
+      <div class="chances tooltip" data-powertip="Chances of seeing treasure rooms, candies, and shards after combats, as well as uncommon and rare cards in card rewards and courage screens.">
 
         <div class="treasure-chance">treasure: <span></span>%</div>
 
         <div class="candy-chance">candy: <span></span>%</div>
 
         <div class="shard-chance">shard: <span></span>%</div>
+
+        <div class="uncommon-chance">uncommon: <span></span>%</div>
+
+        <div class="rare-chance">rare: <span></span>%</div>
 
       </div>
 

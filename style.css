@@ -1259,10 +1259,10 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 	display:block;
 	text-transform:capitalize;
 	font-size:11px;
-	line-height:11px;
+	line-height:10px;
 	position:absolute;
 	right:267px;
-	bottom:12px;
+	bottom:4px;
 	text-align:right;
 }
 .highest-damage-roll {
@@ -1831,6 +1831,7 @@ body.debug .status-toggle {
 }
 .courage-items {
 	padding-bottom:30px;
+	margin-right:50px;
 }
 .courage-items .treasure-courage,
 .courage-items .candy-courage,
@@ -1912,15 +1913,34 @@ body.debug .status-toggle {
 	gap:5px;
 }
 .loot-items .treasure, .loot-items .essence, .loot-items .shard,
-.courage-items .treasure, .courage-items .essence, .courage-items .shard {
+.courage-items .treasure, .courage-items .essence, .courage-items .shard,
+.rewards-loot .treasure, .rewards-loot .essence, .rewards-loot .shard {
 	transition:all .3s;
 }
 .loot-items .treasure:hover, .loot-items .essence:hover, .loot-items .shard:hover,
-.courage-items .treasure:hover, .courage-items .essence:hover, .courage-items .shard:hover {
+.courage-items .treasure:hover, .courage-items .essence:hover, .courage-items .shard:hover,
+.rewards-loot .treasure:hover, .rewards-loot .essence:hover, .rewards-loot .shard:hover {
 	scale:1.2;
 }
 .loot-screen .button {
 	position:relative;
+}
+.loot-items .treasure {
+	scale:1.5;
+	margin:30px;
+}
+.loot-items .treasure:hover {
+	scale:2;
+}
+.courage-items .treasure {
+	scale:1.3;
+	margin:15px;
+}
+.courage-items .treasure:hover {
+	scale:1.7;
+}
+.courage-items .treasure:last-of-type {
+	margin-right:60px;
 }
 
 /* gate screen */

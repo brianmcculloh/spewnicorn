@@ -330,7 +330,7 @@ const ALL_MONSTERS = [
         id: 'mummy', 
         breed: 'mummy',
         name: 'Mummy', 
-        health: {base: 35, current: 0, max: 35},
+        health: {base: 45, current: 0, max: 45},
         pattern: 'fixed',
         moveSet: [
             {effects: [
@@ -338,7 +338,7 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: -1, turns: 1, hex: true}
             ]},
             {dmg: [10]},
-            {dmg: [3, 3]},
+            {dmg: [5, 5]},
             {blk: [10], effects: [
                 {effect: 'might', amount: -1, turns: 1, hex: true}
             ]}
@@ -454,7 +454,7 @@ const ALL_MONSTERS = [
         id: 'frost_mummy',
         breed: 'mummy', 
         name: 'Frost Mummy', 
-        health: {base: 70, current: 0, max: 70},
+        health: {base: 90, current: 0, max: 90},
         pattern: 'fixed',
         moveSet: [
             {effects: [
@@ -462,7 +462,7 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: -1, turns: 1, hex: true}
             ]},
             {dmg: [10]},
-            {dmg: [2, 2]},
+            {dmg: [5, 5]},
             {blk: [20], effects: [
                 {effect: 'might', amount: -1, turns: 1, hex: true}
             ]}
@@ -589,7 +589,7 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: -1, turns: 1, hex: true}
             ]},
             {dmg: [20]},
-            {dmg: [6, 6]},
+            {dmg: [10, 10]},
             {blk: [10], effects: [
                 {effect: 'might', amount: -1, turns: 1, hex: true}
             ]}
@@ -680,7 +680,7 @@ const ALL_MONSTERS = [
         id: 'shatter', 
         breed: 'shatter',
         name: 'Shatter', 
-        health: {base: 48, current: 0, max: 48},
+        health: {base: 55, current: 0, max: 55},
         tier: 2,
         pattern: 'fixed',
         moveSet: [
@@ -688,11 +688,11 @@ const ALL_MONSTERS = [
                 {effect: 'retaliate', amount: 2, turns: -1},
             ]},
             {dmg: [20]},
-            {blk: [10]},
+            {dmg: [5, 5], blk: [10]},
             {armor: [4], effects: [
                 {effect: 'retaliate', amount: 1, turns: -1},
             ]},
-            {dmg: [1, 2, 3, 4]},
+            {dmg: [1, 2, 3, 4, 5]},
         ],
         retaliate: {base: 3, current: 0, temp: [], turns: -1},
     }),
@@ -701,7 +701,7 @@ const ALL_MONSTERS = [
         id: 'void_fairy', 
         breed: 'void_fairy',
         name: 'Void Fairy', 
-        health: {base: 38, current: 0, max: 38},
+        health: {base: 65, current: 0, max: 65},
         tier: 2,
         pattern: 'fixed',
         moveSet: [
@@ -744,7 +744,7 @@ const ALL_MONSTERS = [
             {actions: [
                 {action: 'addCard', value: 2, what: 'curse', to: 'drawCards'},
             ], p: .1},
-            {actions: [
+            {dmg: [15], actions: [
                 {action: 'addCard', value: 2, what: 'flay', to: 'drawCards'},
             ], p: .1},
             {actions: [
@@ -753,11 +753,11 @@ const ALL_MONSTERS = [
             {actions: [
                 {action: 'addCard', value: 2, what: 'curse', to: 'discardCards'},
             ], p: .1},
-            {actions: [
+            {dmg: [15], actions: [
                 {action: 'addCard', value: 2, what: 'flay', to: 'discardCards'},
             ], p: .1},
-            {armor: [15], dmg: [10], p: .2},
-            {blk: [15], dmg: [10], p: .2}
+            {armor: [15], dmg: [15], p: .2},
+            {blk: [15], dmg: [15], p: .2}
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
@@ -772,7 +772,7 @@ const ALL_MONSTERS = [
         moveSet: [
             {dmg: [7]},
             {effects: [
-                {effect: 'might', amount: 4, turns: -1},
+                {effect: 'might', amount: 7, turns: -1},
                 {effect: 'resistance', amount: .3, turns: 2},
                 {effect: 'vex', amount: 1, turns: -1}
             ]}
@@ -783,7 +783,7 @@ const ALL_MONSTERS = [
         id: 'iron_walker', 
         breed: 'iron_walker',
         name: 'Iron Walker', 
-        health: {base: 75, current: 0, max: 75},
+        health: {base: 85, current: 0, max: 85},
         tier: 2,
         pattern: 'fixed',
         moveSet: [
@@ -791,7 +791,7 @@ const ALL_MONSTERS = [
                 {effect: 'stout', amount: 2, turns: -1},
                 {effect: 'might', amount: 3, turns: -1},
             ]},
-            {dmg: [20]},
+            {dmg: [25]},
         ],
     }),
 
@@ -802,7 +802,7 @@ const ALL_MONSTERS = [
         id: 'frost_shatter', 
         breed: 'shatter',
         name: 'Frost Shatter', 
-        health: {base: 96, current: 0, max: 96},
+        health: {base: 110, current: 0, max: 110},
         tier: 2,
         pattern: 'fixed',
         moveSet: [
@@ -810,11 +810,11 @@ const ALL_MONSTERS = [
                 {effect: 'retaliate', amount: 2, turns: -1},
             ]},
             {dmg: [20]},
-            {blk: [20]},
+            {dmg: [5, 5], blk: [20]},
             {armor: [8], effects: [
                 {effect: 'retaliate', amount: 1, turns: -1},
             ]},
-            {dmg: [1, 2, 3, 4]},
+            {dmg: [1, 2, 3, 4, 5]},
         ],
         retaliate: {base: 3, current: 0, temp: [], turns: -1},
     }),
@@ -824,7 +824,7 @@ const ALL_MONSTERS = [
         id: 'frost_void_fairy',
         breed: 'void_fairy', 
         name: 'Frost Void Fairy', 
-        health: {base: 74, current: 0, max: 74},
+        health: {base: 130, current: 0, max: 130},
         tier: 2,
         pattern: 'fixed',
         moveSet: [
@@ -868,7 +868,7 @@ const ALL_MONSTERS = [
             {actions: [
                 {action: 'addCard', value: 2, what: 'curse', to: 'drawCards'},
             ], p: .1},
-            {actions: [
+            {dmg: [15], actions: [
                 {action: 'addCard', value: 2, what: 'flay', to: 'drawCards'},
             ], p: .1},
             {actions: [
@@ -877,11 +877,11 @@ const ALL_MONSTERS = [
             {actions: [
                 {action: 'addCard', value: 2, what: 'curse', to: 'discardCards'},
             ], p: .1},
-            {actions: [
+            {dmg: [15], actions: [
                 {action: 'addCard', value: 2, what: 'flay', to: 'discardCards'},
             ], p: .1},
-            {armor: [30], dmg: [10], p: .2},
-            {blk: [30], dmg: [16], p: .2}
+            {armor: [30], dmg: [15], p: .2},
+            {blk: [30], dmg: [15], p: .2}
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
@@ -895,9 +895,9 @@ const ALL_MONSTERS = [
         tier: 2,
         pattern: 'fixed',
         moveSet: [
-            {dmg: [5]},
+            {dmg: [7]},
             {effects: [
-                {effect: 'might', amount: 4, turns: -1},
+                {effect: 'might', amount: 7, turns: -1},
                 {effect: 'resistance', amount: .3, turns: 2},
                 {effect: 'vex', amount: 1, turns: -1}
             ]}
@@ -909,7 +909,7 @@ const ALL_MONSTERS = [
         id: 'frost_iron_walker', 
         breed: 'iron_walker',
         name: 'Frost Iron Walker', 
-        health: {base: 150, current: 0, max: 150},
+        health: {base: 170, current: 0, max: 170},
         tier: 2,
         pattern: 'fixed',
         moveSet: [
@@ -917,7 +917,7 @@ const ALL_MONSTERS = [
                 {effect: 'stout', amount: 2, turns: -1},
                 {effect: 'might', amount: 3, turns: -1},
             ]},
-            {dmg: [20]},
+            {dmg: [25]},
         ],
     }),
 
@@ -928,7 +928,7 @@ const ALL_MONSTERS = [
         id: 'flame_shatter', 
         breed: 'shatter',
         name: 'Flame Shatter', 
-        health: {base: 48, current: 0, max: 48},
+        health: {base: 55, current: 0, max: 55},
         tier: 2,
         pattern: 'fixed',
         moveSet: [
@@ -936,11 +936,11 @@ const ALL_MONSTERS = [
                 {effect: 'retaliate', amount: 2, turns: -1},
             ]},
             {dmg: [40]},
-            {blk: [10]},
+            {dmg: [10, 10], blk: [10]},
             {armor: [4], effects: [
                 {effect: 'retaliate', amount: 1, turns: -1},
             ]},
-            {dmg: [2, 4, 6, 8]},
+            {dmg: [2, 4, 6, 8, 10]},
         ],
         retaliate: {base: 3, current: 0, temp: [], turns: -1},
     }),
@@ -950,7 +950,7 @@ const ALL_MONSTERS = [
         id: 'flame_void_fairy', 
         breed: 'void_fairy',
         name: 'Flame Void Fairy', 
-        health: {base: 38, current: 0, max: 38},
+        health: {base: 65, current: 0, max: 65},
         tier: 2,
         pattern: 'fixed',
         moveSet: [
@@ -994,7 +994,7 @@ const ALL_MONSTERS = [
             {actions: [
                 {action: 'addCard', value: 2, what: 'curse', to: 'drawCards'},
             ], p: .1},
-            {actions: [
+            {dmg: [30], actions: [
                 {action: 'addCard', value: 2, what: 'flay', to: 'drawCards'},
             ], p: .1},
             {actions: [
@@ -1003,11 +1003,11 @@ const ALL_MONSTERS = [
             {actions: [
                 {action: 'addCard', value: 2, what: 'curse', to: 'discardCards'},
             ], p: .1},
-            {actions: [
+            {dmg: [30], actions: [
                 {action: 'addCard', value: 2, what: 'flay', to: 'discardCards'},
             ], p: .1},
-            {armor: [15], dmg: [20], p: .2},
-            {blk: [15], dmg: [32], p: .2}
+            {armor: [15], dmg: [30], p: .2},
+            {blk: [15], dmg: [30], p: .2}
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
@@ -1021,9 +1021,9 @@ const ALL_MONSTERS = [
         tier: 2,
         pattern: 'fixed',
         moveSet: [
-            {dmg: [10]},
+            {dmg: [14]},
             {effects: [
-                {effect: 'might', amount: 4, turns: -1},
+                {effect: 'might', amount: 7, turns: -1},
                 {effect: 'resistance', amount: .3, turns: 2},
                 {effect: 'vex', amount: 1, turns: -1}
             ]}
@@ -1035,7 +1035,7 @@ const ALL_MONSTERS = [
         id: 'flame_iron_walker', 
         breed: 'iron_walker',
         name: 'Flame Iron Walker', 
-        health: {base: 75, current: 0, max: 75},
+        health: {base: 85, current: 0, max: 85},
         tier: 2,
         pattern: 'fixed',
         moveSet: [
@@ -1043,7 +1043,7 @@ const ALL_MONSTERS = [
                 {effect: 'stout', amount: 2, turns: -1},
                 {effect: 'might', amount: 3, turns: -1},
             ]},
-            {dmg: [48]},
+            {dmg: [50]},
         ],
     }),
     
@@ -1056,22 +1056,23 @@ const ALL_MONSTERS = [
         id: 'swarm', 
         breed: 'swarm',
         name: 'Swarm', 
-        health: {base: 70, current: 0, max: 70},
+        health: {base: 30, current: 0, max: 30},
         tier: 3,
-        armor: 70,
-        pattern: 'random',
+        armor: 30,
+        block: 30,
+        pattern: 'fixed',
         moveSet: [
-            {effects: [
+            {blk: [30], effects: [
                 {effect: 'regen', amount: 5, turns: -1},
-            ], p: .2},
-            {effects: [
-                {effect: 'craft', amount: 3, turns: -1},
-            ], p: .2},
-            {effects: [
+            ], abilities: [
+                {ability: 'protection', turns: -1, enabled: true},
+            ]},
+            {blk: [30], effects: [
                 {effect: 'vigor', amount: 1, turns: -1},
-            ], p: .2},
-            {dmg: [3, 3, 3, 3, 3, 3], p: .2},
-            {dmg: [5, 5, 5, 5], p: .2},
+                {effect: 'craft', amount: 3, turns: -1},
+            ]},
+            {dmg: [3, 3, 3, 3, 3, 3]},
+            {dmg: [5, 5, 5, 5]},
         ],
         heal: {base: 10, current: 0, temp: [], turns: -1}
     }),
@@ -1085,7 +1086,7 @@ const ALL_MONSTERS = [
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'conjure', amount: -2, turns: 5, hex: true},
+                {effect: 'conjure', amount: -5, turns: 5, hex: true},
                 {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
             ]},
             {dmg: [8, 8]},
@@ -1107,22 +1108,22 @@ const ALL_MONSTERS = [
         tier: 3,
         pattern: 'random',
         moveSet: [
-            {effects: [
+            {dmg: [12], effects: [
                 {effect: 'retaliate', amount: 7, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
             ], p: .1},
-            {effects: [
+            {dmg: [10], effects: [
                 {effect: 'spikes', amount: 10, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
             ], armor: [20], p: .1},
-            {effects: [
+            {dmg: [22], effects: [
                 {effect: 'might', amount: 2, turns: -1}
             ], 
             abilities: [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
             {dmg: [24], p: .1},
-            {blk: [15], p: .1},
+            {dmg: [10], blk: [15], p: .1},
             {dmg: [18], p: .1},
             {blk: [15], p: .1},
             {dmg: [8], armor: [10], blk: [10], p: .1},
@@ -1139,23 +1140,23 @@ const ALL_MONSTERS = [
         tier: 3,
         pattern: 'random',
         moveSet: [
-            {effects: [
+            {dmg: [12], effects: [
                 {effect: 'solid', amount: -1, turns: -1, hex: true},
                 {effect: 'resistance', amount: .2, turns: 2},
                 {effect: 'vex', amount: 1, turns: -1}
             ], p: .1},
-            {effects: [
+            {dmg: [10], effects: [
                 {effect: 'craft', amount: -2, turns: -1, hex: true},
                 {effect: 'vex', amount: 1, turns: -1}
             ], armor: [20], p: .1},
-            {effects: [
+            {dmg: [22], effects: [
                 {effect: 'might', amount: 1, turns: -1}
             ], 
             abilities: [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
             {dmg: [24], p: .1},
-            {blk: [15], p: .1},
+            {dmg: [10], blk: [15], p: .1},
             {dmg: [18], p: .1},
             {blk: [15], p: .1},
             {dmg: [8], armor: [10], blk: [10], p: .1},
@@ -1168,7 +1169,7 @@ const ALL_MONSTERS = [
         id: 'cyberskull', 
         breed: 'cyberskull',
         name: 'Cyberskull', 
-        health: {base: 120, current: 0, max: 120},
+        health: {base: 160, current: 0, max: 160},
         pattern: 'fixed',
         tier: 3,
         moveSet: [{
@@ -1185,26 +1186,23 @@ const ALL_MONSTERS = [
         id: 'frost_swarm',
         breed: 'swarm',
         name: 'Frost Swarm', 
-        health: {base: 140, current: 0, max: 140},
+        health: {base: 60, current: 0, max: 60},
         tier: 3,
-        armor: 140,
-        pattern: 'random',
+        armor: 60,
+        block: 60,
+        pattern: 'fixed',
         moveSet: [
-            {effects: [
+            {blk: [60], effects: [
                 {effect: 'regen', amount: 5, turns: -1},
-            ], p: .2},
-            {effects: [
-                {effect: 'craft', amount: 3, turns: -1},
-            ], p: .2},
-            {effects: [
+            ], abilities: [
+                {ability: 'protection', turns: -1, enabled: true},
+            ]},
+            {blk: [60], effects: [
                 {effect: 'vigor', amount: 1, turns: -1},
-            ], p: .2},
-            {dmg: [3, 3, 3, 3, 3, 3], 
-            effects: [
-                {effect: 'punch', amount: -.1, turns: -1, hex: true},
-                {effect: 'might', amount: -1, turns: -1, hex: true},
-            ], p: .2},
-            {dmg: [5, 5, 5, 5], p: .2},
+                {effect: 'craft', amount: 3, turns: -1},
+            ]},
+            {dmg: [3, 3, 3, 3, 3, 3]},
+            {dmg: [5, 5, 5, 5]},
         ],
         heal: {base: 10, current: 0, temp: [], turns: -1}
     }),
@@ -1219,7 +1217,7 @@ const ALL_MONSTERS = [
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'conjure', amount: -2, turns: 5, hex: true},
+                {effect: 'conjure', amount: -5, turns: 5, hex: true},
                 {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
             ]},
             {dmg: [8, 8]},
@@ -1242,22 +1240,22 @@ const ALL_MONSTERS = [
         tier: 3,
         pattern: 'random',
         moveSet: [
-            {effects: [
+            {dmg: [12], effects: [
                 {effect: 'retaliate', amount: 7, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
             ], p: .1},
-            {effects: [
+            {dmg: [10], effects: [
                 {effect: 'spikes', amount: 10, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
             ], armor: [40], p: .1},
-            {effects: [
+            {dmg: [22], effects: [
                 {effect: 'might', amount: 2, turns: -1}
             ], 
             abilities: [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
             {dmg: [24], p: .1},
-            {blk: [30], p: .1},
+            {dmg: [10], blk: [30], p: .1},
             {dmg: [18], p: .1},
             {blk: [30], p: .1},
             {dmg: [8], armor: [20], blk: [20], p: .1},
@@ -1275,23 +1273,23 @@ const ALL_MONSTERS = [
         tier: 3,
         pattern: 'random',
         moveSet: [
-            {effects: [
+            {dmg: [12], effects: [
                 {effect: 'solid', amount: -1, turns: -1, hex: true},
                 {effect: 'resistance', amount: .2, turns: 2},
                 {effect: 'vex', amount: 1, turns: -1}
             ], p: .1},
-            {effects: [
+            {dmg: [10], effects: [
                 {effect: 'craft', amount: -2, turns: -1, hex: true},
                 {effect: 'vex', amount: 1, turns: -1}
             ], armor: [40], p: .1},
-            {effects: [
+            {dmg: [22], effects: [
                 {effect: 'might', amount: 1, turns: -1}
             ], 
             abilities: [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
             {dmg: [24], p: .1},
-            {blk: [30], p: .1},
+            {dmg: [10], blk: [30], p: .1},
             {dmg: [18], p: .1},
             {blk: [30], p: .1},
             {dmg: [8], armor: [20], blk: [20], p: .1},
@@ -1305,7 +1303,7 @@ const ALL_MONSTERS = [
         id: 'frost_cyberskull', 
         breed: 'cyberskull',
         name: 'Frost Cyberskull', 
-        health: {base: 240, current: 0, max: 240},
+        health: {base: 320, current: 0, max: 320},
         pattern: 'fixed',
         tier: 3,
         moveSet: [{
@@ -1322,26 +1320,23 @@ const ALL_MONSTERS = [
         id: 'flame_swarm',
         breed: 'swarm', 
         name: 'Flame Swarm', 
-        health: {base: 70, current: 0, max: 70},
+        health: {base: 30, current: 0, max: 30},
         tier: 3,
-        armor: 70,
-        pattern: 'random',
+        armor: 30,
+        block: 30,
+        pattern: 'fixed',
         moveSet: [
-            {effects: [
+            {blk: [30], effects: [
                 {effect: 'regen', amount: 5, turns: -1},
-            ], p: .2},
-            {effects: [
-                {effect: 'craft', amount: 3, turns: -1},
-            ], p: .2},
-            {effects: [
+            ], abilities: [
+                {ability: 'protection', turns: -1, enabled: true},
+            ]},
+            {blk: [30], effects: [
                 {effect: 'vigor', amount: 1, turns: -1},
-            ], p: .2},
-            {dmg: [6, 6, 6, 6, 6, 6], 
-            effects: [
-                {effect: 'punch', amount: -.1, turns: -1, hex: true},
-                {effect: 'might', amount: -1, turns: -1, hex: true},
-            ], p: .2},
-            {dmg: [10, 10, 10, 10], p: .2},
+                {effect: 'craft', amount: 3, turns: -1},
+            ]},
+            {dmg: [6, 6, 6, 6, 6, 6]},
+            {dmg: [10, 10, 10, 10]},
         ],
         heal: {base: 10, current: 0, temp: [], turns: -1}
     }),
@@ -1356,7 +1351,7 @@ const ALL_MONSTERS = [
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'conjure', amount: -2, turns: 5, hex: true},
+                {effect: 'conjure', amount: -5, turns: 5, hex: true},
                 {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
             ]},
             {dmg: [16, 16]},
@@ -1379,22 +1374,22 @@ const ALL_MONSTERS = [
         tier: 3,
         pattern: 'random',
         moveSet: [
-            {effects: [
+            {dmg: [24], effects: [
                 {effect: 'retaliate', amount: 7, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
             ], p: .1},
-            {effects: [
+            {dmg: [20], effects: [
                 {effect: 'spikes', amount: 10, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
             ], armor: [20], p: .1},
-            {effects: [
+            {dmg: [44], effects: [
                 {effect: 'might', amount: 2, turns: -1}
             ], 
             abilities: [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
             {dmg: [48], p: .1},
-            {blk: [15], p: .1},
+            {dmg: [20], blk: [15], p: .1},
             {dmg: [36], p: .1},
             {blk: [15], p: .1},
             {dmg: [16], armor: [10], blk: [10], p: .1},
@@ -1412,23 +1407,23 @@ const ALL_MONSTERS = [
         tier: 3,
         pattern: 'random',
         moveSet: [
-            {effects: [
+            {dmg: [24], effects: [
                 {effect: 'solid', amount: -1, turns: -1, hex: true},
                 {effect: 'resistance', amount: .2, turns: 2},
                 {effect: 'vex', amount: 1, turns: -1}
             ], p: .1},
-            {effects: [
+            {dmg: [20], effects: [
                 {effect: 'craft', amount: -2, turns: -1, hex: true},
                 {effect: 'vex', amount: 1, turns: -1}
             ], armor: [20], p: .1},
-            {effects: [
+            {dmg: [44], effects: [
                 {effect: 'might', amount: 1, turns: -1}
             ], 
             abilities: [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
             {dmg: [48], p: .1},
-            {blk: [15], p: .1},
+            {dmg: [20], blk: [15], p: .1},
             {dmg: [36], p: .1},
             {blk: [15], p: .1},
             {dmg: [16], armor: [10], blk: [10], p: .1},
@@ -1442,7 +1437,7 @@ const ALL_MONSTERS = [
         id: 'flame_cyberskull', 
         breed: 'cyberskull',
         name: 'Flame Cyberskull', 
-        health: {base: 120, current: 0, max: 120},
+        health: {base: 160, current: 0, max: 160},
         pattern: 'fixed',
         tier: 3,
         moveSet: [{
@@ -1473,7 +1468,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [25]},
-            {armor: [8]},
+            {armor: [8], dmg: [15]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1483,7 +1478,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [35]},
-            {armor: [8]},
+            {armor: [8], dmg: [25]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1493,7 +1488,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [25]},
-            {armor: [8]},
+            {armor: [8], dmg: [15]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1503,7 +1498,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [35]},
-            {armor: [8]},
+            {armor: [8], dmg: [25]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1523,13 +1518,13 @@ const ALL_MONSTERS = [
         moveSet: [
             {effects: [
                 {effect: 'might', amount: 3, turns: -1},
-            ], p: .3},
+            ], dmg: [20], p: .3},
             {effects: [
                 {effect: 'vex', amount: 1, turns: -1}
-            ], dmg: [25], p: .3},
+            ], dmg: [30], p: .3},
             {dmg: [45], p: .1},
             {blk: [10], actions: [
-                {action: 'addCard', value: 1, what: 'broken', to: 'handCards'},
+                {action: 'addCard', value: 2, what: 'broken', to: 'handCards'},
             ], p: .3},
         ],
     }),
@@ -1546,9 +1541,9 @@ const ALL_MONSTERS = [
             {blk: [12], armor: [10], p: .25},
             {dmg: [24], armor: [5], p: .25},
             {effects: [
-                {effect: 'resistance', amount: .8, turns: 1}
+                {effect: 'resistance', amount: .8, turns: 2}
             ], dmg: [26], armor: [15], p: .25},
-            {blk: [10], armor: [10], p: .25},
+            {dmg: [16], blk: [10], armor: [10], p: .25},
         ],
         cunning: {base: 1, current: 0, temp: [], turns: -1},
         vigor: {base: 1, current: 0, temp: [], turns: -1}
@@ -1564,13 +1559,13 @@ const ALL_MONSTERS = [
         moveSet: [
             {actions: [
                 {action: 'addCard', value: 5, what: 'chaff', to: 'drawCards'},
-            ], dmg: [5, 5]},
+            ], dmg: [5, 5, 5, 5]},
             {effects: [
                 {effect: 'stout', amount: 5, turns: -1},
-                {effect: 'solid', amount: 2, turns: -1},
+                {effect: 'solid', amount: 4, turns: -1},
             ]},
             {blk: [18]},
-            {dmg: [30]},
+            {dmg: [35]},
         ],
     }),
     new Creatures({
@@ -1581,19 +1576,18 @@ const ALL_MONSTERS = [
         health: {base: 210, current: 0, max: 210},
         tier: 4,
         armor: 20,
-        pattern: 'random',
+        pattern: 'fixed',
         moveSet: [
             {effects: [
                 {effect: 'regen', amount: 5, turns: -1},
-            ], blk: [15], p: .1},
-            {effects: [
+            ], blk: [15]},
+            {dmg: [2, 2, 2, 2, 2, 2], effects: [
                 {effect: 'might', amount: 1, turns: -1},
-            ], p: .25},
-            {dmg: [3, 3, 3, 3, 3, 3], 
-            effects: [
+            ]},
+            {dmg: [3, 3, 3, 3, 3, 3], effects: [
                 {effect: 'punch', amount: -.4, turns: 2, hex: true}
-            ], p: .25},
-            {dmg: [4, 4, 4, 4, 4], p: .4},
+            ]},
+            {dmg: [4, 4, 4, 4, 4, 4]},
         ],
         heal: {base: 8, current: 0, temp: [], turns: -1},
         regen: {base: 5, current: 0, temp: [], turns: -1}
@@ -1617,7 +1611,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [10], dmg: [25]},
-            {armor: [16]},
+            {armor: [16], dmg: [15]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1627,7 +1621,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [10], dmg: [35]},
-            {armor: [16]},
+            {armor: [16], dmg: [25]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1637,7 +1631,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [10], dmg: [25]},
-            {armor: [16]},
+            {armor: [16], dmg: [15]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1647,7 +1641,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [10], dmg: [35]},
-            {armor: [16]},
+            {armor: [16], dmg: [25]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1668,13 +1662,13 @@ const ALL_MONSTERS = [
         moveSet: [
             {effects: [
                 {effect: 'might', amount: 3, turns: -1},
-            ], p: .3},
+            ], dmg: [20], p: .3},
             {effects: [
                 {effect: 'vex', amount: 1, turns: -1}
-            ], dmg: [25], p: .3},
+            ], dmg: [30], p: .3},
             {dmg: [45], p: .1},
             {blk: [20], actions: [
-                {action: 'addCard', value: 1, what: 'broken', to: 'handCards'},
+                {action: 'addCard', value: 2, what: 'broken', to: 'handCards'},
             ], p: .3},
         ],
     }),
@@ -1692,9 +1686,9 @@ const ALL_MONSTERS = [
             {blk: [24], armor: [20], p: .25},
             {dmg: [24], armor: [10], p: .25},
             {effects: [
-                {effect: 'resistance', amount: .8, turns: 1}
+                {effect: 'resistance', amount: .8, turns: 2}
             ], dmg: [26], armor: [30], p: .25},
-            {blk: [20], armor: [20], p: .25},
+            {dmg: [16], blk: [20], armor: [20], p: .25},
         ],
         cunning: {base: 1, current: 0, temp: [], turns: -1},
         vigor: {base: 1, current: 0, temp: [], turns: -1}
@@ -1711,13 +1705,13 @@ const ALL_MONSTERS = [
         moveSet: [
             {actions: [
                 {action: 'addCard', value: 5, what: 'chaff', to: 'drawCards'},
-            ], dmg: [5, 5]},
+            ], dmg: [5, 5, 5, 5]},
             {effects: [
                 {effect: 'stout', amount: 5, turns: -1},
-                {effect: 'solid', amount: 2, turns: -1},
+                {effect: 'solid', amount: 4, turns: -1},
             ]},
             {blk: [36]},
-            {dmg: [30]},
+            {dmg: [35]},
         ],
     }),
     new Creatures({
@@ -1729,22 +1723,18 @@ const ALL_MONSTERS = [
         health: {base: 420, current: 0, max: 420},
         tier: 4,
         armor: 40,
-        pattern: 'random',
+        pattern: 'fixed',
         moveSet: [
             {effects: [
                 {effect: 'regen', amount: 5, turns: -1},
-            ], blk: [30], p: .25},
-            {effects: [
+            ], blk: [30]},
+            {dmg: [2, 2, 2, 2, 2, 2], effects: [
                 {effect: 'might', amount: 1, turns: -1},
-            ], p: .25},
-            {dmg: [3, 3, 3, 3, 3, 3], 
-            effects: [
+            ]},
+            {dmg: [3, 3, 3, 3, 3, 3], effects: [
                 {effect: 'punch', amount: -.4, turns: 2, hex: true}
-            ], 
-            actions: [
-                {action: 'addCard', value: 2, what: 'briars', to: 'discardCards'},
-            ], p: .25},
-            {dmg: [4, 4, 4, 4, 4], p: .25},
+            ]},
+            {dmg: [4, 4, 4, 4, 4, 4]},
         ],
         heal: {base: 8, current: 0, temp: [], turns: -1},
         regen: {base: 5, current: 0, temp: [], turns: -1}
@@ -1768,7 +1758,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [50]},
-            {armor: [8]},
+            {armor: [8], dmg: [30]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1778,7 +1768,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [70]},
-            {armor: [8]},
+            {armor: [8], dmg: [50]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1788,7 +1778,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [50]},
-            {armor: [8]},
+            {armor: [8], dmg: [30]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1798,7 +1788,7 @@ const ALL_MONSTERS = [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
             {armor: [5], dmg: [70]},
-            {armor: [8]},
+            {armor: [8], dmg: [50]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
@@ -1819,13 +1809,13 @@ const ALL_MONSTERS = [
         moveSet: [
             {effects: [
                 {effect: 'might', amount: 3, turns: -1},
-            ], p: .3},
+            ], dmg: [40], p: .3},
             {effects: [
                 {effect: 'vex', amount: 1, turns: -1}
-            ], dmg: [50], p: .3},
+            ], dmg: [60], p: .3},
             {dmg: [90], p: .1},
             {blk: [20], actions: [
-                {action: 'addCard', value: 1, what: 'broken', to: 'handCards'},
+                {action: 'addCard', value: 2, what: 'broken', to: 'handCards'},
             ], p: .3},
         ],
     }),
@@ -1843,9 +1833,9 @@ const ALL_MONSTERS = [
             {blk: [12], armor: [10], p: .25},
             {dmg: [48], armor: [5], p: .25},
             {effects: [
-                {effect: 'resistance', amount: .8, turns: 1}
+                {effect: 'resistance', amount: .8, turns: 2}
             ], dmg: [52], armor: [15], p: .25},
-            {blk: [10], armor: [10], p: .25},
+            {dmg: [32], blk: [10], armor: [10], p: .25},
         ],
         cunning: {base: 1, current: 0, temp: [], turns: -1},
         vigor: {base: 1, current: 0, temp: [], turns: -1}
@@ -1862,13 +1852,13 @@ const ALL_MONSTERS = [
         moveSet: [
             {actions: [
                 {action: 'addCard', value: 5, what: 'chaff', to: 'drawCards'},
-            ], dmg: [10, 10]},
+            ], dmg: [10, 10, 10, 10]},
             {effects: [
                 {effect: 'stout', amount: 5, turns: -1},
-                {effect: 'solid', amount: 2, turns: -1},
+                {effect: 'solid', amount: 4, turns: -1},
             ]},
             {blk: [18]},
-            {dmg: [60]},
+            {dmg: [70]},
         ],
     }),
     new Creatures({
@@ -1880,22 +1870,18 @@ const ALL_MONSTERS = [
         health: {base: 210, current: 0, max: 210},
         tier: 4,
         armor: 20,
-        pattern: 'random',
+        pattern: 'fixed',
         moveSet: [
             {effects: [
                 {effect: 'regen', amount: 5, turns: -1},
-            ], blk: [15], p: .25},
-            {effects: [
+            ], blk: [15]},
+            {dmg: [4, 4, 4, 4, 4, 4], effects: [
                 {effect: 'might', amount: 1, turns: -1},
-            ], p: .25},
-            {dmg: [6, 6, 6, 6, 6, 6], 
-            effects: [
+            ]},
+            {dmg: [6, 6, 6, 6, 6, 6], effects: [
                 {effect: 'punch', amount: -.4, turns: 2, hex: true}
-            ], 
-            actions: [
-                {action: 'addCard', value: 2, what: 'briars', to: 'discardCards'},
-            ], p: .25},
-            {dmg: [8, 8, 8, 8, 8], p: .25},
+            ]},
+            {dmg: [8, 8, 8, 8, 8, 8]},
         ],
         heal: {base: 8, current: 0, temp: [], turns: -1},
         regen: {base: 5, current: 0, temp: [], turns: -1}
@@ -1916,26 +1902,21 @@ const ALL_MONSTERS = [
         category: 'boss',
         pattern: 'fixed',
         moveSet: [
-            {blk: [30]},
-            {effects: [
-                {effect: 'might', amount: 1, turns: -1},
+            {blk: [25], abilities: [
+                {ability: 'protection', turns: -1, enabled: true},
             ]},
             {effects: [
+                {effect: 'might', amount: 4, turns: -1},
                 {effect: 'punch', amount: .1, turns: -1},
             ]},
-            {effects: [
-                {effect: 'solid', amount: -1, turns: 1, hex: true},
-                {effect: 'vex', amount: 1, turns: -1}
+            {blk: [25], effects: [
+                {effect: 'solid', amount: -2, turns: 1, hex: true},
+                {effect: 'vex', amount: 1, turns: -1},
+                {effect: 'might', amount: -2, turns: 3, hex: true}
             ]},
             {dmg: [40]},
-            {dmg: [20], effects: [
-                {effect: 'might', amount: -2, turns: 3, hex: true}
-            ], 
-            actions: [
-                {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
-                {action: 'addCard', value: 1, what: 'briars', to: 'discardCards'},
-            ]},
-            {dmg: [20]},
+            {blk: [25], dmg: [20]},
+            {dmg: [30]},
         ],
     }),
     new Creatures({
@@ -1946,23 +1927,23 @@ const ALL_MONSTERS = [
         health: {base: 425, current: 0, max: 425},
         tier: 5,
         category: 'boss',
-        pattern: 'random',
+        pattern: 'fixed',
         moveSet: [
             {effects: [
                 {effect: 'might', amount: 10, turn: 1},
                 {effect: 'resistance', amount: .4, turns: 2}
-            ], p: .25},
-            {dmg: [25], p: .25},
-            {dmg: [15, 15], p: .1},
-            {armor: [20], blk: [20], p: .1},
-            {actions: [
+            ]},
+            {dmg: [25]},
+            {dmg: [15, 15]},
+            {armor: [20], blk: [20]},
+            {dmg: [30], actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
-            ], p: .15},
-            {actions: [
+            ]},
+            {dmg: [20], actions: [
                 {action: 'addCard', value: 1, what: 'execrate', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'flay', to: 'discardCards'},
-            ], p: .15},
+            ]},
         ],
         vex: {base: 1, current: 0, temp: [], turns: -1},
     }),
@@ -1989,18 +1970,18 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'rainbow', amount: -4, turns: 1, hex: true},
                 {effect: 'sorcery', amount: -.4, turns: 1, hex: true},
-            ], dmg: [5, 5, 5, 5, 5]},
+            ], dmg: [4, 4, 4, 4, 4, 4]},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 2, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'discardCards'},
             ]},
-            {dmg: [6, 6, 6, 6]},
+            {dmg: [5, 5, 5, 5, 5, 5]},
             {effects: [
                 {effect: 'might', amount: 5, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
-            ], dmg: [7, 7]},
+            ], dmg: [6, 6, 6, 6, 6, 6]},
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
@@ -2018,26 +1999,21 @@ const ALL_MONSTERS = [
         category: 'boss',
         pattern: 'fixed',
         moveSet: [
-            {blk: [60]},
-            {effects: [
-                {effect: 'might', amount: 1, turns: -1},
+            {blk: [50], abilities: [
+                {ability: 'protection', turns: -1, enabled: true},
             ]},
             {effects: [
+                {effect: 'might', amount: 4, turns: -1},
                 {effect: 'punch', amount: .1, turns: -1},
             ]},
-            {effects: [
-                {effect: 'solid', amount: -1, turns: 1, hex: true},
-                {effect: 'vex', amount: 1, turns: -1}
+            {blk: [50], effects: [
+                {effect: 'solid', amount: -2, turns: 1, hex: true},
+                {effect: 'vex', amount: 1, turns: -1},
+                {effect: 'might', amount: -2, turns: 3, hex: true}
             ]},
             {dmg: [40]},
-            {dmg: [20], effects: [
-                {effect: 'might', amount: -2, turns: 3, hex: true}
-            ], 
-            actions: [
-                {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
-                {action: 'addCard', value: 1, what: 'briars', to: 'discardCards'},
-            ]},
-            {dmg: [20]},
+            {blk: [50], dmg: [20]},
+            {dmg: [30]},
         ],
     }),
     new Creatures({
@@ -2049,23 +2025,23 @@ const ALL_MONSTERS = [
         health: {base: 950, current: 0, max: 950},
         tier: 5,
         category: 'boss',
-        pattern: 'random',
+        pattern: 'fixed',
         moveSet: [
             {effects: [
                 {effect: 'might', amount: 10, turn: 1},
                 {effect: 'resistance', amount: .4, turns: 2}
-            ], p: .15},
-            {dmg: [25], p: .25},
-            {dmg: [15, 15], p: .25},
-            {armor: [40], blk: [40], p: .15},
-            {actions: [
+            ]},
+            {dmg: [25]},
+            {dmg: [15, 15]},
+            {armor: [40], blk: [40]},
+            {dmg: [30], actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
-            ], p: .1},
-            {actions: [
+            ]},
+            {dmg: [20], actions: [
                 {action: 'addCard', value: 1, what: 'execrate', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'flay', to: 'discardCards'},
-            ], p: .1},
+            ]},
         ],
         vex: {base: 1, current: 0, temp: [], turns: -1},
     }),
@@ -2093,18 +2069,18 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'rainbow', amount: -4, turns: 1, hex: true},
                 {effect: 'sorcery', amount: -.4, turns: 1, hex: true},
-            ], dmg: [5, 5, 5, 5, 5]},
+            ], dmg: [4, 4, 4, 4, 4, 4]},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 2, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'discardCards'},
             ]},
-            {dmg: [6, 6, 6, 6]},
+            {dmg: [5, 5, 5, 5, 5, 5]},
             {effects: [
                 {effect: 'might', amount: 5, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
-            ], dmg: [7, 7]},
+            ], dmg: [6, 6, 6, 6, 6, 6]},
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
@@ -2121,26 +2097,21 @@ const ALL_MONSTERS = [
         category: 'boss',
         pattern: 'fixed',
         moveSet: [
-            {blk: [30]},
-            {effects: [
-                {effect: 'might', amount: 1, turns: -1},
+            {blk: [25], abilities: [
+                {ability: 'protection', turns: -1, enabled: true},
             ]},
             {effects: [
+                {effect: 'might', amount: 4, turns: -1},
                 {effect: 'punch', amount: .1, turns: -1},
             ]},
-            {effects: [
-                {effect: 'solid', amount: -1, turns: 1, hex: true},
-                {effect: 'vex', amount: 1, turns: -1}
+            {blk: [25], effects: [
+                {effect: 'solid', amount: -2, turns: 1, hex: true},
+                {effect: 'vex', amount: 1, turns: -1},
+                {effect: 'might', amount: -2, turns: 3, hex: true}
             ]},
             {dmg: [80]},
-            {dmg: [40], effects: [
-                {effect: 'might', amount: -2, turns: 3, hex: true}
-            ], 
-            actions: [
-                {action: 'addCard', value: 1, what: 'briars', to: 'drawCards'},
-                {action: 'addCard', value: 1, what: 'briars', to: 'discardCards'},
-            ]},
-            {dmg: [40]},
+            {blk: [25], dmg: [40]},
+            {dmg: [60]},
         ],
     }),
     new Creatures({
@@ -2152,23 +2123,23 @@ const ALL_MONSTERS = [
         health: {base: 425, current: 0, max: 425},
         tier: 5,
         category: 'boss',
-        pattern: 'random',
+        pattern: 'fixed',
         moveSet: [
             {effects: [
                 {effect: 'might', amount: 10, turn: 1},
                 {effect: 'resistance', amount: .4, turns: 2}
-            ], p: .25},
-            {dmg: [50], p: .25},
-            {dmg: [30, 30], p: .1},
-            {armor: [20], blk: [20], p: .1},
-            {actions: [
+            ]},
+            {dmg: [50]},
+            {dmg: [30, 30]},
+            {armor: [20], blk: [20]},
+            {dmg: [60], actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
-            ], p: .15},
-            {actions: [
+            ]},
+            {dmg: [40], actions: [
                 {action: 'addCard', value: 1, what: 'execrate', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'flay', to: 'discardCards'},
-            ], p: .15},
+            ]},
         ],
         vex: {base: 1, current: 0, temp: [], turns: -1},
     }),
@@ -2196,18 +2167,18 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'rainbow', amount: -4, turns: 1, hex: true},
                 {effect: 'sorcery', amount: -.4, turns: 1, hex: true},
-            ], dmg: [10, 10, 10, 10, 10]},
+            ], dmg: [8, 8, 8, 8, 8, 8]},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 2, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'discardCards'},
             ]},
-            {dmg: [12, 12, 12, 12]},
+            {dmg: [10, 10, 10, 10, 10, 10]},
             {effects: [
                 {effect: 'might', amount: 5, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
-            ], dmg: [14, 14]},
+            ], dmg: [12, 12, 12, 12, 12, 12]},
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
@@ -2228,14 +2199,12 @@ const ALL_MONSTERS = [
         category: 'fire_guardian',
         pattern: 'fixed',
         moveSet: [
-            {dmg: [20],
-            abilities: [
+            {dmg: [25], abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
-            {dmg: [2, 2, 2, 2, 2, 2]},
+            {dmg: [2, 2, 2, 2, 2, 2, 2, 2]},
             {armor: [30], blk: [30]},
-            {dmg: [3, 3, 3, 3],
-            effects: [
+            {dmg: [3, 3, 3, 3, 3, 3], effects: [
                 {effect: 'might', amount: 4, turns: -1},
                 {effect: 'vex', amount: 2, turns: -1}
             ]},
@@ -2256,14 +2225,12 @@ const ALL_MONSTERS = [
         category: 'fire_guardian',
         pattern: 'fixed',
         moveSet: [
-            {dmg: [20],
-            abilities: [
+            {dmg: [25], abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
-            {dmg: [2, 2, 2, 2, 2, 2]},
+            {dmg: [2, 2, 2, 2, 2, 2, 2, 2]},
             {armor: [60], blk: [60]},
-            {dmg: [3, 3, 3, 3],
-            effects: [
+            {dmg: [3, 3, 3, 3, 3, 3], effects: [
                 {effect: 'might', amount: 4, turns: -1},
                 {effect: 'vex', amount: 2, turns: -1}
             ]},
@@ -2284,14 +2251,12 @@ const ALL_MONSTERS = [
         category: 'fire_guardian',
         pattern: 'fixed',
         moveSet: [
-            {dmg: [40],
-            abilities: [
+            {dmg: [50], abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
-            {dmg: [4, 4, 4, 4, 4, 4]},
+            {dmg: [4, 4, 4, 4, 4, 4, 4, 4]},
             {armor: [30], blk: [30]},
-            {dmg: [6, 6, 6, 6],
-            effects: [
+            {dmg: [6, 6, 6, 6, 6, 6], effects: [
                 {effect: 'might', amount: 4, turns: -1},
                 {effect: 'vex', amount: 2, turns: -1}
             ]},
@@ -2314,41 +2279,28 @@ const ALL_MONSTERS = [
         category: 'ice_guardian',
         pattern: 'fixed',
         moveSet: [
-            {blk: [40], armor: [30]},
-            {dmg: [25],
-            abilities: [
-                {ability: 'unreachable', turns: 1, enabled: true},
-            ]},
-            {effects: [
+            {dmg: [25], armor: [30]},
+            {dmg: [20], effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
-            ], dmg: [20]},
-            {effects: [
-                {effect: 'punch', amount: -.2, turns: 2, hex: true},
+                {effect: 'might', amount: 2, turns: -1},
             ]},
-            {abilities: [
+            {blk: [40], armor: [30]},
+            {dmg: [20], abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ], effects: [
                 {effect: 'solid', amount: -2, turns: 2, hex: true},
-            ], dmg: [10]},
-            {effects: [
-                {effect: 'speed', amount: -2, turns: 2, hex: true},
             ]},
-            {effects: [
-                {effect: 'conjure', amount: -2, turns: 2, hex: true},
-            ], dmg: [20]},
-            {abilities: [
-                {ability: 'unreachable', turns: 1, enabled: true},
-            ], effects: [
-                {effect: 'sorcery', amount: -.2, turns: 2, hex: true},
-            ], dmg: [30]},
-            {effects: [
+            {blk: [45], effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
-            ], blk: [45]},
+                {effect: 'might', amount: 2, turns: -1},
+            ]},
+            {dmg: [25], armor: [30]},
             {effects: [
-                {effect: 'punch', amount: -.2, turns: 2, hex: true},
-            ], actions: [
+                {effect: 'might', amount: 2, turns: -1},
+            ]},
+            {dmg: [20], blk: [45], actions: [
                 {action: 'stat', what: 'health', key: 'current', value: 300}
-            ], dmg: [10], blk: [45]},
+            ]},
         ],
         vex: {base: 2, current: 0, temp: [], turns: -1},
         retaliate: {base: 1, current: 0, temp: [], turns: -1},
@@ -2366,41 +2318,28 @@ const ALL_MONSTERS = [
         category: 'ice_guardian',
         pattern: 'fixed',
         moveSet: [
-            {blk: [80], armor: [60]},
-            {dmg: [25],
-            abilities: [
-                {ability: 'unreachable', turns: 1, enabled: true},
-            ]},
-            {effects: [
+            {dmg: [25], armor: [60]},
+            {dmg: [20], effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
-            ], dmg: [20]},
-            {effects: [
-                {effect: 'punch', amount: -.2, turns: 2, hex: true},
+                {effect: 'might', amount: 2, turns: -1},
             ]},
-            {abilities: [
+            {blk: [80], armor: [60]},
+            {dmg: [20], abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ], effects: [
                 {effect: 'solid', amount: -2, turns: 2, hex: true},
-            ], dmg: [10]},
-            {effects: [
-                {effect: 'speed', amount: -2, turns: 2, hex: true},
             ]},
-            {effects: [
-                {effect: 'conjure', amount: -2, turns: 2, hex: true},
-            ], dmg: [20]},
-            {abilities: [
-                {ability: 'unreachable', turns: 1, enabled: true},
-            ], effects: [
-                {effect: 'sorcery', amount: -.2, turns: 2, hex: true},
-            ], dmg: [30]},
-            {effects: [
+            {blk: [90], effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
-            ], blk: [90]},
+                {effect: 'might', amount: 2, turns: -1},
+            ]},
+            {dmg: [25], armor: [60]},
             {effects: [
-                {effect: 'punch', amount: -.2, turns: 2, hex: true},
-            ], actions: [
+                {effect: 'might', amount: 2, turns: -1},
+            ]},
+            {dmg: [20], blk: [90], actions: [
                 {action: 'stat', what: 'health', key: 'current', value: 300}
-            ], dmg: [10], blk: [90]},
+            ]},
         ],
         vex: {base: 2, current: 0, temp: [], turns: -1},
         retaliate: {base: 1, current: 0, temp: [], turns: -1},
@@ -2418,41 +2357,28 @@ const ALL_MONSTERS = [
         category: 'ice_guardian',
         pattern: 'fixed',
         moveSet: [
-            {blk: [40], armor: [30]},
-            {dmg: [50],
-            abilities: [
-                {ability: 'unreachable', turns: 1, enabled: true},
-            ]},
-            {effects: [
+            {dmg: [50], armor: [30]},
+            {dmg: [40], effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
-            ], dmg: [40]},
-            {effects: [
-                {effect: 'punch', amount: -.2, turns: 2, hex: true},
+                {effect: 'might', amount: 2, turns: -1},
             ]},
-            {abilities: [
+            {blk: [40], armor: [30]},
+            {dmg: [40], abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ], effects: [
                 {effect: 'solid', amount: -2, turns: 2, hex: true},
-            ], dmg: [20]},
-            {effects: [
-                {effect: 'speed', amount: -2, turns: 2, hex: true},
             ]},
-            {effects: [
-                {effect: 'conjure', amount: -2, turns: 2, hex: true},
-            ], dmg: [40]},
-            {abilities: [
-                {ability: 'unreachable', turns: 1, enabled: true},
-            ], effects: [
-                {effect: 'sorcery', amount: -.2, turns: 2, hex: true},
-            ], dmg: [60]},
-            {effects: [
+            {blk: [45], effects: [
                 {effect: 'might', amount: -2, turns: 2, hex: true},
-            ], blk: [45]},
+                {effect: 'might', amount: 2, turns: -1},
+            ]},
+            {dmg: [50], armor: [30]},
             {effects: [
-                {effect: 'punch', amount: -.2, turns: 2, hex: true},
-            ], actions: [
+                {effect: 'might', amount: 2, turns: -1},
+            ]},
+            {dmg: [40], blk: [45], actions: [
                 {action: 'stat', what: 'health', key: 'current', value: 300}
-            ], dmg: [20], blk: [45]},
+            ]},
         ],
         vex: {base: 2, current: 0, temp: [], turns: -1},
         retaliate: {base: 1, current: 0, temp: [], turns: -1},

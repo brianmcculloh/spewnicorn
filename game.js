@@ -397,7 +397,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.29 Alpha';
+    let version = '0.31 Alpha';
     let seed = false;
     let difficulty = 'normal';
     let floor = 0; // TODO: set to 0
@@ -412,7 +412,7 @@ export default function Game() {
     let questChance = 1.6;
     let treasureChance = 0; // TODO: set to 0
     let candyChance = 0; // TODO: set to 0
-    let shardChance = 0;
+    let shardChance = 0; // TODO: set to 0
     let uncommonChance = 10;
     let rareChance = 0;
     let legendaryChance = 0;
