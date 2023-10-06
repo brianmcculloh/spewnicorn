@@ -72,7 +72,7 @@
  * 
  * PHASE V: 
  *  
- * TODO: played repel double sharded when cogwheel was on 9 and the card the cogwheel drew wasn't allowed to be discarded
+ * TODO: 
  * 
  * 
  * BUGS [can't replicate]:

@@ -4848,7 +4848,7 @@ export function Deck() {
     let player = window.player;
 
     function buildDeck() {
-        /*addCard('jab');
+        addCard('jab');
         addCard('jab');
         addCard('jab');
         addCard('rainbow_orb');
@@ -4859,18 +4859,8 @@ export function Deck() {
         addCard('stun');
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
-        }*/
+        }
 
-        addCard('reactor');
-        addCard('reactor');
-        addCard('reactor');
-        addCard('reactor');
-        addCard('reactor');
-        addCard('reactor');
-        addCard('reactor');
-        addCard('repel');
-        attachShard(util.getCardById('repel', this.cards), 'frost');
-        attachShard(util.getCardById('repel', this.cards), 'frost');
 
         // this is how to add a shard on init - DEV MODE ONLY
         //attachShard(util.getCardById('leather_armor', this.cards), 'frost');
