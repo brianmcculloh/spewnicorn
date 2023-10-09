@@ -1166,7 +1166,7 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('greased_cogwheel'); // use this to manually add treasures
+	//addTreasure('bracelet'); // use this to manually add treasures
 	//addCandy('strawberry_gobstopper'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
@@ -3931,7 +3931,13 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 
 	// check for bless
 	if(card.type == 'ability' && player.bless.enabled) {
-		let possibleCards = combatDeck.handCards.filter(i => i.mana > 0);
+		let possibleCards = [];
+		for(let i = 0; i < combatDeck.handCards.length; i++) {
+			let mana = util.getCardAttribute(combatDeck.handCards[i], 'mana');
+			if(mana > 0) {
+				possibleCards.push(combatDeck.handCards[i]);
+			}
+		}
 		let freeCard = util.randFromArray(possibleCards);
 		if(freeCard != undefined) {	
 			freeCard.mana = 0;
@@ -5067,7 +5073,7 @@ async function processQuest(elem) {
 
 }
 
-function crit(dmg) {
+function crit(dmg, unreachable = false) {
 	let mastery = player.mastery.current;
 	let threshold = 5; // crits are always at least 1.5x dmg
 	threshold += mastery;
@@ -5075,6 +5081,7 @@ function crit(dmg) {
 	let critDmg = Math.round(dmg * multiplier);
 	let fierce = player.fierce.current;
 	critDmg += fierce;
+	if(unreachable) critDmg = 1;
 	$('.crit').addClass('shown').find('span').html(critDmg);
 	return critDmg;
 }
@@ -5095,7 +5102,9 @@ async function attackMonster(monster, dmg, fatalityHit = false, hypnotizeHit = f
 	// it's possible damage is negative if player has negative might
 	dmg = dmg < 0 ? 0 : dmg;
 
-	let d = criticalHit && !fatalityHit ? crit(dmg) : dmg;
+	// we don't want to show the large crit value if monster is unreachable and only actually takes 1
+	let unreachable = monster.unreachable?.enabled;
+	let d = criticalHit && !fatalityHit ? crit(dmg, unreachable) : dmg;
 	
 	doDamage(d, player, [monster], false, false, fatalityHit, hypnotizeHit, criticalHit);
 	

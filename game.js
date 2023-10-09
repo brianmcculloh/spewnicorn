@@ -397,7 +397,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.31 Alpha';
+    let version = '0.32 Alpha';
     let seed = false;
     let difficulty = 'normal';
     let floor = 0; // TODO: set to 0
@@ -416,7 +416,7 @@ export default function Game() {
     let uncommonChance = 10;
     let rareChance = 0;
     let legendaryChance = 0;
-    let critChance = 0;
+    let critChance = 0; // TODO: set to 0
     let attackCardsPlayed = 0;
     let cardsDrawn = 0;
     let highestDmgRoll = 0; // TODO: set to 0
