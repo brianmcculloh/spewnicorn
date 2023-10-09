@@ -41,6 +41,7 @@
  * Mechanic: increase all card use/expire/linger values
  * Effect: retrofit resistance so that it can be hexed and go above 1 so specific monsters can be targeted to take more magic damage
  * Mechanic: stance cards - do additional things if you're in the matching stance - for instance 0 cost card that adds 1 mana, but if you're in aura it adds 2 mana instead
+ * Effect: Radioactive - do x damage to all enemies every turn. make it hard to obtain, maybe with combine cards or a super expensive single card
  * 
  * More Quests:
  * Add special quest card(s) to deck
@@ -1938,11 +1939,11 @@ function visitQuest(visited = false) {
 function changeStance(stance) {
 	// check for stance
 	if(stance == 'sparkle') {
-		player.might.base += 2;
-		player.might.current += 2;
+		player.might.base += 3;
+		player.might.current += 3;
 	} else if(player.stance == 'sparkle') { // this mean's the player's previous stance was sparkle because it hasn't changed yet
-		player.might.base -= 2;
-		player.might.current -= 2;
+		player.might.base -= 3;
+		player.might.current -= 3;
 	}
 }
 
@@ -2026,7 +2027,7 @@ async function beginTurn() {
 	} else if(player.stance == 'shimmer') {
 		//heal(player, 1);
 		applyArmor(1, player);
-		applyBlock(6, player);
+		applyBlock(10, player);
 	}
 
 	// check for spance * speed bonuses. stances only apply to speed, which can only be taken into account after turn 1
@@ -2039,11 +2040,11 @@ async function beginTurn() {
 
 		if(player.speed.current > 0) {
 			if(player.stance == 'none') {
-				applyBlock((player.speed.current * 2), player);
+				applyBlock((player.speed.current * 4), player);
 			} else if(player.stance == 'aura') {
 				player.mana.current += Math.round(player.speed.current * player.aura.level);
 			} else if(player.stance == 'sparkle') {
-				let tempMight = Math.round(player.speed.current * player.sparkle.level * 2);
+				let tempMight = Math.round(player.speed.current * player.sparkle.level * 3);
 				if(tempMight > 0) {
 					player.might.current += tempMight;
 					player.might.temp.push(tempMight);
@@ -2053,7 +2054,7 @@ async function beginTurn() {
 				//player.health.max += Math.floor((player.speed.current / 4) * player.shimmer.level); // we determined this could be infinitely farmable
 				//heal(player, Math.floor((player.speed.current * player.shimmer.level) / 2)); // too much healing overall
 				applyArmor(Math.floor(player.speed.current * player.shimmer.level), player);
-				applyBlock(Math.floor(player.speed.current * player.shimmer.level * 2), player);
+				applyBlock(Math.floor(player.speed.current * player.shimmer.level * 3), player);
 			}
 		}
 			
@@ -5081,7 +5082,7 @@ function crit(dmg, unreachable = false) {
 	let critDmg = Math.round(dmg * multiplier);
 	let fierce = player.fierce.current;
 	critDmg += fierce;
-	if(unreachable) critDmg = 1;
+	if(unreachable) critDmg = '<strike>' + critDmg + '</strike>' + ' 1';
 	$('.crit').addClass('shown').find('span').html(critDmg);
 	return critDmg;
 }
