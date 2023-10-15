@@ -668,12 +668,13 @@ const ALL_CARDS = [
     new Cards({
         id: 'shimmer', name: 'Shimmer', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'shimmerAmount',
-        descOverride: '+1 Shimmer (+2 Speed at max level)',
+        descOverride: '<span class="desc-item-value">+<span class="amount shimmer-amount" data-amount="1">1</span> Shimmer (+<span class="amount speed-amount" data-amount="2">2</span> Speed at max level)</span>',
         slots: 1,
         actions: [
             {action: 'stat', what: 'shimmer', key: 'current', value: 1},
         ],
         shardUpgrades: {
+            descOverride: '<span class="desc-item-value">+<span class="amount shimmer-amount" data-amount="2">2</span> Shimmer (+<span class="amount speed-amount" data-amount="2">2</span> Speed at max level)</span>',
             actions: [
                 {action: 'stat', what: 'shimmer', key: 'current', value: 2},
             ],
@@ -682,12 +683,13 @@ const ALL_CARDS = [
     new Cards({
         id: 'sparkle', name: 'Sparkle', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'sparkleAmount',
-        descOverride: '+1 Sparkle (+5 Health at max level)',
+        descOverride: '<span class="desc-item-value">+<span class="amount sparkle-amount" data-amount="1">1</span> Sparkle (+<span class="amount health-amount" data-amount="5">5</span> Health at max level)</span>',
         slots: 1,
         actions: [
             {action: 'stat', what: 'sparkle', key: 'current', value: 1},
         ],
         shardUpgrades: {
+            descOverride: '<span class="desc-item-value">+<span class="amount sparkle-amount" data-amount="2">2</span> Sparkle (+<span class="amount health-amount" data-amount="5">5</span> Health at max level)</span>',
             actions: [
                 {action: 'stat', what: 'sparkle', key: 'current', value: 2},
             ],
@@ -696,12 +698,13 @@ const ALL_CARDS = [
     new Cards({
         id: 'aura', name: 'Aura', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'auraAmount',
-        descOverride: '+1 Aura (+1 Mana at max level)',
+        descOverride: '<span class="desc-item-value">+<span class="amount aura-amount" data-amount="1">1</span> Aura (+<span class="amount mana-amount" data-amount="1">1</span> Mana at max level)</span>',
         slots: 1,
         actions: [
             {action: 'stat', what: 'aura', key: 'current', value: 1},
         ],
         shardUpgrades: {
+            descOverride: '<span class="desc-item-value">+<span class="amount aura-amount" data-amount="2">2</span> Aura (+<span class="amount mana-amount" data-amount="1">1</span> Mana at max level)</span>',
             actions: [
                 {action: 'stat', what: 'aura', key: 'current', value: 2},
             ],
@@ -1894,7 +1897,7 @@ const ALL_CARDS = [
         },
         iceShardUpgrades: {
             draw: {
-                dmg: [15],
+                dmg: [10],
             },
         },
     }),
@@ -4546,7 +4549,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'mystical_energy', name: 'Mystical Energy', type: 'magic', mana: 0, tier: 'rare', vanish: true, weight: 3, courage: 5, 
+        id: 'mystical_energy', name: 'Mystical Energy', type: 'magic', mana: 0, tier: 'rare', vanish: true, weight: 2, courage: 5, 
         magic: [{type: 'aligned', amount: 7}],
         actions: [
             {action: 'removeHexes', to: 'player'},
@@ -4863,7 +4866,7 @@ export function Deck() {
 
 
         // this is how to add a shard on init - DEV MODE ONLY
-        //attachShard(util.getCardById('leather_armor', this.cards), 'frost');
+        attachShard(util.getCardById('stun', this.cards), 'frost');
 
         
     }
@@ -5305,12 +5308,10 @@ export function Deck() {
                     if(id == 'stat') {
                         name = whatName.toUpperCase();
                         name = key != undefined ? key.toUpperCase() + ' ' + name : name;
+                        let symbol = (typeof value === 'number' && value > 0) ? '+' : '';
+                        value = value != undefined ? ' ' + symbol + '<span class="amount ' + what + '-amount" data-amount="' + value + '">' + value + '</span>': '';
+                        // this would be redundant to display
                         what = '';
-                        if(typeof value === 'number' && value > 0) {
-                            value = value != undefined ? ' +' + value : '';
-                        } else {
-                            value = value != undefined ? ' ' + value : '';
-                        }
                     } else {
                         what = what != undefined ? ' <span class="whatname">' + whatName + '</span>' : '';
                         optional = optional == true ? ' up to ' : '';

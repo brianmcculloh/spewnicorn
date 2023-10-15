@@ -42,6 +42,14 @@
  * Effect: retrofit resistance so that it can be hexed and go above 1 so specific monsters can be targeted to take more magic damage
  * Mechanic: stance cards - do additional things if you're in the matching stance - for instance 0 cost card that adds 1 mana, but if you're in aura it adds 2 mana instead
  * Effect: Radioactive - do x damage to all enemies every turn. make it hard to obtain, maybe with combine cards or a super expensive single card
+ * Effect: whenever you exhaust a clutter card, do x damage, gain x block, summon x rainbow, gain x armor, heal x amount, or draw x cards
+ * Ability: card rewards are now booster pack agnostic (like a prismatic shard)
+ * Action: do damage equal to floor + turn
+ * Ability: heal the current floor number health at the startof arenas and guardians
+ * Ability: languish - take damage each time a card is played equal to number of cards played this combat - have a unique enemy hex this, and also have a really good card have this as its downside
+ * Effect: whenever creature gets hexed, they gain x might
+ * 
+ * 
  * 
  * More Quests:
  * Add special quest card(s) to deck
@@ -74,7 +82,6 @@
  * PHASE V: 
  *  
  * TODO: 
- * 
  * 
  * BUGS [can't replicate]:
  * BUG: done button ghost showing on subsequent combats - if this happens again, inspect the class of the button because .button-done is hidden on combat end and start
@@ -133,6 +140,14 @@
  * Card: Ram: do damage equal to current armor, reduce armor by 10%
  * Card: Cycle pack - draw 2 cards (vanish) - just a straightforward utility card 
  * Card: Big dmg but reduce summon/solid/etc. (like hyperbeam)
+ * Card: Add a random card from the current booster pack to hand
+ * Card: ? card that applies x armor
+ * Card: ? card that heals x amount
+ * Card: ? card that applies x turns of punch hex
+ * Card: ? card that applies x amount of negative might hex
+ * Card: ? super combined card that does several of the above things at once
+ * Card: Ascending Strike - adds the new action that does damage based on floor/turn
+ * Card: Simple tool card that just removes
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -141,7 +156,10 @@
  * Treasure: 5 tool cards per turn adds wisdom
  * Treasure: 5 tool cards per turn adds tank (1 turn)
  * Treasure: add one random attack/tool/ability/magic card to hand per turn
+ * Treasure: increase momentum every x cards played per turn or combat
+ * Treasure: increase mystery every x cards played per turn or combat
  * Candy: add cards to hand
+ * Quest: choose a card from the current booster pack
  * 
  * 
  * 
@@ -484,6 +502,12 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.tile.clickable', function(e) {
 
+		$('.map-inner').css('pointer-events', 'none');
+
+		setTimeout(function() {
+			$('.map-inner').css('pointer-events', 'auto');
+		}, 2000);
+
 		if($(this).hasClass('fountain')) {
 			let visited = $(this).hasClass('visited') ? true : false;
 			visitFountain(visited);
@@ -507,6 +531,26 @@ jQuery(document).ready(function($) {
 
 		if(game.debug) $('.map-inner div').addClass('clickable');
 		
+	});
+
+	$('.tile').mousedown(function(event) {
+		switch (event.which) {
+			case 3:
+				$(this).toggleClass('marked');
+				break;
+		}
+	});
+
+	$('.tile').mouseenter(function(event) {
+		switch (event.which) {
+			case 3:
+				$(this).toggleClass('marked');
+				break;
+		}
+	});
+
+	$('*').on('contextmenu', function() {
+		if(!game.debug) return false;
 	});
 
 	$(document).on('click', '.end-turn:not(.disabled)', function(e) {
@@ -1167,7 +1211,7 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('bracelet'); // use this to manually add treasures
+	//saddTreasure('signet_ring'); // use this to manually add treasures
 	//addCandy('strawberry_gobstopper'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
@@ -1530,6 +1574,48 @@ function updateCardDescription(elem, cards) {
 		$(this).attr('data-amount', magic);
 		let css = magic > originalMagic ? 'better' : 'worse';
 		if(magic==originalMagic) css = '';
+		$(this).addClass(css);
+	});
+	elem.find('.health-amount').each(function(e) {
+		let originalHealth = $(this).data('amount');
+		let adjustedHealth = originalHealth + player.mend.current;
+		if(adjustedHealth < 0) adjustedHealth = 0;
+		if(card.age > 0) {
+			if(player.wisdom.current != 1) {
+				adjustedHealth += Math.round(card.age * player.wisdom.current);
+			} else {
+				adjustedHealth += card.age;
+			}
+		}
+		$(this).html(adjustedHealth);
+		$(this).attr('data-amount', adjustedHealth);
+		let css = '';
+		if(adjustedHealth > originalHealth) {
+			css = 'better';
+		} else if(adjustedHealth < originalHealth) {
+			css = 'worse';
+		}
+		$(this).addClass(css);
+	});
+	elem.find('.courage-amount, .shimmer-amount, .sparkle-amount, .aura-amount, .mana-amount, .speed-amount').each(function(e) {
+		let originalValue = $(this).data('amount');
+		let adjustedValue = originalValue;
+		if(adjustedValue < 0) adjustedValue = 0;
+		if(card.age > 0) {
+			if(player.wisdom.current != 1) {
+				adjustedValue += Math.round(card.age * player.wisdom.current);
+			} else {
+				adjustedValue += card.age;
+			}
+		}
+		$(this).html(adjustedValue);
+		$(this).attr('data-amount', adjustedValue);
+		let css = '';
+		if(adjustedValue > originalValue) {
+			css = 'better';
+		} else if(adjustedValue < originalValue) {
+			css = 'worse';
+		}
 		$(this).addClass(css);
 	});
 	let use = util.getCardAttribute(card, 'use');
@@ -2281,6 +2367,10 @@ async function monsterAction(action = 'perform') {
 		let thisMonster = currentMonsters[i];
 
 		if(action == 'perform') {
+
+			// visually indicate which monster is taking their turn
+			$('.monster[data-guid=' + thisMonster.guid + ']').addClass('taking-turn');
+
 			// account for protection enabled
 			if(thisMonster.protection.enabled) {
 				thisMonster.block += thisMonster.stout.current;
@@ -2449,7 +2539,11 @@ async function monsterAction(action = 'perform') {
 						value = value != undefined ? ' +' + value : '';
 						to = value != undefined ? ' to ' + to : '';
 						intentTooltip = prefix + name + what + value + to;
-						intent += '<span class="intent-hex action-hex intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
+						if(id == 'removeHexes') {
+							intent += '<span class="intent-buff action-buff intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
+						} else {
+							intent += '<span class="intent-hex action-hex intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
+						}
 					}
 				} else {
 					let update = processActions(actions, currentMonsters[i]);
@@ -2464,9 +2558,10 @@ async function monsterAction(action = 'perform') {
 			util.setTooltips('.monster-intent');
 		} else {
 			monsters.updateMonsterStats(thisMonster);
+			$('.monster[data-guid=' + thisMonster.guid + ']').removeClass('taking-turn');
 		}
 
-		//await util.wait(100); // add this if we want a bit more time between monsters
+		await util.wait(100); // add this if we want a bit more time between monsters
 		
 	}
 
@@ -4438,6 +4533,18 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						let key = actions[e].key;
 						let what = actions[e].what;
 						let value = actions[e].value;
+
+						// if a card was played, check for age multiply effects
+						if(playedCard) {
+							if(playedCard.age > 0) {
+								if(player.wisdom.current != 1) {
+									value += Math.round(playedCard.age * player.wisdom.current);
+								} else {
+									value += playedCard.age;
+								}
+							}
+						}
+						
 						// check for changing stances
 						if(what == 'stance') {
 							if(value != player.stance) {
@@ -4468,8 +4575,10 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							if(key == 'type') {
 								player[what][key] = value;
 							} else {
+								if(what == 'health') {
+									heal(player, value);
 								// we will actually increase the essence stats within the updateEssenceLevels function called below
-								if(what != 'aura' && what != 'sparkle' && what != 'shimmer') {
+								} else if(what != 'aura' && what != 'sparkle' && what != 'shimmer') {
 									player[what][key] += value;
 									// it's possible rainbow gets reduced below base value - don't let this happen
 									if(player.rainbow.base > player.rainbow.max) player.rainbow.max = player.rainbow.base;

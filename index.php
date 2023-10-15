@@ -393,6 +393,8 @@
 
       </div>
 
+      <h3>Tip: you can right-click map tiles to mark your intended path.</h3>
+
     </div>
 
     <div class="debug-log">

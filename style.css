@@ -1309,6 +1309,13 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
     left: calc(50% - 120px);
     top: -55px;
 }
+.map h3 {
+	position: absolute;
+	text-transform:none;
+    bottom: 66px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 .start-arrow {
 	position:absolute;
 	z-index:10;
@@ -1445,28 +1452,31 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 .tile.arena.clickable, .tile.arena:hover {
 	background:hsl(330 95% 40% / 1);
 }
+.tile.marked {
+	background: white!important;
+}
 .tile.gate:hover {
 	scale:1.4;
 }
 
 /* visited */
 .tile.sparkle.visited:not(.current) {
-	background:rgba(0,0,0,.5);
+	background:rgba(0,0,0,.5)!important;
 }
 .tile.shimmer.visited:not(.current) {
-	background:rgba(0,0,0,.5);
+	background:rgba(0,0,0,.5)!important;
 }
 .tile.aura.visited:not(.current) {
-	background:rgba(0,0,0,.5);
+	background:rgba(0,0,0,.5)!important;
 }
 .tile.fountain.visited:not(.current) {
-	background:rgba(0,0,0,.5);
+	background:rgba(0,0,0,.5)!important;
 }
 .tile.quest.visited:not(.current) {
-	background:rgba(0,0,0,.5);
+	background:rgba(0,0,0,.5)!important;
 }
 .tile.arena.visited:not(.current) {
-	background:rgba(0,0,0,.5);
+	background:rgba(0,0,0,.5)!important;
 }
 .tile.sparkle.visited:not(.current) span.icon {
 	filter: grayscale(100%);
@@ -2200,6 +2210,15 @@ body.arena .monster-panel {
 		drop-shadow(-1px 1px 0 red)
 		drop-shadow(-1px -1px 0 red)
 		drop-shadow(0 0 20px red);
+}
+.monster.taking-turn .sprite {
+	transform:translateX(-40px) translateY(20px);
+	filter:
+		drop-shadow(1px 1px 0 yellow)
+		drop-shadow(1px -1px 0 yellow)
+		drop-shadow(-1px 1px 0 yellow)
+		drop-shadow(-1px -1px 0 yellow)
+		drop-shadow(0 0 20px yellow);
 }
 @keyframes rumble {
 	0% {transform: rotate(0deg);}

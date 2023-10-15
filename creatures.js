@@ -1966,6 +1966,7 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
+                {action: 'removeHexes', to: 'self'}
             ]},
             {effects: [
                 {effect: 'rainbow', amount: -4, turns: 1, hex: true},
@@ -1976,6 +1977,7 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'discardCards'},
+                {action: 'removeHexes', to: 'self'}
             ]},
             {dmg: [5, 5, 5, 5, 5, 5]},
             {effects: [
@@ -2065,6 +2067,7 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
+                {action: 'removeHexes', to: 'self'}
             ]},
             {effects: [
                 {effect: 'rainbow', amount: -4, turns: 1, hex: true},
@@ -2075,6 +2078,7 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'discardCards'},
+                {action: 'removeHexes', to: 'self'}
             ]},
             {dmg: [5, 5, 5, 5, 5, 5]},
             {effects: [
@@ -2163,6 +2167,7 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards'},
+                {action: 'removeHexes', to: 'self'}
             ]},
             {effects: [
                 {effect: 'rainbow', amount: -4, turns: 1, hex: true},
@@ -2173,6 +2178,7 @@ const ALL_MONSTERS = [
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'discardCards'},
+                {action: 'removeHexes', to: 'self'}
             ]},
             {dmg: [10, 10, 10, 10, 10, 10]},
             {effects: [
