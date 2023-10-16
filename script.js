@@ -81,7 +81,7 @@
  * 
  * PHASE V: 
  *  
- * TODO: 
+ * TODO: Ability to buy packs of cards mid-combat with courage - the packs get added to the current card pool
  * 
  * BUGS [can't replicate]:
  * BUG: done button ghost showing on subsequent combats - if this happens again, inspect the class of the button because .button-done is hidden on combat end and start

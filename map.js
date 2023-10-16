@@ -63,7 +63,7 @@ export default function Map() {
     function buildMap() {
 
         // clear previous map if needed
-        $('.tile').removeClass('gate ice-gate fire-gate arena fountain quest shimmer sparkle aura current visited clickable')
+        $('.tile').removeClass('gate ice-gate fire-gate arena fountain quest shimmer sparkle aura current visited clickable marked')
             .attr('data-powertip', '')
             .attr('data-essence', '')
             .attr('data-amount', '')
