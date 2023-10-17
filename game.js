@@ -3,12 +3,12 @@ const util = new Util();
 
 const ALL_STARTING_OPTIONS = [
     {att: 'courage', name: '+8 Courage', amount: 8},
-    {att: 'armor', name: '+30 Armor', amount: 30},
+    {att: 'armor', name: '+40 Armor', amount: 40},
     {att: 'health', key: 'max', name: '+20 Max Health', amount: 20},
     {att: 'aura', key: 'current', name: '+4 Aura', amount: 4},
     {att: 'sparkle', key: 'current', name: '+4 Sparkle', amount: 4},
     {att: 'shimmer', key: 'current', name: '+4 Shimmer', amount: 4},
-    {att: 'rainbow', key: 'base', name: '+5 Rainbow Charge', amount: 8},
+    {att: 'rainbow', key: 'base', name: '+8 Rainbow Charge', amount: 8},
     {att: 'aggro', key: 'current', name: '-5 Aggro', entity: 'game', amount: -5},
     {action: 'addRare', name: 'Add a random rare card, lose 12 health'},
     {action: 'addCommonTreasure', name: 'Add a random common treasure'},
