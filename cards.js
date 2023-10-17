@@ -3585,7 +3585,7 @@ const ALL_CARDS = [
             natural: true
         },
         fireShardUpgrades: {
-            effects: [
+            effects_2: [
                 {effect: 'momentum', amount: 4, turns: -1}
             ],
         },
@@ -4982,7 +4982,7 @@ export function Deck() {
 
         let dmg = shard ? util.getShardAttribute(card, shard, 'dmg') : util.getCardAttribute(card, 'dmg');
         if(dmg.length > 0) {
-            desc += '<div class="desc-item">Deal ';
+            desc += '<div class="desc-item desc-dmg">Deal ';
             for(let i = 0; i < dmg.length; i++) {
                 desc += '<span class="amount dmg" data-amount="' + dmg[i] + '">' + dmg[i] + '</span>, ';
             }

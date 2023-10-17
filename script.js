@@ -49,6 +49,9 @@
  * Ability: languish - take damage each time a card is played equal to number of cards played this combat - have a unique enemy hex this, and also have a really good card have this as its downside
  * Effect: whenever creature gets hexed, they gain x might
  * Mechanic: Ability to buy packs of cards mid-combat with courage - the packs get added to the current card pool and are otherwise unaddable
+ * Effect: heal x amount per magic rainbow cycle
+ * Effect: whenever you combine a card this turn, gain x block next turn
+ * Action: double the amount of an effect - might, punch, solid, stout, lightning, thunder, etc.
  * 
  * 
  * 
@@ -152,6 +155,14 @@
  * Card: ? super combined card that does several of the above things at once
  * Card: Ascending Strike - adds the new action that does damage based on floor/turn
  * Card: Simple tool card that just removes
+ * Card: 3 cost attack that reduces mana cost per shard, and double frost results in 0 cost (double flame results in 0 cost for flame version) - this is 2 cards
+ * Card: magic card that hits multiple times and retains so it synergizes with age
+ * Card: low dmg attack card that heals for amount of hp target monster loses
+ * Card: cycle pack - discard entire hand and draw max speed num of cards
+ * Card: combine pack - destroy entire hand and add 4 battle moves
+ * Card: magic pack - destroy entire hand and summon x aligned magic per card destroyed
+ * Card: non pack - destroy entire hand and do x dmg to target per card destroyed
+ * Card: non pack - destroy entire hand and gain x block per card destroyed
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -162,6 +173,7 @@
  * Treasure: add one random attack/tool/ability/magic card to hand per turn
  * Treasure: increase momentum every x cards played per turn or combat
  * Treasure: increase mystery every x cards played per turn or combat
+ * Treasure: common treasure that adds 1 or 2 wisdom
  * Candy: add cards to hand
  * Quest: choose a card from the current booster pack
  * 
@@ -1527,21 +1539,21 @@ function updateCardDescription(elem, cards) {
 		}
 		$(this).addClass(css);
 	});
-	elem.find('.dmg').each(function(e) {
+	elem.find('.desc-dmg .dmg').each(function(e) {
 		let dmg = $(this).data('amount');
 		let originalDmg = dmg;
-		if(player.might.current != 0 && card.draw.target != 'player' && card.discard.target != 'player') {
+		if(player.might.current != 0) {
 			dmg += player.might.current;
 		}
-		if(player.momentumAmount != 0 && card.draw.target != 'player' && card.discard.target != 'player') {
+		if(player.momentumAmount != 0) {
 			dmg += player.momentumAmount;
 		}
 		// if we're outside of combat, current will be unset (0), so use base instead
 		let punch = game.combatEndedFlag ? player.punch.base : player.punch.current;
-		if(punch != 1 && card.draw.target != 'player' && card.discard.target != 'player') {
+		if(punch != 1) {
 			dmg = Math.round(dmg * punch);
 		}
-		if(card.age > 0 && card.draw.target != 'player' && card.discard.target != 'player') {
+		if(card.age > 0) {
 			if(player.wisdom.current != 1) {
 				dmg += Math.round(card.age * player.wisdom.current);
 			} else {
@@ -4483,7 +4495,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					case 'discard':
 						// currently only cards can invoke this action, so make sure invoking card isn't the only one in hand
 						if(combatDeck.handCards.length > 1) {
-							$('.discard-message').html('choose cards to discard').addClass('shown');
+							$('.discard-message').html('choose cards to <span>discard</span>').addClass('shown');
 							//$('.discard-done').addClass('shown');
 							$('.player-cards .card').addClass('discardable').removeClass('playable');
 							$('.draw-card, .draw-all').addClass('disabled');
@@ -4495,7 +4507,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					case 'destroy':
 						// currently only cards can invoke this action, so make sure invoking card isn't the only one in hand
 						if(combatDeck.handCards.length > 1) {
-							$('.destroy-message').html('choose cards to destroy').addClass('shown');
+							$('.destroy-message').html('choose cards to <span>destroy</span>').addClass('shown');
 							if(actions[e].optional) {
 								game.destroyOptional = true;
 								$('.destroy-done').addClass('shown');

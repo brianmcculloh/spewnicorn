@@ -2889,6 +2889,11 @@ body.arena .monster-panel {
 .player-panel .message.destroy-message {
 
 }
+.player-panel .message span {
+	background:rgba(0,0,0,1);
+	display:inline-block;
+	line-height:22px;
+}
 .player-panel .player {
 	display:flex;
 	gap:10px;
