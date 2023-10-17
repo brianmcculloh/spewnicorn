@@ -1227,7 +1227,7 @@ function init() {
 
 	console.clear();
 
-	addTreasure('signet_ring'); // use this to manually add treasures
+	//addTreasure('signet_ring'); // use this to manually add treasures
 	//addCandy('strawberry_gobstopper'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 

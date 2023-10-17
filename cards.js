@@ -3214,20 +3214,12 @@ const ALL_CARDS = [
         abilities: [
             {ability: 'hypnotize', turns: 1, enabled: true}
         ],
-        draw: {
-            armor: [2]
-        },
         slots: 2,
         shardUpgrades: {
             ephemeral: false,
         },
-        fireShardUpgrades: {
-            mana_2: 2
-        },
         bothShardUpgrades: {
-            draw: {
-                armor: [4]
-            },
+            mana_2: 2
         },
     }),
     new Cards({
@@ -4201,7 +4193,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'metamorphose', name: 'Metamorphose', type: 'magic', mana: 1, tier: 'uncommon', weight: 7, courage: 3, 
-        magic: [{type: 'random', amount: 6}],
+        magic: [{type: 'aligned', amount: 5}],
         sound: 'magic10',
         actions: [
             {action: 'transmute', select: 2, from: 'handCards'}
