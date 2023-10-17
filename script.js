@@ -48,6 +48,7 @@
  * Ability: heal the current floor number health at the startof arenas and guardians
  * Ability: languish - take damage each time a card is played equal to number of cards played this combat - have a unique enemy hex this, and also have a really good card have this as its downside
  * Effect: whenever creature gets hexed, they gain x might
+ * Mechanic: Ability to buy packs of cards mid-combat with courage - the packs get added to the current card pool and are otherwise unaddable
  * 
  * 
  * 
@@ -81,7 +82,10 @@
  * 
  * PHASE V: 
  *  
- * TODO: Ability to buy packs of cards mid-combat with courage - the packs get added to the current card pool
+ * TODO: Play through 5 more full runs for debugging and balance
+ * TODO: Implement stance card mechanic
+ * 
+ * 
  * 
  * BUGS [can't replicate]:
  * BUG: done button ghost showing on subsequent combats - if this happens again, inspect the class of the button because .button-done is hidden on combat end and start
@@ -1211,7 +1215,7 @@ function init() {
 
 	console.clear();
 
-	//saddTreasure('signet_ring'); // use this to manually add treasures
+	addTreasure('signet_ring'); // use this to manually add treasures
 	//addCandy('strawberry_gobstopper'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
@@ -1579,7 +1583,6 @@ function updateCardDescription(elem, cards) {
 	elem.find('.health-amount').each(function(e) {
 		let originalHealth = $(this).data('amount');
 		let adjustedHealth = originalHealth + player.mend.current;
-		if(adjustedHealth < 0) adjustedHealth = 0;
 		if(card.age > 0) {
 			if(player.wisdom.current != 1) {
 				adjustedHealth += Math.round(card.age * player.wisdom.current);
@@ -1597,10 +1600,9 @@ function updateCardDescription(elem, cards) {
 		}
 		$(this).addClass(css);
 	});
-	elem.find('.courage-amount, .shimmer-amount, .sparkle-amount, .aura-amount, .mana-amount, .speed-amount').each(function(e) {
+	elem.find('.courage-amount, .shimmer-amount, .sparkle-amount, .aura-amount').each(function(e) {
 		let originalValue = $(this).data('amount');
 		let adjustedValue = originalValue;
-		if(adjustedValue < 0) adjustedValue = 0;
 		if(card.age > 0) {
 			if(player.wisdom.current != 1) {
 				adjustedValue += Math.round(card.age * player.wisdom.current);
@@ -4535,7 +4537,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						let value = actions[e].value;
 
 						// if a card was played, check for age multiply effects
-						if(playedCard) {
+						// but don't do so for mana/speed
+						if(playedCard && what != 'mana' && what != 'speed') {
 							if(playedCard.age > 0) {
 								if(player.wisdom.current != 1) {
 									value += Math.round(playedCard.age * player.wisdom.current);
