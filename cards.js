@@ -1940,8 +1940,8 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'weaponry', name: 'Weaponry', type: 'attack', target: 'monster', mana: 2, tier: 'rare', weight: 6, courage: 3, 
-        dmg: [11],
+        id: 'weaponry', name: 'Weaponry', type: 'attack', target: 'monster', mana: 0, tier: 'rare', weight: 3, courage: 3, 
+        dmg: [12],
         sound: 'attack2',
         draw: {
             dmg: [2],
@@ -1968,30 +1968,31 @@ const ALL_CARDS = [
             ],
         },
         bothShardUpgrades: {
-            dmg: [16],
+            dmg: [18],
             actions: [
                 {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'rare', to: 'handCards'},
             ],
         },
     }),
     new Cards({
-        id: 'amass', name: 'Amass', type: 'attack', target: 'monster', vanish: true, mana: 2, tier: 'rare', weight: 7, courage: 3, 
+        id: 'amass', name: 'Amass', type: 'attack', target: 'monster', vanish: true, mana: 0, tier: 'rare', weight: 3, courage: 3, 
         dmg: [14],
         actions: [
-            {action: 'addCard', value: 3, type: 'attack', tier: 'rare', to: 'drawCards'},
+            {action: 'addCard', value: 1, type: 'attack', tier: 'rare', to: 'drawCards'},
         ],
         slots: 2,
-        fireShardUpgrades: {
-            dmg: [19],
-            mana: 1,
-            mana_2: 0
-        },
         shardUpgrades: {
-            mana: 1
+            actions: [
+                {action: 'addCard', value: 1, type: 'attack', tier: 'uncommon', to: 'drawCards'},
+                {action: 'addCard', value: 1, type: 'attack', tier: 'rare', to: 'drawCards'},
+            ],
         },
         bothShardUpgrades: {
-            dmg: [19],
-            mana: 0
+            actions: [
+                {action: 'addCard', value: 1, type: 'attack', tier: 'common', to: 'drawCards'},
+                {action: 'addCard', value: 1, type: 'attack', tier: 'uncommon', to: 'drawCards'},
+                {action: 'addCard', value: 1, type: 'attack', tier: 'rare', to: 'drawCards'},
+            ],
         },
     }),
     new Cards({
@@ -2025,7 +2026,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'clever_barrage', name: 'Clever Barrage', type: 'attack', target: 'monster', mana: 3, tier: 'rare', ephemeral: true, weight: 3, courage: 4, 
+        id: 'clever_barrage', name: 'Clever Barrage', type: 'attack', target: 'monster', mana: 3, tier: 'rare', ephemeral: true, courage: 4, 
         dmg: [5, 4, 3, 2, 1],
         actions: [
             {action: 'ensharden', type: 'random', select: -1, from: 'handCards', random: true}
@@ -2046,7 +2047,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'freeze', name: 'Freeze', type: 'attack', target: 'monster', mana: 3, tier: 'rare', weight: 2, courage: 5, 
+        id: 'freeze', name: 'Freeze', type: 'attack', target: 'monster', mana: 3, tier: 'rare', weight: 1, courage: 5, 
         dmg: [14],
         sound: 'attack10',
         actions: [
@@ -2060,7 +2061,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'scorch', name: 'Scorch', type: 'attack', target: 'monster', mana: 3, tier: 'rare', weight: 2, courage: 5, 
+        id: 'scorch', name: 'Scorch', type: 'attack', target: 'monster', mana: 3, tier: 'rare', weight: 1, courage: 5, 
         dmg: [14],
         sound: 'attack11',
         actions: [
@@ -4176,7 +4177,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'mystical_protection', name: 'Mystical Protection', type: 'magic', mana: 2, tier: 'uncommon', weight: 4, courage: 4, 
+        id: 'mystical_protection', name: 'Mystical Protection', type: 'magic', mana: 1, tier: 'uncommon', weight: 4, courage: 4, 
         magic: [{type: 'aligned', amount: 7}],
         effects: [
             {effect: 'vex', amount: 2, turns: -1}

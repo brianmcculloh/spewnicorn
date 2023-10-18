@@ -52,16 +52,19 @@
  * Effect: heal x amount per magic rainbow cycle
  * Effect: whenever you combine a card this turn, gain x block next turn
  * Action: double the amount of an effect - might, punch, solid, stout, lightning, thunder, etc.
+ * Action: play card(s) from draw pile (either random or chosen)
+ * Action: play all attack/magic/tool cards in draw pile and hand
+ * Action: play all cards that have age
+ * Ability: lightning multiplies thunder
+ * Ability: might multiplies punch
+ * Mechanic: tradable cards called "weapons" - they can be traded in at shops for ever increasingly stronger weapons - kind of like infinite upgrades
  * 
  * 
  * 
  * More Quests:
  * Add special quest card(s) to deck
  * Gain courage
- * 
- * 
- * 
- * 
+ * Choose a card from the current booster pack
  * 
  * 
  * 
@@ -84,25 +87,9 @@
  * 
  * 
  * PHASE V: 
- *  
+ * 
  * TODO: Play through 5 more full runs for debugging and balance
  * TODO: Implement stance card mechanic
- * 
- * 
- * 
- * BUGS [can't replicate]:
- * BUG: done button ghost showing on subsequent combats - if this happens again, inspect the class of the button because .button-done is hidden on combat end and start
- * BUG: i was in a fight where i was at 0 health and armor but some block and i didn't die.
- * BUG: scenario: gold leaf treasure, rest site shard directly into quest (can't remember - think it was remove a card?) into arena
- * --cards are doubled in the choose enshard card screen at the start of combat, and screen doesn't disappear after enshardening 3 cards
- * BUG: metamorphose with frost shard - if choose only one card to transmute, the overlay doesn't disappear
- * BUG: i had -2 aura and then chose to lose 2 aura again and ended up gaining 2 instead
- * BUG: i chose increase rainbow base from stained glass mirror but the next fight didn't have that base increase (it WAS there on subsequent battles)
- * BUG: attack card damage is getting reduced to 0 in combats where mystical energy and smash and grab are played, and rainbow has cycled
- * --also have black vial and magic dust. smash and grab has flame shard and mystical energy has double frost shards
- * BUG: when purchasing relic at the store, remove card becomes too expensive even if i can still afford it
- * BUG: battle Sequence was added via a card reward but it wasn't in the view deck cards until after the next combat
- * BUG: sometimes highest damage roll doesn't update - crit related?
  * 
  * 
  * Bug Testing playthroughs
@@ -163,6 +150,9 @@
  * Card: magic pack - destroy entire hand and summon x aligned magic per card destroyed
  * Card: non pack - destroy entire hand and do x dmg to target per card destroyed
  * Card: non pack - destroy entire hand and gain x block per card destroyed
+ * Card: rainbow pack tool card - double your lightning (high cost rare)
+ * Card: rainbow pack tool card - add 2 lightning 0 cost 1 use 1 expire
+ * Card: there are no cards that add clutter other than lemonade type cards - need other cards that are strong but add clutter as a downside
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -175,10 +165,23 @@
  * Treasure: increase mystery every x cards played per turn or combat
  * Treasure: common treasure that adds 1 or 2 wisdom
  * Candy: add cards to hand
- * Quest: choose a card from the current booster pack
  * 
  * 
  * 
+ * 
+ * BUGS [can't replicate]:
+ * BUG: done button ghost showing on subsequent combats - if this happens again, inspect the class of the button because .button-done is hidden on combat end and start
+ * BUG: i was in a fight where i was at 0 health and armor but some block and i didn't die.
+ * BUG: scenario: gold leaf treasure, rest site shard directly into quest (can't remember - think it was remove a card?) into arena
+ * --cards are doubled in the choose enshard card screen at the start of combat, and screen doesn't disappear after enshardening 3 cards
+ * BUG: metamorphose with frost shard - if choose only one card to transmute, the overlay doesn't disappear
+ * BUG: i had -2 aura and then chose to lose 2 aura again and ended up gaining 2 instead
+ * BUG: i chose increase rainbow base from stained glass mirror but the next fight didn't have that base increase (it WAS there on subsequent battles)
+ * BUG: attack card damage is getting reduced to 0 in combats where mystical energy and smash and grab are played, and rainbow has cycled
+ * --also have black vial and magic dust. smash and grab has flame shard and mystical energy has double frost shards
+ * BUG: when purchasing relic at the store, remove card becomes too expensive even if i can still afford it
+ * BUG: battle Sequence was added via a card reward but it wasn't in the view deck cards until after the next combat
+ * BUG: sometimes highest damage roll doesn't update - crit related?
  * 
  * 
 *********************************************/
@@ -1167,7 +1170,7 @@ jQuery(document).ready(function($) {
 			.delay(1000)
 			.queue(function() {
 				$('.all-cards-panel').removeClass('shown');
-				$('.courage-remove').removeClass('shown');
+				//$('.courage-remove').removeClass('shown'); // changed to always display, but the cost still increases 1 per remove
 				$(this).parent().remove().dequeue();
 			});
 
@@ -4597,8 +4600,6 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 									player[what][key] += value;
 									// it's possible rainbow gets reduced below base value - don't let this happen
 									if(player.rainbow.base > player.rainbow.max) player.rainbow.max = player.rainbow.base;
-									// it's possible we had full armor and reduced health, so armor needs to reduce to match health
-									if(player.armor > player.health.current) player.armor = player.health.current;
 								}
 								// if we increased speed we might need to re-enable draw card button
 								if(what == 'speed' && value > 0) {
@@ -4616,9 +4617,9 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							applyMagic(magic, player);
 						}
 						// if max health was reduced and current health was at full, need to reduce current health
-						if(player.health.max < player.health.current) {
-							player.health.current = player.health.max;
-						}
+						if(player.health.max < player.health.current) player.health.current = player.health.max;
+						// it's possible we had full armor and reduced health, so armor needs to reduce to match health
+						if(player.armor > player.health.current) player.armor = player.health.current;
 						// if we're updating stats with UI, need to process
 						if(what == 'aura' || what == 'sparkle' || what == 'shimmer') {
 							updateEssenceLevels(what, value);
