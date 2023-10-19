@@ -795,7 +795,7 @@
 
           <div class="rainbow-power-amount"><span class="rainbow-power-current"></span>/<span class="rainbow-power-max"></span></div>
 
-          <div class="magic-type"><span class="tooltip" data-type="rainbow" data-powertip="<div class='tooltip-magic'><span class='rainbow'>Rainbow Magic: </span>Does damage to all monsters.</div><div class='tooltip-magic'><span class='elemental'>Elemental Magic: </span>Does damage to all monsters ignoring block.</div><div class='tooltip-magic'><span class='dark'>Dark Magic: </span>Does damage to all monsters ignorning armor.</div><div class='tooltip-magic'><span class='chaos'>Chaos Magic: </span>Does double damage to a random monster.</div><div class='tooltip-magic'><span class='muddled'>Muddled Magic: </span>Does damage to a random monster.</div>"></span> Magic</div>
+          <div class="magic-type"><span class="tooltip" data-type="rainbow" data-powertip="<div class='tooltip-magic'><span class='rainbow'>Rainbow Magic: </span>Does damage to all monsters (Magick: does 2 AOE damage).</div><div class='tooltip-magic'><span class='elemental'>Elemental Magic: </span>Does damage to all monsters ignoring block (Magick: gain 6 block).</div><div class='tooltip-magic'><span class='dark'>Dark Magic: </span>Does damage to all monsters ignorning armor (Magick: gain 3 armor).</div><div class='tooltip-magic'><span class='chaos'>Chaos Magic: </span>Does double damage to a random monster (Magick: hexes -1 AEO might).</div><div class='tooltip-magic'><span class='muddled'>Muddled Magic: </span>Does damage to a random monster.</div>"></span> Magic</div>
 
           <div class="rainbow-power">
             <div class="mask">
