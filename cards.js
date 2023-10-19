@@ -4871,7 +4871,7 @@ export function Deck() {
         }
 
         // this is how to add a shard on init - DEV MODE ONLY
-        attachShard(util.getCardById('strange_tail', this.cards), 'frost');
+        //attachShard(util.getCardById('strange_tail', this.cards), 'frost');
 
         
     }
