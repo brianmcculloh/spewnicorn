@@ -58,6 +58,8 @@
  * Ability: lightning multiplies thunder
  * Ability: might multiplies punch
  * Mechanic: tradable cards called "weapons" - they can be traded in at shops for ever increasingly stronger weapons - kind of like infinite upgrades
+ * Ability: double damage of next attack
+ * Action: can the add card what value be an array so it chooses from random cards? (add random shashes)
  * 
  * 
  * 
@@ -88,13 +90,13 @@
  * 
  * PHASE V: 
  * 
- * TODO: Play through 5 more full runs for debugging and balance
+ * TODO: Play through 5 full runs without fixing any bugs or changing any balancing before moving on 
  * TODO: Implement stance card mechanic
  * TODO: Implement trade (weapon) mechanic
  * 
  * 
- * Bug Testing playthroughs
- * Balance Testing playthroughs
+ * 
+ * Bug/Balance Testing playthroughs
  * Tutorial	- DONE		
  * Save progress
  * Record results
@@ -154,6 +156,7 @@
  * Card: rainbow pack tool card - double your lightning (high cost rare)
  * Card: rainbow pack tool card - add 2 lightning 0 cost 1 use 1 expire
  * Card: there are no cards that add clutter other than lemonade type cards - need other cards that are strong but add clutter as a downside
+ * Card: magical slash - summons 1 aligned magic
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -1074,7 +1077,8 @@ jQuery(document).ready(function($) {
 	$(document).on('click', '.fountain-bathe', function(e) {
 
 		let amount = parseFloat($(this).attr('data-amount'));
-		player.health.max += amount;
+		let actions = [{action: 'stat', what: 'health', key: 'max', value: amount}];
+		processActions(actions);
 		heal(player, $(this).attr('data-amount'));
 		$('.magic-fountain').removeClass('shown');
 
@@ -5274,7 +5278,7 @@ async function applyMagic(magic, to) {
 		type = util.randFromArray(types);
 	}
 
-	// don't let rainbow max get to 0
+	// don't let rainbow max go negative
 	if(to.rainbow.max < 0) {
 		to.rainbow.max = 0;
 	}
@@ -5297,6 +5301,34 @@ async function applyMagic(magic, to) {
 		// check for arcane
 		if(to.arcane.current > 0) {
 			to.rainbow.current += to.arcane.current;
+		}
+	}
+
+	// apply Magick effects
+	let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
+	if(to.magick?.enabled) {
+		if(to.rainbow.type == 'rainbow') {
+			await doDamage(2, undefined, currentMonsters, false, false);
+		} else if(to.rainbow.type == 'elemental') {
+			applyBlock(6, player);
+		} else if(to.rainbow.type == 'dark') {
+			applyArmor(3, player);
+		} else if(to.rainbow.type == 'chaos') {
+			let effects = [{effect: 'might', amount: -1, turns: -1, hex: true}];
+			await processEffects(effects, currentMonsters);
+		}
+		for(let i = 0; i < game.currentMonsters.length; i++) {
+			monsters.updateMonsterStats(game.currentMonsters[i]);
+			if(monsters.dying(game.currentMonsters[i])) {
+				if(game.playsounds) sounds.play('death');
+			}
+			if(monsters.dead(game.currentMonsters[i])) {
+				util.removeMonster(game.currentMonsters[i].guid);
+			}
+			if(monsters.allDead()) {
+				endCombat();
+				return;
+			}
 		}
 	}
 

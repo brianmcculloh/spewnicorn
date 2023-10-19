@@ -59,6 +59,7 @@ class Creatures {
         sift = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         panic = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         expirex = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
+        magick = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         
         // monster specific
         id, 
@@ -134,6 +135,7 @@ class Creatures {
         this.sift = sift;
         this.panic = panic;
         this.expirex = expirex;
+        this.magick = magick
         this.abilitiesDom = '';
 
         // monster specific

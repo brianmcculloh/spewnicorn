@@ -3729,6 +3729,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-dark_codex .card-image {
 	background-position:calc(-780px * .92) calc(-6332px * .92);
 }
+#card-strange_tail .card-image {
+	background-position:calc(-975px * .92) calc(-6332px * .92);
+}
 
 
 /* MAGIC */

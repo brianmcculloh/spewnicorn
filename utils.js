@@ -1037,6 +1037,7 @@ export default class Util {
                 effect36: [237482, 2212],
                 effect37: [239694, 2246],
                 effect38: [314485, 994],
+                effect39: [315480, 3391],
 
 
 
@@ -1097,6 +1098,7 @@ export default class Util {
                 SkywardHero_UI (26)
                 SkywardHero_UI (33)
                 SkywardHero_UI (35)
+                SkywardHero_UI (38)
                 SkywardHero_UI (39)
 
                 ESM_Fantasy_Game_...

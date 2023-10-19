@@ -3714,6 +3714,16 @@ const ALL_CARDS = [
             natural: true
         }
     }),
+    new Cards({
+        id: 'strange_tail', name: 'Strange Tail', type: 'ability', mana: 1, tier: 'uncommon', weight: 9, courage: 3, pack: 'rainbow', natural: true,
+        abilities: [
+            {ability: 'magick', enabled: true, baseTurns: -1},
+        ],
+        slots: 1,
+        shardUpgrades: {
+            mana: 0
+        },
+    }),
     
     
 
@@ -4861,7 +4871,7 @@ export function Deck() {
         }
 
         // this is how to add a shard on init - DEV MODE ONLY
-        //attachShard(util.getCardById('stun', this.cards), 'frost');
+        attachShard(util.getCardById('strange_tail', this.cards), 'frost');
 
         
     }

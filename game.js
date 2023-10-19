@@ -324,6 +324,11 @@ const ALL_ABILITIES = [
     // buff     {ability: 'expirex', baseTurns: -1, enabled: true}
     {id: 'expirex', name: 'Expire-X&trade;', desc: 'Cards no longer expire', x: -480, y: -4544},
 
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'magick', baseTurns: -1, enabled: true}
+    {id: 'magick', name: 'Magick', desc: 'Non-muddled magic rainbow charging has extra benefits based on magic type', x: -256, y: -320, sound: 'effect39'},
+
 ];
 /*********************************************
  * 
@@ -397,7 +402,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.37 Alpha';
+    let version = '0.38 Alpha';
     let seed = false;
     let difficulty = 'normal';
     let floor = 0; // TODO: set to 0
