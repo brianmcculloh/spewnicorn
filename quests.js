@@ -113,9 +113,9 @@ const ALL_QUESTS = [
         options: [
             {id: 'toss_a_coin_in', name: 'Toss A Coin In',
                 options: [
-                    {id: 'wish_for_protection', name: 'Wish For Protection', desc: 'Gain 25 armor'},
-                    {id: 'wish_for_healing', name: 'Wish For Healing', desc: 'Gain 20 health'},
-                    {id: 'wish_for_long_life', name: 'Wish For Long Life', desc: 'Gain 7 max health'}
+                    {id: 'wish_for_protection', name: 'Wish For Protection', desc: 'Gain 35 armor'},
+                    {id: 'wish_for_healing', name: 'Wish For Healing', desc: 'Gain 25 health'},
+                    {id: 'wish_for_long_life', name: 'Wish For Long Life', desc: 'Gain 10 max health'}
                 ]
             },
             {id: 'leave', name: 'Leave'}

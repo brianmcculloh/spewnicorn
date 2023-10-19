@@ -1767,7 +1767,6 @@ const ALL_TREASURES = [
         x: -96,
         y: -2752
     }),
-
     new Treasure({
         id:'thunder_blade', 
         name: "Thunder Blade", 

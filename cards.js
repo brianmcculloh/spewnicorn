@@ -1940,7 +1940,7 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'weaponry', name: 'Weaponry', type: 'attack', target: 'monster', mana: 0, tier: 'rare', weight: 3, courage: 3, 
+        id: 'weaponry', name: 'Weaponry', type: 'attack', target: 'monster', mana: 1, tier: 'rare', weight: 3, courage: 3, 
         dmg: [12],
         sound: 'attack2',
         draw: {
@@ -1952,6 +1952,7 @@ const ALL_CARDS = [
         ],
         slots: 2,
         fireShardUpgrades: {
+            mana_2: 0,
             actions: [
                 {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'rare', to: 'handCards', with: ['flame']},
             ],
@@ -1960,6 +1961,7 @@ const ALL_CARDS = [
             ],
         },
         iceShardUpgrades: {
+            mana_2: 0,
             actions: [
                 {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'rare', to: 'handCards', with: ['frost']},
             ],
@@ -1975,7 +1977,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'amass', name: 'Amass', type: 'attack', target: 'monster', vanish: true, mana: 0, tier: 'rare', weight: 3, courage: 3, 
+        id: 'amass', name: 'Amass', type: 'attack', target: 'monster', vanish: true, mana: 1, tier: 'rare', weight: 3, courage: 3, 
         dmg: [14],
         actions: [
             {action: 'addCard', value: 1, type: 'attack', tier: 'rare', to: 'drawCards'},
@@ -1988,6 +1990,7 @@ const ALL_CARDS = [
             ],
         },
         bothShardUpgrades: {
+            mana_2: 0,
             actions: [
                 {action: 'addCard', value: 1, type: 'attack', tier: 'common', to: 'drawCards'},
                 {action: 'addCard', value: 1, type: 'attack', tier: 'uncommon', to: 'drawCards'},

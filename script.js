@@ -90,6 +90,7 @@
  * 
  * TODO: Play through 5 more full runs for debugging and balance
  * TODO: Implement stance card mechanic
+ * TODO: Implement trade (weapon) mechanic
  * 
  * 
  * Bug Testing playthroughs
@@ -4562,7 +4563,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								}
 							}
 						}
-						
+
 						// check for changing stances
 						if(what == 'stance') {
 							if(value != player.stance) {
@@ -4594,7 +4595,11 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								player[what][key] = value;
 							} else {
 								if(what == 'health') {
-									heal(player, value);
+									if(key == 'max') {
+										player.health.max += value;
+									} else {
+										heal(player, value);
+									}
 								// we will actually increase the essence stats within the updateEssenceLevels function called below
 								} else if(what != 'aura' && what != 'sparkle' && what != 'shimmer') {
 									player[what][key] += value;
@@ -4772,18 +4777,17 @@ async function processQuest(elem) {
 		break;
 		case 'deep_well':
 			if(option == 'wish_for_protection') {
-				await processArmor([25]);
+				await processArmor([35]);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			} else if(option == 'wish_for_healing') {
-				let actions = [{action: 'stat', what: 'health', key: 'current', value: 20}];
-				await processActions(actions);
+				heal(player, 25);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			} else if(option == 'wish_for_long_life') {
-				let actions = [{action: 'stat', what: 'health', key: 'max', value: 7}];
+				let actions = [{action: 'stat', what: 'health', key: 'max', value: 10}];
 				await processActions(actions);
-				heal(player, 7);
+				heal(player, 10);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			}
@@ -5574,6 +5578,22 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 					if(spikesDmg < 1) spikesDmg = 1;
 
 					await doDamage(spikesDmg, undefined, [from]);
+
+					// spikes might kill a monster or end combat
+					for(let i = 0; i < game.currentMonsters.length; i++) {
+						monsters.updateMonsterStats(game.currentMonsters[i]);
+						if(monsters.dying(game.currentMonsters[i])) {
+							if(game.playsounds) sounds.play('death');
+						}
+						if(monsters.dead(game.currentMonsters[i])) {
+							util.removeMonster(game.currentMonsters[i].guid);
+						}
+						if(monsters.allDead()) {
+							endCombat();
+							return;
+						}
+					}
+
 					setStatus(false);
 
 				}
@@ -5591,6 +5611,22 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 					if(retalDmg < 1) retalDmg = 1;
 					
 					await doDamage(retalDmg, undefined, [from]);
+
+					// relatiate might kill a monster or end combat
+					for(let i = 0; i < game.currentMonsters.length; i++) {
+						monsters.updateMonsterStats(game.currentMonsters[i]);
+						if(monsters.dying(game.currentMonsters[i])) {
+							if(game.playsounds) sounds.play('death');
+						}
+						if(monsters.dead(game.currentMonsters[i])) {
+							util.removeMonster(game.currentMonsters[i].guid);
+						}
+						if(monsters.allDead()) {
+							endCombat();
+							return;
+						}
+					}
+
 					setStatus(false);
 
 				}
