@@ -90,6 +90,7 @@
  * 
  * PHASE V: 
  * 
+ * TODO: 10 cards in hand and sparks is played, it doesn't draw a card
  * TODO: Play through 5 full runs without fixing any bugs or changing any balancing before moving on 
  * TODO: Implement stance card mechanic
  * TODO: Implement trade (weapon) mechanic
@@ -5314,7 +5315,7 @@ async function applyMagic(magic, to) {
 		} else if(to.rainbow.type == 'dark') {
 			applyArmor(3, player);
 		} else if(to.rainbow.type == 'chaos') {
-			let effects = [{effect: 'might', amount: -1, turns: -1, hex: true}];
+			let effects = [{effect: 'might', amount: -3, turns: 1, hex: true}];
 			await processEffects(effects, currentMonsters);
 		}
 		for(let i = 0; i < game.currentMonsters.length; i++) {

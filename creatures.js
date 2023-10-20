@@ -2304,10 +2304,13 @@ const ALL_MONSTERS = [
             ]},
             {dmg: [25], armor: [30]},
             {effects: [
-                {effect: 'might', amount: 2, turns: -1},
+                {effect: 'might', amount: 2, turns: -1}
+            ]},
+            {blk: [45]},
+            {dmg: [20]},
+            {effects: [
                 {effect: 'heal', amount: 300, turns: 2}
             ]},
-            {dmg: [20], blk: [45]},
         ],
         vex: {base: 2, current: 0, temp: [], turns: -1},
         retaliate: {base: 1, current: 0, temp: [], turns: -1},
@@ -2342,10 +2345,13 @@ const ALL_MONSTERS = [
             ]},
             {dmg: [25], armor: [60]},
             {effects: [
-                {effect: 'might', amount: 2, turns: -1},
+                {effect: 'might', amount: 2, turns: -1}
+            ]},
+            {blk: [90]},
+            {dmg: [20]},
+            {effects: [
                 {effect: 'heal', amount: 300, turns: 2}
             ]},
-            {dmg: [20], blk: [90]},
         ],
         vex: {base: 2, current: 0, temp: [], turns: -1},
         retaliate: {base: 1, current: 0, temp: [], turns: -1},
@@ -2380,10 +2386,13 @@ const ALL_MONSTERS = [
             ]},
             {dmg: [50], armor: [30]},
             {effects: [
-                {effect: 'might', amount: 2, turns: -1},
+                {effect: 'might', amount: 2, turns: -1}
+            ]},
+            {blk: [45]},
+            {dmg: [40]},
+            {effects: [
                 {effect: 'heal', amount: 300, turns: 2}
             ]},
-            {dmg: [40], blk: [45]},
         ],
         vex: {base: 2, current: 0, temp: [], turns: -1},
         retaliate: {base: 1, current: 0, temp: [], turns: -1},

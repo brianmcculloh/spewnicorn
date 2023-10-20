@@ -3223,7 +3223,7 @@ const ALL_CARDS = [
             ephemeral: false,
         },
         bothShardUpgrades: {
-            mana_2: 2
+            mana: 2
         },
     }),
     new Cards({
@@ -3715,14 +3715,17 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'strange_tail', name: 'Strange Tail', type: 'ability', mana: 1, tier: 'uncommon', weight: 9, courage: 3, pack: 'rainbow', natural: true,
+        id: 'strange_tail', name: 'Strange Tail', type: 'ability', mana: 1, tier: 'uncommon', weight: 9, courage: 3, pack: 'rainbow',
         abilities: [
             {ability: 'magick', enabled: true, baseTurns: -1},
         ],
-        slots: 1,
+        slots: 2,
         shardUpgrades: {
-            mana: 0
+            natural: true,
         },
+        bothShardUpgrades: {
+            mana: 0
+        }
     }),
     
     
