@@ -1594,6 +1594,18 @@ const ALL_TREASURES = [
         x: -480,
         y: -320
     }),
+    new Treasure({
+        id:'magical_lantern', 
+        name: 'Magical Lantern', 
+        courage: 15,
+        weight: 2,
+        permanent: true,
+        abilities: [
+            {ability: 'amplify', turns: -1, enabled: true}
+        ],
+        x: -320,
+        y: -320
+    }),
 
 
     // TIER 3

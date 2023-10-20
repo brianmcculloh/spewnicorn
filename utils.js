@@ -1038,6 +1038,7 @@ export default class Util {
                 effect37: [239694, 2246],
                 effect38: [314485, 994],
                 effect39: [315480, 3391],
+                effect40: [318870, 1882],
 
 
 
@@ -1108,6 +1109,7 @@ export default class Util {
                 Magic_Fire_Instant_Cast_Spell_D
                 Magic_Fire_Long_Spell_A
                 Magic_Airy_Sting_Accent
+                Magic_Ancient_Metallic_Sting
                 Magic_Arcane_Long_Cast_Spell_B
                 Magic_Arcane_Spell_B
                 Magic_Molten_Lava_Hit_Fire_Gas_Burn

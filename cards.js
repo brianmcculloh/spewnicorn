@@ -2307,7 +2307,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'repel', name: 'Repel', type: 'tool', mana: 2, weight: 6, 
+        id: 'repel', name: 'Repel', type: 'tool', mana: 2, weight: 6, pack: 'cycle', 
         blk: [3, 3, 3, 3, 3],
         actions: [
             {action: 'draw', value: 1},
@@ -2985,7 +2985,7 @@ const ALL_CARDS = [
 
     /* Rare: */
     new Cards({
-        id: 'frost_armor', name: 'Frost Armor', type: 'tool', mana: 0, use: 2, linger: 1, retain: true, tier: 'rare', weight: 4, courage: 4, 
+        id: 'frost_armor', name: 'Frost Armor', type: 'tool', mana: 0, use: 2, linger: 1, retain: true, pack: 'combine', tier: 'rare', weight: 4, courage: 4, 
         sound: 'tool16',
         armor: [5],
         slots: 2,
@@ -3005,7 +3005,7 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'flame_armor', name: 'Flame Armor', type: 'tool', mana: 0, use: 2, linger: 1, retain: true, tier: 'rare', weight: 4, courage: 4, 
+        id: 'flame_armor', name: 'Flame Armor', type: 'tool', mana: 0, use: 2, linger: 1, retain: true, pack: 'combine', tier: 'rare', weight: 4, courage: 4, 
         sound: 'tool17',
         armor: [5],
         slots: 2,
@@ -3139,7 +3139,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'trade_up', name: 'Trade Up', type: 'tool', mana: 1, tier: 'rare', retain: true, vanish: true, weight: 7, courage: 3,
+        id: 'trade_up', name: 'Trade Up', type: 'tool', mana: 1, tier: 'rare', vanish: true, weight: 7, courage: 3,
         sound: 'tool20', 
         actions: [
             {action: 'addCard', select: 1, value: 3, type: 'any', tier: 'rare', to: 'handCards'}
@@ -3149,12 +3149,13 @@ const ALL_CARDS = [
             vanish: false,
             use: 2,
             actions: [
-                {action: 'addCard', select: 2, value: 3, type: 'any', tier: 'rare', to: 'handCards'}
+                {action: 'addCard', select: 1, value: 5, type: 'any', tier: 'rare', to: 'handCards'}
             ],
         },
         bothShardUpgrades: {
+            mana: 0,
             actions: [
-                {action: 'addCard', select: 2, value: 3, type: 'any', tier: 'rare', to: 'handCards', with: ['frost', 'flame']}
+                {action: 'addCard', select: 1, value: 5, type: 'any', tier: 'rare', to: 'handCards', with: ['frost', 'flame']}
             ],
         },
     }),
@@ -4078,7 +4079,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'risky_charm', name: 'Risky Charm', type: 'magic', mana: 0, tier: 'common', retain: true, use: 1, weight: 7, 
+        id: 'risky_charm', name: 'Risky Charm', type: 'magic', mana: 0, tier: 'common', use: 1, weight: 7, 
         magic: [{type: 'random', amount: 10}], 
         sound: 'magic2',
         slots: 1,
@@ -4141,7 +4142,7 @@ const ALL_CARDS = [
 
     /* uncommon */
     new Cards({
-        id: 'aligned_charm', name: 'Aligned Charm', type: 'magic', mana: 1, tier: 'uncommon', retain: true, use: 1, pack: 'rainbow', weight: 2, courage: 3, 
+        id: 'aligned_charm', name: 'Aligned Charm', type: 'magic', mana: 1, tier: 'uncommon', use: 1, pack: 'rainbow', weight: 2, courage: 3, 
         magic: [{type: 'aligned', amount: 8}], 
         sound: 'magic2',
         slots: 1,
@@ -4624,7 +4625,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'ancient_runestone', name: 'Ancient Runestone', type: 'magic', mana: 3, tier: 'rare', pack: 'rainbow', retain: true, weight: 3, courage: 5, 
+        id: 'ancient_runestone', name: 'Ancient Runestone', type: 'magic', mana: 3, tier: 'rare', pack: 'rainbow', weight: 3, courage: 5, 
         magic: [{type: 'aligned', amount: 3}], 
         effects: [
             {effect: 'mage', amount: 2, turns: 2},
@@ -4654,7 +4655,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'fleeting_incantation', name: 'Fleeting Incantation', type: 'magic', mana: 0, tier: 'rare', retain: true, linger: 2, use: 2, expire: 2, pack: 'rainbow', weight: 7, courage: 4, 
+        id: 'fleeting_incantation', name: 'Fleeting Incantation', type: 'magic', mana: 0, tier: 'rare', linger: 2, use: 2, expire: 2, pack: 'rainbow', weight: 7, courage: 4, 
         magic: [{type: 'aligned', amount: 7}],
         sound: 'magic6',
         slots: 1,

@@ -327,7 +327,12 @@ const ALL_ABILITIES = [
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'magick', baseTurns: -1, enabled: true}
-    {id: 'magick', name: 'Magick', desc: 'Non-muddled magic rainbow charging has extra benefits based on magic type', x: -256, y: -320, sound: 'effect39'},
+    {id: 'magick', name: 'Magick', desc: 'Non-muddled magic rainbow charging has extra benefits based on magic type', x: -384, y: -5568, sound: 'effect39'},
+
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'amplify', baseTurns: -1, enabled: true}
+    {id: 'amplify', name: 'Amplify', desc: 'Magick, Lightning, and Thunder effects are doubled', x: -224, y: -5728, sound: 'effect40'},
 
 ];
 /*********************************************
@@ -402,7 +407,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.38 Alpha';
+    let version = '0.39 Alpha';
     let seed = false;
     let difficulty = 'normal';
     let floor = 0; // TODO: set to 0

@@ -158,6 +158,8 @@
  * Card: rainbow pack tool card - add 2 lightning 0 cost 1 use 1 expire
  * Card: there are no cards that add clutter other than lemonade type cards - need other cards that are strong but add clutter as a downside
  * Card: magical slash - summons 1 aligned magic
+ * Card: combine pack tool card that adds wisdom
+ * Card: combine pack attack card that retains and synergizes with wisdom
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -1236,7 +1238,7 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('signet_ring'); // use this to manually add treasures
+	//addTreasure('magical_lantern'); // use this to manually add treasures
 	//addCandy('strawberry_gobstopper'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
@@ -5306,16 +5308,26 @@ async function applyMagic(magic, to) {
 	}
 
 	// apply Magick effects
+	let dmg = 2;
+	let blk = 6;
+	let armor = 3;
+	let might = -3;
+	if(to.amplify?.enabled) {
+		dmg = dmg * 2;
+		blk = blk * 2;
+		armor = armor * 2;
+		might = might * 2;
+	}
 	let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
 	if(to.magick?.enabled) {
 		if(to.rainbow.type == 'rainbow') {
-			await doDamage(2, undefined, currentMonsters, false, false);
+			await doDamage(dmg, undefined, currentMonsters, false, false);
 		} else if(to.rainbow.type == 'elemental') {
-			applyBlock(6, player);
+			applyBlock(blk, player);
 		} else if(to.rainbow.type == 'dark') {
-			applyArmor(3, player);
+			applyArmor(armor, player);
 		} else if(to.rainbow.type == 'chaos') {
-			let effects = [{effect: 'might', amount: -3, turns: 1, hex: true}];
+			let effects = [{effect: 'might', amount: might, turns: 1, hex: true}];
 			await processEffects(effects, currentMonsters);
 		}
 		for(let i = 0; i < game.currentMonsters.length; i++) {
@@ -5391,8 +5403,17 @@ async function activateRainbow(type, to) {
 	let magicPower = util.getStatPercentage(to.rainbow.current, to.rainbow.max);
 
 	// lightning and thunder
-	dmg += player.lightning.current;
-	dmg = Math.round(dmg * player.thunder.current);
+	let lightning = player.lightning.current;
+	let thunder = player.thunder.current;
+	if(player.amplify?.enabled) {
+		if(lightning > 0) lightning = lightning * 2;
+		if(thunder > 1) {
+			thunderBuff = (thunder - 1);
+			thunder += thunderBuff;
+		}
+	}
+	dmg += lightning;
+	dmg = Math.round(dmg * thunder);
 
 	await game.rainbowAnimations(magicPower);
 	//await util.wait(game.animationDelay);
