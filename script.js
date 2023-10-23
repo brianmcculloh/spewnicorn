@@ -60,6 +60,7 @@
  * Mechanic: tradable cards called "weapons" - they can be traded in at shops for ever increasingly stronger weapons - kind of like infinite upgrades
  * Ability: double damage of next attack
  * Action: can the add card what value be an array so it chooses from random cards? (add random shashes)
+ * Mechanic: do something cool every time you muddle magic so there are more reasons to play risky spells and muddle magic
  * 
  * 
  * 
@@ -90,10 +91,10 @@
  * 
  * PHASE V: 
  * 
- * TODO: 10 cards in hand and sparks is played, it doesn't draw a card
  * TODO: Play through 5 full runs without fixing any bugs or changing any balancing before moving on 
  * TODO: Implement stance card mechanic
  * TODO: Implement trade (weapon) mechanic
+ * TODO: Implement Gamble button (add one completely random card to deck)
  * 
  * 
  * 
@@ -1238,8 +1239,8 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('magical_lantern'); // use this to manually add treasures
-	//addCandy('strawberry_gobstopper'); // use this to manually add candies
+	//addTreasure('locket'); // use this to manually add treasures
+	//addCandy('cherry_cordial'); // use this to manually add candies
 	//courageScreen(); // use this to manually show courage screen
 
 	if(game.debug) $('body').addClass('debug');
@@ -2145,8 +2146,8 @@ async function beginTurn() {
 	if(game.round > 1) {
 
 		// check for prepared
-		if(player.prepared.enabled && game.cardsDrawn <= 3) {
-			extraSpeed = 5 - game.cardsDrawn;
+		if(player.prepared.enabled && game.cardsDrawn <= 4) {
+			extraSpeed = 6 - game.cardsDrawn;
 		}
 
 		if(player.speed.current > 0) {
@@ -2320,7 +2321,7 @@ async function drawAll() {
 	}
 }
 
-async function addCardTo(type, domCard = null, to = 'handCards', ignoreSpeed = false) {
+async function addCardTo(type, domCard = null, to = 'handCards', ignoreSpeed = false, cardPlayed = false) {
 
 	let card = false;
 	let guid = false;
@@ -2340,7 +2341,7 @@ async function addCardTo(type, domCard = null, to = 'handCards', ignoreSpeed = f
 
 		}
 		if(game.playsounds) sounds.play('drawCard');
-		card = combatDeck.drawCard(player, combatDeck, ignoreSpeed);
+		card = combatDeck.drawCard(player, combatDeck, ignoreSpeed, cardPlayed);
 	} else if(type=='drawCards') {
 		card = combatDeck.addDrawCard(player, combatDeck, guid, to);
 	} else if(type=='discardCards') {
@@ -4499,8 +4500,9 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						
 					break;
 					case 'draw':
+						let cardPlayed = playedCard ? true : false;
 						for(let i = 0; i < actions[e].value; i++) {
-							addCardTo('draw', null, 'handCards', true);
+							addCardTo('draw', null, 'handCards', true, cardPlayed);
 						}
 					break;
 					case 'discard':
@@ -5140,14 +5142,102 @@ async function processQuest(elem) {
 				}
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
-			} else if(option == 'right1113' || option == 'straight1211' ||  option == 'straight1311' || option == 'left2122' ||  option == 'straight2213' || option == 'right2312' || option == 'straight3211' || option == 'right3221' || option == 'right3322' || option == 'straight3331') {
+			} else if(option == 'right1113' || 
+					option == 'straight1211' || 
+					option == 'straight1311' || 
+					option == 'left2122' || 
+					option == 'straight2213' || 
+					option == 'right2312' || 
+					option == 'straight3211' || 
+					option == 'right3221' || 
+					option == 'right3322' || 
+					option == 'straight3331') {
 				// medium prizes
 				loot('candy', 3);
+				gainCourage(5);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
-			} else if(option == 'left1113' || option == 'straight1122' || option == 'straight1132' || option == 'right1133' || option == 'straight1221' || option == 'right1222' || option == 'straight1231' || option == 'right1312' || option == 'straight1332' || option == 'left2111' || option == 'left2123' || option == 'right2133' || option == 'left2213' || option == 'right2223' || option == 'straight2231' || option == 'right2311' || option == 'right2313' || option == 'left2331' || option == 'right2333' || option == 'straight3111' || option == 'straight3113' || option == 'right3122' || option == 'right3131' || option == 'left3133' || option == 'right3211' || option == 'left3222' || option == 'left3231' || option == 'right3311' || option == 'straight3321' || option == 'left3323' || option == 'straight3332' || option == 'right3333') {
+			} else if(option == 'left1113' || 
+					option == 'left1222' || 
+					option == 'left1211' || 
+					option == 'left1233' || 
+					option == 'straight1122' || 
+					option == 'straight1132' || 
+					option == 'straight1332' || 
+					option == 'right1131' || 
+					option == 'right1133' || 
+					option == 'right1231' || 
+					option == 'straight1221' || 
+					option == 'straight1233' || 
+					option == 'straight1332' || 
+					option == 'right1121' || 
+					option == 'right1133' || 
+					option == 'right1233' || 
+					option == 'straight1122' || 
+					option == 'straight1231' || 
+					option == 'straight1232' || 
+					option == 'right1112' || 
+					option == 'right1212' || 
+					option == 'right1312' || 
+					option == 'straight1132' ||
+					option == 'straight1232' ||
+					option == 'straight1331' ||
+					option == 'left2111' || 
+					option == 'left2123' || 
+					option == 'left2131' || 
+					option == 'right2121' || 
+					option == 'right2123' || 
+					option == 'right2133' || 
+					option == 'left2211' || 
+					option == 'left2223' || 
+					option == 'left2233' || 
+					option == 'right2213' || 
+					option == 'right2223' || 
+					option == 'right2233' || 
+					option == 'straight2111' || 
+					option == 'straight2131' || 
+					option == 'straight2231' || 
+					option == 'right2311' || 
+					option == 'right2313' || 
+					option == 'right2322' || 
+					option == 'left2311' || 
+					option == 'left2321' || 
+					option == 'left2333' || 
+					option == 'right2311' || 
+					option == 'right2312' || 
+					option == 'right2333' || 
+					option == 'straight3111' || 
+					option == 'straight3113' || 
+					option == 'straight3211' || 
+					option == 'right3122' || 
+					option == 'right3123' || 
+					option == 'right3131' || 
+					option == 'left3111' || 
+					option == 'left3112' || 
+					option == 'left3113' || 
+					option == 'right3211' || 
+					option == 'right3212' || 
+					option == 'right3213' || 
+					option == 'left3221' || 
+					option == 'left3232' || 
+					option == 'left3233' || 
+					option == 'right3311' || 
+					option == 'right3312' || 
+					option == 'right3313' || 
+					option == 'straight3311' || 
+					option == 'straight3321' || 
+					option == 'straight3331' || 
+					option == 'left3313' || 
+					option == 'left3312' || 
+					option == 'left3323' || 
+					option == 'straight3322' || 
+					option == 'straight3332' || 
+					option == 'straight3333' || 
+					option == 'right3321' || 
+					option == 'right3322' || 
+					option == 'right3333') {
 				// small prizes
-				gainCourage(2);
+				gainCourage(3);
 			}
 		break;
 		case 'sudden_trap':

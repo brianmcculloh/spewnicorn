@@ -3399,6 +3399,12 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-nullify .card-image {
 	background-position:calc(-390px * .92) calc(-3502px * .92);
 }
+#card-neigh .card-image {
+	background-position:calc(-780px * .92) calc(-6020px * .92);
+}
+#card-whinny .card-image {
+	background-position:calc(-975px * .92) calc(-6020px * .92);
+}
 #card-gallop .card-image {
 	background-position:calc(-390px * .92) calc(-2248px * .92);
 }

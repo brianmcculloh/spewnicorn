@@ -291,7 +291,7 @@ const ALL_ABILITIES = [
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
     // buff     {ability: 'prepared', turns: 2, enabled: true}
     // hex      {ability: 'prepared', enabled: false, hex: true}
-    {id: 'prepared', name: 'Prepared', desc: 'If you draw 3 or less cards gain [5 - cards drawn] speed next turn', x: 0, y: -32, sound: 'effect12'},
+    {id: 'prepared', name: 'Prepared', desc: 'If you draw 4 or less cards gain [6 - cards drawn] speed next turn', x: 0, y: -32, sound: 'effect12'},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
@@ -407,7 +407,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.39 Alpha';
+    let version = '0.42 Alpha';
     let seed = false;
     let difficulty = 'normal';
     let floor = 0; // TODO: set to 0

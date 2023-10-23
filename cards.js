@@ -2378,16 +2378,14 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'remember', name: 'Remember', type: 'tool', mana: 1, weight: 2, 
+        id: 'remember', name: 'Remember', type: 'tool', mana: 1, weight: 2, use: 3,
         actions: [
             {action: 'findDiscardCard', value: 1}
         ],
         slots: 2,
         shardUpgrades: {
             mana: 0,
-            actions: [
-                {action: 'findDiscardCard', value: 1}
-            ],
+            use: 4,
         },
         bothShardUpgrades: {
             actions: [
@@ -2463,6 +2461,28 @@ const ALL_CARDS = [
             effects: [
                 {effect: 'vex', amount: 4, turns: -1}
             ],
+        },
+    }),
+    new Cards({
+        id: 'neigh', name: 'Neigh', type: 'tool', mana: 0, linger: 1, use: 1, weight: 4, target: 'monster',
+        effects: [
+            {effect: 'punch', amount: -.1, turns: -1, hex: true}
+        ],
+        slots: 1,
+        shardUpgrades: {
+            linger: 2,
+            use: 2
+        },
+    }),
+    new Cards({
+        id: 'whinny', name: 'Whinny', type: 'tool', mana: 0, linger: 2, use: 2, weight: 4, target: 'monster',
+        effects: [
+            {effect: 'might', amount: -1, turns: -1, hex: true}
+        ],
+        slots: 1,
+        shardUpgrades: {
+            linger: 3,
+            use: 3
         },
     }),
 
@@ -2631,24 +2651,20 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'seeing_ring', name: 'Seeing Ring', type: 'tool', mana: 1, tier: 'uncommon', vanish: true, weight: 7, 
+        id: 'seeing_ring', name: 'Seeing Ring', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, weight: 7, 
         sound: 'tool3',
         actions: [
             {action: 'findDrawCard', value: 1}
         ],
         slots: 1,
         fireShardUpgrades: {
-            retain: true,
             actions: [
                 {action: 'findDrawCard', value: 2}
             ],
         },
         iceShardUpgrades: {
-            retain: true,
-            actions: [
-                {action: 'findDiscardCard', value: 1},
-                {action: 'findDrawCard', value: 1}
-            ],
+            vanish: false,
+            use: 1,
         },
     }),
     new Cards({
@@ -3215,16 +3231,18 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'mezmerize', name: 'Mezmerize', type: 'tool', mana: 3, tier: 'rare', ephemeral: true, courage: 4,
+        id: 'mezmerize', name: 'Mezmerize', type: 'tool', mana: 1, tier: 'rare', ephemeral: true, courage: 4,
         abilities: [
             {ability: 'hypnotize', turns: 1, enabled: true}
         ],
         slots: 2,
         shardUpgrades: {
-            ephemeral: false,
+            abilities: [
+                {ability: 'hypnotize', turns: 2, enabled: true}
+            ],
         },
         bothShardUpgrades: {
-            mana: 2
+            mana: 0
         },
     }),
     new Cards({
@@ -4375,24 +4393,24 @@ const ALL_CARDS = [
 
     new Cards({
         id: 'risky_incantation', name: 'Risky Incantation', type: 'magic', mana: 2, tier: 'rare', weight: 6, courage: 3, 
-        magic: [{type: 'random', amount: 12}], 
+        magic: [{type: 'random', amount: 15}], 
         effects: [
-            {effect: 'arcane', amount: 7, turns: 2}
+            {effect: 'arcane', amount: 8, turns: 2}
         ],
         slots: 2,
         shardUpgrades: {
-            magic: [{type: 'random', amount: 13}], 
+            magic: [{type: 'random', amount: 20}], 
             effects: [
-                {effect: 'arcane', amount: 7, turns: 3}
+                {effect: 'arcane', amount: 8, turns: 3}
             ],
         },
         iceShardUpgrades: {
             mana_2: 1
         },
         bothShardUpgrades: {
-            magic: [{type: 'random', amount: 14}], 
+            magic: [{type: 'random', amount: 20}], 
             effects: [
-                {effect: 'arcane', amount: 7, turns: 4}
+                {effect: 'arcane', amount: 8, turns: 4}
             ],
         },
     }),
@@ -4445,10 +4463,10 @@ const ALL_CARDS = [
             ],
         },
         iceShardUpgrades: {
-            magic_2: [{type: 'aligned', amount: 16}], 
+            magic_2: [{type: 'aligned', amount: 24}], 
         },
         bothShardUpgrades: {
-            magic: [{type: 'aligned', amount: 14}], 
+            magic: [{type: 'aligned', amount: 18}], 
         },
     }),
     new Cards({
@@ -4873,6 +4891,7 @@ export function Deck() {
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
         }
+
 
         // this is how to add a shard on init - DEV MODE ONLY
         //attachShard(util.getCardById('strange_tail', this.cards), 'frost');
@@ -5565,9 +5584,10 @@ export function CombatDeck() {
         return enoughCards; 
     }
 
-    function shouldDraw(combatDeck) {
+    function shouldDraw(combatDeck, cardPlayed) {
         let spaceAvailable = true;
-        if(combatDeck.handCards.length > 9) spaceAvailable = false;
+        let numCards = cardPlayed ? 10 : 9;
+        if(combatDeck.handCards.length > numCards) spaceAvailable = false;
         return spaceAvailable; 
     }
 
@@ -5611,9 +5631,9 @@ export function CombatDeck() {
         return card;
     }
 
-    function drawCard(player, combatDeck, ignoreSpeed = false) {
+    function drawCard(player, combatDeck, ignoreSpeed = false, cardPlayed = false) {
 
-        if(!shouldDraw(combatDeck)) {
+        if(!shouldDraw(combatDeck, cardPlayed)) {
             return false;
         }
 
