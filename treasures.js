@@ -588,7 +588,7 @@ const ALL_CANDY= [
         id:'sour_apple_candy', 
         name: 'Sour Apple Candy', 
         effects: [
-            {effect: 'spikes', amount: 10, turns: -1}
+            {effect: 'spikes', amount: 24, turns: -1}
         ],
         x: -128,
         y: -3584
@@ -597,7 +597,7 @@ const ALL_CANDY= [
         id:'spicy_cinnammon_candy', 
         name: 'Spicy Cinnammon Candy', 
         effects: [
-            {effect: 'retaliate', amount: 7, turns: -1}
+            {effect: 'retaliate', amount: 20, turns: -1}
         ],
         x: -288,
         y: -3520
@@ -606,7 +606,7 @@ const ALL_CANDY= [
         id:'strawberry_pastry', 
         name: 'Strawberry Pastry', 
         effects: [
-            {effect: 'summon', amount: 5, turns: -1}
+            {effect: 'summon', amount: 8, turns: -1}
         ],
         x: -96,
         y: -4224
@@ -615,7 +615,7 @@ const ALL_CANDY= [
         id:'peanut_butter_pastry', 
         name: 'Peanut Butter Pastry', 
         effects: [
-            {effect: 'summon', amount: 15, turns: 2}
+            {effect: 'summon', amount: 20, turns: 2}
         ],
         x: -160,
         y: -4224
@@ -845,7 +845,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         effects: [
-            {effect: 'summon', base: 2}
+            {effect: 'summon', base: 4}
         ],
         x: -416,
         y: -3008
@@ -971,7 +971,7 @@ const ALL_TREASURES = [
         courage: 11,
         permanent: true,
         effects: [
-            {effect: 'summon', base: 1}
+            {effect: 'summon', base: 3}
         ],
         x: -224,
         y: -6080
@@ -1058,7 +1058,7 @@ const ALL_TREASURES = [
         weight: 7,
         permanent: true,
         effects: [
-            {effect: 'retaliate', base: 4}
+            {effect: 'retaliate', base: 10}
         ],
         x: -0,
         y: -5344
@@ -1098,7 +1098,7 @@ const ALL_TREASURES = [
         weight: 7,
         permanent: true,
         effects: [
-            {effect: 'spikes', base: 5}
+            {effect: 'spikes', base: 12}
         ],
         x: -448,
         y: -3392
@@ -1233,6 +1233,32 @@ const ALL_TREASURES = [
         x: -352,
         y: -9856
     }), 
+    new Treasure({
+        id:'glowing_sludge', 
+        name: 'Glowing Sludge', 
+        courage: 10,
+        weight: 3,
+        permanent: true,
+        effects: [
+            {effect: 'irradiate', amount: 5, turns: -1}
+        ],
+        x: -256,
+        y: -5472
+    }),
+    new Treasure({
+        id:'guild_payment', 
+        name: 'Guild Payment', 
+        courage: 10,
+        permanent: false,
+        abilities: [
+            {ability: 'guild_member', baseTurns: -1, enabled: true, permanent: true}
+        ],
+        x: -384,
+        y: -192
+    }),
+
+
+   
     
 
 
@@ -1576,7 +1602,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 1,
         actions: [
-            {action: 'addCard', value: 1, what: 'unstable_staff', to: 'drawCards', permanent: true}
+            {action: 'addCard', value: 1, what: 'unstable_attack', to: 'drawCards', permanent: true}
         ],
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: true, activated: false},
         x: -32,
@@ -1615,7 +1641,7 @@ const ALL_TREASURES = [
         name: "Hawthorn Staff", 
         courage: 15,
         tier: 3,
-        weight: 1,
+        weight: 2,
         permanent: true,
         actions: [
             {action: 'stat', what: 'courage', value: 20},
@@ -1630,7 +1656,7 @@ const ALL_TREASURES = [
         name: "Hemlock Staff", 
         courage: 15,
         tier: 3,
-        weight: 1,
+        weight: 2,
         permanent: true,
         actions: [
             {action: 'stat', what: 'courage', value: 15},
@@ -1645,7 +1671,7 @@ const ALL_TREASURES = [
         name: "Hickory Staff", 
         courage: 15,
         tier: 3,
-        weight: 1,
+        weight: 2,
         permanent: true,
         actions: [
             {action: 'stat', what: 'courage', value: 10},
@@ -1660,7 +1686,7 @@ const ALL_TREASURES = [
         name: "Falcon Feather", 
         courage: 14,
         tier: 3,
-        weight: 1,
+        weight: .8,
         permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 1},
@@ -1676,7 +1702,7 @@ const ALL_TREASURES = [
         name: "Hummingbird Feather", 
         courage: 14,
         tier: 3,
-        weight: 1,
+        weight: .8,
         permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 1},
@@ -1690,7 +1716,7 @@ const ALL_TREASURES = [
         name: "Swift Feather", 
         courage: 14,
         tier: 3,
-        weight: 1,
+        weight: .8,
         permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 1},
@@ -1706,7 +1732,7 @@ const ALL_TREASURES = [
         name: "Labrys of Zeus", 
         courage: 15,
         tier: 3,
-        weight: 2,
+        weight: 3,
         permanent: true,
         effects: [
             {effect: 'punch', base: .1}
@@ -1719,7 +1745,7 @@ const ALL_TREASURES = [
         name: "Philosopher Stone", 
         courage: 15,
         tier: 3,
-        weight: 2,
+        weight: 3,
         permanent: true,
         effects: [
             {effect: 'muster', base: 2}
@@ -1732,7 +1758,7 @@ const ALL_TREASURES = [
         name: 'Crystalized Wand', 
         courage: 15,
         tier: 3,
-        weight: 2,
+        weight: 3,
         permanent: true,
         effects: [
             {effect: 'sorcery', base: .3}
@@ -1745,7 +1771,7 @@ const ALL_TREASURES = [
         name: 'Signet Ring', 
         courage: 13,
         tier: 3,
-        weight: 2,
+        weight: 3,
         permanent: true,
         effects: [
             {effect: 'wisdom', base: 4}
@@ -1758,7 +1784,7 @@ const ALL_TREASURES = [
         name: "Death Vial", 
         courage: 15,
         tier: 3,
-        weight: 1,
+        weight: 2,
         effects: [
             {effect: 'fatality', amount: 1.2, turns: 1, persist: true}
         ],
@@ -1771,7 +1797,7 @@ const ALL_TREASURES = [
         name: "Gold Leaf", 
         courage: 13,
         tier: 3,
-        weight: 2,
+        weight: 3,
         actions: [
             {action: 'ensharden', type: 'random', select: 3, from: 'drawCards', random: false}
         ],
@@ -1784,7 +1810,7 @@ const ALL_TREASURES = [
         name: "Thunder Blade", 
         courage: 15,
         tier: 3,
-        weight: 2,
+        weight: 3,
         permanent: true,
         effects: [
             {effect: 'thunder', base: .1}
@@ -1800,7 +1826,7 @@ const ALL_TREASURES = [
         name: "Luminous Crown", 
         courage: 20,
         tier: 4,
-        weight: 1,
+        weight: .5,
         permanent: true,
         actions: [
             {action: 'stat', what: 'mana', key: 'base', value: 1}
@@ -1813,7 +1839,7 @@ const ALL_TREASURES = [
         name: "Resplendent Helm", 
         courage: 20,
         tier: 4,
-        weight: 1,
+        weight: 4,
         permanent: true,
         effects: [
             {effect: 'punch', base: .2}
@@ -1826,7 +1852,7 @@ const ALL_TREASURES = [
         name: "Majestic Headpiece", 
         courage: 20,
         tier: 4,
-        weight: 1,
+        weight: 4,
         permanent: true,
         effects: [
             {effect: 'thunder', base: .2}
@@ -1839,7 +1865,7 @@ const ALL_TREASURES = [
         name: "Brilliant Tiara", 
         courage: 20,
         tier: 4,
-        weight: 1,
+        weight: 5,
         permanent: true,
         effects: [
             {effect: 'might', base: 3}
@@ -1852,7 +1878,7 @@ const ALL_TREASURES = [
         name: "Lavish Coronet", 
         courage: 20,
         tier: 4,
-        weight: 1,
+        weight: 5,
         permanent: true,
         effects: [
             {effect: 'lightning', base: 3}
@@ -1865,7 +1891,7 @@ const ALL_TREASURES = [
         name: "Winged Cloak", 
         courage: 20,
         tier: 4,
-        weight: 1,
+        weight: .5,
         permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'base', value: 1}
@@ -1878,7 +1904,7 @@ const ALL_TREASURES = [
         name: "Wingled Mantle", 
         courage: 20,
         tier: 4,
-        weight: 1,
+        weight: 6,
         permanent: true,
         effects: [
             {effect: 'solid', base: 5}
@@ -1891,7 +1917,7 @@ const ALL_TREASURES = [
         name: "Winged Veil", 
         courage: 20,
         tier: 4,
-        weight: 1,
+        weight: 7,
         permanent: true,
         effects: [
             {effect: 'regen', base: 6}
@@ -1904,7 +1930,7 @@ const ALL_TREASURES = [
         name: "Winged Shroud", 
         courage: 20,
         tier: 4,
-        weight: 1,
+        weight: 4,
         permanent: true,
         effects: [
             {effect: 'momentum', base: 3}
@@ -1938,7 +1964,7 @@ const ALL_TREASURES = [
         permanent: true,
         owned: true,
         effects: [
-            {effect: 'solid', base: 3}
+            {effect: 'solid', base: 4}
         ],
         x: -192,
         y: -12672
@@ -1952,7 +1978,7 @@ const ALL_TREASURES = [
         permanent: true,
         owned: true,
         effects: [
-            {effect: 'might', base: 2}
+            {effect: 'might', base: 3}
         ],
         x: -416,
         y: -8800
@@ -1966,7 +1992,7 @@ const ALL_TREASURES = [
         permanent: true,
         owned: true,
         effects: [
-            {effect: 'lightning', base: 5}
+            {effect: 'lightning', base: 6}
         ],
         x: -352,
         y: -12640

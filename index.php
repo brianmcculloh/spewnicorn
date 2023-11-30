@@ -49,7 +49,15 @@
         <div class="button music toggled-on">Music<span>On</span></div>
         <div class="button sound toggled-on">Sounds<span>On</span></div>
         <div class="button tutorial">Tutorial<span>Off</span></div>
-        <div class="button difficulty tooltip" data-powertip="Adds a <span class='highlight'>Spewnicorn Spray</span> to your deck, decreases aggro, and heals to full after gates.">Easy&nbsp;Mode<span>Off</span></div>
+
+        <div class="difficulties">
+          <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="Adds a <span class='highlight'>Spewnicorn Spray</span> to your deck, decreases aggro, heal to full after gates, and extra magic fountains and quests.">Easy</span></div>
+          <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="No <span class='highlight'>Spewnicorn Spray</span> added to your deck, standard aggro, standard amount of magic fountains and quests, and no healing after gates.">Medium</span></div>
+          <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="Reduced number of magic fountains and quests.">Hard</span></div>
+          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="Further reduced number of magic fountains and quests.">Expert</span></div>
+          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="Hardly any magic fountains or quests.">Nightmare</span></div>
+        </div>
+
         <input id="custom-seed" class="tooltip" data-powertip="You can enter a custom seed or keep this blank to generate a random game." type="text" placeholder="Custom Seed..." />
 
         <div class="button begin">New Game</div> 
@@ -95,7 +103,7 @@
 
           <p>After each battle you have a chance of being rewarded with a <span class="highlight">Treasure</span>, some <span class="highlight">Essences</span>, some <span class="highlight">Shards</span>, and a <span class="highlight">Candy</span>. These chances increase with each battle, and your current reward chances can be seen at the bottom of the screen.</p>
 
-          <p>You can play cards to charge up your <span class="highlight">Magic Rainbow</span>. Each time your rainbow charges to full, it activates and does damage to your foes. The type of magic summoned dictates how you apply damage. Your magic type becomes <span class="muddled">Muddled</span> when you mix magic types. <span class="highlight">Rainbow</span> magic does damage to all monsters, <span class="elemental">Elemental</span> magic does damage to all monsters ignoring block, <span class="dark">Dark</span> magic does damage to all monsters ignorning armor, <span class="chaos">Chaos</span> magic does double damage to a random monster, and <span class="muddled">Muddled</span> magic does damage to a single random monster.</p>
+          <p>You can play cards to charge up your <span class="highlight">Magic Rainbow</span>. Each time your rainbow charges to full, it activates and does damage to your foes. The type of magic summoned dictates how you apply damage. Your magic type becomes <span class="muddled">Muddled</span> when you mix magic types. <span class="highlight">Rainbow</span> magic does damage to all monsters, <span class="elemental">Elemental</span> magic does damage to all monsters ignoring block, <span class="dark">Dark</span> magic does damage to all monsters ignorning armor, <span class="chaos">Chaos</span> magic does triple damage to a random monster, and <span class="muddled">Muddled</span> magic does damage to a single random monster.</p>
 
           <p>That's it, on with the adventure!</p>
 
@@ -115,6 +123,46 @@
     </div>
 
     <div class="copyright">Copyright &copy; <?php echo date("Y"); ?> spewnicorn.com | Created &amp; developed by Brian McCulloh | All rights reserved</div>
+
+  </div>
+
+  <div id="story-panel" class="game-panel">
+
+    <h2>You come across a magical, beautiful creature...</h2>
+
+    <div class="panel">
+
+      <p>...winged, horned, terribly wonderful.</p>
+      
+      <p>It's a Spewnicorn.</p>
+
+      <p>It summons you with it's piercing gaze and gestures for you to climb on its back.<br />
+      You do so, and instantly feel a deep connection.</p>
+
+      <p>You hear its thoughts.<br />
+      It has been tasked with defeating the mighty Guardians, but it can't do so alone.<br />
+      It is bound by an ancient magic requiring two rather than one.</p>
+
+      <p>You are the other. You must together embark on this perilous adventure.<br />
+      Will you and this mysterious Spewnicorn survive this quest?</p>
+
+
+      <div class="panel-part panel-top-left"></div>
+      <div class="panel-part panel-top-middle"></div>
+      <div class="panel-part panel-top-right"></div>
+      <div class="panel-part panel-middle-left"></div>
+      <div class="panel-part panel-middle-right"></div>
+      <div class="panel-part panel-bottom-left"></div>
+      <div class="panel-part panel-bottom-middle"></div>
+      <div class="panel-part panel-bottom-right"></div>
+
+    </div>
+
+    <div class="buttons-wrapper">
+
+      <div class="start-journey button">Start Your Journey</div>
+
+    </div>
 
   </div>
 
@@ -223,6 +271,8 @@
       <div class="game-courage tooltip" data-powertip="<span class='highlight'>Courage:</span> spend courage points on items at the market">
 
         <div class="icon"></div> <span></span>
+
+        <div class="courage-amount"></div>
 
       </div>
 
@@ -692,6 +742,10 @@
 
           <div class="button courage-remove shown" data-amount="2">Remove Card<span class="remove-courage">2</span></div>
 
+          <div class="button courage-trade tooltip" data-powertip="Trade in a weapon for a better one" data-amount="1">Trade<span class="trade-courage">1</span></div>
+
+          <div class="button courage-gamble shown tooltip" data-powertip="Add a random card to your deck">Gamble</div>
+
           <div class="panel-part panel-top-left"></div>
           <div class="panel-part panel-top-middle"></div>
           <div class="panel-part panel-top-right"></div>
@@ -791,11 +845,13 @@
 
         <img class="sprite" src="./images/spewnicorn808.png" />
 
+        <div class="incoming-damage">Incoming Damage: <span></span></div>
+
         <div class="magic-rainbow" data-type="rainbow">
 
           <div class="rainbow-power-amount"><span class="rainbow-power-current"></span>/<span class="rainbow-power-max"></span></div>
 
-          <div class="magic-type"><span class="tooltip" data-type="rainbow" data-powertip="<div class='tooltip-magic'><span class='rainbow'>Rainbow Magic: </span>Does damage to all monsters (Magick: does 2 damage to all enemies).</div><div class='tooltip-magic'><span class='elemental'>Elemental Magic: </span>Does damage to all monsters ignoring block (Magick: gain 6 block).</div><div class='tooltip-magic'><span class='dark'>Dark Magic: </span>Does damage to all monsters ignorning armor (Magick: gain 3 armor).</div><div class='tooltip-magic'><span class='chaos'>Chaos Magic: </span>Does double damage to a random monster (Magick: hexes -3 might to all enemies for 1 turn).</div><div class='tooltip-magic'><span class='muddled'>Muddled Magic: </span>Does damage to a random monster.</div>"></span> Magic</div>
+          <div class="magic-type"><span class="tooltip" data-type="rainbow" data-powertip="<div class='tooltip-magic'><span class='rainbow'>Rainbow Magic: </span>Does damage to all monsters (Magick: does 2 damage to all enemies).</div><div class='tooltip-magic'><span class='elemental'>Elemental Magic: </span>Does damage to all monsters ignoring block (Magick: gain 3 block).</div><div class='tooltip-magic'><span class='dark'>Dark Magic: </span>Does damage to all monsters ignorning armor (Magick: gain 2 armor).</div><div class='tooltip-magic'><span class='chaos'>Chaos Magic: </span>Does triple damage to a random monster (Magick: does 10 damage to a random monster).</div><div class='tooltip-magic'><span class='muddled'>Muddled Magic: </span>Does damage to a random monster.</div>"></span> Magic</div>
 
           <div class="rainbow-power">
             <div class="mask">
@@ -807,6 +863,8 @@
         </div>
 
         <div class="status-bar"></div>
+
+        <div class="stance-text"></div>
 
         <div class="player">
 
@@ -889,6 +947,24 @@
 
     </div>
 
+    <div class="trade-cards-panel cards-panel">
+
+      <h2>Tradeable Cards</h2>
+
+      <div class="message">Choose a card to trade away.</div>
+
+      <div class="cards"></div>
+
+      <div class="buttons-wrapper">
+
+        <div class="view-armory button shown">View Armory</div>
+
+        <div class="done button shown">Done</div>
+
+      </div>
+
+    </div>
+
     <div class="draw-cards-panel cards-panel">
 
       <h2>Draw Cards</h2>
@@ -942,6 +1018,22 @@
       <h2>Choose Cards</h2>
 
       <div class="message"></div>
+
+      <div class="cards"></div>
+
+      <div class="buttons-wrapper">
+
+        <div class="done button">Done</div>
+
+      </div>
+
+    </div>
+
+    <div class="armory-panel cards-panel">
+
+      <h2>The Armory</h2>
+
+      <div class="message">These are all the possible weapon cards</div>
 
       <div class="cards"></div>
 

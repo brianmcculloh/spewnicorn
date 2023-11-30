@@ -540,8 +540,17 @@ input[type="text"] {
 	top:10px;
 	right:10px;
 }
+#splash .panel .difficulties {
+	display:flex;
+	flex-wrap:wrap;
+	justify-content:center;
+	gap:2px;
+}
+#splash .panel .difficulties .button {
+	flex-basis:0;
+}
 body.game-started #splash .panel .tutorial,
-body.game-started #splash .panel .difficulty {
+body.game-started #splash .panel .difficulties {
 	pointer-events:none;
 	filter:grayscale(1);
 }
@@ -688,7 +697,7 @@ body.game-started #splash .panel .difficulty {
 .booster-pack span {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .6) calc(6962px * .6);
+	background-size:calc(1620px * .6) calc(9000px * .6);
 	width:calc(50px * .6);
 	height:calc(50px * .6);
 	display:flex;
@@ -713,7 +722,7 @@ body.game-started #splash .panel .difficulty {
 	top:17px;
 	left:265px;
 }
-.game-courage div {
+.game-courage div.icon {
 	width:32px;
 	height:32px;
 	position:relative;
@@ -722,9 +731,22 @@ body.game-started #splash .panel .difficulty {
 	background-size:512px 15968px;
 	background-position:-256px -14976px;
 }
-.game-courage span {
+.game-courage > span {
 	font-size:18px;
 	line-height:18px;
+}
+.game-courage .courage-amount {
+	position:absolute;
+	top:20px;
+	z-index:99;
+}
+.game-courage .courage-amount > span {
+	display:block;
+	color:yellow;
+	transition:all 4s;
+	font-size:35px;
+	width:50px;
+	text-align:center;
 }
 .essence-bars, .game-aggro {
 	position:absolute;
@@ -1846,6 +1868,7 @@ body.debug .status-toggle {
 .courage-items .treasure-courage,
 .courage-items .candy-courage,
 .remove-courage,
+.trade-courage,
 .courage-cards .card-courage {
 	display:block;
 	position:absolute;
@@ -1854,12 +1877,12 @@ body.debug .status-toggle {
 	width:100%;
 	text-align:center;
 }
-.remove-courage {
+.remove-courage, .trade-courage {
 	bottom:-28px;
 }
 .courage-screen .button.courage-remove {
 	display:none;
-	margin:20px 80px;
+	margin:20px 60px;
 	width:auto;
 }
 .courage-screen .courage-remove.shown {
@@ -1868,15 +1891,43 @@ body.debug .status-toggle {
 .courage-items .treasure.too-expensive .treasure-courage,
 .courage-items .candy.too-expensive .candy-courage,
 .courage-cards .card.too-expensive .card-courage,
-.courage-screen .courage-remove.too-expensive span.remove-courage {
+.courage-screen .courage-remove.too-expensive span.remove-courage,
+.courage-screen .courage-trade.too-expensive span.trade-courage {
 	color:red;
 }
-.button span.remove-courage {
+.button span.remove-courage,
+.button span.trade-courage  {
 	margin-left:0;
 	color:white;
 }
 .courage-cards .card-wrapper {
 	margin-bottom:40px;
+}
+.courage-screen .button.courage-gamble {
+	display:none;
+	margin:20px 60px;
+	width:auto;
+	color:lime;
+}
+.courage-screen .button.courage-gamble.shown {
+	display:block;
+}
+.courage-screen .button.courage-trade {
+	display:none;
+	margin:20px 60px;
+	width:auto;
+}
+.courage-screen .button.courage-trade.shown {
+	display:block;
+}
+.cards-panel.trade-cards-panel.shown .done {
+	display:none;
+}
+.cards-panel.trade-cards-panel.shown .done.shown {
+	display:block;
+}
+.cards-panel.trade-cards-panel.disabled {
+	pointer-events:none;
 }
 
 /* loot screen */
@@ -2127,6 +2178,9 @@ body.arena .monster-panel {
 	position:absolute;
 	bottom:0;
 }
+.monster.ghost .monster-health {
+	width:175px;
+}
 .monster-health.blocked {
 	border:2px solid var(--block_color);
 	height:24px;
@@ -2158,6 +2212,10 @@ body.arena .monster-panel {
 	position:relative;
 	transition:all .2s;
 	border-radius:20px;
+}
+.monster.ghost {
+	width:180px;
+	height:340px;
 }
 .monster[data-tier="2"] {
 	width:300px;
@@ -2605,6 +2663,81 @@ body.arena .monster-panel {
 	height:calc(524px * 1);
 }
 
+.monster.cave_spider .sprite {
+	background-position:calc(-1529px * 1) calc(-6912px * 1);
+	width:calc(131px * 1);
+	height:calc(205px * 1);
+}
+.monster.stinger .sprite {
+	background-position:calc(-1531px * 1) calc(-7123px * 1);
+	width:calc(129px * 1);
+	height:calc(164px * 1);
+}
+.monster.seer .sprite {
+	background-position:calc(-1412px * 1) calc(-7304px * 1);
+	width:calc(109px * 1);
+	height:calc(238px * 1);
+}
+.monster.flamehead .sprite {
+	background-position:calc(-1534px * 1) calc(-7304px * 1);
+	width:calc(124px * 1);
+	height:calc(238px * 1);
+}
+.monster.daggerhawk .sprite {
+	background-position:calc(-1359px * 1) calc(-7559px * 1);
+	width:calc(143px * 1);
+	height:calc(218px * 1);
+}
+.monster.crystalice .sprite {
+	background-position:calc(-1506px * 1) calc(-7576px * 1);
+	width:calc(156px * 1);
+	height:calc(184px * 1);
+}
+.monster.blob .sprite {
+	background-position:calc(-1396px * 1) calc(-7811px * 1);
+	width:calc(148px * 1);
+	height:calc(144px * 1);
+}
+.monster.cyclone .sprite {
+	background-position:calc(-1561px * 1) calc(-7794px * 1);
+	width:calc(96px * 1);
+	height:calc(146px * 1);
+}
+.monster.cherubim .sprite {
+	background-position:calc(-1396px * 1) calc(-7997px * 1);
+	width:calc(119px * 1);
+	height:calc(160px * 1);
+}
+.monster.red_skeleton .sprite {
+	background-position:calc(-1532px * 1) calc(-7984px * 1);
+	width:calc(127px * 1);
+	height:calc(188px * 1);
+}
+.monster.blue_skeleton .sprite {
+	background-position:calc(-1374px * 1) calc(-8186px * 1);
+	width:calc(99px * 1);
+	height:calc(209px * 1);
+}
+.monster.seraphim .sprite {
+	background-position:calc(-1492px * 1) calc(-8189px * 1);
+	width:calc(167px * 1);
+	height:calc(180px * 1);
+}
+.monster.striker .sprite {
+	background-position:calc(-1375px * 1) calc(-8409px * 1);
+	width:calc(98px * 1);
+	height:calc(188px * 1);
+}
+.monster.swirler .sprite {
+	background-position:calc(-1515px * 1) calc(-8393px * 1);
+	width:calc(145px * 1);
+	height:calc(120px * 1);
+}
+.monster.ghost_spider .sprite {
+	background-position:calc(-1532px * 1) calc(-8533px * 1);
+	width:calc(128px * 1);
+	height:calc(284px * 1);
+}
 
 
 
@@ -2613,11 +2746,20 @@ body.arena .monster-panel {
 
 
 
+.monster-intent {
+	display:flex;
+	flex-wrap:wrap;
+	justify-content:center;
+}
+.monster-intent > span {
+	display:flex;
+	align-items:center;
+}
 .monster-intent .intent-amount {
 	font-size:24px;
 	display:inline-block;
 	position:relative;
-	top:-8px;
+	top:auto;
 	text-shadow: 1px 1px 0px rgba(0, 0, 0, 1), 1px -1px 0px rgba(0, 0, 0, 1), -1px 1px 0px rgba(0, 0, 0, 1), -1px -1px 0px rgba(0, 0, 0, 1), 0px 0px 5px rgba(0, 0, 0, .7);
 }
 .monster-intent .intent-dmg {
@@ -2748,6 +2890,16 @@ body.arena .monster-panel {
 }
 .player-panel.damaged img.sprite {
 	animation: rumble .1s infinite linear;
+}
+.player-panel .incoming-damage {
+	position:absolute;
+	bottom:66px;
+	z-index:3;
+	left:208px;
+	font-size:16px;
+}
+.player-panel .incoming-damage span {
+	color:red;
 }
 .frame {
 	background-image:url('./images/ui_spritesheet1.png');
@@ -2913,6 +3065,27 @@ body.arena .monster-panel {
 	top:40px;
 	z-index:10;
 	margin:0 70px 0 70px;
+}
+.player-panel .stance-text {
+	position:absolute;
+	top:-60px;
+	z-index:99;
+}
+.player-panel .stance-text > span {
+	display:block;
+	transition:all 2s;
+	font-size:35px;
+	width:300px;
+	text-align:center;
+}
+.player-panel .stance-text span.aura-text {
+	color:var(--aura_color);
+}
+.player-panel .stance-text span.shimmer-text {
+	color:var(--shimmer_color);
+}
+.player-panel .stance-text span.sparkle-text {
+	color:var(--sparkle_color);
 }
 
 .status-bar {
@@ -3120,7 +3293,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(6962px * .92);
+	background-size:calc(1620px * .92) calc(9000px * .92);
 	background-position:0 calc(-414px * .92);
 	width:calc(270px * .92);
 	height:calc(414px * .92);
@@ -3143,7 +3316,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	height:calc(157px * .92);
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(6962px * .92);
+	background-size:calc(1620px * .92) calc(9000px * .92);
 	background-position:calc(-1364px * .92) calc(-5545px * .92);
 	position:absolute;
 	top:68px;
@@ -3154,7 +3327,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	height:calc(164px * .92);
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(6962px * .92);
+	background-size:calc(1620px * .92) calc(9000px * .92);
 	background-position:0 calc(-828px * .92);
 	position:absolute;
 	top:66px;
@@ -3173,7 +3346,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	height:calc(33px * 1);
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * 1) calc(6962px * 1);
+	background-size:calc(1620px * 1) calc(9000px * 1);
 	background-position:calc(-800px * 1) calc(-828px * 1);
 	position:absolute;
 	top:321px;
@@ -3301,10 +3474,10 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-tail_whip .card-image {
 	background-position:0 calc(-1777px * .92);
 }
-#card-burning_hammer .card-image {
+#card-burning_strike .card-image {
 	background-position:calc(-195px * .92) calc(-1777px * .92);
 }
-#card-unstable_staff .card-image {
+#card-unstable_attack .card-image {
 	background-position:calc(-390px * .92) calc(-1777px * .92);
 }
 #card-wing_beat .card-image {
@@ -3337,8 +3510,296 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-monster_kill .card-image {
 	background-position:calc(-780px * .92) calc(-5702px * .92);
 }
-#card-dread_scythe .card-image {
+#card-malevolent_blow .card-image {
 	background-position:calc(-975px * .92) calc(-5702px * .92);
+}
+#card-blitz .card-image {
+	background-position:calc(-1170px * .92) calc(-5702px * .92);
+}
+#card-concuss .card-image {
+	background-position:calc(-1365px * .92) calc(-5702px * .92);
+}
+#card-ambush .card-image {
+	background-position:0 calc(-5860px * .92);
+}
+#card-rusty_dagger .card-image {
+	background-position:calc(-195px * .92) calc(-5860px * .92);
+}
+#card-polished_dagger .card-image {
+	background-position:calc(-390px * .92) calc(-5860px * .92);
+}
+#card-piercer .card-image {
+	background-position:calc(-585px * .92) calc(-5860px * .92);
+}
+#card-shredder .card-image {
+	background-position:calc(-780px * .92) calc(-5860px * .92);
+}
+#card-stormknife .card-image {
+	background-position:calc(-975px * .92) calc(-5860px * .92);
+}
+#card-shiv_of_the_abyss .card-image {
+	background-position:calc(-1170px * .92) calc(-5860px * .92);
+}
+#card-wooden_sword .card-image {
+	background-position:calc(-1365px * .92) calc(-5860px * .92);
+}
+#card-broadsword .card-image {
+	background-position:0 calc(-6962px * .92);
+}
+#card-hardened_steel .card-image {
+	background-position:calc(-195px * .92) calc(-6962px * .92);
+}
+#card-champions_cutlass .card-image {
+	background-position:calc(-390px * .92) calc(-6962px * .92);
+}
+#card-glacial_blade .card-image {
+	background-position:calc(-585px * .92) calc(-6962px * .92);
+}
+#card-nightfury .card-image {
+	background-position:calc(-780px * .92) calc(-6962px * .92);
+}
+#card-loggers_axe .card-image {
+	background-position:calc(-975px * .92) calc(-6962px * .92);
+}
+#card-battle_axe .card-image {
+	background-position:calc(-1170px * .92) calc(-6962px * .92);
+}
+#card-throwing_axe .card-image {
+	background-position:calc(-1365px * .92) calc(-6962px * .92);
+}
+#card-swift_battle_axe .card-image {
+	background-position:0 calc(-7120px * .92);
+}
+#card-sharpened_axe .card-image {
+	background-position:calc(-195px * .92) calc(-7120px * .92);
+}
+#card-cleave .card-image {
+	background-position:calc(-390px * .92) calc(-7120px * .92);
+}
+#card-redfury .card-image {
+	background-position:calc(-585px * .92) calc(-7120px * .92);
+}
+#card-forge .card-image {
+	background-position:calc(-780px * .92) calc(-7120px * .92);
+}
+#card-dragons_bane .card-image {
+	background-position:calc(-975px * .92) calc(-7120px * .92);
+}
+#card-endless_edge .card-image {
+	background-position:calc(-1170px * .92) calc(-7120px * .92);
+}
+#card-deathmaker .card-image {
+	background-position:calc(-1365px * .92) calc(-7120px * .92);
+}
+#card-old_hammer .card-image {
+	background-position:0 calc(-7276px * .92);
+}
+#card-reinforced_hammer .card-image {
+	background-position:calc(-195px * .92) calc(-7276px * .92);
+}
+#card-tungsten_hammer .card-image {
+	background-position:calc(-390px * .92) calc(-7276px * .92);
+}
+#card-molten_hammer .card-image {
+	background-position:calc(-585px * .92) calc(-7276px * .92);
+}
+#card-hammer_of_justice .card-image {
+	background-position:calc(-780px * .92) calc(-7276px * .92);
+}
+#card-gravitas .card-image {
+	background-position:calc(-975px * .92) calc(-7276px * .92);
+}
+#card-firmament_mover .card-image {
+	background-position:calc(-1170px * .92) calc(-7276px * .92);
+}
+#card-singing_mallet .card-image {
+	background-position:calc(-1365px * .92) calc(-7276px * .92);
+}
+#card-blunt_pike .card-image {
+	background-position:0 calc(-7434px * .92);
+}
+#card-serrated_pike .card-image {
+	background-position:calc(-195px * .92) calc(-7434px * .92);
+}
+#card-ancient_spear .card-image {
+	background-position:calc(-390px * .92) calc(-7434px * .92);
+}
+#card-runed_bayonet .card-image {
+	background-position:calc(-585px * .92) calc(-7434px * .92);
+}
+#card-cursed_spike .card-image {
+	background-position:calc(-780px * .92) calc(-7434px * .92);
+}
+#card-frozen_harpoon .card-image {
+	background-position:calc(-975px * .92) calc(-7434px * .92);
+}
+#card-ornate_javelin .card-image {
+	background-position:calc(-1170px * .92) calc(-7434px * .92);
+}
+#card-double_headed_lance .card-image {
+	background-position:calc(-1365px * .92) calc(-7434px * .92);
+}
+#card-wing_sweep .card-image {
+	background-position:0 calc(-7592px * .92);
+}
+#card-sudden_barrage .card-image {
+	background-position:calc(-195px * .92) calc(-7592px * .92);
+}
+#card-obliterate .card-image {
+	background-position:calc(-390px * .92) calc(-7592px * .92);
+}
+#card-farmers_scythe .card-image {
+	background-position:calc(-585px * .92) calc(-7592px * .92);
+}
+#card-crescentblade .card-image {
+	background-position:calc(-780px * .92) calc(-7592px * .92);
+}
+#card-sharpened_scythe .card-image {
+	background-position:calc(-975px * .92) calc(-7592px * .92);
+}
+#card-blackblade .card-image {
+	background-position:calc(-1170px * .92) calc(-7592px * .92);
+}
+#card-spiked_scythe .card-image {
+	background-position:calc(-1365px * .92) calc(-7592px * .92);
+}
+#card-greenshears .card-image {
+	background-position:0 calc(-7750px * .92);
+}
+#card-glowscythe .card-image {
+	background-position:calc(-195px * .92) calc(-7750px * .92);
+}
+#card-bonesaw .card-image {
+	background-position:calc(-390px * .92) calc(-7750px * .92);
+}
+#card-treecleaver .card-image {
+	background-position:calc(-585px * .92) calc(-7750px * .92);
+}
+#card-mantleblight .card-image {
+	background-position:calc(-780px * .92) calc(-7750px * .92);
+}
+#card-armyfeller .card-image {
+	background-position:calc(-975px * .92) calc(-7750px * .92);
+}
+#card-reaper .card-image {
+	background-position:calc(-1365px * .92) calc(-7750px * .92);
+}
+#card-fleeting_deathblade .card-image {
+	background-position:calc(-1170px * .92) calc(-7750px * .92);
+}
+#card-hickory_wand .card-image {
+	background-position:calc(-1170px * .92) calc(-6648px * .92);
+}
+#card-walnut_wand .card-image {
+	background-position:calc(-1365px * .92) calc(-6648px * .92);
+}
+#card-black_oak_wand .card-image {
+	background-position:0 calc(-6806px * .92);
+}
+#card-hooked_wand .card-image {
+	background-position:calc(-195px * .92) calc(-6806px * .92);
+}
+#card-glowing_wand .card-image {
+	background-position:calc(-390px * .92) calc(-6806px * .92);
+}
+#card-glowing_sceptre .card-image {
+	background-position:calc(-585px * .92) calc(-6806px * .92);
+}
+#card-darkfeather .card-image {
+	background-position:calc(-780px * .92) calc(-6806px * .92);
+}
+#card-heart_of_chaos .card-image {
+	background-position:calc(-975px * .92) calc(-6806px * .92);
+}
+#card-evernature .card-image {
+	background-position:calc(-1170px * .92) calc(-6806px * .92);
+}
+#card-arcana_prismatica .card-image {
+	background-position:calc(-1365px * .92) calc(-6806px * .92);
+}
+#card-crooked_staff .card-image {
+	background-position:0 calc(-7906px * .92);
+}
+#card-twisted_staff .card-image {
+	background-position:calc(-195px * .92) calc(-7906px * .92);
+}
+#card-slotted_staff .card-image {
+	background-position:calc(-390px * .92) calc(-7906px * .92);
+}
+#card-carved_staff .card-image {
+	background-position:calc(-585px * .92) calc(-7906px * .92);
+}
+#card-gold_staff .card-image {
+	background-position:calc(-780px * .92) calc(-7906px * .92);
+}
+#card-green_staff .card-image {
+	background-position:calc(-975px * .92) calc(-7906px * .92);
+}
+#card-purple_staff .card-image {
+	background-position:calc(-1170px * .92) calc(-7906px * .92);
+}
+#card-sapphire_staff .card-image {
+	background-position:calc(-1365px * .92) calc(-7906px * .92);
+}
+#card-emerald_staff .card-image {
+	background-position:0 calc(-8064px * .92);
+}
+#card-ruby_staff .card-image {
+	background-position:calc(-195px * .92) calc(-8064px * .92);
+}
+#card-emanating_staff .card-image {
+	background-position:calc(-390px * .92) calc(-8064px * .92);
+}
+#card-shuddering_staff .card-image {
+	background-position:calc(-585px * .92) calc(-8064px * .92);
+}
+#card-quaking_staff .card-image {
+	background-position:calc(-780px * .92) calc(-8064px * .92);
+}
+#card-runemark .card-image {
+	background-position:calc(-975px * .92) calc(-8064px * .92);
+}
+#card-darksphere .card-image {
+	background-position:calc(-1170px * .92) calc(-8064px * .92);
+}
+#card-staff_of_wonder .card-image {
+	background-position:calc(-1365px * .92) calc(-8064px * .92);
+}
+#card-skycaller .card-image {
+	background-position:0 calc(-8222px * .92);
+}
+#card-windrift .card-image {
+	background-position:calc(-195px * .92) calc(-8222px * .92);
+}
+#card-ember .card-image {
+	background-position:calc(-390px * .92) calc(-8222px * .92);
+}
+#card-deepcore .card-image {
+	background-position:calc(-585px * .92) calc(-8222px * .92);
+}
+#card-felcrystal .card-image {
+	background-position:calc(-780px * .92) calc(-8222px * .92);
+}
+#card-burning_branch .card-image {
+	background-position:calc(-975px * .92) calc(-8222px * .92);
+}
+#card-flaming_torch .card-image {
+	background-position:calc(-1170px * .92) calc(-8222px * .92);
+}
+#card-blazing_torch .card-image {
+	background-position:calc(-1365px * .92) calc(-8222px * .92);
+}
+#card-strangefire .card-image {
+	background-position:0 calc(-8378px * .92);
+}
+#card-lumenfire .card-image {
+	background-position:calc(-195px * .92) calc(-8378px * .92);
+}
+#card-endless_light .card-image {
+	background-position:calc(-390px * .92) calc(-8378px * .92);
+}
+#card-dreadfurnace .card-image {
+	background-position:calc(-585px * .92) calc(-8378px * .92);
 }
 
 /* TOOL */
@@ -3624,6 +4085,39 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-myriad .card-image {
 	background-position:calc(-585px * .92) calc(-6020px * .92);
 }
+#card-hardened_feathers .card-image {
+	background-position:calc(-1170px * .92) calc(-6020px * .92);
+}
+#card-death_stare .card-image {
+	background-position:calc(-1365px * .92) calc(-6020px * .92);
+}
+#card-fortify .card-image {
+	background-position:0 calc(-6175px * .92);
+}
+#card-charge .card-image {
+	background-position:calc(-195px * .92) calc(-6175px * .92);
+}
+#card-target .card-image {
+	background-position:calc(-390px * .92) calc(-6175px * .92);
+}
+#card-surge .card-image {
+	background-position:calc(-585px * .92) calc(-6175px * .92);
+}
+#card-roar .card-image {
+	background-position:calc(-780px * .92) calc(-6175px * .92);
+}
+#card-superstorm .card-image {
+	background-position:calc(-975px * .92) calc(-6175px * .92);
+}
+#card-cloudburst .card-image {
+	background-position:calc(-1170px * .92) calc(-6175px * .92);
+}
+#card-purify .card-image {
+	background-position:calc(-1365px * .92) calc(-6175px * .92);
+}
+#card-forbid .card-image {
+	background-position:0 calc(-8535px * .92);
+}
 
 
 /* ABILITY */
@@ -3738,6 +4232,32 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-strange_tail .card-image {
 	background-position:calc(-975px * .92) calc(-6332px * .92);
 }
+#card-bolster .card-image {
+	background-position:calc(-1170px * .92) calc(-6332px * .92);
+}
+#card-radioactive .card-image {
+	background-position:calc(-1365px * .92) calc(-6332px * .92);
+}
+#card-depthsight .card-image {
+	background-position:0 calc(-6490px * .92);
+}
+#card-blacksmith .card-image {
+	background-position:calc(-195px * .92) calc(-6490px * .92);
+}
+#card-dark_knowledge .card-image {
+	background-position:calc(-390px * .92) calc(-6490px * .92);
+}
+#card-sage .card-image {
+	background-position:calc(-585px * .92) calc(-6490px * .92);
+}
+#card-reckless_abandon .card-image {
+	background-position:calc(-780px * .92) calc(-6490px * .92);
+}
+#card-rebuke .card-image {
+	background-position:calc(-975px * .92) calc(-6490px * .92);
+}
+
+
 
 
 /* MAGIC */
@@ -3909,6 +4429,24 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-eternal_runestone .card-image {
 	background-position:calc(-1365px * .92) calc(-5232px * .92);
 }
+#card-beautiful_spell .card-image {
+	background-position:0 calc(-6648px * .92);
+}
+#card-delightful_spell .card-image {
+	background-position:calc(-195px * .92) calc(-6648px * .92);
+}
+#card-wonderful_spell .card-image {
+	background-position:calc(-390px * .92) calc(-6648px * .92);
+}
+#card-sparkling_rainbow_spell .card-image {
+	background-position:calc(-585px * .92) calc(-6648px * .92);
+}
+#card-shimmering_rainbow_spell .card-image {
+	background-position:calc(-780px * .92) calc(-6648px * .92);
+}
+#card-luminous_rainbow_spell .card-image {
+	background-position:calc(-975px * .92) calc(-6648px * .92);
+}
 
 
 
@@ -4002,7 +4540,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	font-size:28px;
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(6962px * .92);
+	background-size:calc(1620px * .92) calc(9000px * .92);
 	background-position:calc(-800px * .92) calc(-861px * .92);
 	width:calc(74px * .92);
 	height:calc(102px * .92);
@@ -4063,7 +4601,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card.unplayable .card-age {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .6) calc(6962px * .6);
+	background-size:calc(1620px * .6) calc(9000px * .6);
 	background-position:calc(-1096px * .6) calc(-861px * .6);
 	width:calc(50px * .6);
 	height:calc(50px * .6);
@@ -4100,7 +4638,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .pack {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .9) calc(6962px * .9);
+	background-size:calc(1620px * .9) calc(9000px * .9);
 	width:calc(66px * .9);
 	height:calc(69px * .9);
 	display:flex;
@@ -4119,7 +4657,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .linger, .card .use, .card .expire {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .8) calc(6962px * .8);
+	background-size:calc(1620px * .8) calc(9000px * .8);
 	width:calc(50px * .8);
 	height:calc(50px * .8);
 	display:flex;
@@ -4135,10 +4673,10 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .expire {
 	background-position:calc(-1096px * .8) calc(-911px * .8);
 }
-.card .vanish, .card .retain:not(.amount), .card .ephemeral, .card .breakable, .card .combinable {
+.card .vanish, .card .retain:not(.amount), .card .ephemeral, .card .breakable, .card .combinable, .card .card-stance, .card .tradeable, .card .weapon, .card .aoe {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .8) calc(6962px * .8);
+	background-size:calc(1620px * .8) calc(9000px * .8);
 	width:calc(50px * .8);
 	height:calc(50px * .8);
 	display:flex;
@@ -4160,7 +4698,19 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .combinable {
 	background-position:calc(-1096px * .8) calc(-861px * .8);
 }
-.card .vanish span, .card .retain span, .card .ephemeral span, .card .breakable span, .card .combinable span {
+.card .tradeable {
+	background-position:calc(-1096px * .8) calc(-861px * .8);
+}
+.card .weapon {
+	background-position:calc(-1096px * .8) calc(-861px * .8);
+}
+.card .aoe {
+	background-position:calc(-1096px * .8) calc(-861px * .8);
+}
+.card .card-stance {
+	background-position:calc(-1096px * .8) calc(-861px * .8);
+}
+.card .vanish span, .card .retain span, .card .ephemeral span, .card .breakable span, .card .combinable span, .card .card-stance span, .card .tradeable span, .card .weapon span, .card .aoe span {
 	width:calc(32px * .8);
 	height:calc(32px * .8);
 	background-image:url('images/sprites1.png');
@@ -4184,6 +4734,24 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 .card .combinable span {
 	background-position:calc(-288px * .8) calc(-352px * .8);
+}
+.card .tradeable span {
+	background-position:0 calc(-5888px * .8);
+}
+.card .weapon span {
+	background-position:calc(-96px * .8) calc(-9280px * .8);
+}
+.card .aoe span {
+	background-position:calc(-64px * .8) calc(-6432px * .8);
+}
+.card .aura-stance span {
+	background-position:calc(-96px * .8) calc(-992px * .8);
+}
+.card .sparkle-stance span {
+	background-position:calc(-96px * .8) calc(-896px * .8);
+}
+.card .shimmer-stance span {
+	background-position:calc(-96px * .8) calc(-1024px * .8);
 }
 
 .card .slots {
@@ -4295,7 +4863,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .player-cards .card-wrapper.destroying {
 	transform:scale(.8) translate(0, -100px);
 	opacity:0;
-	transition:all 1s linear;
+	transition:opacity .7s linear;
 	width:0;
 	height:0;
 	pointer-events:none;
@@ -4371,7 +4939,19 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	text-transform:uppercase;
 }
 .card .desc .desc-behavior {
-	color:blue;
+	color:brown;
+}
+.card .desc .desc-stance .aura {
+	color: var(--aura_color);
+}
+.card .desc .desc-stance .sparkle {
+	color: var(--sparkle_color);
+}
+.card .desc .desc-stance .shimmer {
+	color: var(--shimmer_color);
+}
+.card .desc .desc-trade {
+	color: deeppink;
 }
 .card .desc .whatname {
 	font-style:italic;
@@ -4478,7 +5058,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .pack-button {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(6962px * .92);
+	background-size:calc(1620px * .92) calc(9000px * .92);
 	width:calc(270px * .92);
 	height:calc(414px * .92);
 	scale:1;
@@ -4815,6 +5395,23 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	opacity:0;
 	transform:translateY(-50px);
 	transition:all 1s;
+}
+
+/* STORY PANEL */
+
+#story-panel {
+	z-index:9999999;
+	background-image: url('./images/map1.png');
+}
+#story-panel p, #story-panel h2 {
+	text-transform:none;
+}
+#story-panel p {
+	font-size:22px;
+}
+#story-panel .panel {
+	flex-direction:column;
+	text-align:center;
 }
 
 

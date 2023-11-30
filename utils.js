@@ -127,7 +127,7 @@ export default class Util {
         let useTip = '';
         if(use > -1) {
             plural = use == 1 ? '' : 's';
-            useTip = "<span class='highlight'>Use:</span> Number of times this card can be used without vanishing";
+            useTip = "<span class='highlight'>Use:</span> Number of times this card can be used before vanishing";
             useDom += '<span class="amount use tooltip" data-powertip="' + useTip + '" data-amount="' + use + '">' + use + '</span>';
         }
 
@@ -137,7 +137,7 @@ export default class Util {
         let expireTip = '';
         if(expire > -1) {
             plural = expire == 1 ? '' : 's';
-            expireTip = "<span class='highlight'>Expire:</span> Number of turns this card remains in your deck without vanishing"
+            expireTip = "<span class='highlight'>Expire:</span> Number of turns this card remains in your deck before vanishing"
             expireDom += '<span class="amount expire tooltip" data-powertip="' + expireTip + '" data-amount="' + expire + '">' + expire + '</span>';
         }
 
@@ -195,6 +195,60 @@ export default class Util {
             combinableDom += '<div class="combinable tooltip" data-powertip="' + combinableTip + '"><span></span></div>';
         }
 
+        let aura = false;
+        aura = util.getCardAttribute(card, 'aura');
+        let auraDom = '';
+        let auraTip = '';
+        if(aura != '') {
+            auraTip = "<span class='highlight'>Stance:</span> Triggers extra effects when in <span class='aura'>Aura</span> stance";
+            auraDom += '<div class="card-stance aura-stance tooltip" data-powertip="' + auraTip + '"><span></span></div>';
+        }
+
+        let shimmer = false;
+        shimmer = util.getCardAttribute(card, 'shimmer');
+        let shimmerDom = '';
+        let shimmerTip = '';
+        if(shimmer != '') {
+            shimmerTip = "<span class='highlight'>Stance:</span> Triggers extra effects when in <span class='shimmer'>Shimmer</span> stance";
+            shimmerDom += '<div class="card-stance shimmer-stance tooltip" data-powertip="' + shimmerTip + '"><span></span></div>';
+        }
+
+        let sparkle = false;
+        sparkle = util.getCardAttribute(card, 'sparkle');
+        let sparkleDom = '';
+        let sparkleTip = '';
+        if(sparkle != '') {
+            sparkleTip = "<span class='highlight'>Stance:</span> Triggers extra effects when in <span class='sparkle'>Sparkle</span> stance";
+            sparkleDom += '<div class="card-stance sparkle-stance tooltip" data-powertip="' + sparkleTip + '"><span></span></div>';
+        }
+
+        let trade = false;
+        trade = util.getCardAttribute(card, 'trade');
+        let tradeDom = '';
+        let tradeTip = '';
+        if(trade != '') {
+            tradeTip = "<span class='highlight'>Tradeable:</span> Can be traded at the market";
+            tradeDom += '<div class="tradeable tooltip" data-powertip="' + tradeTip + '"><span></span></div>';
+        }
+
+        let weapon = false;
+        weapon = util.getCardAttribute(card, 'weapon');
+        let weaponDom = '';
+        let weaponTip = '';
+        if(weapon != '') {
+            weaponTip = "<span class='highlight'>Weapon:</span> This is a weapon class card";
+            weaponDom += '<div class="weapon tooltip" data-powertip="' + weaponTip + '"><span></span></div>';
+        }
+
+        let aoe = false;
+        aoe = util.getCardAttribute(card, 'target');
+        let aoeDom = '';
+        let aoeTip = '';
+        if(aoe == 'all') {
+            aoeTip = "<span class='highlight'>AOE:</span> Targets all monsters";
+            aoeDom += '<div class="aoe tooltip" data-powertip="' + aoeTip + '"><span></span></div>';
+        }
+
         let pack = false;
         pack = util.getCardAttribute(card, 'pack');
         let packDom = '';
@@ -211,7 +265,7 @@ export default class Util {
         let tooltipClass = slots != '' ? ' tooltip' : '';
         let tooltip = slots != '' ? card.slotDesc : '';
         pack = card.pack ? ' ' + card.pack + '-pack' : '';
-        $("<div class='card-wrapper drawing'><div class='card " + card.tier + unplayable + combinable + pack + " " + card.type + " " + cssClass + "' id='card-" + card.id + "' data-id='" + card.id + "' data-guid='" + card.guid + "' data-powertip='" + tooltip + "'><div class='card-image'></div><div class='card-frame'></div><div class='card-type'>" + card.type + "</div><div class='card-rarity'></div>" + manaDom + ageDom + "<div class='bubbles-left'>" + useDom + expireDom + lingerDom + "</div><div class='bubbles-right'>" + vanishDom + retainDom + ephemeralDom + breakableDom + combinableDom + "</div><div class='bubbles-bottom-left'>" + packDom + "</div><div class='name'>" + card.name + "</div><div class='desc'><div class='desc-inner'>" + card.desc + "</div></div><div class='slots" + tooltipClass + "' data-powertip='" + tooltip + "'>" + slots + "</div><div class='card-courage' data-amount='" + card.courage + "'>" + card.courage + "</div></div></div>")
+        $("<div class='card-wrapper drawing'><div class='card " + card.tier + unplayable + combinable + pack + " " + card.type + " " + cssClass + "' id='card-" + card.id + "' data-id='" + card.id + "' data-guid='" + card.guid + "' data-powertip='" + tooltip + "'><div class='card-image'></div><div class='card-frame'></div><div class='card-type'>" + card.type + "</div><div class='card-rarity'></div>" + manaDom + ageDom + "<div class='bubbles-left'>" + useDom + expireDom + lingerDom + "</div><div class='bubbles-right'>" + vanishDom + retainDom + ephemeralDom + breakableDom + combinableDom + auraDom + sparkleDom + shimmerDom + tradeDom + weaponDom + aoeDom + "</div><div class='bubbles-bottom-left'>" + packDom + "</div><div class='name'>" + card.name + "</div><div class='desc'><div class='desc-inner'>" + card.desc + "</div></div><div class='slots" + tooltipClass + "' data-powertip='" + tooltip + "'>" + slots + "</div><div class='card-courage' data-amount='" + card.courage + "'>" + card.courage + "</div></div></div>")
             .appendTo(to)
             .delay(1)
             .queue(function() {
@@ -233,7 +287,7 @@ export default class Util {
             });
     }
     appendMonster(monster, id) {
-        $('<div class="monster ' + monster.id + '" data-id="' + id + '" data-guid="' + monster.guid + '" data-tier="' + monster.tier + '"><div class="monster-stats">' + monster.statsDom + '</div><div class="sprite"></div><div class="combat-log"><div class="dmg-taken" data-amount="0"></div><div class="armor-lost" data-amount="0"></div><div class="health-gained" data-amount="0"></div><div class="health-lost" data-amount="0"></div><div class="status-text"></div></div><div class="monster-health creature-health"><div class="health-amount"><div class="armor-amount"><div class="armor-number"></div></div><div class="health-number"></div></div><div class="block-amount"><div class="block-number">' + monster.block + '</div></div></div><div class="status-bar"></div></div>')
+        $('<div class="monster ' + monster.id + ' ' + monster.breed + '" data-id="' + id + '" data-guid="' + monster.guid + '" data-tier="' + monster.tier + '"><div class="monster-stats">' + monster.statsDom + '</div><div class="sprite"></div><div class="combat-log"><div class="dmg-taken" data-amount="0"></div><div class="armor-lost" data-amount="0"></div><div class="health-gained" data-amount="0"></div><div class="health-lost" data-amount="0"></div><div class="status-text"></div></div><div class="monster-health creature-health"><div class="health-amount"><div class="armor-amount"><div class="armor-number"></div></div><div class="health-number"></div></div><div class="block-amount"><div class="block-number">' + monster.block + '</div></div></div><div class="status-bar"></div></div>')
             .appendTo('.monster-panel')
             .hide()
             .fadeIn(1500);
@@ -365,14 +419,25 @@ export default class Util {
         }
         
     }
-    removeMonster(guid) {
-        $('.monster[data-guid=' + guid + ']').addClass('dead').removeClass('clickable');
+    removeMonster(monster) {
+        if(monster.breed == 'ghost') {
+            $('.monster[data-guid=' + monster.guid + ']').remove();
+        } else {
+            $('.monster[data-guid=' + monster.guid + ']').addClass('dead').removeClass('clickable');
+        }
+    }
+    hasAttribute(card, attribute) {
+        if(card[attribute] == undefined || card[attribute] == false) {
+            return false;
+        } else {
+            return true;
+        }
     }
     getCardAttribute(card, attribute, type = false) {
 
         let data = '';
 
-        // draw/discard/destroy/combine values
+        // draw/discard/destroy/combine/stance values
         if(type) {
             if(card[type] != undefined) {
                 if(card[type][attribute] != undefined) {
@@ -691,6 +756,7 @@ export default class Util {
             }
         }
     }
+    // accepts any positive numeric value including decimals as the 'weight' value
     weightedRandom(weightedArray) {
         const totalWeight = weightedArray.reduce((sum, element) => sum + element.weight, 0);
         const randomWeight = Math.random() * totalWeight;
@@ -913,6 +979,7 @@ export default class Util {
                 statDown: [102801, 920],
                 courage: [146724, 2755],
                 jester: [22990, 1000],
+                trade: [320737, 1408],
 
                 available: [23990, 964],
                 
@@ -961,7 +1028,7 @@ export default class Util {
                 attack16: [149479, 2727],
                 attack17: [152206, 581],
                 attack18: [241940, 1791],
-                attack19: [243731, 5404],
+                attack19: [243731, 5152],
                 attack20: [248883, 1595],
                 attack21: [250478, 2504],
                 attack22: [252982, 3296],
@@ -1039,6 +1106,9 @@ export default class Util {
                 effect38: [314485, 994],
                 effect39: [315480, 3391],
                 effect40: [318870, 1882],
+                effect41: [322149, 3162],
+                effect42: [325311, 2970],
+                effect43: [328285, 2469],
 
 
 
@@ -1093,6 +1163,7 @@ export default class Util {
                 SkywardHero_UI (4)
                 SkywardHero_UI (8)
                 SkywardHero_UI (13)
+                SkywardHero_UI (18)
                 SkywardHero_UI (19)
                 SkywardHero_UI (21)
                 SkywardHero_UI (23)
@@ -1165,6 +1236,7 @@ export default class Util {
                 Item_Totem_Scroll_C
                 Pick_Up_Orb_Touch_1
                 Skill_Knife_Throw_B
+                Skill_Target_Weakness_Weapon
                 Skill_Axe_Throw_B
                 Skill_Rain_Of_Arrows
                 Large_Gate_Close_2_Medium_Small
@@ -1218,6 +1290,7 @@ export default class Util {
                 Lock_Gate_Medium_Small
                 Open_Gate_Switch_User_Interface
                 UI_Magic_Confirm_A_Spell_Cast
+                Loading_Gear_Crafting_Table
 
 
 
