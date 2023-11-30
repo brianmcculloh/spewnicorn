@@ -751,9 +751,6 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'shield', name: 'Shield', type: 'tool', mana: 1, addable: false,
-        effects: [
-            {effect: 'might', amount: 1, turns: -1},
-        ],
         blk: [6],
         slots: 1,
         shardUpgrades: {
