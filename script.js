@@ -58,11 +58,15 @@
  * Action: wild card - percentage chance of doing a bunch of different things
  * -low chance to have a negative effect and powerful effect, higher chances of things in between happening
  * Effect: regenerative shield: whenever a card is drawn via a card/candy/treasure gain x block
- * 
+ * Effect: Antimatter - whenever antimomentum activates, gain x momentum
+ * Effect: whenever you gain courage, gain x more (via new treasure)
+ * Ability: trade card cost locks in at current rate (via new treasure)
+ * Effect: harden (via card non-newtonian) gain x block each time you lose health
  * 
  * 
  * From Tim: 
  * Mechanic: draw a specifically set x amount every turn instead of draw 1 or draw all (so click draw 3 one time instead of click draw 1 three times)
+ * Mechanic: confirm button when playing stance cards
  * 
  * 
  * 
@@ -73,6 +77,7 @@
  * Either heal or do something cool (don't think any quests currently heal)
  * Quests that permanently add clutter to deck (maybe in trade for good things, or just bad quests)
  * Quest that lets you trade all jabs and blocks for x courage/health/maxhealth per card
+ * Quest: trade increasingly more health to choose one common weapon, or one uncommon weapon, or one rare weapon, or one legendary weapon
  * 
  * 
  * 
@@ -96,14 +101,14 @@
  * 
  * PHASE V: 
  * 
+ * TODO: implement new background images from Fantasy_Background_1 and FantasyPack1
  * TODO: implement mechanics first and then add some more cards after that
- * 
  * 
  * 
  * Bug/Balance Testing playthroughs
  * Tutorial	- DONE		
  * Save progress
- * Record results
+ * Record results - use Google Analytics for this
  * 
  * 
  * 
@@ -170,6 +175,8 @@
  * Card: increase rowdy to 100% chance for one turn - upgraded to 2 turns
  * Card: combine pack - combine cards to create stronger irradiate (like alpha/beta/omega)
  * Card: reusable tool card that just adds 1 fatality
+ * Card: Dark Synergy - adds antimatter
+ * Card: Hide - gain block but lose might
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -236,6 +243,7 @@ window.quests = quests;
 var musicOverworld = util.music('overworld.mp3');
 var musicOverworldFrost = util.music('overworld-frost.mp3');
 var musicOverworldFlame = util.music('overworld-flame.mp3');
+var musicSingularity = util.music('singularity.mp3');
 var musicFountain = util.music('fountain.mp3');
 var musicVictory = util.music('victory.wav');
 var musicLoss = util.music('loss.wav');
@@ -259,6 +267,14 @@ var musicBattles = [
 	util.music('battle13.mp3'),
 	util.music('battle14.wav'),
 	util.music('battle15.wav'),
+	util.music('battle16.mp3'),
+	util.music('battle17.mp3'),
+	util.music('battle18.mp3'),
+	util.music('battle19.mp3'),
+	util.music('battle20.mp3'),
+	util.music('battle21.mp3'),
+	util.music('battle22.mp3'),
+	util.music('battle23.mp3'),
 ];
 var musicQuests = [
 	util.music('quest1.wav'),
@@ -368,6 +384,9 @@ jQuery(document).ready(function($) {
 					game.overworld = 'flame';
 					game.mapType = 'fire_gate';
 					init_map_2();
+				} else if(game.scenario=='singularity') {
+					game.mapType = 'singularity';
+					init_singularity();
 				} else {
 					init();
 				}
@@ -1319,7 +1338,10 @@ jQuery(document).ready(function($) {
 		$('.loot-items').empty();
 
 		if(game.mapType == 'ice_gate' || game.mapType == 'fire_gate') {
-			if(game.map == 1) {
+			if(game.map == 1 || game.map == 2) {
+				if(game.map == 2) {
+					$('.gate-screen .message').html('You have beaten the second Guardian, but your journey continues...');
+				}
 				gateScreen();
 			} else {
 				endGame('victory');
@@ -1335,7 +1357,12 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.gate-done', function(e) {
 
-		init_map_2();
+		if(game.map == 2) {
+			init_singularity();
+		} else {
+			init_map_2();
+		}
+		
 
 	});
 
@@ -1390,6 +1417,23 @@ function init() {
 
 }
 
+function init_singularity() {
+	game.map = 3;
+	game.floor = 0;
+	player.aggro.current = 0;
+	player.aggro.level = 0;
+	if(game.difficulty == 'easy') { 
+		heal(player, 999);
+	}
+	game.mapType = 'singularity';
+	$('.gate-screen').removeClass('shown');
+	if(game.scenario!='normal') {
+		buildScenario();
+	}
+	setStatus();
+	startCombat();
+}
+
 function init_map_2() {
 
 	game.map = 2;
@@ -1413,11 +1457,12 @@ function init_map_2() {
 	$('body').css('background-image', 'url(./images/map_' + game.mapType + '.png');
 
 	map.buildMap();
-	if(game.debug) $('.map-inner div').addClass('clickable');
 
 	game.arenasComplete = 0;
 	$('.tile.ice-gate').removeClass('clickable').data('powertip', 'Ice Gate: <span class="highlight">LOCKED</span>').attr('data-powertip', 'Ice Gate: <span class="highlight">LOCKED</span>');
 	$('.tile.fire-gate').removeClass('clickable').data('powertip', 'Fire Gate: <span class="highlight">LOCKED</span>').attr('data-powertip', 'Fire Gate: <span class="highlight">LOCKED</span>');
+
+	if(game.debug) $('.map-inner div').addClass('clickable');
 
 	util.clearTooltips();
 
@@ -1448,24 +1493,24 @@ function setDifficulty() {
 			player.health.max = 75;
 		}
 	} else if(game.difficulty=='hard') {
-		game.questChance = 1;
-		game.fountainChance = .9;
+		game.questChance = 1.6;
+		game.fountainChance = 1.4;
 		if(!game.debug) {
 			player.health.base = 65;
 			player.health.current = 65;
 			player.health.max = 65;
 		}
 	} else if(game.difficulty=='expert') {
-		game.questChance = .7;
-		game.fountainChance = .6;
+		game.questChance = 1.2;
+		game.fountainChance = 1;
 		if(!game.debug) {
 			player.health.base = 65;
 			player.health.current = 55;
 			player.health.max = 65;
 		}
 	} else if(game.difficulty=='nightmare') {
-		game.questChance = .5;
-		game.fountainChance = .3;
+		game.questChance = 1;
+		game.fountainChance = .8;
 		if(!game.debug) {
 			player.health.base = 60;
 			player.health.current = 50;
@@ -1499,16 +1544,16 @@ function buildScenario() {
 	addCandy('cherry_cordial');
 
 	// cards
-	addCardToDeck('rainbow_orb');
+	/*addCardToDeck('rainbow_orb');
 	addCardToDeck('leather_armor');
 	addCardToDeck('stun');
 	addCardToDeck('razzle');
 	addCardToDeck('self_enhance');
-	addCardToDeck('unstable_sttack');
+	addCardToDeck('unstable_attack');
 	addCardToDeck('stomp');
-	addCardToDeck('chaos_charge');
+	addCardToDeck('chaos_charge');*/
 	addCardToDeck('tail_whip');
-	addCardToDeck('repel');
+	/*addCardToDeck('repel');
 	addCardToDeck('hammer_thrust');
 	addCardToDeck('remember');
 	addCardToDeck('cutting_ring');
@@ -1526,10 +1571,10 @@ function buildScenario() {
 	addCardToDeck('fire_spell');
 	addCardToDeck('dazzle');
 	addCardToDeck('mezmerize');
-	addCardToDeck('adrenaline_rush');
+	addCardToDeck('adrenaline_rush');*/
 
 	// shards
-	deck.attachShard(util.getCardById('stun', deck.cards), 'flame');
+	/*deck.attachShard(util.getCardById('stun', deck.cards), 'flame');
 	deck.attachShard(util.getCardById('razzle', deck.cards), 'flame');
 	deck.attachShard(util.getCardById('stomp', deck.cards), 'frost');
 	deck.attachShard(util.getCardById('repel', deck.cards), 'frost');
@@ -1548,7 +1593,7 @@ function buildScenario() {
 	deck.attachShard(util.getCardById('fire_spell', deck.cards), 'flame');
 	deck.attachShard(util.getCardById('dazzle', deck.cards), 'flame');
 	deck.attachShard(util.getCardById('mezmerize', deck.cards), 'flame');
-	deck.attachShard(util.getCardById('mezmerize', deck.cards), 'flame');
+	deck.attachShard(util.getCardById('mezmerize', deck.cards), 'flame');*/
 
 	// essence
 	updateEssenceLevels('shimmer', 14);
@@ -1958,7 +2003,7 @@ function chooseTradeCard() {
 	}
 }
 
-async function startCombat(tile) {
+async function startCombat(tile = false) {
 
 	//console.clear();
 
@@ -1980,47 +2025,58 @@ async function startCombat(tile) {
 	$('.start-arrow').hide();
 	$('.combat-text, .combat-text h2.begin-combat').addClass('shown');
 
-	if(tile.hasClass('arena')) {
-		if(game.playsounds) sounds.play('aggroLevel');
-		game.mapType = 'arena';
-		backgroundImage = './images/arena' + (game.arenasComplete + 1) + '.png';
-		$('body').addClass('arena');
-		game.arenasComplete += 1;
+	if(tile) {
+		if(tile.hasClass('arena')) {
+			if(game.playsounds) sounds.play('aggroLevel');
+			game.mapType = 'arena';
+			backgroundImage = './images/arena' + (game.arenasComplete + 1) + '.png';
+			$('body').addClass('arena');
+			game.arenasComplete += 1;
+			setTimeout(function() {
+				if(!musicArena.playing() && game.playmusic) musicArena.play();
+			}, 200);
+		} else if(tile.hasClass('ice-gate')) {
+			if(game.playsounds) sounds.play('aggroLevel');
+			game.mapType = 'ice_gate';
+			backgroundImage = './images/ice_gate.png';
+			$('body').addClass('ige-gate');
+			setTimeout(function() {
+				if(!musicIceGate.playing() && game.playmusic) musicIceGate.play();
+			}, 200);
+		} else if(tile.hasClass('fire-gate')) {
+			if(game.playsounds) sounds.play('aggroLevel');
+			game.mapType = 'fire_gate';
+			backgroundImage = './images/fire_gate.png';
+			$('body').addClass('fire-gate');
+			setTimeout(function() {
+				if(!musicFireGate.playing() && game.playmusic) musicFireGate.play();
+			}, 200);
+		} else {
+			game.mapType = 'normal';
+			setTimeout(function() {
+				if(!musicBattles[game.floor % musicBattles.length].playing() && game.playmusic) musicBattles[game.floor % musicBattles.length].play();
+			}, 200);
+		}
+	} else if(game.mapType == 'singularity') {
+		$('body').addClass('singularity');
+		game.mapType = 'singularity';
+		backgroundImage = './images/singularity.png';
 		setTimeout(function() {
-			if(!musicArena.playing() && game.playmusic) musicArena.play();
-		}, 200);
-	} else if(tile.hasClass('ice-gate')) {
-		if(game.playsounds) sounds.play('aggroLevel');
-		game.mapType = 'ice_gate';
-		backgroundImage = './images/ice_gate.png';
-		$('body').addClass('ige-gate');
-		setTimeout(function() {
-			if(!musicIceGate.playing() && game.playmusic) musicIceGate.play();
-		}, 200);
-	} else if(tile.hasClass('fire-gate')) {
-		if(game.playsounds) sounds.play('aggroLevel');
-		game.mapType = 'fire_gate';
-		backgroundImage = './images/fire_gate.png';
-		$('body').addClass('fire-gate');
-		setTimeout(function() {
-			if(!musicFireGate.playing() && game.playmusic) musicFireGate.play();
-		}, 200);
-	} else {
-		game.mapType = 'normal';
-		setTimeout(function() {
-			if(!musicBattles[game.floor % musicBattles.length].playing() && game.playmusic) musicBattles[game.floor % musicBattles.length].play();
+			if(!musicSingularity.playing() && game.playmusic) musicSingularity.play();
 		}, 200);
 	}
 
-	$('.monster-panel').css('background-image', 'url(' + backgroundImage + ')');
+	$('.monster-panel-wrapper').css('background-image', 'url(' + backgroundImage + ')');
 	$('.message, .button-done').removeClass('shown');
 	$('.combat').addClass('shown');
 	$('.candy').removeClass('trashable').addClass('clickable');
 	$('body').addClass('combating');
 	$('.player-cards').removeClass('unavailable').empty();
 	
-	if(!tile.hasClass('visited')) {
-		await updateEssenceLevels(tile.attr('data-essence'), tile.attr('data-amount'));
+	if(tile) {
+		if(!tile.hasClass('visited')) {
+			await updateEssenceLevels(tile.attr('data-essence'), tile.attr('data-amount'));
+		}
 	}
 
 	for(let i = 0; i < player.treasures.length; i++) {
@@ -2177,8 +2233,10 @@ function visitFountain(visited) {
 	stopMusic();
 	if(!musicFountain.playing() && game.playmusic) musicFountain.play();
 
-	game.floor += 1;
-	updateAggro(1);
+	if(game.difficulty=='hard' || game.difficulty=='expert' || game.difficulty=='nightmare') {
+		game.floor += 1;
+		updateAggro(1);
+	}
 
 	game.mapType = 'fountain';
 	if(visited) {
@@ -2203,8 +2261,11 @@ function visitQuest(visited = false) {
 
 	game.mapType = 'quest';
 	$('.quest-screen').addClass('shown');
-	game.floor += 1;
-	updateAggro(1);
+
+	if(game.difficulty=='hard' || game.difficulty=='expert' || game.difficulty=='nightmare') {
+		game.floor += 1;
+		updateAggro(1);
+	}
 
 	let possibleQuests = quests.quests.filter(i => i.seen == false);
 	let quest = util.weightedRandom(possibleQuests);
@@ -2347,7 +2408,7 @@ async function beginTurn() {
 			} else if(player.stance == 'aura') {
 				player.mana.current += Math.round(player.speed.current * player.aura.level);
 			} else if(player.stance == 'sparkle') {
-				let tempMight = Math.round(player.speed.current * player.sparkle.level * 2);
+				let tempMight = Math.round(player.speed.current * player.sparkle.level * 3);
 				if(tempMight > 0) {
 					//player.might.current += tempMight; // this was updated to use applyEffect instead
 					//player.might.temp.push(tempMight);
@@ -2359,7 +2420,7 @@ async function beginTurn() {
 				//player.health.max += Math.floor((player.speed.current / 4) * player.shimmer.level); // we determined this could be infinitely farmable
 				//heal(player, Math.floor((player.speed.current * player.shimmer.level) / 2)); // too much healing overall
 				applyArmor(Math.floor(player.speed.current * player.shimmer.level), player);
-				applyBlock(Math.floor(player.speed.current * player.shimmer.level * 2), player);
+				applyBlock(Math.floor(player.speed.current * player.shimmer.level * 4), player);
 			}
 		}
 			
@@ -2613,6 +2674,14 @@ async function monsterAction(action = 'perform') {
 		let thisMonster = currentMonsters[i];
 
 		if(action == 'perform') {
+
+			// check for resurrect
+			if(thisMonster.resurrect.enabled) {
+				let actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect}];
+				let update = processActions(actions, thisMonster);
+			}
+
+			game.toResurrect = 0;
 
 			// visually indicate which monster is taking their turn
 			$('.monster[data-guid=' + thisMonster.guid + ']').addClass('taking-turn');
@@ -3384,7 +3453,7 @@ function endCombat() {
 		clearCombatAbilities();
 		clearCombatTreasureCounters();
 
-		if((game.mapType == 'ice_gate' || game.mapType == 'fire_gate') && game.map == 2) {
+		if(game.mapType == 'singularity') {
 			endGame('victory');
 		} else {
 			rewardsScreen();
@@ -3670,6 +3739,7 @@ function treasureScreen() {
 
 function gateScreen() {
 
+	if(game.playsounds) sounds.play('gate');
 	$('.gate-screen').addClass('shown');
 
 }
@@ -3695,6 +3765,8 @@ function courageScreen() {
 		
 		if(deck.getTradeableCards()) {
 			$('.courage-trade').addClass('shown');
+		} else {
+			$('.courage-trade').removeClass('shown');
 		}
 
 		let theseTreasures = [];
@@ -4723,7 +4795,9 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 		for(let m = 0; m < multiply; m++) {
 			for(let e = 0; e < actions.length; e++) {
 				let gameAction = game.actions.find(({ id }) => id === actions[e].action);
-				if(game.playsounds && gameAction.sound !== undefined) sounds.play(gameAction.sound);
+				if(gameAction !== undefined) {
+					if(game.playsounds && gameAction.sound !== undefined) sounds.play(gameAction.sound);
+				}
 				switch(actions[e].action) {
 					case 'addCard':
 
@@ -4733,6 +4807,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						let addThisCard = {};
 						let thisCard = {};
 						let possibleCards = [];
+						let modifiers = actions[e].modifiers != undefined ? actions[e].modifiers : {};
 						let shards = actions[e].with != undefined ? actions[e].with : [];
 						$('.player-panel .standard-message').html('').removeClass('shown');
 
@@ -4749,6 +4824,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 										possibleCards = AllCards().cards.filter(i => i.addable == true && i.tier == actions[e].tier);
 									} else if(actions[e].type == 'converter' || actions[e].type == 'bottled' ) {
 										possibleCards = AllCards().cards.filter(i => i.type == actions[e].type && i.tier == actions[e].tier);
+									} else if(actions[e].type == 'weapon') {
+										possibleCards = AllCards().cards.filter(i => i.weapon == true && i.tier == actions[e].tier);
 									} else {
 										possibleCards = AllCards().cards.filter(i => i.type == actions[e].type && i.tier == actions[e].tier && i.addable == true);
 									}
@@ -4757,6 +4834,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 										possibleCards = AllCards().cards.filter(i => i.addable == true);
 									} else if(actions[e].type == 'converter' || actions[e].type == 'bottled' || actions[e].type == 'clutter') {
 										possibleCards = AllCards().cards.filter(i => i.type == actions[e].type);
+									} else if(actions[e].type == 'weapon') {
+										possibleCards = AllCards().cards.filter(i => i.weapon == true);
 									} else {
 										possibleCards = AllCards().cards.filter(i => i.type == actions[e].type && i.addable == true);
 									}
@@ -4771,8 +4850,10 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						// make sure we're in the correct pack
 						possibleCards = possibleCards.filter(i => i.pack == 'basic' || i.pack == game.boosterPack);
 
-						// no legendaries
-						possibleCards = possibleCards.filter(i => i.tier != 'legendary');
+						// no legendaries (except weapons)
+						if(actions[e].type != 'weapon') {
+							possibleCards = possibleCards.filter(i => i.tier != 'legendary');
+						}
 						
 						for(let i = 0; i < actions[e].value; i++) {
 							thisCard = util.randFromArray(possibleCards);
@@ -4795,7 +4876,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								// have a chance to sync. this is the only time currently that we're actually passing a guid in
 								let guid = util.randString();
 								if(actions[e].to != 'deck') {
-									combatDeck.addCard(addThisCard, combatDeck, actions[e].to, player, shards, guid, playedCard);
+									combatDeck.addCard(addThisCard, combatDeck, actions[e].to, player, shards, guid, playedCard, modifiers);
 								}
 								if(actions[e].permanent) {
 									deck.addCard(addThisCard, guid);
@@ -5082,19 +5163,9 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					break;
 					case 'removeBuffs':
 						if(actions[e].to=='player') {
-							if(player.vex.current > 0) {
-								player.vex.current -= 1;
-								if(game.playsounds) sounds.play('vex');
-							} else {
-								removeBuffs(player);
-							}
+							removeBuffs(player);
 						} else if(actions[e].to=='self' || actions[e].to=='target') {
-							if(monster[0].vex.current > 0) {
-								monster[0].vex.current -= 1;
-								if(game.playsounds) sounds.play('vex');
-							} else {
-								removeBuffs(monster[0]);
-							}
+							removeBuffs(monster[0]);
 						}
 					break;
 					case 'playOldest':
@@ -5110,6 +5181,14 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								let id = game.round + '-' + i;
 								let what = util.randFromArray(actions[e].what);
 								monsters.summonMonster(what, id);
+								await util.wait(game.animationGap);
+							}
+						} else if(actions[e].what == 'random') {
+							for(let i = 0; i < actions[e].value; i++) {
+								let id = game.round + '-' + i;
+								let possibleMonsters = monsters.monsters.filter(i => i.category == 'normal' && i.breed != 'ghost' && i.context == game.overworld);
+								let what = util.randFromArray(possibleMonsters);
+								monsters.summonMonster(what.id, id);
 								await util.wait(game.animationGap);
 							}
 						} else {
@@ -5748,6 +5827,17 @@ async function processQuest(elem) {
 			$('.quest-screen').removeClass('shown');
 			$('.quest-options').empty();
 		break;
+		case 'market_of_arms':
+			if(option == 'accept_offer') {
+				let actions = [
+					{action: 'addCard', value: 1, type: 'weapon', to: 'deck', permanent: true},
+					{action: 'addCard', value: 2, type: 'clutter', to: 'deck', permanent: true},
+				];
+				await processActions(actions);
+			}
+			$('.quest-screen').removeClass('shown');
+			$('.quest-options').empty();
+		break;
 	}
 	
 	// show suboptions
@@ -5854,7 +5944,7 @@ async function applyMagic(magic, to) {
 	to.rainbow.current += totalAmount;
 
 	// mix magic types?
-	if(type != to.rainbow.type) {
+	if(type != to.rainbow.type || to.rainbow.type == 'muddled') {
 		if(game.playsounds) sounds.play('muddleMagic');
 		to.rainbow.type = 'muddled';
 		// check for arcane
@@ -6249,9 +6339,19 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 					
 					await doDamage(retalDmg, undefined, [from]);
 
-					setStatus(false);
-
 				}
+				// check for resurrect
+				if(thisTo.resurrect.enabled && from != undefined && cardWasPlayed) {
+					game.toResurrect += 1;
+					if(game.playsounds) sounds.play('effect44');
+				}
+
+				// check for hardened
+				if(thisTo.hardened.current > 0 && from != undefined && cardWasPlayed) {
+					thisTo.block += thisTo.hardened.current;
+				}
+
+				setStatus(false);
 				game.message(thisTo.name + ' (' + thisTo.guid + ') loses ' + healthLost + ' health');
 			}
 
@@ -6286,16 +6386,16 @@ Tier 3:
 -------
 Swarm
 Sorcerer
-Red Dragon
-Green Dragon
+Fel Dragon
+Cunning Dragon
 Cyberskull
 
 
 Tier 4:
 -------
 Transfigurer
-Gold Dragon
-Black Dragon
+Writhing Dragon
+Darkness Dragon
 Obsidian Walker
 Seething Entity
 

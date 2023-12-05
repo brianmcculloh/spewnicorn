@@ -89,7 +89,7 @@
 
           <p>Along the way you will fight enemies that will increase your <span class="sparkle">Sparkle</span>, <span class="shimmer">Shimmer</span>, or <span class="aura">Aura</span> essence. Once you reach level 1, a <span class="highlight">Stance</span> card of that essence will be automatically added to your deck, and the higher your essence level, the stronger the <span class="highlight">Stance</span> effects will be.</p>
 
-          <p>If you are not in a stance, unused speed will be converted to 4x block next turn. If you are in <span class="sparkle">Sparkle</span> <span class="highlight">Stance</span>, gain +3 might per turn, and unused speed will convert to 3x might next turn. If you are in <span class="shimmer">Shimmer</span> <span class="highlight">Stance</span>, gain +10 block and +1 armor per turn, and unused speed will convert to 3x block and 1x armor next turn. If you are in <span class="aura">Aura</span> <span class="highlight">Stance</span>, gain +1 mana per turn, and unused speed will convert to mana next turn.</p>
+          <p>If you are not in a stance, unused speed will be converted to 4x block next turn. If you are in <span class="sparkle">Sparkle</span> <span class="highlight">Stance</span>, gain +3 might per turn, and unused speed will convert to 3x might next turn. If you are in <span class="shimmer">Shimmer</span> <span class="highlight">Stance</span>, gain +10 block and +1 armor per turn, and unused speed will convert to 4x block and 1x armor next turn. If you are in <span class="aura">Aura</span> <span class="highlight">Stance</span>, gain +1 mana per turn, and unused speed will convert to mana next turn.</p>
 
           <p>You will also come across <span class="highlight">Magic Fountains</span> and <span class="highlight">Quests</span> that will aid you in your journey. You must prove your worth and unlock the Gates by fighting at least two <span class="highlight">Arenas</span> with powerful enemies.</p>
 
@@ -128,35 +128,27 @@
 
   <div id="story-panel" class="game-panel">
 
-    <h2>You come across a magical, beautiful creature...</h2>
+    <h2>You come across a magical creature...</h2>
 
-    <div class="panel">
+    <p>...a terribly wonderful creature.</p>
 
-      <p>...winged, horned, terribly wonderful.</p>
-      
-      <p>It's a Spewnicorn.</p>
+    <p>It looks like... could it be... a unicorn?</p>
 
-      <p>It summons you with it's piercing gaze and gestures for you to climb on its back.<br />
-      You do so, and instantly feel a deep connection.</p>
+    <p>You look closer&mdash;does it have wings?<br />
+    Or is that just its fur?</p>
 
-      <p>You hear its thoughts.<br />
-      It has been tasked with defeating the mighty Guardians, but it can't do so alone.<br />
-      It is bound by an ancient magic requiring two rather than one.</p>
+    <p>It summons you with it's piercing gaze and<br />
+    gestures for you to climb on its back.<br />
+    You do so, and instantly something amazing happens.</p>
 
-      <p>You are the other. You must together embark on this perilous adventure.<br />
-      Will you and this mysterious Spewnicorn survive this quest?</p>
+    <p>You can hear its thoughts!<br />
+    And somehow you can tell that it can hear yours.<br />
+    It has been tasked with defeating the mighty Guardians,<br />
+    it tells you, but it can't do so alone.<br />
+    It is bound by an ancient magic requiring two, rather than one.</p>
 
-
-      <div class="panel-part panel-top-left"></div>
-      <div class="panel-part panel-top-middle"></div>
-      <div class="panel-part panel-top-right"></div>
-      <div class="panel-part panel-middle-left"></div>
-      <div class="panel-part panel-middle-right"></div>
-      <div class="panel-part panel-bottom-left"></div>
-      <div class="panel-part panel-bottom-middle"></div>
-      <div class="panel-part panel-bottom-right"></div>
-
-    </div>
+    <p>You are the other. Together, you must embark on this perilous adventure.<br />
+    Will you and this mysterious creature survive the quest?</p>
 
     <div class="buttons-wrapper">
 
@@ -371,7 +363,7 @@
       <div class="dead-cards icon-button tooltip" data-powertip="Dead cards"><div class="icon"></div><span class="counter"></span></div>
 
       <div class="stance">
-        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> gain +10 block and +1 armor, and unused speed converts to 3x block and 1x armor next turn.<br /><br /><span class='sparkle'>Sparkle:</span> gain +3 might, and unused speed converts to 3x might next turn.<br /><br /><span class='aura'>Aura:</span> gain +1 mana, and unused speed converts to mana next turn.<br /><br />None: unused speed converts to 2x block next turn."></div>
+        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> gain +10 block and +1 armor, and unused speed converts to 4x block and 1x armor next turn.<br /><br /><span class='sparkle'>Sparkle:</span> gain +3 might, and unused speed converts to 3x might next turn.<br /><br /><span class='aura'>Aura:</span> gain +1 mana, and unused speed converts to mana next turn.<br /><br />None: unused speed converts to 4x block next turn."></div>
         <div class="icon-stance tooltip" data-stance="none" data-powertip="<span class='highlight'>Stance:</span> None"></div>
       </div>
 
@@ -809,7 +801,11 @@
 
     <div class="combat">
 
-      <div class="monster-panel"></div>
+      <div class="monster-panel-wrapper">
+
+        <div class="monster-panel"></div>
+
+      </div>
 
       <div class="overlay"></div>
 

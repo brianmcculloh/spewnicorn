@@ -56,6 +56,7 @@ class Creatures {
         vulnerable = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         stifled = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         angered = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        hardened = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
 
         // abilities
         protection = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
@@ -73,6 +74,7 @@ class Creatures {
         amplify = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         explode = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         guild_member = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
+        resurrect = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         
         // monster specific
         id, 
@@ -145,6 +147,7 @@ class Creatures {
         this.vulnerable = vulnerable;
         this.stifled = stifled;
         this.angered = angered;
+        this.hardened = hardened;
         this.effectsDom = '';
 
         // abilities
@@ -163,6 +166,7 @@ class Creatures {
         this.amplify = amplify;
         this.explode = explode;
         this.guild_member = guild_member;
+        this.resurrect = resurrect;
         this.abilitiesDom = '';
 
         // monster specific
@@ -290,16 +294,16 @@ const ALL_MONSTERS = [
     -------
     Swarm
     Sorcerer
-    Red Dragon
-    Green Dragon
+    Fel Dragon
+    Cunning Dragon
     Cyberskull
 
 
     Tier 4:
     -------
     Transfigurer
-    Gold Dragon
-    Black Dragon
+    Writhing Dragon
+    Darkness Dragon
     Obsidian Walker
     Seething Entity
 
@@ -1138,22 +1142,22 @@ const ALL_MONSTERS = [
                 {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
             ]},
             {dmg: [8, 8]},
-            {blk: [10]},
-            {dmg: [9, 9]},
-            {blk: [10], dmg: [10, 10]},
-            {dmg: [10, 10]},
             {blk: [10], effects: [
                 {effect: 'stifled', amount: 1, turns: -1, hex: true},
             ]},
+            {dmg: [9, 9]},
+            {blk: [10], dmg: [10, 10]},
+            {dmg: [10, 10]},
+            {blk: [10]},
         ],
         vex: {base: 3, current: 0, temp: [], turns: -1},
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
     new Creatures({
         type: 'monster',
-        id: 'red_dragon',
-        breed: 'red_dragon', 
-        name: 'Red Dragon', 
+        id: 'fel_dragon',
+        breed: 'fel_dragon', 
+        name: 'Fel Dragon', 
         health: {base: 185, current: 0, max: 185},
         tier: 3,
         pattern: 'random',
@@ -1183,9 +1187,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'green_dragon', 
-        breed: 'green_dragon',
-        name: 'Green Dragon', 
+        id: 'cunning_dragon', 
+        breed: 'cunning_dragon',
+        name: 'Cunning Dragon', 
         health: {base: 185, current: 0, max: 185},
         tier: 3,
         pattern: 'random',
@@ -1271,13 +1275,13 @@ const ALL_MONSTERS = [
                 {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
             ]},
             {dmg: [8, 8]},
-            {blk: [20]},
-            {dmg: [9, 9]},
-            {blk: [20], dmg: [10, 10]},
-            {dmg: [10, 10]},
             {blk: [20], effects: [
                 {effect: 'stifled', amount: 1, turns: -1, hex: true},
             ]},
+            {dmg: [9, 9]},
+            {blk: [20], dmg: [10, 10]},
+            {dmg: [10, 10]},
+            {blk: [20]},
         ],
         vex: {base: 3, current: 0, temp: [], turns: -1},
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
@@ -1285,9 +1289,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_red_dragon', 
-        breed: 'red_dragon',
-        name: 'Frost Red Dragon', 
+        id: 'frost_fel_dragon', 
+        breed: 'fel_dragon',
+        name: 'Frost Fel Dragon', 
         health: {base: 370, current: 0, max: 370},
         tier: 3,
         pattern: 'random',
@@ -1318,9 +1322,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_green_dragon', 
-        breed: 'green_dragon',
-        name: 'Frost Green Dragon', 
+        id: 'frost_cunning_dragon', 
+        breed: 'cunning_dragon',
+        name: 'Frost Cunning Dragon', 
         health: {base: 370, current: 0, max: 370},
         tier: 3,
         pattern: 'random',
@@ -1407,13 +1411,13 @@ const ALL_MONSTERS = [
                 {effect: 'sorcery', amount: -.5, turns: 5, hex: true},
             ]},
             {dmg: [16, 16]},
-            {blk: [10]},
-            {dmg: [18, 18]},
-            {blk: [10], dmg: [20, 20]},
-            {dmg: [20, 20]},
             {blk: [10], effects: [
                 {effect: 'stifled', amount: 1, turns: -1, hex: true},
             ]},
+            {dmg: [18, 18]},
+            {blk: [10], dmg: [20, 20]},
+            {dmg: [20, 20]},
+            {blk: [10]},
         ],
         vex: {base: 3, current: 0, temp: [], turns: -1},
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
@@ -1421,9 +1425,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_red_dragon', 
-        breed: 'red_dragon',
-        name: 'Flame Red Dragon', 
+        id: 'flame_fel_dragon', 
+        breed: 'fel_dragon',
+        name: 'Flame Fel Dragon', 
         health: {base: 185, current: 0, max: 185},
         tier: 3,
         pattern: 'random',
@@ -1454,9 +1458,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_green_dragon', 
-        breed: 'green_dragon',
-        name: 'Flame Green Dragon', 
+        id: 'flame_cunning_dragon', 
+        breed: 'cunning_dragon',
+        name: 'Flame Cunning Dragon', 
         health: {base: 185, current: 0, max: 185},
         tier: 3,
         pattern: 'random',
@@ -1521,7 +1525,9 @@ const ALL_MONSTERS = [
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
-            {armor: [5], dmg: [25]},
+            {armor: [5], dmg: [25], effects: [
+                {effect: 'vulnerable', amount: 1, turns: -1, hex: true},
+            ]},
             {armor: [8], dmg: [15]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
@@ -1530,8 +1536,6 @@ const ALL_MONSTERS = [
             {armor: [8], dmg: [15]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
-            ], effects: [
-                {effect: 'vulnerable', amount: 1, turns: -1, hex: true},
             ]},
             {armor: [5], dmg: [35]},
             {armor: [8], dmg: [25]},
@@ -1564,9 +1568,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'gold_dragon', 
-        breed: 'gold_dragon',
-        name: 'Gold Dragon', 
+        id: 'writhing_dragon', 
+        breed: 'writhing_dragon',
+        name: 'Writhing Dragon', 
         health: {base: 260, current: 0, max: 260},
         armor: 30,
         tier: 4,
@@ -1586,9 +1590,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'black_dragon', 
-        breed: 'black_dragon',
-        name: 'Black Dragon', 
+        id: 'darkness_dragon', 
+        breed: 'darkness_dragon',
+        name: 'Darkness Dragon', 
         health: {base: 195, current: 0, max: 195},
         armor: 68,
         tier: 4,
@@ -1666,7 +1670,9 @@ const ALL_MONSTERS = [
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
-            {armor: [10], dmg: [25]},
+            {armor: [10], dmg: [25], effects: [
+                {effect: 'vulnerable', amount: 1, turns: -1, hex: true},
+            ]},
             {armor: [16], dmg: [15]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
@@ -1675,8 +1681,6 @@ const ALL_MONSTERS = [
             {armor: [16], dmg: [15]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
-            ], effects: [
-                {effect: 'vulnerable', amount: 1, turns: -1, hex: true},
             ]},
             {armor: [10], dmg: [35]},
             {armor: [16], dmg: [25]},
@@ -1710,9 +1714,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_gold_dragon', 
-        breed: 'gold_dragon',
-        name: 'Frost Gold Dragon', 
+        id: 'frost_writhing_dragon', 
+        breed: 'writhing_dragon',
+        name: 'Frost Writhing Dragon', 
         health: {base: 520, current: 0, max: 520},
         armor: 60,
         tier: 4,
@@ -1733,9 +1737,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_black_dragon', 
-        breed: 'black_dragon',
-        name: 'Frost Black Dragon', 
+        id: 'frost_darkness_dragon', 
+        breed: 'darkness_dragon',
+        name: 'Frost Darkness Dragon', 
         health: {base: 390, current: 0, max: 390},
         armor: 136,
         tier: 4,
@@ -1815,7 +1819,9 @@ const ALL_MONSTERS = [
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
             ]},
-            {armor: [5], dmg: [50]},
+            {armor: [5], dmg: [50], effects: [
+                {effect: 'vulnerable', amount: 1, turns: -1, hex: true},
+            ]},
             {armor: [8], dmg: [30]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
@@ -1824,8 +1830,6 @@ const ALL_MONSTERS = [
             {armor: [8], dmg: [30]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
-            ], effects: [
-                {effect: 'vulnerable', amount: 1, turns: -1, hex: true},
             ]},
             {armor: [5], dmg: [70]},
             {armor: [8], dmg: [50]},
@@ -1859,9 +1863,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_gold_dragon', 
-        breed: 'gold_dragon',
-        name: 'Flame Gold Dragon', 
+        id: 'flame_writhing_dragon', 
+        breed: 'writhing_dragon',
+        name: 'Flame Writhing Dragon', 
         health: {base: 260, current: 0, max: 260},
         armor: 30,
         tier: 4,
@@ -1882,9 +1886,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_black_dragon', 
-        breed: 'black_dragon',
-        name: 'Flame Black Dragon', 
+        id: 'flame_darkness_dragon', 
+        breed: 'darkness_dragon',
+        name: 'Flame Darkness Dragon', 
         health: {base: 195, current: 0, max: 195},
         armor: 68,
         tier: 4,
@@ -2004,7 +2008,9 @@ const ALL_MONSTERS = [
             {dmg: [15, 15], actions: [
                 {action: 'summonMonster', what: 'stinger', value: 2},
             ]},
-            {armor: [20], blk: [20]},
+            {armor: [20], blk: [20], effects: [
+                {effect: 'fatigued', amount: 1, turns: -1, hex: true},
+            ]},
             {dmg: [30], actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
@@ -2012,8 +2018,6 @@ const ALL_MONSTERS = [
             {dmg: [20], actions: [
                 {action: 'addCard', value: 1, what: 'execrate', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'flay', to: 'discardCards'},
-            ], effects: [
-                {effect: 'fatigued', amount: 1, turns: -1, hex: true},
             ], actions: [
                 {action: 'summonMonster', what: 'cave_spider', value: 2},
             ]},
@@ -2122,7 +2126,9 @@ const ALL_MONSTERS = [
             {dmg: [15, 15], actions: [
                 {action: 'summonMonster', what: 'stinger', value: 2},
             ]},
-            {armor: [40], blk: [40]},
+            {armor: [40], blk: [40], effects: [
+                {effect: 'fatigued', amount: 1, turns: -1, hex: true},
+            ]},
             {dmg: [30], actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
@@ -2238,7 +2244,9 @@ const ALL_MONSTERS = [
             {dmg: [30, 30], actions: [
                 {action: 'summonMonster', what: 'stinger', value: 2},
             ]},
-            {armor: [20], blk: [20]},
+            {armor: [20], blk: [20], effects: [
+                {effect: 'fatigued', amount: 1, turns: -1, hex: true},
+            ]},
             {dmg: [60], actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards'},
                 {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards'},
@@ -2560,6 +2568,56 @@ const ALL_MONSTERS = [
         retaliate: {base: 1, current: 0, temp: [], turns: -1},
     }),
 
+    // THE SINGULARITY
+    new Creatures({
+        type: 'monster',
+        context: 'frost',
+        id: 'singularity', 
+        breed: 'singularity',
+        name: 'Singularity', 
+        health: {base: 15, current: 0, max: 15},
+        tier: 7,
+        category: 'singularity',
+        pattern: 'fixed',
+        moveSet: [
+            {abilities: [
+                {ability: 'unreachable', baseTurns: -1, enabled: true},
+                {ability: 'resurrect', baseTurns: -1, enabled: true},
+            ], effects: [
+                {effect: 'retaliate', amount: 1, turns: -1}
+            ]},
+            {abilities: [
+                {ability: 'unreachable', baseTurns: -1, enabled: true},
+                {ability: 'resurrect', baseTurns: -1, enabled: true},
+            ], effects: [
+                {effect: 'retaliate', amount: 1, turns: -1}
+            ]},
+            {abilities: [
+                {ability: 'unreachable', baseTurns: -1, enabled: true},
+                {ability: 'resurrect', baseTurns: -1, enabled: true},
+            ], effects: [
+                {effect: 'retaliate', amount: 1, turns: -1}
+            ]},
+            {abilities: [
+                {ability: 'unreachable', baseTurns: -1, enabled: true},
+                {ability: 'resurrect', baseTurns: -1, enabled: true},
+            ], effects: [
+                {effect: 'retaliate', amount: 1, turns: -1}
+            ]},
+            {abilities: [
+                {ability: 'unreachable', baseTurns: -1, enabled: true},
+                {ability: 'resurrect', baseTurns: -1, enabled: true},
+            ], effects: [
+                {effect: 'retaliate', amount: 1, turns: -1}
+            ], actions: [
+                {action: 'stat', what: 'health', key: 'current', value: 1}
+            ],},
+        ],
+        hardened: {base: 5, current: 0, temp: [], turns: -1},
+        unreachable: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
+        resurrect: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
+    }),
+
 
 
     new Creatures({ // USED
@@ -2810,7 +2868,7 @@ export function Monster() {
     }
 
     function allDead() {
-        if ($('.monster:not(.dead)').length > 0) {
+        if ($('.monster:not(.dead):not(.ghost)').length > 0) {
             return false;
         } else {
             return true;
@@ -2905,6 +2963,13 @@ export function Monster() {
                     let thisMonster = createMonster(6, i, 'ice_guardian', [], context);
                     currentMonsters.push(thisMonster);
                 }
+            }
+
+        } else if(game.mapType == 'singularity') {
+
+            for (let i = 0; i < 1; i++) {
+                let thisMonster = createMonster(7, i, 'singularity', [], 'forest', false, 'singularity');
+                currentMonsters.push(thisMonster);
             }
 
         } else {
@@ -3116,15 +3181,15 @@ export function Monster() {
                                 }
                             break;
                             case 13:
-                                // 2 super red dragons, 3/2 standard red dragons
+                                // 2 super Fel Dragons, 3/2 standard Fel Dragons
                                 var numStandard = util.chance(50) ? 3 : 2;
                                 var numSuper = util.chance(75) ? 2 : 2;
                                 for (let i = 0; i < numStandard; i++) {
-                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'red_dragon');
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'fel_dragon');
                                     currentMonsters.push(thisMonster);
                                 }
                                 for (let i = 0; i < numSuper; i++) {
-                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'red_dragon');
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'fel_dragon');
                                     currentMonsters.push(thisMonster);
                                 }
                             break;
@@ -3140,15 +3205,15 @@ export function Monster() {
                     } else {
                         switch(game.floor) {
                             case 14:
-                                // 2 super green dragons, 3/2 standard green dragons
+                                // 2 super Cunning Dragons, 3/2 standard Cunning Dragons
                                 var numStandard = util.chance(50) ? 3 : 2;
                                 var numSuper = util.chance(80) ? 2 : 2;
                                 for (let i = 0; i < numStandard; i++) {
-                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'green_dragon');
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'cunning_dragon');
                                     currentMonsters.push(thisMonster);
                                 }
                                 for (let i = 0; i < numSuper; i++) {
-                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'green_dragon');
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'cunning_dragon');
                                     currentMonsters.push(thisMonster);
                                 }
                             break;
@@ -3192,28 +3257,28 @@ export function Monster() {
                     } else {
                         switch(game.floor) {
                             case 17:
-                                // 2 super gold dragons, 1 standard gold dragon
+                                // 2 super Writhing Dragons, 1 standard Writhing Dragon
                                 var numStandard = util.chance(75) ? 1 : 1;
                                 var numSuper = util.chance(80) ? 2 : 2;
                                 for (let i = 0; i < numStandard; i++) {
-                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'gold_dragon');
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'writhing_dragon');
                                     currentMonsters.push(thisMonster);
                                 }
                                 for (let i = 0; i < numSuper; i++) {
-                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'gold_dragon');
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'writhing_dragon');
                                     currentMonsters.push(thisMonster);
                                 }
                             break;
                             case 18:
-                                // 2 super black dragon, 1 standard black dragon
+                                // 2 super Darkness Dragon, 1 standard Darkness Dragon
                                 var numStandard = util.chance(75) ? 1 : 1;
                                 var numSuper = util.chance(80) ? 2 : 2;
                                 for (let i = 0; i < numStandard; i++) {
-                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'black_dragon');
+                                    let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'darkness_dragon');
                                     currentMonsters.push(thisMonster);
                                 }
                                 for (let i = 0; i < numSuper; i++) {
-                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'black_dragon');
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'darkness_dragon');
                                     currentMonsters.push(thisMonster);
                                 }
                             break;
@@ -3319,9 +3384,9 @@ export function Monster() {
                                 currentMonsters.push(thisMonster);
                                 thisMonster = createMonster(1, game, 'normal', [], context, 'iron_walker');
                                 currentMonsters.push(thisMonster);
-                                thisMonster = createMonster(1, game, 'normal', [], context, 'green_dragon');
+                                thisMonster = createMonster(1, game, 'normal', [], context, 'cunning_dragon');
                                 currentMonsters.push(thisMonster);
-                                thisMonster = createMonster(1, game, 'normal', [], context, 'gold_dragon');
+                                thisMonster = createMonster(1, game, 'normal', [], context, 'writhing_dragon');
                                 currentMonsters.push(thisMonster);
                             break;
                             case 24:
@@ -3330,9 +3395,9 @@ export function Monster() {
                                 currentMonsters.push(thisMonster);
                                 thisMonster = createMonster(1, game, 'normal', [], context, 'enchantress');
                                 currentMonsters.push(thisMonster);
-                                thisMonster = createMonster(1, game, 'normal', [], context, 'red_dragon');
+                                thisMonster = createMonster(1, game, 'normal', [], context, 'fel_dragon');
                                 currentMonsters.push(thisMonster);
-                                thisMonster = createMonster(1, game, 'normal', [], context, 'black_dragon');
+                                thisMonster = createMonster(1, game, 'normal', [], context, 'darkness_dragon');
                                 currentMonsters.push(thisMonster);
                             break;
                             case 25:
@@ -3381,14 +3446,14 @@ export function Monster() {
                             case 27:
                                 // 3 Tier 4 monsters
                                 for (let i = 0; i < 3; i++) {
-                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'gold_dragon');
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'writhing_dragon');
                                     currentMonsters.push(thisMonster);
                                 }
                             break;
                             case 28:
                                 // 3 Tier 4 monsters
                                 for (let i = 0; i < 3; i++) {
-                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'black_dragon');
+                                    let thisMonster = createMonster(1, i, 'normal', [], context, 'darkness_dragon');
                                     currentMonsters.push(thisMonster);
                                 }
                             break;
@@ -3444,25 +3509,25 @@ export function Monster() {
                                 break;
                                 case 31:
                                     // 1 of each dragon color
-                                    var thisMonster = createMonster(1, game, 'normal', [], context, 'red_dragon');
+                                    var thisMonster = createMonster(1, game, 'normal', [], context, 'fel_dragon');
                                     currentMonsters.push(thisMonster);
-                                    thisMonster = createMonster(1, game, 'normal', [], context, 'green_dragon');
+                                    thisMonster = createMonster(1, game, 'normal', [], context, 'cunning_dragon');
                                     currentMonsters.push(thisMonster);
-                                    thisMonster = createMonster(1, game, 'normal', [], context, 'gold_dragon');
+                                    thisMonster = createMonster(1, game, 'normal', [], context, 'writhing_dragon');
                                     currentMonsters.push(thisMonster);
-                                    thisMonster = createMonster(1, game, 'normal', [], context, 'black_dragon');
+                                    thisMonster = createMonster(1, game, 'normal', [], context, 'darkness_dragon');
                                     currentMonsters.push(thisMonster);
                                 break;
                             }
                         } else {
                             // 1 of each dragon color
-                            var thisMonster = createMonster(1, game, 'normal', [], context, 'red_dragon');
+                            var thisMonster = createMonster(1, game, 'normal', [], context, 'fel_dragon');
                             currentMonsters.push(thisMonster);
-                            thisMonster = createMonster(1, game, 'normal', [], context, 'green_dragon');
+                            thisMonster = createMonster(1, game, 'normal', [], context, 'cunning_dragon');
                             currentMonsters.push(thisMonster);
-                            thisMonster = createMonster(1, game, 'normal', [], context, 'gold_dragon');
+                            thisMonster = createMonster(1, game, 'normal', [], context, 'writhing_dragon');
                             currentMonsters.push(thisMonster);
-                            thisMonster = createMonster(1, game, 'normal', [], context, 'black_dragon');
+                            thisMonster = createMonster(1, game, 'normal', [], context, 'darkness_dragon');
                             currentMonsters.push(thisMonster);
                         }
                     }
@@ -3600,10 +3665,19 @@ export function Monster() {
                     }
                     let amount = '<span class="amount">' + effectText + '</span>';
 
+                    let counter = '';
+
+                    if(game.effects[i].id == 'momentum') {
+                        counter = '<span class="counter">' + to.momentumAmount + '</span>';
+                    }
+                    if(game.effects[i].id == 'antimomentum') {
+                        counter = '<span class="counter">' + to.antimomentumAmount + '</span>';
+                    }
+
                     let x = game.effects[i].x != undefined ? game.effects[i].x : '';
                     let y = game.effects[i].y != undefined ? game.effects[i].y : '';
                     let desc = '<span class="amount ' + game.effects[i].id + '" data-amount="' + to[game.effects[i].id].current + '">' + effectText + '</span> <span class="highlight">' + game.effects[i].name + ':</span> ' + game.effects[i].desc;
-                    dom += "<div class='single-status status-effect tooltip' style='background-position:" + x + "px " + y + "px;' data-id='" + game.effects[i].id + "' data-powertip='" + desc + "'>" + turns + amount + "</div>";
+                    dom += "<div class='single-status status-effect tooltip' style='background-position:" + x + "px " + y + "px;' data-id='" + game.effects[i].id + "' data-powertip='" + desc + "'>" + turns + amount + counter + "</div>";
                 
                 }
 
@@ -3620,7 +3694,13 @@ export function Monster() {
                 let y = game.abilities[i].y != undefined ? game.abilities[i].y : '';
                 let desc = '<span class="highlight">' + game.abilities[i].name + ':</span> ' + game.abilities[i].desc;
                 let turns = to[game.abilities[i].id].turns > 0 ? '<span class="turns">' + to[game.abilities[i].id].turns + '</span>' : '';
-                dom += "<div class='single-status status-ability tooltip' style='background-position:" + x + "px " + y + "px;' data-id='" + game.abilities[i].id + "' data-powertip='" + desc + "'>" + turns + "</div>";
+
+                let counter = '';
+                if(game.abilities[i].id == 'resurrect') {
+                    counter = '<span class="counter">' + game.toResurrect + '</span>';
+                }
+
+                dom += "<div class='single-status status-ability tooltip' style='background-position:" + x + "px " + y + "px;' data-id='" + game.abilities[i].id + "' data-powertip='" + desc + "'>" + turns + counter + "</div>";
             }
         }
         return dom;

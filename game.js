@@ -94,7 +94,7 @@ const ALL_EFFECTS = [
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: true}
     // buff     {effect: 'vigor', amount: 1, turns: -1}
     // hex      {effect: 'vigor', amount: -2, hex: true, persist: true}
-    {id: 'vigor', name: 'Vigor', desc: 'Extra armor converts to x times health', x: -288, y: -6306, sound: 'effect3', hex: false},
+    {id: 'vigor', name: 'Vigor', desc: 'Extra armor converts to x times health', x: -288, y: -6368, sound: 'effect3', hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
@@ -202,7 +202,7 @@ const ALL_EFFECTS = [
     // creature {base: 5, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'arcane', amount: 5, turns: -1}
     // hex      {effect: 'arcane', amount: -5, hex: true}
-    {id: 'arcane', name: 'Arcane', desc: 'Whenever you muddle your magic, charge rainbow x amount', x: 0, y: -5408, sound: 'effect31', hex: false},
+    {id: 'arcane', name: 'Arcane', desc: 'Whenever you muddle your magic or summom muddled magic, charge rainbow x amount more', x: 0, y: -5408, sound: 'effect31', hex: false},
 
     // Usage:
     // creature {base: 0, current: 2, temp: 2, turns: 2, persist: false}
@@ -253,7 +253,7 @@ const ALL_EFFECTS = [
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // hex      {effect: 'antimomentum', amount: 2, hex: true}
-    {id: 'antimomentum', name: 'Anti-Momentum', desc: 'Receive x damage and increase it by x for every card played this turn', x: -192, y: -5472, hex: false},
+    {id: 'antimomentum', name: 'Anti-Momentum', desc: 'Receive x damage and increase it by x for every card played this turn', x: -448, y: -5440, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
@@ -305,6 +305,12 @@ const ALL_EFFECTS = [
     // hex      {effect: 'angered', amount: 1, hex: true}
     {id: 'angered', name: 'Angered', desc: 'Gain x might each time you are hexed', x: 0, y: -5024, hex: false},
 
+    // Usage:
+    // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
+    // buff     {effect: 'hardened', amount: 2, turns: -1}
+    // hex      {effect: 'hardened', amount: 1, hex: true}
+    {id: 'hardened', name: 'Hardened', desc: 'Gain x block each time you take damage', x: -448, y: -6560, hex: false},
+
 ];
 /*********************************************
  * 
@@ -329,7 +335,7 @@ const ALL_ABILITIES = [
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
     // buff     {ability: 'unreachable', turns: 1, enabled: true}
     // hex      {ability: 'unreachable', enabled: false, hex: true}
-    {id: 'unreachable', name: 'Unreachable', desc: 'All damage reduced to 1 per attack', context: 'turn', x: -224, y: -7424, delay: true},
+    {id: 'unreachable', name: 'Unreachable', desc: 'All damage reduced to 1 per attack', context: 'turn', x: -288, y: -7646, delay: true},
 
     // Usage:
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
@@ -399,6 +405,11 @@ const ALL_ABILITIES = [
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'guild_member', baseTurns: -1, enabled: true}
     {id: 'guild_member', name: 'Guild Member', desc: 'Unlimited weapon trading', context: 'card', x: -352, y: 0},
+
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'resurrect', baseTurns: -1, enabled: true}
+    {id: 'resurrect', name: 'Resurrect', desc: 'Each time this creature receives damage, add one random monster to combat next turn', context: 'turn', x: -416, y: -6592, offset: true},
 
 ];
 /*********************************************
@@ -485,7 +496,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.46 Alpha';
+    let version = '0.47 Alpha';
     let seed = false;
     let difficulty = 'medium';
     let floor = 0; // TODO: set to 0
@@ -513,6 +524,7 @@ export default function Game() {
     let toDestroy = 0;
     let destroyOptional = false;
     let toPick = 0;
+    let toResurrect = 0;
     let toExclude = [];
     let toShow = [];
     let toTransmute = [];
@@ -529,7 +541,7 @@ export default function Game() {
     let tradeExpired = false;
     let candySlots = 3;
     let cardRewardNumber = 3;
-    let essenceThresholds = [8, 17, 27, 38]; // TODO: set this to 8, 17, 27, 38
+    let essenceThresholds = [10, 19, 29, 40]; // TODO: set this to 10, 19, 29, 40
     let aggroThresholds = [10, 15, 19, 22, 25, 28, 31, 33, 36, 39]; // TODO: set this to 10, 15, 19, 22, 25, 28, 31, 33, 36, 39
     let aggroThresholds2 = [6, 11, 15, 18, 21, 24, 27, 30, 33, 36, 39]; // TODO: set this to 6, 11, 15, 18, 21, 24, 27, 30, 33, 36, 39
     let currentMonsters = [];
@@ -542,9 +554,9 @@ export default function Game() {
     let playsounds = true;
     let playmusic = true;
     let tutorial = false; // TODO: set to false
-    let debug = false;
-    let dev = false;
-    let scenario = 'normal'; // normal, frost, or flame - set to normal for regular gameplay
+    let debug = true;
+    let dev = true;
+    let scenario = 'normal'; // normal, frost, flame, or singularity - set to normal for regular gameplay
     let libraryBuilt = false;
     let armoryBuilt = false;
     let essences = ALL_ESSENCES;
@@ -700,6 +712,7 @@ export default function Game() {
         toDestroy,
         destroyOptional,
         toPick,
+        toResurrect,
         toPile,
         toExclude,
         toShow,

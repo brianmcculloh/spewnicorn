@@ -2067,9 +2067,6 @@ body.selecting .combat .overlay {
 	transform:translateY(50px);
 	opacity:1;
 }
-.monster-panel {
-	flex-basis:calc(100% - 300px);
-}
 .player-panel {
 	flex-basis:350px;
 }
@@ -2080,17 +2077,26 @@ body.selecting .combat .overlay {
 	display:flex;
 	position:relative;
 }
+.monster-panel-wrapper {
+	position:relative;
+	overflow:auto;
+	display:flex;
+	background-size:cover;
+	background-position:bottom center;
+	background-repeat:no-repeat;
+	flex-basis: calc(100% - 300px);
+}
+.monster-panel-wrapper::-webkit-scrollbar {
+	display:none;
+}
 .monster-panel {
 	display:flex;
 	gap:10px;
 	align-items:center;
 	justify-content:center;
-	background-size:cover;
-	background-position:bottom center;
-	background-repeat:no-repeat;
 	margin:0 auto;
 	padding:50px 50px 35px 50px;
-	width:100vw;
+	/*width:100vw;*/
 }
 body.arena .monster-panel {
 	background-position:center center;
@@ -2180,6 +2186,7 @@ body.arena .monster-panel {
 }
 .monster.ghost .monster-health {
 	width:175px;
+	min-width:175px;
 }
 .monster-health.blocked {
 	border:2px solid var(--block_color);
@@ -2203,6 +2210,7 @@ body.arena .monster-panel {
 
 .monster {
 	width:250px;
+	min-width:250px;
 	height:400px;
 	text-align:center;
 	display:flex;
@@ -2219,18 +2227,27 @@ body.arena .monster-panel {
 }
 .monster[data-tier="2"] {
 	width:300px;
+	min-width:300px;
 }
 .monster[data-tier="3"] {
 	width:350px;
+	min-width:350px;
 }
 .monster[data-tier="4"] {
 	width:400px;
+	min-width:400px;
 }
 .monster[data-tier="5"] {
 	width:500px;
+	min-width:500px;
 }
 .monster[data-tier="6"] {
 	width:500px;
+	min-width:500px;
+}
+.monster[data-tier="7"] {
+	width:550px;
+	min-width:550px;
 }
 .monster .monster-stats {
 	position:absolute;
@@ -2253,7 +2270,7 @@ body.arena .monster-panel {
 .monster .sprite {
 	background-image:url('./images/monsters_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1660px * 1) calc(11783px * 1);
+	background-size:calc(1859px * 1) calc(13291px * 1);
 	position:absolute;
 	z-index:2;
 	transition:all .3s;
@@ -2261,7 +2278,7 @@ body.arena .monster-panel {
 .monster.damaged .sprite {
 	animation: rumble .1s infinite linear;
 }
-.monster:hover .sprite {
+.monster:not(.dead):hover .sprite {
 	filter:
 		drop-shadow(1px 1px 0 red)
 		drop-shadow(1px -1px 0 red)
@@ -2277,6 +2294,9 @@ body.arena .monster-panel {
 		drop-shadow(-1px 1px 0 yellow)
 		drop-shadow(-1px -1px 0 yellow)
 		drop-shadow(0 0 20px yellow);
+}
+.monster.taking-turn.singularity .sprite {
+	transform:translateX(40px) translateY(20px);
 }
 @keyframes rumble {
 	0% {transform: rotate(0deg);}
@@ -2346,12 +2366,12 @@ body.arena .monster-panel {
 	width:calc(408px * 1);
 	height:calc(311px * 1);
 }
-.monster.red_dragon .sprite {
+.monster.fel_dragon .sprite {
 	background-position:calc(-888px * 1) calc(-4071px * 1);
 	width:calc(630px * 1);
 	height:calc(647px * 1);
 }
-.monster.green_dragon .sprite {
+.monster.cunning_dragon .sprite {
 	background-position:calc(-888px * 1) calc(-4736px * 1);
 	width:calc(630px * 1);
 	height:calc(645px * 1);
@@ -2366,12 +2386,12 @@ body.arena .monster-panel {
 	width:calc(640px * 1);
 	height:calc(434px * 1);
 }
-.monster.gold_dragon .sprite {
+.monster.writhing_dragon .sprite {
 	background-position:calc(-647px * 1) calc(-1167px * 1);
 	width:calc(435px * 1);
 	height:calc(605px * 1);
 }
-.monster.black_dragon .sprite {
+.monster.darkness_dragon .sprite {
 	background-position:0 calc(-1636px * 1);
 	width:calc(630px * 1);
 	height:calc(473px * 1);
@@ -2380,11 +2400,6 @@ body.arena .monster-panel {
 	background-position:calc(-630px * 1) calc(-1772px * 1);
 	width:calc(557px * 1);
 	height:calc(381px * 1);
-}
-.monster.seething_entity .sprite {
-	background-position:0 calc(-2117px * 1);
-	width:calc(599px * 1);
-	height:calc(325px * 1);
 }
 .monster.seething_entity .sprite {
 	background-position:0 calc(-2117px * 1);
@@ -2447,12 +2462,12 @@ body.arena .monster-panel {
 	height:calc(283px * 1);
 }
 .monster.flame_sludge .sprite {
-	background-position:calc(-691px * 1) calc(-3568px * 1);
+	background-position:calc(-741px * 1) calc(-3568px * 1);
 	width:calc(275px * 1);
 	height:calc(180px * 1);
 }
 .monster.frost_sludge .sprite {
-	background-position:calc(-968px * 1) calc(-3577px * 1);
+	background-position:calc(-1016px * 1) calc(-3577px * 1);
 	width:calc(259px * 1);
 	height:calc(162px * 1);
 }
@@ -2536,25 +2551,25 @@ body.arena .monster-panel {
 	width:calc(494px * 1);
 	height:calc(338px * 1);
 }
-.monster.flame_red_dragon .sprite {
-	background-position:calc(-843px * 1) calc(-5381px * 1);
-	width:calc(643px * 1);
-	height:calc(665px * 1);
-}
-.monster.frost_red_dragon .sprite {
+.monster.flame_fel_dragon .sprite {
 	background-position:0 calc(-5828px * 1);
-	width:calc(643px * 1);
-	height:calc(665px * 1);
+	width:calc(551px * 1);
+	height:calc(627px * 1);
 }
-.monster.flame_green_dragon .sprite {
-	background-position:calc(-636px * 1) calc(-6036px * 1);
-	width:calc(645px * 1);
-	height:calc(671px * 1);
+.monster.frost_fel_dragon .sprite {
+	background-position:calc(-438px * 1) calc(-7072px * 1);
+	width:calc(594px * 1);
+	height:calc(598px * 1);
 }
-.monster.frost_green_dragon .sprite {
-	background-position:0 calc(-6481px * 1);
-	width:calc(645px * 1);
-	height:calc(671px * 1);
+.monster.flame_cunning_dragon .sprite {
+	background-position:calc(-1009px * 1) calc(-11300px * 1);
+	width:calc(583px * 1);
+	height:calc(531px * 1);
+}
+.monster.frost_cunning_dragon .sprite {
+	background-position:calc(-552px * 1) calc(-5877px * 1);
+	width:calc(703px * 1);
+	height:calc(513px * 1);
 }
 .monster.flame_cyberskull .sprite {
 	background-position:calc(-637px * 1) calc(-6685px * 1);
@@ -2576,23 +2591,23 @@ body.arena .monster-panel {
 	width:calc(443px * 1);
 	height:calc(432px * 1);
 }
-.monster.flame_gold_dragon .sprite {
-	background-position:calc(-441px * 1) calc(-7132px * 1);
-	width:calc(435px * 1);
-	height:calc(605px * 1);
+.monster.flame_writhing_dragon .sprite {
+	background-position:calc(-1128px * 1) calc(-9472px * 1);
+	width:calc(399px * 1);
+	height:calc(627px * 1);
 }
-.monster.frost_gold_dragon .sprite {
-	background-position:calc(-876px * 1) calc(-7132px * 1);
-	width:calc(435px * 1);
-	height:calc(605px * 1);
+.monster.frost_writhing_dragon .sprite {
+	background-position:0 calc(-6483px * 1);
+	width:calc(530px * 1);
+	height:calc(581px * 1);
 }
-.monster.flame_black_dragon .sprite {
-	background-position:calc(-640px * 1) calc(-7737px * 1);
-	width:calc(639px * 1);
+.monster.flame_darkness_dragon .sprite {
+	background-position:0 calc(-7737px * 1);
+	width:calc(637px * 1);
 	height:calc(435px * 1);
 }
-.monster.frost_black_dragon .sprite {
-	background-position:0 calc(-7737px * 1);
+.monster.frost_darkness_dragon .sprite {
+	background-position:calc(-836px * 1) calc(-5378px * 1);
 	width:calc(639px * 1);
 	height:calc(435px * 1);
 }
@@ -2612,9 +2627,9 @@ body.arena .monster-panel {
 	height:calc(364px * 1);
 }
 .monster.frost_seething_entity .sprite {
-	background-position:calc(-629px * 1) calc(-8593px * 1);
-	width:calc(596px * 1);
-	height:calc(415px * 1);
+	background-position:calc(-830px * 1) calc(-10745px * 1);
+	width:calc(525px * 1);
+	height:calc(498px * 1);
 }
 .monster.flame_ultraumaton .sprite {
 	background-position:calc(-776px * 1) calc(-9008px * 1);
@@ -2622,9 +2637,9 @@ body.arena .monster-panel {
 	height:calc(464px * 1);
 }
 .monster.frost_ultraumaton .sprite {
-	background-position:0 calc(-9008px * 1);
-	width:calc(776px * 1);
-	height:calc(459px * 1);
+	background-position:0 calc(-9004px * 1);
+	width:calc(642px * 1);
+	height:calc(473px * 1);
 }
 .monster.flame_unmaker .sprite {
 	background-position:0 calc(-9467px * 1);
@@ -2642,25 +2657,36 @@ body.arena .monster-panel {
 	height:calc(545px * 1);
 }
 .monster.frost_arch_summoner .sprite {
-	background-position:calc(-736px * 1) calc(-10158px * 1);
-	width:calc(720px * 1);
-	height:calc(565px * 1);
+	background-position:0 calc(-11300px * 1);
+	width:calc(930px * 1);
+	height:calc(434px * 1);
 }
 .monster.super_frozen_frost_guardian .sprite {
-	background-position:calc(-876px * 1) calc(-10723px * 1);
-	width:calc(784px * 1);
-	height:calc(577px * 1);
+	background-position:0 calc(-10570px * 1);
+	width:calc(759px * 1);
+	height:calc(667px * 1);
+}
+.monster.super_frozen_flame_guardian .sprite {
+	background-position:0 calc(-12328px * 1);
+	width:calc(721px * 1);
+	height:calc(614px * 1);
+}
+.monster.super_burning_frost_guardian .sprite {
+	background-position:calc(-886px * 1) calc(-12391px * 1);
+	width:calc(882px * 1);
+	height:calc(651px * 1);
 }
 .monster.super_burning_flame_guardian .sprite {
-	background-position:0 calc(-11312px * 1);
-	width:calc(1009px * 1);
-	height:calc(471px * 1);
+	background-position:calc(-1029px * 1) calc(-11831px * 1);
+	width:calc(716px * 1);
+	height:calc(560px * 1);
 }
-.monster.super_burning_frost_guardian .sprite,
-.monster.super_frozen_flame_guardian .sprite {
-	background-position:0 calc(-10723px * 1);
-	width:calc(882px * 1);
-	height:calc(524px * 1);
+
+
+.monster.singularity .sprite {
+	background-position:0 calc(-11783px * 1);
+	width:calc(762px * 1);
+	height:calc(545px * 1);
 }
 
 .monster.cave_spider .sprite {
@@ -2893,13 +2919,14 @@ body.arena .monster-panel {
 }
 .player-panel .incoming-damage {
 	position:absolute;
-	bottom:66px;
+	bottom:69px;
 	z-index:3;
 	left:208px;
 	font-size:16px;
 }
 .player-panel .incoming-damage span {
 	color:red;
+	font-size:18px;
 }
 .frame {
 	background-image:url('./images/ui_spritesheet1.png');
@@ -3102,12 +3129,18 @@ body.arena .monster-panel {
 	background-repeat:no-repeat;
 	background-size:512px 15968px;
 	background-position:0px 0px;
+	/*filter:
+		drop-shadow(1px 1px 0 black)
+		drop-shadow(1px -1px 0 black)
+		drop-shadow(-1px 1px 0 black)
+		drop-shadow(-1px -1px 0 black)
+		drop-shadow(0 0 5px black);*/
 }
-.status-bar .single-status span.turns, .status-bar .single-status span.amount {
+.status-bar .single-status span.turns, .status-bar .single-status span.amount, .status-bar .single-status span.counter {
 	position:absolute;
 	bottom:-5px;
 	right:0;
-	font-size:12px;
+	font-size:14px;
 }
 .status-bar .single-status span.amount {
 	right:auto;
@@ -3116,6 +3149,12 @@ body.arena .monster-panel {
 	bottom:auto;
 	color:lime;
 }
+.status-bar .single-status span.counter {
+	top:-5px;
+	bottom:auto;
+	color:yellow;
+}
+
 
 /* magic rainbow */
 .magic-rainbow {
@@ -4117,6 +4156,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 #card-forbid .card-image {
 	background-position:0 calc(-8535px * .92);
+}
+#card-weaponsmith .card-image {
+	background-position:calc(-195px * .92) calc(-8535px * .92);
 }
 
 
@@ -5401,10 +5443,16 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 
 #story-panel {
 	z-index:9999999;
-	background-image: url('./images/map1.png');
+	background-image: url('./images/story.png');
+	align-items: flex-start;
+    justify-content: flex-end;
+    padding: 0 0 30px 30px;
 }
 #story-panel p, #story-panel h2 {
 	text-transform:none;
+}
+#story-panel h2 {
+	margin-left:66px;
 }
 #story-panel p {
 	font-size:22px;
@@ -5412,6 +5460,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #story-panel .panel {
 	flex-direction:column;
 	text-align:center;
+}
+#story-panel .buttons-wrapper {
+	padding:0;
 }
 
 

@@ -982,7 +982,7 @@ const ALL_TREASURES = [
         courage: 8,
         permanent: true,
         effects: [
-            {effect: 'arcane', base: 2}
+            {effect: 'arcane', base: 5}
         ],
         x: -288,
         y: -544

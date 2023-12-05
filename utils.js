@@ -420,7 +420,7 @@ export default class Util {
         
     }
     removeMonster(monster) {
-        if(monster.breed == 'ghost') {
+        if(monster.breed == 'ghost' || game.mapType == 'singularity') {
             $('.monster[data-guid=' + monster.guid + ']').remove();
         } else {
             $('.monster[data-guid=' + monster.guid + ']').addClass('dead').removeClass('clickable');
@@ -980,6 +980,7 @@ export default class Util {
                 courage: [146724, 2755],
                 jester: [22990, 1000],
                 trade: [320737, 1408],
+                gate: [330767, 10837],
 
                 available: [23990, 964],
                 
@@ -1109,6 +1110,7 @@ export default class Util {
                 effect41: [322149, 3162],
                 effect42: [325311, 2970],
                 effect43: [328285, 2469],
+                effect44: [341604, 1331],
 
 
 

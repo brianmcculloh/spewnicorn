@@ -1203,6 +1203,16 @@ const ALL_QUESTS = [
             {id: 'take_your_time', name: 'Take Your Time', desc: 'Lose 9 health'},
         ]
     }),
+    new Quests({
+        id: 'market_of_arms',
+        name: 'Market of Arms',
+        desc: 'You come across a hooded figure offering a special item in exchange for hauling away some of his junk.',
+        weight: 2,
+        options: [
+            {id: 'accept_offer', name: 'Accept Offer', desc: 'Receive a random weapon and 2 clutter'},
+            {id: 'reject_offer', name: 'Reject Offer'},
+        ]
+    }),
     
 ];
 

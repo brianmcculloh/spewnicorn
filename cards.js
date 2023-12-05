@@ -508,6 +508,7 @@ const ALL_CARDS = [
     Obliterate
 
 
+
     Legendary:
 
     Death Blow
@@ -566,12 +567,12 @@ const ALL_CARDS = [
     Distracting Ring
     Cutting Ring
     Target
+    Frost Armor
+    Flame Armor
 
 
     Rare:
 
-    Frost Armor
-    Flame Armor
     Bulwark
     Steel Hide
     Reactor
@@ -592,6 +593,7 @@ const ALL_CARDS = [
     Cloudburst
     Purify
     Forbid
+    Weaponsmith
 
 
     Legendary:
@@ -1703,7 +1705,7 @@ const ALL_CARDS = [
         trade: ['piercer'],
     }),
     new Cards({
-        id: 'piercer', name: 'Piercer', type: 'attack', mana: 3, target: 'monster', tier: 'uncommon', weight: 3, addable: false, weapon: true,
+        id: 'piercer', name: 'Piercer', type: 'attack', mana: 3, target: 'monster', tier: 'uncommon', weight: 2, addable: false, weapon: true,
         dmg: [12, 12],
         additionalDesc: 'Level III Weapon',
         slots: 1,
@@ -1713,7 +1715,7 @@ const ALL_CARDS = [
         trade: ['shredder'],
     }),
     new Cards({
-        id: 'shredder', name: 'Shredder', type: 'attack', mana: 3, target: 'monster', tier: 'uncommon', weight: 2, addable: false, weapon: true,
+        id: 'shredder', name: 'Shredder', type: 'attack', mana: 3, target: 'monster', tier: 'uncommon', weight: 1, addable: false, weapon: true,
         dmg: [12, 12, 12, 12],
         additionalDesc: 'Level IV Weapon',
         slots: 1,
@@ -1723,7 +1725,7 @@ const ALL_CARDS = [
         trade: ['stormknife'],
     }),
     new Cards({
-        id: 'stormknife', name: 'Stormknife', type: 'attack', mana: 3, target: 'monster', tier: 'rare', weight: 1, addable: false, weapon: true,
+        id: 'stormknife', name: 'Stormknife', type: 'attack', mana: 3, target: 'monster', tier: 'rare', weight: .8, addable: false, weapon: true,
         dmg: [16, 16, 16, 16, 16],
         additionalDesc: 'Level V Weapon',
         slots: 1,
@@ -1733,7 +1735,7 @@ const ALL_CARDS = [
         trade: ['shiv_of_the_abyss'],
     }),
     new Cards({
-        id: 'shiv_of_the_abyss', name: 'Shiv of the Abyss', type: 'attack', mana: 3, target: 'monster', weight: .2, tier: 'legendary', addable: false, weapon: true,
+        id: 'shiv_of_the_abyss', name: 'Shiv of the Abyss', type: 'attack', mana: 3, target: 'monster', weight: .1, tier: 'legendary', addable: false, weapon: true,
         dmg: [20, 20, 20, 20, 20],
         additionalDesc: 'Level VI Weapon',
         slots: 1,
@@ -1762,7 +1764,7 @@ const ALL_CARDS = [
         trade: ['hardened_steel'],
     }),
     new Cards({
-        id: 'hardened_steel', name: 'Hardened Steel', type: 'attack', mana: 3, target: 'monster', weight: 3, addable: false, tier: 'uncommon', weapon: true,
+        id: 'hardened_steel', name: 'Hardened Steel', type: 'attack', mana: 3, target: 'monster', weight: 2, addable: false, tier: 'uncommon', weapon: true,
         dmg: [24],
         effects: [
             {effect: 'punch', amount: .1, turns: -1},
@@ -1775,7 +1777,7 @@ const ALL_CARDS = [
         trade: ['champions_cutlass'],
     }),
     new Cards({
-        id: 'champions_cutlass', name: "Champion's Cutlass", type: 'attack', mana: 3, target: 'monster', weight: 2, addable: false, tier: 'uncommon', weapon: true,
+        id: 'champions_cutlass', name: "Champion's Cutlass", type: 'attack', mana: 3, target: 'monster', weight: 1, addable: false, tier: 'uncommon', weapon: true,
         dmg: [30],
         effects: [
             {effect: 'punch', amount: .15, turns: -1},
@@ -1788,7 +1790,7 @@ const ALL_CARDS = [
         trade: ['glacial_blade'],
     }),
     new Cards({
-        id: 'glacial_blade', name: 'Glacial Blade', type: 'attack', mana: 3, target: 'monster', weight: 1, addable: false, tier: 'rare', weapon: true,
+        id: 'glacial_blade', name: 'Glacial Blade', type: 'attack', mana: 3, target: 'monster', weight: .8, addable: false, tier: 'rare', weapon: true,
         dmg: [40],
         effects: [
             {effect: 'punch', amount: .2, turns: -1},
@@ -1801,7 +1803,7 @@ const ALL_CARDS = [
         trade: ['nightfury'],
     }),
     new Cards({
-        id: 'nightfury', name: 'Nightfury', type: 'attack', mana: 3, target: 'monster', weight: .2, addable: false, tier: 'legendary', weapon: true,
+        id: 'nightfury', name: 'Nightfury', type: 'attack', mana: 3, target: 'monster', weight: .1, addable: false, tier: 'legendary', weapon: true,
         dmg: [50],
         effects: [
             {effect: 'punch', amount: .25, turns: -1},
@@ -1833,7 +1835,7 @@ const ALL_CARDS = [
         trade: ['swift_battle_axe'],
     }),
     new Cards({
-        id: 'throwing_axe', name: 'Throwing Axe', type: 'attack', mana: 3, target: 'monster', weight: 9, addable: false, weapon: true,
+        id: 'throwing_axe', name: 'Throwing Axe', type: 'attack', mana: 3, target: 'monster', weight: 10, addable: false, weapon: true,
         dmg: [4, 4, 4],
         additionalDesc: 'Level II Weapon',
         slots: 1,
@@ -1843,7 +1845,7 @@ const ALL_CARDS = [
         trade: ['sharpened_axe'],
     }),
     new Cards({
-        id: 'swift_battle_axe', name: 'Swift Battle Axe', type: 'attack', mana: 3, target: 'monster', weight: 3, addable: false, tier: 'uncommon',  weapon: true,
+        id: 'swift_battle_axe', name: 'Swift Battle Axe', type: 'attack', mana: 3, target: 'monster', weight: 2, addable: false, tier: 'uncommon',  weapon: true,
         dmg: [30],
         effects: [
             {effect: 'punch', amount: .2, turns: 1},
@@ -1856,7 +1858,7 @@ const ALL_CARDS = [
         trade: ['cleave'],
     }),
     new Cards({
-        id: 'sharpened_axe', name: 'Sharpened Axe', type: 'attack', mana: 3, target: 'monster', weight: 4, addable: false, tier: 'uncommon',  weapon: true,
+        id: 'sharpened_axe', name: 'Sharpened Axe', type: 'attack', mana: 3, target: 'monster', weight: 2, addable: false, tier: 'uncommon',  weapon: true,
         dmg: [10, 10, 10],
         effects: [
             {effect: 'might', amount: 4, turns: 1},
@@ -1869,7 +1871,7 @@ const ALL_CARDS = [
         trade: ['redfury'],
     }),
     new Cards({
-        id: 'cleave', name: 'Cleave', type: 'attack', mana: 3, target: 'monster', weight: 2, addable: false, tier: 'rare', weapon: true, 
+        id: 'cleave', name: 'Cleave', type: 'attack', mana: 3, target: 'monster', weight: 1, addable: false, tier: 'rare', weapon: true, 
         dmg: [30],
         effects: [
             {effect: 'punch', amount: .3, turns: 1},
@@ -1882,7 +1884,7 @@ const ALL_CARDS = [
         trade: ['forge', 'dragons_bane'],
     }),
     new Cards({
-        id: 'redfury', name: 'Redfury', type: 'attack', mana: 3, target: 'monster', weight: 2, addable: false, tier: 'rare',  weapon: true,
+        id: 'redfury', name: 'Redfury', type: 'attack', mana: 3, target: 'monster', weight: 1, addable: false, tier: 'rare',  weapon: true,
         dmg: [10, 10, 10],
         effects: [
             {effect: 'might', amount: 6, turns: 1},
@@ -1963,7 +1965,7 @@ const ALL_CARDS = [
         trade: ['tungsten_hammer'],
     }),
     new Cards({
-        id: 'tungsten_hammer', name: 'Tungsten Hammer', type: 'attack', mana: 3, target: 'monster', weight: 3, addable: false, tier: 'uncommon', weapon: true,
+        id: 'tungsten_hammer', name: 'Tungsten Hammer', type: 'attack', mana: 3, target: 'monster', weight: 2, addable: false, tier: 'uncommon', weapon: true,
         dmg: [24],
         effects: [
             {effect: 'punch', amount: .1, turns: -1, hex: true},
@@ -1976,7 +1978,7 @@ const ALL_CARDS = [
         trade: ['molten_hammer'],
     }),
     new Cards({
-        id: 'molten_hammer', name: "Molten Hammer", type: 'attack', mana: 3, target: 'monster', weight: 2, addable: false, tier: 'uncommon', weapon: true,
+        id: 'molten_hammer', name: "Molten Hammer", type: 'attack', mana: 3, target: 'monster', weight: 1, addable: false, tier: 'uncommon', weapon: true,
         dmg: [30],
         effects: [
             {effect: 'punch', amount: .15, turns: -1, hex: true},
@@ -1989,7 +1991,7 @@ const ALL_CARDS = [
         trade: ['hammer_of_justice'],
     }),
     new Cards({
-        id: 'hammer_of_justice', name: 'Hammer of Justice', type: 'attack', mana: 3, target: 'monster', weight: 1, addable: false, tier: 'rare', weapon: true,
+        id: 'hammer_of_justice', name: 'Hammer of Justice', type: 'attack', mana: 3, target: 'monster', weight: .8, addable: false, tier: 'rare', weapon: true,
         dmg: [40],
         effects: [
             {effect: 'punch', amount: .2, turns: -1, hex: true},
@@ -2002,7 +2004,7 @@ const ALL_CARDS = [
         trade: ['gravitas'],
     }),
     new Cards({
-        id: 'gravitas', name: 'Gravitas', type: 'attack', mana: 3, target: 'monster', weight: .5, addable: false, tier: 'rare', weapon: true,
+        id: 'gravitas', name: 'Gravitas', type: 'attack', mana: 3, target: 'monster', weight: .6, addable: false, tier: 'rare', weapon: true,
         dmg: [50],
         effects: [
             {effect: 'punch', amount: .25, turns: -1, hex: true},
@@ -2015,7 +2017,7 @@ const ALL_CARDS = [
         trade: ['singing_mallet', 'firmament_mover'],
     }),
     new Cards({
-        id: 'firmament_mover', name: 'Firmament Mover', type: 'attack', mana: 3, target: 'monster', weight: .2, addable: false, tier: 'legendary', weapon: true,
+        id: 'firmament_mover', name: 'Firmament Mover', type: 'attack', mana: 3, target: 'monster', weight: .05, addable: false, tier: 'legendary', weapon: true,
         dmg: [70],
         effects: [
             {effect: 'punch', amount: .35, turns: -1, hex: true},
@@ -2027,7 +2029,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'singing_mallet', name: 'Singing Mallet', type: 'attack', mana: 2, target: 'monster', weight: .2, addable: false, tier: 'legendary', weapon: true,
+        id: 'singing_mallet', name: 'Singing Mallet', type: 'attack', mana: 2, target: 'monster', weight: .05, addable: false, tier: 'legendary', weapon: true,
         dmg: [50],
         effects: [
             {effect: 'punch', amount: .25, turns: -1, hex: true},
@@ -2059,7 +2061,7 @@ const ALL_CARDS = [
         trade: ['ancient_spear', 'runed_bayonet', 'cursed_spike', 'frozen_harpoon', 'ornate_javelin', 'double_headed_lance'],
     }),
     new Cards({
-        id: 'ancient_spear', name: "Ancient Spear", type: 'attack', mana: 3, target: 'monster', tier: 'uncommon', weight: .2, weapon: true, vanish: true, addable: false, 
+        id: 'ancient_spear', name: "Ancient Spear", type: 'attack', mana: 3, target: 'monster', tier: 'uncommon', weight: .5, weapon: true, vanish: true, addable: false, 
         dmg: [70],
         additionalDesc: 'Level III Weapon',
         slots: 1,
@@ -2068,7 +2070,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'runed_bayonet', name: "Runed Bayonet", type: 'attack', mana: 2, target: 'monster', tier: 'uncommon', weight: .2, weapon: true, vanish: true, addable: false, 
+        id: 'runed_bayonet', name: "Runed Bayonet", type: 'attack', mana: 2, target: 'monster', tier: 'uncommon', weight: .5, weapon: true, vanish: true, addable: false, 
         dmg: [50],
         additionalDesc: 'Level III Weapon',
         slots: 1,
@@ -2077,7 +2079,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'cursed_spike', name: "Cursed Spike", type: 'attack', mana: 1, target: 'monster', tier: 'uncommon', weight: .2, weapon: true, vanish: true, addable: false, 
+        id: 'cursed_spike', name: "Cursed Spike", type: 'attack', mana: 1, target: 'monster', tier: 'uncommon', weight: .5, weapon: true, vanish: true, addable: false, 
         dmg: [30],
         additionalDesc: 'Level III Weapon',
         slots: 1,
@@ -2086,7 +2088,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'frozen_harpoon', name: "Frozen Harpoon", type: 'attack', mana: 3, target: 'monster', tier: 'uncommon', weight: .2, weapon: true, ephemeral: true, addable: false, 
+        id: 'frozen_harpoon', name: "Frozen Harpoon", type: 'attack', mana: 3, target: 'monster', tier: 'uncommon', weight: .5, weapon: true, ephemeral: true, addable: false, 
         dmg: [55],
         additionalDesc: 'Level III Weapon',
         slots: 1,
@@ -2095,7 +2097,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'ornate_javelin', name: "Ornate Javelin", type: 'attack', mana: 2, target: 'monster', tier: 'uncommon', weight: .2, weapon: true, ephemeral: true, addable: false, 
+        id: 'ornate_javelin', name: "Ornate Javelin", type: 'attack', mana: 2, target: 'monster', tier: 'uncommon', weight: .5, weapon: true, ephemeral: true, addable: false, 
         dmg: [35],
         additionalDesc: 'Level III Weapon',
         slots: 1,
@@ -2104,7 +2106,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'double_headed_lance', name: "Double-Headed Lance", type: 'attack', mana: 1, target: 'monster', tier: 'uncommon', weight: .2, weapon: true, ephemeral: true, addable: false, 
+        id: 'double_headed_lance', name: "Double-Headed Lance", type: 'attack', mana: 1, target: 'monster', tier: 'uncommon', weight: .5, weapon: true, ephemeral: true, addable: false, 
         dmg: [20],
         additionalDesc: 'Level III Weapon',
         slots: 1,
@@ -2123,7 +2125,7 @@ const ALL_CARDS = [
         trade: ['crescentblade', 'sharpened_scythe'],
     }),
     new Cards({
-        id: 'crescentblade', name: "Crescentblade", type: 'attack', mana: 0, target: 'all', weight: 1, weapon: true, addable: false, 
+        id: 'crescentblade', name: "Crescentblade", type: 'attack', mana: 0, target: 'all', weight: .8, weapon: true, addable: false, 
         dmg: [6],
         additionalDesc: 'Level II Weapon',
         slots: 1,
@@ -2154,7 +2156,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'spiked_scythe', name: 'Spiked Scythe', type: 'attack', mana: 3, vanish: true, target: 'all', weight: 3, addable: false, tier: 'uncommon', weapon: true,
+        id: 'spiked_scythe', name: 'Spiked Scythe', type: 'attack', mana: 3, vanish: true, target: 'all', weight: 2, addable: false, tier: 'uncommon', weapon: true,
         dmg: [10],
         additionalDesc: 'Level III Weapon',
         slots: 1,
@@ -2164,7 +2166,7 @@ const ALL_CARDS = [
         trade: ['greenshears', 'glowscythe'],
     }),
     new Cards({
-        id: 'greenshears', name: 'Greenshears', type: 'attack', mana: 2, target: 'all', weight: .4, addable: false, tier: 'uncommon', weapon: true,
+        id: 'greenshears', name: 'Greenshears', type: 'attack', mana: 2, target: 'all', weight: .3, addable: false, tier: 'uncommon', weapon: true,
         dmg: [16],
         draw: {
             dmg: [2],
@@ -2176,7 +2178,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'glowscythe', name: 'Glowscythe', type: 'attack', mana: 3, vanish: true, target: 'all', weight: 2, addable: false, tier: 'uncommon', weapon: true,
+        id: 'glowscythe', name: 'Glowscythe', type: 'attack', mana: 3, vanish: true, target: 'all', weight: 1, addable: false, tier: 'uncommon', weapon: true,
         dmg: [16],
         additionalDesc: 'Level IV Weapon',
         slots: 1,
@@ -2186,7 +2188,7 @@ const ALL_CARDS = [
         trade: ['bonesaw', 'treecleaver'],
     }),
     new Cards({
-        id: 'bonesaw', name: 'Bonesaw', type: 'attack', mana: 2, target: 'all', weight: .3, addable: false, tier: 'rare', weapon: true,
+        id: 'bonesaw', name: 'Bonesaw', type: 'attack', mana: 2, target: 'all', weight: .2, addable: false, tier: 'rare', weapon: true,
         dmg: [10, 10],
         draw: {
             dmg: [1, 1],
@@ -2198,7 +2200,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'treecleaver', name: 'Treecleaver', type: 'attack', mana: 3, vanish: true, target: 'all', weight: 1, addable: false, tier: 'rare', weapon: true,
+        id: 'treecleaver', name: 'Treecleaver', type: 'attack', mana: 3, vanish: true, target: 'all', weight: .8, addable: false, tier: 'rare', weapon: true,
         dmg: [10, 10],
         additionalDesc: 'Level V Weapon',
         slots: 1,
@@ -2208,7 +2210,7 @@ const ALL_CARDS = [
         trade: ['mantleblight', 'armyfeller'],
     }),
     new Cards({
-        id: 'mantleblight', name: 'Mantleblight', type: 'attack', mana: 3, target: 'all', weight: .2, addable: false, tier: 'rare', weapon: true,
+        id: 'mantleblight', name: 'Mantleblight', type: 'attack', mana: 3, target: 'all', weight: .1, addable: false, tier: 'rare', weapon: true,
         dmg: [10, 10, 10],
         draw: {
             dmg: [1, 1, 1],
@@ -2220,7 +2222,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'armyfeller', name: 'Armyfeller', type: 'attack', mana: 3, vanish: true, target: 'all', weight: 1, addable: false, tier: 'rare', weapon: true,
+        id: 'armyfeller', name: 'Armyfeller', type: 'attack', mana: 3, vanish: true, target: 'all', weight: .6, addable: false, tier: 'rare', weapon: true,
         dmg: [10, 10, 10],
         additionalDesc: 'Level VI Weapon',
         slots: 1,
@@ -2230,7 +2232,7 @@ const ALL_CARDS = [
         trade: ['reaper', 'fleeting_deathblade'],
     }),
     new Cards({
-        id: 'reaper', name: 'Reaper', type: 'attack', mana: 3, target: 'all', weight: .1, addable: false, tier: 'legendary', weapon: true,
+        id: 'reaper', name: 'Reaper', type: 'attack', mana: 3, target: 'all', weight: .05, addable: false, tier: 'legendary', weapon: true,
         dmg: [10, 10, 10, 10],
         draw: {
             dmg: [1, 1, 1, 1],
@@ -2242,7 +2244,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'fleeting_deathblade', name: 'Fleeting Deathblade', type: 'attack', mana: 1, expire: 4, target: 'all', weight: .1, addable: false, tier: 'legendary', weapon: true,
+        id: 'fleeting_deathblade', name: 'Fleeting Deathblade', type: 'attack', mana: 1, expire: 4, target: 'all', weight: .05, addable: false, tier: 'legendary', weapon: true,
         dmg: [10, 10, 10, 10],
         draw: {
             dmg: [1, 1, 1, 1],
@@ -2276,7 +2278,7 @@ const ALL_CARDS = [
         trade: ['black_oak_wand'],
     }),
     new Cards({
-        id: 'black_oak_wand', name: "Black Oak Wand", type: 'magic', mana: 3, weight: 3, weapon: true, addable: false,
+        id: 'black_oak_wand', name: "Black Oak Wand", type: 'magic', mana: 3, weight: 2, weapon: true, addable: false,
         magic: [{type: 'aligned', amount: 10}],
         sound: 'magic4',
         additionalDesc: 'Level III Weapon',
@@ -2287,7 +2289,7 @@ const ALL_CARDS = [
         trade: ['hooked_wand'],
     }),
     new Cards({
-        id: 'hooked_wand', name: "Hooked Wand", type: 'magic', mana: 3, weight: 2, weapon: true, addable: false, tier: 'uncommon',
+        id: 'hooked_wand', name: "Hooked Wand", type: 'magic', mana: 3, weight: 1, weapon: true, addable: false, tier: 'uncommon',
         magic: [{type: 'aligned', amount: 14}],
         sound: 'magic4',
         additionalDesc: 'Level IV Weapon',
@@ -2298,7 +2300,7 @@ const ALL_CARDS = [
         trade: ['glowing_wand'],
     }),
     new Cards({
-        id: 'glowing_wand', name: "Glowing Wand", type: 'magic', mana: 3, weight: 1, weapon: true, addable: false, tier: 'uncommon',
+        id: 'glowing_wand', name: "Glowing Wand", type: 'magic', mana: 3, weight: .8, weapon: true, addable: false, tier: 'uncommon',
         magic: [{type: 'aligned', amount: 19}],
         sound: 'magic4',
         additionalDesc: 'Level V Weapon',
@@ -2309,7 +2311,7 @@ const ALL_CARDS = [
         trade: ['glowing_sceptre'],
     }),
     new Cards({
-        id: 'glowing_sceptre', name: "Glowing Sceptre", type: 'magic', mana: 3, weight: .8, weapon: true, addable: false, tier: 'uncommon',
+        id: 'glowing_sceptre', name: "Glowing Sceptre", type: 'magic', mana: 3, weight: .6, weapon: true, addable: false, tier: 'uncommon',
         magic: [{type: 'aligned', amount: 25}],
         sound: 'magic4',
         additionalDesc: 'Level VI Weapon',
@@ -2320,7 +2322,7 @@ const ALL_CARDS = [
         trade: ['darkfeather', 'heart_of_chaos', 'evernature', 'arcana_prismatica'],
     }),
     new Cards({
-        id: 'darkfeather', name: "Darkfeather", type: 'magic', mana: 3, weight: .2, weapon: true, addable: false, tier: 'rare',
+        id: 'darkfeather', name: "Darkfeather", type: 'magic', mana: 3, weight: .05, weapon: true, addable: false, tier: 'rare',
         magic: [{type: 'dark', amount: 60}],
         sound: 'magic4',
         additionalDesc: 'Level VII Weapon',
@@ -2330,7 +2332,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'heart_of_chaos', name: "Heart of Chaos", type: 'magic', mana: 3, weight: .2, weapon: true, addable: false, tier: 'rare',
+        id: 'heart_of_chaos', name: "Heart of Chaos", type: 'magic', mana: 3, weight: .05, weapon: true, addable: false, tier: 'rare',
         magic: [{type: 'chaos', amount: 60}],
         sound: 'magic4',
         additionalDesc: 'Level VII Weapon',
@@ -2340,7 +2342,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'evernature', name: "Evernature", type: 'magic', mana: 3, weight: .2, weapon: true, addable: false, tier: 'rare',
+        id: 'evernature', name: "Evernature", type: 'magic', mana: 3, weight: .05, weapon: true, addable: false, tier: 'rare',
         magic: [{type: 'elemental', amount: 60}],
         sound: 'magic4',
         additionalDesc: 'Level VII Weapon',
@@ -2350,7 +2352,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'arcana_prismatica', name: "Arcana Prismatica", type: 'magic', mana: 3, weight: .2, weapon: true, addable: false, tier: 'rare',
+        id: 'arcana_prismatica', name: "Arcana Prismatica", type: 'magic', mana: 3, weight: .05, weapon: true, addable: false, tier: 'rare',
         magic: [{type: 'rainbow', amount: 70}],
         sound: 'magic4',
         additionalDesc: 'Level VII Weapon',
@@ -2408,7 +2410,7 @@ const ALL_CARDS = [
         trade: ['gold_staff', 'green_staff', 'purple_staff'],
     }),
     new Cards({
-        id: 'gold_staff', name: "Gold Staff", type: 'magic', mana: 2, weight: .6, use: 2, weapon: true, addable: false, tier: 'uncommon',
+        id: 'gold_staff', name: "Gold Staff", type: 'magic', mana: 2, weight: .5, use: 2, weapon: true, addable: false, tier: 'uncommon',
         magic: [{type: 'aligned', amount: 12}],
         effects: [
             {effect: 'conjure', amount: 2, turns: -1}
@@ -2421,7 +2423,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'green_staff', name: "Green Staff", type: 'magic', mana: 1, weight: .6, use: 3, weapon: true, addable: false, tier: 'uncommon',
+        id: 'green_staff', name: "Green Staff", type: 'magic', mana: 1, weight: .5, use: 3, weapon: true, addable: false, tier: 'uncommon',
         magic: [{type: 'aligned', amount: 6}],
         effects: [
             {effect: 'conjure', amount: 1, turns: -1}
@@ -2434,7 +2436,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'purple_staff', name: "Purple Staff", type: 'magic', mana: 3, weight: 3, weapon: true, addable: false, tier: 'uncommon',
+        id: 'purple_staff', name: "Purple Staff", type: 'magic', mana: 3, weight: 2, weapon: true, addable: false, tier: 'uncommon',
         magic: [{type: 'aligned', amount: 12}],
         sound: 'magic4',
         additionalDesc: 'Level III Weapon',
@@ -2445,7 +2447,7 @@ const ALL_CARDS = [
         trade: ['sapphire_staff', 'emerald_staff', 'ruby_staff'],
     }),
     new Cards({
-        id: 'sapphire_staff', name: "Sapphire Staff", type: 'magic', mana: 2, weight: .4, use: 2, weapon: true, addable: false, tier: 'uncommon',
+        id: 'sapphire_staff', name: "Sapphire Staff", type: 'magic', mana: 2, weight: .3, use: 2, weapon: true, addable: false, tier: 'uncommon',
         magic: [{type: 'aligned', amount: 14}],
         effects: [
             {effect: 'sorcery', amount: .2, turns: -1}
@@ -2458,7 +2460,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'emerald_staff', name: "Emerald Staff", type: 'magic', mana: 1, weight: .4, use: 3, weapon: true, addable: false, tier: 'uncommon',
+        id: 'emerald_staff', name: "Emerald Staff", type: 'magic', mana: 1, weight: .3, use: 3, weapon: true, addable: false, tier: 'uncommon',
         magic: [{type: 'aligned', amount: 7}],
         effects: [
             {effect: 'sorcery', amount: .1, turns: -1}
@@ -2471,7 +2473,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'ruby_staff', name: "Ruby Staff", type: 'magic', mana: 3, weight: 2, weapon: true, addable: false, tier: 'uncommon',
+        id: 'ruby_staff', name: "Ruby Staff", type: 'magic', mana: 3, weight: 1, weapon: true, addable: false, tier: 'uncommon',
         magic: [{type: 'aligned', amount: 14}],
         sound: 'magic4',
         additionalDesc: 'Level IV Weapon',
@@ -2482,7 +2484,7 @@ const ALL_CARDS = [
         trade: ['emanating_staff', 'shuddering_staff', 'quaking_staff'],
     }),
     new Cards({
-        id: 'emanating_staff', name: "Emanating Staff", type: 'magic', mana: 2, weight: 1, use: 2, weapon: true, addable: false, tier: 'rare',
+        id: 'emanating_staff', name: "Emanating Staff", type: 'magic', mana: 2, weight: .8, use: 2, weapon: true, addable: false, tier: 'rare',
         magic: [{type: 'aligned', amount: 16}],
         effects: [
             {effect: 'lightning', amount: 2, turns: -1}
@@ -2495,7 +2497,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'shuddering_staff', name: "Shuddering Staff", type: 'magic', mana: 1, weight: 1, use: 3, weapon: true, addable: false, tier: 'rare',
+        id: 'shuddering_staff', name: "Shuddering Staff", type: 'magic', mana: 1, weight: .8, use: 3, weapon: true, addable: false, tier: 'rare',
         magic: [{type: 'aligned', amount: 8}],
         effects: [
             {effect: 'lightning', amount: 1, turns: -1}
@@ -2508,7 +2510,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'quaking_staff', name: "Quaking Staff", type: 'magic', mana: 3, weight: 1, weapon: true, addable: false, tier: 'rare',
+        id: 'quaking_staff', name: "Quaking Staff", type: 'magic', mana: 3, weight: .8, weapon: true, addable: false, tier: 'rare',
         magic: [{type: 'aligned', amount: 16}],
         sound: 'magic4',
         additionalDesc: 'Level V Weapon',
@@ -2519,7 +2521,7 @@ const ALL_CARDS = [
         trade: ['runemark', 'darksphere', 'staff_of_wonder'],
     }),
     new Cards({
-        id: 'runemark', name: "Runemark", type: 'magic', mana: 2, weight: .8, use: 2, weapon: true, addable: false, tier: 'rare',
+        id: 'runemark', name: "Runemark", type: 'magic', mana: 2, weight: .6, use: 2, weapon: true, addable: false, tier: 'rare',
         magic: [{type: 'aligned', amount: 18}],
         effects: [
             {effect: 'thunder', amount: .2, turns: -1}
@@ -2532,7 +2534,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'darksphere', name: "Darksphere", type: 'magic', mana: 1, weight: .8, use: 3, weapon: true, addable: false, tier: 'rare',
+        id: 'darksphere', name: "Darksphere", type: 'magic', mana: 1, weight: .6, use: 3, weapon: true, addable: false, tier: 'rare',
         magic: [{type: 'aligned', amount: 9}],
         effects: [
             {effect: 'thunder', amount: .1, turns: -1}
@@ -2545,7 +2547,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'staff_of_wonder', name: "Staff of Wonder", type: 'magic', mana: 3, weight: .8, weapon: true, addable: false, tier: 'rare',
+        id: 'staff_of_wonder', name: "Staff of Wonder", type: 'magic', mana: 3, weight: .6, weapon: true, addable: false, tier: 'rare',
         magic: [{type: 'aligned', amount: 18}],
         sound: 'magic4',
         additionalDesc: 'Level VI Weapon',
@@ -2556,7 +2558,7 @@ const ALL_CARDS = [
         trade: ['skycaller', 'windrift', 'ember', 'deepcore', 'felcrystal'],
     }),
     new Cards({
-        id: 'skycaller', name: "Skycaller", type: 'magic', mana: 3, weight: .1, use: 2, weapon: true, addable: false, tier: 'legendary',
+        id: 'skycaller', name: "Skycaller", type: 'magic', mana: 3, weight: .05, use: 2, weapon: true, addable: false, tier: 'legendary',
         magic: [{type: 'aligned', amount: 20}],
         effects: [
             {effect: 'summon', amount: 5, turns: -1}
@@ -2573,7 +2575,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'windrift', name: "Windrift", type: 'magic', mana: 3, weight: .1, use: 2, weapon: true, addable: false, tier: 'legendary',
+        id: 'windrift', name: "Windrift", type: 'magic', mana: 3, weight: .05, use: 2, weapon: true, addable: false, tier: 'legendary',
         magic: [{type: 'aligned', amount: 20}],
         effects: [
             {effect: 'conjure', amount: 3, turns: -1}
@@ -2590,7 +2592,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'ember', name: "Ember", type: 'magic', mana: 3, weight: .1, use: 2, weapon: true, addable: false, tier: 'legendary',
+        id: 'ember', name: "Ember", type: 'magic', mana: 3, weight: .05, use: 2, weapon: true, addable: false, tier: 'legendary',
         magic: [{type: 'aligned', amount: 20}],
         effects: [
             {effect: 'sorcery', amount: .3, turns: -1}
@@ -2607,7 +2609,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'deepcore', name: "Deepcore", type: 'magic', mana: 3, weight: .1, use: 2, weapon: true, addable: false, tier: 'legendary',
+        id: 'deepcore', name: "Deepcore", type: 'magic', mana: 3, weight: .05, use: 2, weapon: true, addable: false, tier: 'legendary',
         magic: [{type: 'aligned', amount: 20}],
         effects: [
             {effect: 'lightning', amount: 3, turns: -1}
@@ -2624,7 +2626,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'felcrystal', name: "Felcrystal", type: 'magic', mana: 3, weight: .1, use: 2, weapon: true, addable: false, tier: 'legendary',
+        id: 'felcrystal', name: "Felcrystal", type: 'magic', mana: 3, weight: .05, use: 2, weapon: true, addable: false, tier: 'legendary',
         magic: [{type: 'aligned', amount: 20}],
         effects: [
             {effect: 'thunder', amount: .3, turns: -1}
@@ -2663,7 +2665,7 @@ const ALL_CARDS = [
         trade: ['blazing_torch'],
     }),
     new Cards({
-        id: 'blazing_torch', name: "Blazing Torch", type: 'magic', mana: 3, weight: .6, use: 2, weapon: true, addable: false, tier: 'uncommon',
+        id: 'blazing_torch', name: "Blazing Torch", type: 'magic', mana: 3, weight: .5, use: 2, weapon: true, addable: false, tier: 'uncommon',
         magic: [{type: 'aligned', amount: 10}],
         effects: [
             {effect: 'mage', amount: 1, turns: -1}
@@ -2677,7 +2679,7 @@ const ALL_CARDS = [
         trade: ['strangefire'],
     }),
     new Cards({
-        id: 'strangefire', name: "Strangefire", type: 'magic', mana: 3, weight: 2, use: 2, weapon: true, addable: false, tier: 'uncommon',
+        id: 'strangefire', name: "Strangefire", type: 'magic', mana: 3, weight: 1, use: 2, weapon: true, addable: false, tier: 'uncommon',
         magic: [{type: 'aligned', amount: 10}],
         effects: [
             {effect: 'mage', amount: 1, turns: -1},
@@ -2692,7 +2694,7 @@ const ALL_CARDS = [
         trade: ['lumenfire'],
     }),
     new Cards({
-        id: 'lumenfire', name: "Lumenfire", type: 'magic', mana: 3, weight: 1, use: 2, weapon: true, addable: false, tier: 'rare',
+        id: 'lumenfire', name: "Lumenfire", type: 'magic', mana: 3, weight: .8, use: 2, weapon: true, addable: false, tier: 'rare',
         magic: [{type: 'aligned', amount: 10}],
         effects: [
             {effect: 'mage', amount: 2, turns: -1},
@@ -2707,7 +2709,7 @@ const ALL_CARDS = [
         trade: ['endless_light'],
     }),
     new Cards({
-        id: 'endless_light', name: "Endless Light", type: 'magic', mana: 3, weight: .8, use: 2, weapon: true, addable: false, tier: 'rare',
+        id: 'endless_light', name: "Endless Light", type: 'magic', mana: 3, weight: .6, use: 2, weapon: true, addable: false, tier: 'rare',
         magic: [{type: 'aligned', amount: 10}],
         effects: [
             {effect: 'mage', amount: 2, turns: -1},
@@ -2722,7 +2724,7 @@ const ALL_CARDS = [
         trade: ['dreadfurnace'],
     }),
     new Cards({
-        id: 'dreadfurnace', name: "Dreadfurnace", type: 'magic', mana: 3, weight: .1, use: 2, weapon: true, addable: false, tier: 'legendary',
+        id: 'dreadfurnace', name: "Dreadfurnace", type: 'magic', mana: 3, weight: .05, use: 2, weapon: true, addable: false, tier: 'legendary',
         magic: [{type: 'aligned', amount: 15}],
         effects: [
             {effect: 'mage', amount: 2, turns: -1},
@@ -3083,24 +3085,26 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'arsenal', name: 'Arsenal', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon',
-        dmg: [9],
+        dmg: [14],
         sound: 'attack2',
         actions: [
             {action: 'addCard', select: 1, value: 3, type: 'attack', to: 'handCards'},
         ],
         slots: 1,
         fireShardUpgrades: {
-            dmg: [18],
+            actions: [
+                {action: 'addCard', select: 2, value: 3, type: 'attack', to: 'handCards', modifiers: {mana: 0, vanish: true}},
+            ],
         },
         iceShardUpgrades: {
             actions: [
-                {action: 'addCard', select: 2, value: 3, type: 'attack', to: 'handCards'},
+                {action: 'addCard', select: 1, value: 3, type: 'attack', to: 'handCards', modifiers: {mana: 0}},
             ],
         },
     }),
     new Cards({
         id: 'smash_and_grab', name: 'Smash & Grab', type: 'attack', vanish: true, target: 'monster', mana: 1, tier: 'uncommon', weight: 4, 
-        dmg: [7],
+        dmg: [14],
         sound: 'attack7',
         actions: [
             {action: 'addCard', value: 2, type: 'attack', to: 'drawCards'},
@@ -3108,7 +3112,7 @@ const ALL_CARDS = [
         ],
         slots: 1,
         fireShardUpgrades: {
-            dmg: [14],
+            dmg: [24],
         },
         iceShardUpgrades: {
             actions: [
@@ -3122,13 +3126,13 @@ const ALL_CARDS = [
         dmg: [20],
         sound: 'attack8',
         abilities: [
-            {ability: 'panic', turns: 1, enabled: true}
+            {ability: 'panic', turns: 2, enabled: true}
         ],
         slots: 1,
         shardUpgrades: {
             dmg: [30],
             abilities: [
-                {ability: 'panic', turns: 2, enabled: true}
+                {ability: 'panic', turns: 3, enabled: true}
             ],
         },
         bothShardUpgrades: {
@@ -3256,7 +3260,7 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'weaponry', name: 'Weaponry', type: 'attack', target: 'monster', mana: 1, tier: 'rare', weight: 3, courage: 3, 
+        id: 'weaponry', name: 'Weaponry', type: 'attack', target: 'monster', mana: 2, tier: 'rare', weight: 3, courage: 3, 
         dmg: [15],
         sound: 'attack2',
         draw: {
@@ -3264,31 +3268,29 @@ const ALL_CARDS = [
             blk: [4]
         },
         actions: [
-            {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'rare', to: 'handCards'},
+            {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'rare', to: 'handCards', modifiers: {mana: 0, vanish: true}},
         ],
         slots: 2,
         fireShardUpgrades: {
-            mana_2: 0,
             actions: [
-                {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'rare', to: 'handCards', with: ['flame']},
+                {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'rare', to: 'handCards', with: ['flame'], modifiers: {mana: 0, vanish: true}},
             ],
             actions_2: [
-                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'rare', to: 'handCards', with: ['flame']},
+                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'rare', to: 'handCards', with: ['flame'], modifiers: {mana: 0, vanish: true}},
             ],
         },
         iceShardUpgrades: {
-            mana_2: 0,
             actions: [
-                {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'rare', to: 'handCards', with: ['frost']},
+                {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'rare', to: 'handCards', with: ['frost'], modifiers: {mana: 0, vanish: true}},
             ],
             actions_2: [
-                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'rare', to: 'handCards', with: ['frost']},
+                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'rare', to: 'handCards', with: ['frost'], modifiers: {mana: 0, vanish: true}},
             ],
         },
         bothShardUpgrades: {
             dmg: [25],
             actions: [
-                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'rare', to: 'handCards'},
+                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'rare', to: 'handCards', modifiers: {mana: 0, vanish: true}},
             ],
         },
     }),
@@ -3296,23 +3298,22 @@ const ALL_CARDS = [
         id: 'amass', name: 'Amass', type: 'attack', target: 'monster', vanish: true, mana: 1, tier: 'rare', weight: 3, courage: 3, 
         dmg: [20],
         actions: [
+            {action: 'addCard', value: 1, type: 'attack', tier: 'uncommon', to: 'drawCards'},
             {action: 'addCard', value: 1, type: 'attack', tier: 'rare', to: 'drawCards'},
         ],
         slots: 2,
         shardUpgrades: {
-            dmg: [25],
             actions: [
+                {action: 'addCard', value: 1, type: 'attack', tier: 'common', to: 'drawCards', modifiers: {mana: 0}},
                 {action: 'addCard', value: 1, type: 'attack', tier: 'uncommon', to: 'drawCards'},
                 {action: 'addCard', value: 1, type: 'attack', tier: 'rare', to: 'drawCards'},
             ],
         },
         bothShardUpgrades: {
-            dmg: [30],
-            mana_2: 0,
             actions: [
-                {action: 'addCard', value: 1, type: 'attack', tier: 'common', to: 'drawCards'},
-                {action: 'addCard', value: 1, type: 'attack', tier: 'uncommon', to: 'drawCards'},
-                {action: 'addCard', value: 1, type: 'attack', tier: 'rare', to: 'drawCards'},
+                {action: 'addCard', value: 1, type: 'attack', tier: 'common', to: 'drawCards', modifiers: {mana: 0}},
+                {action: 'addCard', value: 1, type: 'attack', tier: 'uncommon', to: 'drawCards', modifiers: {mana: 0}},
+                {action: 'addCard', value: 1, type: 'attack', tier: 'rare', to: 'drawCards', modifiers: {mana: 0}},
             ],
         },
     }),
@@ -3533,7 +3534,7 @@ const ALL_CARDS = [
         ],
         slots: 1,
         shardUpgrades: {
-            dmg: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            use: 2
         },
     }),
     new Cards({
@@ -4418,12 +4419,8 @@ const ALL_CARDS = [
             ],
         },
     }),
-
-
-
-    /* Rare: */
     new Cards({
-        id: 'frost_armor', name: 'Frost Armor', type: 'tool', mana: 0, use: 2, linger: 1, retain: true, pack: 'combine', tier: 'rare', weight: 4, courage: 4, 
+        id: 'frost_armor', name: 'Frost Armor', type: 'tool', mana: 0, use: 2, linger: 1, retain: true, pack: 'combine', tier: 'uncommon', weight: 4, courage: 4, 
         sound: 'tool16',
         armor: [5],
         slots: 2,
@@ -4443,7 +4440,7 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'flame_armor', name: 'Flame Armor', type: 'tool', mana: 0, use: 2, linger: 1, retain: true, pack: 'combine', tier: 'rare', weight: 4, courage: 4, 
+        id: 'flame_armor', name: 'Flame Armor', type: 'tool', mana: 0, use: 2, linger: 1, retain: true, pack: 'combine', tier: 'uncommon', weight: 4, courage: 4, 
         sound: 'tool17',
         armor: [5],
         slots: 2,
@@ -4462,6 +4459,10 @@ const ALL_CARDS = [
             armor: [10]
         }
     }),
+
+
+
+    /* Rare: */
     new Cards({
         id: 'bulwark', name: 'Bulwark', type: 'tool', mana: 2, tier: 'rare', weight: 6, courage: 3,
         blk: [24],
@@ -4814,6 +4815,33 @@ const ALL_CARDS = [
         },
         fireShardUpgrades: {
             linger_2: 2
+        }
+    }),
+    new Cards({
+        id: 'weaponsmith', name: 'Weaponsmith', type: 'tool', mana: 2, tier: 'rare', weight: 2, courage: 6, 
+        actions: [
+            {action: 'addCard', value: 2, type: 'weapon', tier: 'common', to: 'handCards', modifiers: {mana: 0, vanish: true}},
+        ],
+        slots: 2,
+        shardUpgrades: {
+            actions: [
+                {action: 'addCard', value: 3, type: 'weapon', tier: 'common', to: 'handCards', modifiers: {mana: 0, vanish: true}},
+            ],
+        },
+        bothShardUpgrades: {
+            actions: [
+                {action: 'addCard', value: 4, type: 'weapon', tier: 'common', to: 'handCards', modifiers: {mana: 0, vanish: true}},
+            ],
+        },
+        fireShardUpgrades: {
+            actions_2: [
+                {action: 'addCard', value: 4, type: 'weapon', tier: 'common', to: 'handCards', with: ['flame'], modifiers: {mana: 0, vanish: true}},
+            ],
+        },
+        iceShardUpgrades: {
+            actions_2: [
+                {action: 'addCard', value: 4, type: 'weapon', tier: 'common', to: 'handCards', with: ['frost'], modifiers: {mana: 0, vanish: true}},
+            ],
         }
     }),
 
@@ -7147,6 +7175,8 @@ export function Deck() {
                     let from = actions[e].from;
                     let cardWith = actions[e].with;
                     let optional = actions[e].optional;
+                    let modifiers = actions[e].modifiers != undefined ? actions[e].modifiers : {};
+                    let modified = '';
                     let plural = value == 1 ? '' : 's';
                     if(id == 'stat') {
                         name = whatName.toUpperCase();
@@ -7186,18 +7216,28 @@ export function Deck() {
                     } else {
                         cardWith = '';
                     }
+                    // process modifiers
+                    if(!$.isEmptyObject(modifiers)) {
+                        modified += ' with modifiers: '
+                        for (var att in modifiers) {
+                            if (modifiers.hasOwnProperty(att)) {
+                                modified += att + '&mdash;' + modifiers[att] + ', ';
+                            }
+                        }
+                        modified = modified.slice(0, -2);
+                    }
                     if(select != '' && type != '' && value != '') {
                         to = to != '' ? ' and add ' + to : '';
                         if(type == ' any') {
-                            actionsDesc += 'Choose ' + select + ' of ' + value + tier + ' cards ' + to + cardWith + '. ';
+                            actionsDesc += 'Choose ' + select + ' of ' + value + tier + ' card' + plural + ' ' + to + cardWith + modified + '. ';
                         } else {
-                            actionsDesc += 'Choose ' + select + ' of ' + value + tier + type + ' cards ' + to + cardWith + '. ';
+                            actionsDesc += 'Choose ' + select + ' of ' + value + tier + type + ' card' + plural + ' ' + to + cardWith + modified + '. ';
                         }
                     } else {
                         if(type == ' any') {
                             type = type != '' ? tier + ' card' + plural + ' ' : '';
-                        } else if(type == ' attack' || type == ' tool' || type == ' ability' || type == ' magic') {
-                            type = type != '' ? tier + type + ' cards ' : '';
+                        } else if(type == ' attack' || type == ' tool' || type == ' ability' || type == ' magic' || type == ' weapon') {
+                            type = type != '' ? tier + type + ' card' + plural + ' ' : '';
                         } else if(type == ' clutter') {
                             type = type != '' ? type : '';
                         } else {
@@ -7218,6 +7258,7 @@ export function Deck() {
                             + '<span class="desc-item-to">' + to + '</span>' 
                             + '<span class="desc-item-from">' + from + '</span>' 
                             + '<span class="desc-item-cardWith">' + cardWith + '</span>' 
+                            + '<span class="desc-item-modifiers">' + modified + '</span>'
                         + '</div>';
                     }
                 }
@@ -7837,7 +7878,7 @@ export function CombatDeck() {
         }
     }
 
-    function addCard(add, combatDeck, part, player, shards = [], guid = false, playedCard = true) {
+    function addCard(add, combatDeck, part, player, shards = [], guid = false, playedCard = true, modifiers = {}) {
         let addCard = AllCards().cards.find(({ id }) => id === add);
         //let copiedCard = JSON.parse(JSON.stringify(addCard)); // necessary to create a deep copy
         let copiedCard = $.extend(true, {}, addCard);
@@ -7845,6 +7886,13 @@ export function CombatDeck() {
             copiedCard.guid = guid
         } else {
             copiedCard.guid = util.randString();
+        }
+
+        // process modifiers
+        for (var key in modifiers) {
+            if (modifiers.hasOwnProperty(key)) {
+                copiedCard[key] = modifiers[key];
+            }
         }
        
         // standard description
