@@ -335,6 +335,8 @@ const ALL_CARDS = [
 
     Junk
     Debris
+    Chaff
+    Gunk
     Execrate
     Flay
     Curse
@@ -342,6 +344,7 @@ const ALL_CARDS = [
     Lethargy
     Briars
     Broken
+    Mired
 
 
 
@@ -528,6 +531,7 @@ const ALL_CARDS = [
     Recoil
     Repel
     Thwart
+    Deter
     Chain Mail Armor
     Cleanse
     Remember
@@ -539,6 +543,8 @@ const ALL_CARDS = [
     Death Stare
     Fortify
     Hardened Feathers
+    Attuned Barrier
+    Charged Barrier
 
     Uncommon:
 
@@ -569,6 +575,7 @@ const ALL_CARDS = [
     Target
     Frost Armor
     Flame Armor
+    Garrison
 
 
     Rare:
@@ -636,6 +643,7 @@ const ALL_CARDS = [
     High Voltage
     Strange Tail
     Rebuke
+    Non-Newtonian
 
 
 
@@ -660,6 +668,8 @@ const ALL_CARDS = [
     Dark Knowlege
     Sage
     Reckless Abandon
+    Stance Dance
+
     
 
     Legendary:
@@ -793,8 +803,9 @@ const ALL_CARDS = [
     new Cards({
         id: 'aura_stance', name: 'Aura Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, ephemeral: true,
         sound: 'auraAmount',
-        slots: 1,
+        slots: 2,
         actions: [
+            {action: 'stat', what: 'mana', key: 'current', value: 1},
             {action: 'stat', what: 'stance', value: 'aura'},
         ],
         draw: {
@@ -803,19 +814,24 @@ const ALL_CARDS = [
             ]
         },
         shardUpgrades: {
-            draw: {
-                actions: [
-                    {action: 'draw', value: 2}
-                ]
-            },
+            actions: [
+                {action: 'stat', what: 'mana', key: 'current', value: 2}
+            ],
         },
+        bothShardUpgrades: {
+            vanish: false,
+            ephemeral: false
+        }
     }),
     new Cards({
         id: 'sparkle_stance', name: 'Sparkle Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, ephemeral: true,
         sound: 'sparkleAmount',
-        slots: 1,
+        slots: 2,
         actions: [
             {action: 'stat', what: 'stance', value: 'sparkle'},
+        ],
+        effects: [
+            {effect: 'might', amount: 3, turns: 1},
         ],
         draw: {
             actions: [
@@ -823,17 +839,21 @@ const ALL_CARDS = [
             ]
         },
         shardUpgrades: {
-            draw: {
-                actions: [
-                    {action: 'draw', value: 2}
-                ]
-            },
+            effects: [
+                {effect: 'might', amount: 6, turns: 1},
+            ],
         },
+        bothShardUpgrades: {
+            vanish: false,
+            ephemeral: false
+        }
     }),
     new Cards({
         id: 'shimmer_stance', name: 'Shimmer Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, ephemeral: true,
         sound: 'shimmerAmount',
-        slots: 1,
+        blk: [10],
+        armor: [1],
+        slots: 2,
         actions: [
             {action: 'stat', what: 'stance', value: 'shimmer'},
         ],
@@ -843,12 +863,13 @@ const ALL_CARDS = [
             ]
         },
         shardUpgrades: {
-            draw: {
-                actions: [
-                    {action: 'draw', value: 2}
-                ]
-            },
+            blk: [20],
+            armor: [2],
         },
+        bothShardUpgrades: {
+            vanish: false,
+            ephemeral: false
+        }
     }),
     new Cards({
         id: 'shimmer', name: 'Shimmer', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
@@ -1283,7 +1304,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'sparks', name: 'Sparks', type: 'magic', mana: 0, addable: false, retain: true, vanish: true,
+        id: 'sparks', name: 'Sparks', type: 'magic', mana: 0, addable: false, vanish: true,
         sound: 'magic5',
         magic: [{type: 'aligned', amount: 2}], 
         slots: 1,
@@ -1609,13 +1630,17 @@ const ALL_CARDS = [
     /* Clutter: */
     new Cards({
         id: 'junk', name: 'Junk', type: 'clutter', playable: false, addable: false, ephemeral: true,
-        additionalDesc: 'Unplayable',
+        additionalDesc: 'It needs cleaned up.',
     }),
     new Cards({
         id: 'debris', name: 'Debris', type: 'clutter', mana: 1, vanish: true, addable: false, natural: true,
     }),
     new Cards({
         id: 'chaff', name: 'Chaff', type: 'clutter', addable: false, natural: true, ephemeral: true, playable: false, 
+    }),
+    new Cards({
+        id: 'gunk', name: 'Gunk', type: 'clutter', addable: false, playable: false, 
+        additionalDesc: 'It clogs up your deck.',
     }),
     new Cards({
         id: 'execrate', name: 'Execrate', type: 'clutter', mana: 1, addable: false, vanish: true,
@@ -1674,6 +1699,15 @@ const ALL_CARDS = [
         draw: {
             effects: [
                 {effect: 'solid', amount: -1, turns: 1, hex: true},
+            ],
+            target: 'player'
+        }
+    }),
+    new Cards({
+        id: 'mired', name: 'Mired', type: 'clutter', addable: false, playable: false,
+        draw: {
+            effects: [
+                {effect: 'mana', amount: -1, turns: 1, hex: true},
             ],
             target: 'player'
         }
@@ -2806,7 +2840,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'quick_stab', name: 'Quick Stab', type: 'attack', target: 'monster', mana: 0, weight: 6,
+        id: 'quick_stab', name: 'Quick Stab', type: 'attack', target: 'monster', mana: 0, weight: 6, pack: 'cycle',
         dmg: [6],
         draw: {
             actions: [
@@ -2974,7 +3008,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'spin_kick', name: 'Spin Kick', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', weight: 6, 
-        dmg: [2, 2, 2],
+        dmg: [2, 2, 2, 2],
         sound: 'attack1',
         actions: [
             {action: 'addCard', value: 1, what: 'hind_kick', to: 'handCards'},
@@ -2984,7 +3018,7 @@ const ALL_CARDS = [
         },
         slots: 1,
         shardUpgrades: {
-            dmg: [2, 2, 2, 2, 2, 2],
+            dmg: [2, 2, 2, 2, 2, 2, 2],
             linger: 1
         }
     }),
@@ -3028,7 +3062,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'frenzied_charge', name: 'Frenzied Charge', type: 'attack', target: 'monster', mana: 2, tier: 'uncommon', 
+        id: 'frenzied_charge', name: 'Frenzied Charge', type: 'attack', target: 'monster', mana: 2, tier: 'uncommon', pack: 'cycle',
         dmg: [20],
         sound: 'attack5',
         actions: [
@@ -3103,7 +3137,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'smash_and_grab', name: 'Smash & Grab', type: 'attack', vanish: true, target: 'monster', mana: 1, tier: 'uncommon', weight: 4, 
+        id: 'smash_and_grab', name: 'Smash & Grab', type: 'attack', vanish: true, target: 'monster', mana: 1, tier: 'uncommon', weight: 4, pack: 'cycle',
         dmg: [14],
         sound: 'attack7',
         actions: [
@@ -3122,7 +3156,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'fury', name: 'Fury', type: 'attack', target: 'monster', mana: 2, tier: 'uncommon', retain: true, weight: 4,  
+        id: 'fury', name: 'Fury', type: 'attack', target: 'monster', mana: 2, tier: 'uncommon', weight: 4,  
         dmg: [20],
         sound: 'attack8',
         abilities: [
@@ -3219,6 +3253,29 @@ const ALL_CARDS = [
                 {effect: 'might', amount: -2, turns: -1, hex: true}
             ],
         },
+    }),
+    new Cards({
+        id: 'provisioned_attack', name: 'Provisioned Attack', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', natural: true, vanish: true,
+        dmg: [16],
+        actions: [
+            {action: 'addCard', value: 1, what: 'provisioned_attack', to: 'drawCards'},
+        ],
+        slots: 2,
+        fireShardUpgrades: {
+            dmg: [28],
+            actions_2: [
+                {action: 'addCard', value: 1, what: 'provisioned_attack', to: 'drawCards', with: ['flame', 'flame']},
+            ],
+        },
+        iceShardUpgrades: {
+            mana: 0,
+            actions_2: [
+                {action: 'addCard', value: 1, what: 'provisioned_attack', to: 'drawCards', with: ['frost', 'frost']},
+            ],
+        },
+        bothShardUpgrades: {
+            dmg: [28]
+        }
     }),
 
 
@@ -3631,7 +3688,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'recoil', name: 'Recoil', type: 'tool', mana: 0, weight: 7, 
+        id: 'recoil', name: 'Recoil', type: 'tool', mana: 0, weight: 7, pack: 'cycle',
         blk: [7],
         actions: [
             {action: 'discard', value: 1},
@@ -3665,7 +3722,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'thwart', name: 'Thwart', type: 'tool', target: 'monster', mana: 2, retain: true, weight: 4, 
+        id: 'thwart', name: 'Thwart', type: 'tool', target: 'monster', mana: 2, retain: true, weight: 4, pack: 'combine',
         blk: [15],
         effects: [
             {effect: 'might', amount: -1, turns: 1, hex: true},
@@ -3681,6 +3738,24 @@ const ALL_CARDS = [
         },
         bothShardUpgrades: {
             mana: 1
+        },
+    }),
+    new Cards({
+        id: 'deter', name: 'Deter', type: 'tool', target: 'monster', mana: 2, linger: 1, natural: true, pack: 'rainbow',
+        blk: [10],
+        effects: [
+            {effect: 'punch', amount: -.3, turns: 1, hex: true}
+        ],
+        slots: 2,
+        shardUpgrades: {
+            blk: [15],
+            effects: [
+                {effect: 'punch', amount: -.4, turns: 1, hex: true}
+            ],
+        },
+        bothShardUpgrades: {
+            mana: 1,
+            blk: [20],
         },
     }),
     new Cards({
@@ -3871,6 +3946,42 @@ const ALL_CARDS = [
                 {action: 'stat', what: 'speed', key: 'current', value: 2}
             ],
         }
+    }),
+    new Cards({
+        id: 'attuned_barrier', name: 'Attuned Barrier', type: 'tool', mana: 2, pack: 'rainbow',
+        descOverride: 'Gain block equal to your max rainbow',
+        actions: [
+            {action: 'rainbowShield', value: 1}
+        ],
+        slots: 2,
+        shardUpgrades: {
+            mana: 1,
+            descOverride: '<div class="desc-item"><span class="highlight">Mana:</span> 1</div><div class="desc-item">Gain block equal to your max rainbow &times; <span class="highlight">1.25</span></div>',
+            actions: [
+                {action: 'rainbowShield', value: 1.25}
+            ],
+        },
+        bothShardUpgrades: {
+            descOverride: '<div class="desc-item"><span class="highlight">Linger:</span> 1</div><div class="desc-item"><span class="highlight">Mana:</span> 1</div><div class="desc-item">Gain block equal to your max rainbow &times; <span class="highlight">1.5</span></div>',
+            actions: [
+                {action: 'rainbowShield', value: 1.5}
+            ],
+            linger: 1
+        },
+    }),
+    new Cards({
+        id: 'charged_barrier', name: 'Charged Barrier', type: 'tool', mana: 0, pack: 'rainbow',
+        descOverride: 'Gain block equal to your summoned rainbow amount',
+        actions: [
+            {action: 'chargedShield', value: 1}
+        ],
+        slots: 1,
+        shardUpgrades: {
+            descOverride: '<div class="desc-item">Gain block equal to your summoned rainbow amount &times; <span class="highlight">2</span></div>',
+            actions: [
+                {action: 'chargedShield', value: 2}
+            ],
+        },
     }),
 
 
@@ -4321,7 +4432,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'cutting_ring', name: 'Cutting Ring', type: 'tool', playable: false, tier: 'uncommon', 
+        id: 'cutting_ring', name: 'Cutting Ring', type: 'tool', playable: false, tier: 'uncommon', pack: 'cycle',
         draw: {
             dmg: [5],
         },
@@ -4347,7 +4458,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'distracting_ring', name: 'Distracting Ring', type: 'tool', playable: false, tier: 'uncommon', weight: 4, 
+        id: 'distracting_ring', name: 'Distracting Ring', type: 'tool', playable: false, tier: 'uncommon', weight: 4, pack: 'cycle',
         draw: {
             dmg: [3],
         },
@@ -4422,41 +4533,64 @@ const ALL_CARDS = [
     new Cards({
         id: 'frost_armor', name: 'Frost Armor', type: 'tool', mana: 0, use: 2, linger: 1, retain: true, pack: 'combine', tier: 'uncommon', weight: 4, courage: 4, 
         sound: 'tool16',
-        armor: [5],
+        armor: [10],
         slots: 2,
         shardUpgrades: {
-            armor: [8],
+            armor: [16],
         },
         iceShardUpgrades: {
-            armor: [8],
-            armor_2: [10],
+            armor: [16],
+            armor_2: [26],
             use: 3,
             use_2: 4,
             linger: 2,
             linger_2: 3,
         },
         bothShardUpgrades: {
-            armor: [10]
+            armor: [20]
         }
     }),
     new Cards({
         id: 'flame_armor', name: 'Flame Armor', type: 'tool', mana: 0, use: 2, linger: 1, retain: true, pack: 'combine', tier: 'uncommon', weight: 4, courage: 4, 
         sound: 'tool17',
-        armor: [5],
+        armor: [10],
         slots: 2,
         shardUpgrades: {
-            armor: [8],
+            armor: [16],
         },
         fireShardUpgrades: {
-            armor: [8],
-            armor_2: [10],
+            armor: [16],
+            armor_2: [26],
             use: 3,
             use_2: 4,
             linger: 2,
             linger_2: 3,
         },
         bothShardUpgrades: {
-            armor: [10]
+            armor: [20]
+        }
+    }),
+    new Cards({
+        id: 'garrison', name: 'Garrison', type: 'tool', mana: 1, tier: 'uncommon', natural: true, vanish: true, 
+        blk: [18],
+        actions: [
+            {action: 'addCard', value: 1, what: 'garrison', to: 'drawCards'},
+        ],
+        slots: 2,
+        fireShardUpgrades: {
+            blk: [30],
+            actions_2: [
+                {action: 'addCard', value: 1, what: 'garrison', to: 'drawCards', with: ['flame', 'flame']},
+            ],
+        },
+        iceShardUpgrades: {
+            mana: 0,
+            actions_2: [
+                {action: 'addCard', value: 1, what: 'garrison', to: 'drawCards', with: ['frost', 'frost']},
+            ],
+        },
+        bothShardUpgrades: {
+            blk: [30]
         }
     }),
 
@@ -4521,7 +4655,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'power_surge', name: 'Power Surge', type: 'tool', mana: 0, tier: 'rare', use: 1, weight: 4, courage: 4, 
+        id: 'power_surge', name: 'Power Surge', type: 'tool', mana: 0, tier: 'rare', use: 1, weight: 4, courage: 4, pack: 'cycle',
         sound: 'tool19',
         actions: [
             {action: 'stat', what: 'mana', key: 'current', value: 2},
@@ -4704,7 +4838,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'mysterious_fissure', name: 'Mysterious Fissure', type: 'tool', tier: 'rare', playable: false, retain: true, weight: 7, courage: 3, pack: 'cycle', 
+        id: 'mysterious_fissure', name: 'Mysterious Fissure', type: 'tool', tier: 'rare', playable: false, weight: 7, courage: 3, pack: 'cycle', 
         discard: {
             dmg: [5],
             target: 'player',
@@ -5279,6 +5413,33 @@ const ALL_CARDS = [
             ],
         }
     }),
+    new Cards({
+        id: 'non_newtonian', name: 'Non-Newtonian', type: 'ability', mana: 1, tier: 'uncommon', courage: 4, 
+        effects: [
+            {effect: 'hardened', amount: 4, turns: -1}
+        ],
+        slots: 2,
+        shardUpgrades: {
+            effects: [
+                {effect: 'hardened', amount: 6, turns: -1}
+            ],
+        },
+        bothShardUpgrades: {
+            effects: [
+                {effect: 'hardened', amount: 8, turns: -1}
+            ],
+        }
+    }),
+    new Cards({
+        id: 'supernatural', name: 'Supernatural', type: 'ability', mana: 0, tier: 'uncommon', courage: 4, 
+        abilities: [
+            {ability: 'supernatural', enabled: true, baseTurns: -1},
+        ],
+        slots: 1,
+        shardUpgrades: {
+            natural: true
+        }
+    }),
     
     
 
@@ -5601,6 +5762,21 @@ const ALL_CARDS = [
             ],
         }
     }),
+    new Cards({
+        id: 'stance_dance', name: 'Stance Dance', type: 'ability', mana: 1, tier: 'rare', courage: 5, 
+        effects: [
+            {effect: 'shapeshifter', amount: 15, turns: -1},
+        ],
+        slots: 1,
+        fireShardUpgrades: {
+            effects: [
+                {effect: 'shapeshifter', amount: 25, turns: -1},
+            ],
+        },
+        iceShardUpgrades: {
+            mana: 0
+        }
+    }),
 
     /* legendary */
     new Cards({
@@ -5730,7 +5906,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'delayed_charge', name: 'Delayed Charge', type: 'magic', tier: 'common', playable: false,
+        id: 'delayed_charge', name: 'Delayed Charge', type: 'magic', tier: 'common', playable: false, pack: 'cycle',
         sound: 'magic3',
         discard: {
             magic: [{type: 'aligned', amount: 10}], 
@@ -5741,7 +5917,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'sacrificial_charge', name: 'Sacrificial Charge', type: 'magic', tier: 'common', playable: false,
+        id: 'sacrificial_charge', name: 'Sacrificial Charge', type: 'magic', tier: 'common', playable: false, pack: 'cycle',
         sound: 'magic3',
         destroy: {
             magic: [{type: 'aligned', amount: 20}], 
@@ -5909,7 +6085,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'grow', name: 'Grow', type: 'magic', mana: 0, retain: true, use: 3, linger: 1, tier: 'uncommon', pack: 'rainbow', weight: 9, courage: 3, 
+        id: 'grow', name: 'Grow', type: 'magic', mana: 0, use: 3, linger: 1, tier: 'uncommon', pack: 'rainbow', weight: 9, courage: 3, 
         sound: 'grow',
         magic: [{type: 'aligned', amount: 1}],
         actions: [
@@ -5929,7 +6105,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'focus', name: 'Focus', type: 'magic', mana: 0, retain: true, use: 3, linger: 1, tier: 'uncommon', pack: 'rainbow', weight: 9, courage: 3, 
+        id: 'focus', name: 'Focus', type: 'magic', mana: 0, use: 3, linger: 1, tier: 'uncommon', pack: 'rainbow', weight: 9, courage: 3, 
         sound: 'focus',
         magic: [{type: 'aligned', amount: 1}],
         actions: [
@@ -6066,7 +6242,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'fire_spell', name: 'Fire Spell', type: 'magic', mana: 0, tier: 'uncommon', vanish: true, courage: 3, 
+        id: 'fire_spell', name: 'Fire Spell', type: 'magic', mana: 0, tier: 'uncommon', vanish: true, courage: 3, pack: 'cycle',
         sound: 'magic14',
         magic: [{type: 'aligned', amount: 2}],
         actions: [
@@ -6082,7 +6258,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'ice_spell', name: 'Ice Spell', type: 'magic', mana: 0, tier: 'uncommon', courage: 3,
+        id: 'ice_spell', name: 'Ice Spell', type: 'magic', mana: 0, tier: 'uncommon', vanish: true, courage: 3, pack: 'cycle',
         sound: 'magic15',
         magic: [{type: 'aligned', amount: 2}],
         actions: [
@@ -6098,7 +6274,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'delayed_spell', name: 'Delayed Spell', type: 'magic', tier: 'uncommon', playable: false,
+        id: 'delayed_spell', name: 'Delayed Spell', type: 'magic', tier: 'uncommon', playable: false, pack: 'cycle',
         discard: {
             dmg: [5],
             magic: [{type: 'aligned', amount: 8}], 
@@ -6112,7 +6288,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'sacrificial_spell', name: 'Sacrificial Spell', type: 'magic', tier: 'uncommon', playable: false,
+        id: 'sacrificial_spell', name: 'Sacrificial Spell', type: 'magic', tier: 'uncommon', playable: false, pack: 'cycle',
         destroy: {
             dmg: [10],
             magic: [{type: 'aligned', amount: 18}], 
@@ -6643,6 +6819,7 @@ export function Deck() {
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
         }
+
 
         // this is how to add a shard on init - DEV MODE ONLY
         //attachShard(util.getCardById('strange_tail', this.cards), 'frost');
@@ -7496,10 +7673,12 @@ export function CombatDeck() {
         combatDeck.discardCards = [];
     }
 
-    function getNaturalCard(combatDeck) {
+    function getNaturalCard(combatDeck, player) {
         for(let i = 0; i < combatDeck.drawCards.length; i++) {
             let natural = util.getCardAttribute(combatDeck.drawCards[i], 'natural');
-            if(natural && !combatDeck.drawCards[i].drawn) {
+            let supernatural = player.supernatural.enabled; 
+            let drawn = supernatural ? false : combatDeck.drawCards[i].drawn;
+            if(natural && !drawn) {
                 return combatDeck.drawCards[i];
             }
         }
@@ -7547,7 +7726,7 @@ export function CombatDeck() {
 
             if(player.speed.current > 0 || ignoreSpeed == true) {
                 let index = util.randArrayIndex(combatDeck.drawCards);
-                let naturalCard = getNaturalCard(combatDeck);
+                let naturalCard = getNaturalCard(combatDeck, player);
                 thisCard = naturalCard ? naturalCard : combatDeck.drawCards[index];
                 thisCard.drawn = true;
                 let thisRetain = util.getCardAttribute(thisCard, 'retain');
@@ -7945,10 +8124,17 @@ export function CombatDeck() {
 
     }
 
-    function initCard(card) {
+    function initCard(card, modifiers = {}) {
         //let copiedCard = JSON.parse(JSON.stringify(card)); // necessary to create a deep copy
         let copiedCard = $.extend(true, {}, card);
         copiedCard.guid = util.randString();
+
+        // process modifiers
+        for (var key in modifiers) {
+            if (modifiers.hasOwnProperty(key)) {
+                copiedCard[key] = modifiers[key];
+            }
+        }
 
         // standard description
         let desc = Deck().buildDescription(copiedCard);

@@ -253,12 +253,12 @@ const ALL_EFFECTS = [
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // hex      {effect: 'antimomentum', amount: 2, hex: true}
-    {id: 'antimomentum', name: 'Anti-Momentum', desc: 'Receive x damage and increase it by x for every card played this turn', x: -448, y: -5440, hex: false},
+    {id: 'antimomentum', name: 'Anti-Momentum', desc: 'Receive x damage and increase it by x for every card played this turn', x: -480, y: -5440, hex: true},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // hex      {effect: 'marked', amount: 2, hex: true}
-    {id: 'marked', name: 'Marked', desc: 'Receive x damage for every card played', x: -384, y: -6528, hex: false},
+    {id: 'marked', name: 'Marked', desc: 'Receive x damage for every card played', x: -384, y: -6528, hex: true},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
@@ -310,6 +310,12 @@ const ALL_EFFECTS = [
     // buff     {effect: 'hardened', amount: 2, turns: -1}
     // hex      {effect: 'hardened', amount: 1, hex: true}
     {id: 'hardened', name: 'Hardened', desc: 'Gain x block each time you take damage', x: -448, y: -6560, hex: false},
+
+    // Usage:
+    // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
+    // buff     {effect: 'shapeshifter', amount: 2, turns: -1}
+    // hex      {effect: 'shapeshifter', amount: 1, hex: true}
+    {id: 'shapeshifter', name: 'Shapeshifter', desc: 'Gain x block each time you change stances', x: -32, y: -5984, hex: false},
 
 ];
 /*********************************************
@@ -411,6 +417,11 @@ const ALL_ABILITIES = [
     // buff     {ability: 'resurrect', baseTurns: -1, enabled: true}
     {id: 'resurrect', name: 'Resurrect', desc: 'Each time this creature receives damage, add one random monster to combat next turn', context: 'turn', x: -416, y: -6592, offset: true},
 
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'supernatural', baseTurns: -1, enabled: true}
+    {id: 'supernatural', name: 'Supernatural', desc: 'Natural cards are always drawn first', context: 'turn', x: -96, y: -5760},
+
 ];
 /*********************************************
  * 
@@ -490,6 +501,10 @@ const ALL_ACTIONS = [
     // Usage:
     // {action: 'kill'}
     {id: 'kill', name: 'Kill', desc: 'Creature dies this turn'},
+
+    // Usage:
+    // {action: 'rainbowShield', value: 1}
+    {id: 'rainbowShield', name: 'Rainbow Shield', desc: 'Gain block equal to x times your max rainbow'},
     
 
 ]
@@ -554,9 +569,10 @@ export default function Game() {
     let playsounds = true;
     let playmusic = true;
     let tutorial = false; // TODO: set to false
-    let debug = true;
-    let dev = true;
-    let scenario = 'normal'; // normal, frost, flame, or singularity - set to normal for regular gameplay
+    let debug = false;
+    let dev = false;
+    let scenario = 'singularity'; // normal, frost, flame, or singularity - set to normal for regular gameplay
+    let scenarioWhich = 'singularity_rainbow';
     let libraryBuilt = false;
     let armoryBuilt = false;
     let essences = ALL_ESSENCES;
@@ -742,6 +758,7 @@ export default function Game() {
         debug,
         dev,
         scenario,
+        scenarioWhich,
         libraryBuilt,
         armoryBuilt,
         playsounds,

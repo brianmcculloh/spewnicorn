@@ -34,7 +34,6 @@
  * Ability: mix and match combineable cards which results in a random combined card
  * Mechanic: increase all card use/expire/linger values
  * Effect: retrofit resistance so that it can be hexed and go above 1 so specific monsters can be targeted to take more magic damage
- * Mechanic: stance cards - do additional things if you're in the matching stance - for instance 0 cost card that adds 1 mana, but if you're in aura it adds 2 mana instead
  * Effect: whenever you exhaust a clutter card, do x damage, gain x block, summon x rainbow, gain x armor, heal x amount, or draw x cards
  * Ability: card rewards are now booster pack agnostic (like a prismatic shard)
  * Action: do damage equal to floor + turn
@@ -61,7 +60,8 @@
  * Effect: Antimatter - whenever antimomentum activates, gain x momentum
  * Effect: whenever you gain courage, gain x more (via new treasure)
  * Ability: trade card cost locks in at current rate (via new treasure)
- * Effect: harden (via card non-newtonian) gain x block each time you lose health
+ * 
+ * 
  * 
  * 
  * From Tim: 
@@ -101,7 +101,13 @@
  * 
  * PHASE V: 
  * 
- * TODO: implement new background images from Fantasy_Background_1 and FantasyPack1
+ * TODO: singularity - rainbow damage should proc resurrect
+ * TODO: forbid shoudn't be able to remove unreachable and harden, otherwise you could play forbid and just kill it in same turn
+ * TODO: instead of doubled stats in second map, make movesets the same and add a multiplier to stats based on aggro
+ * TODO: build a combine deck to the flame guardian and super flame guardian and create as scenario
+ * TODO: build a cycle deck to the frost guardian and the super grost guardian and create as scenario
+ * TODO: test out the new flame guardian moveset
+ * TODO: test the singularity fight
  * TODO: implement mechanics first and then add some more cards after that
  * 
  * 
@@ -141,7 +147,6 @@
  * Card: heal player and if at max health, increase max health
  * Card: ability that increases speed but adds briars
  * Card: ability that increases mana but adds curses
- * Card: aoe damage
  * Card: aoe might/punch down
  * Card: Ram: do damage equal to current armor, reduce armor by 10%
  * Card: Cycle pack - draw 2 cards (vanish) - just a straightforward utility card 
@@ -153,6 +158,8 @@
  * Card: ? card that applies x turns of punch hex
  * Card: ? card that applies x amount of negative might hex
  * Card: ? super combined card that does several of the above things at once
+ * Card: ? card that does x aoe damange
+ * Card: ? card that adds free cards to hand or draw pile
  * Card: Ascending Strike - adds the new action that does damage based on floor/turn
  * Card: Simple tool card that just removes
  * Card: 3 cost attack that reduces mana cost per shard, and double frost results in 0 cost (double flame results in 0 cost for flame version) - this is 2 cards
@@ -169,7 +176,6 @@
  * Card: magical slash - summons 1 aligned magic
  * Card: combine pack tool card that adds wisdom
  * Card: combine pack attack card that retains and synergizes with wisdom
- * Card: add multiple stance change cards that synergizes with stance switching mechanic
  * Card: like reprogram - increase might and solid but decrease magic stuff like conjure/summon (does not vanish)
  * Card: blank card - becomes a permanent copy of the next card that's played
  * Card: increase rowdy to 100% chance for one turn - upgraded to 2 turns
@@ -177,6 +183,8 @@
  * Card: reusable tool card that just adds 1 fatality
  * Card: Dark Synergy - adds antimatter
  * Card: Hide - gain block but lose might
+ * Card: rainbow pack - do damage or gain temp might equal to max rainbow
+ * Card: rainbow pack - do aoe damage equal to current summoned rainbow amount
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -188,6 +196,7 @@
  * Treasure: increase momentum every x cards played per turn or combat
  * Treasure: increase mystery every x cards played per turn or combat
  * Treasure: common treasure that adds 1 or 2 wisdom
+ * Treasure: +1 mana per turn but add mired and lethargy to draw pile at the beginning of each combat
  * Candy: add cards to hand
  * 
  * 
@@ -1422,13 +1431,13 @@ function init_singularity() {
 	game.floor = 0;
 	player.aggro.current = 0;
 	player.aggro.level = 0;
-	if(game.difficulty == 'easy') { 
+	if(game.difficulty == 'easy' || game.difficulty == 'medium') { 
 		heal(player, 999);
 	}
 	game.mapType = 'singularity';
 	$('.gate-screen').removeClass('shown');
 	if(game.scenario!='normal') {
-		buildScenario();
+		buildScenario(game.scenarioWhich);
 	}
 	setStatus();
 	startCombat();
@@ -1441,7 +1450,7 @@ function init_map_2() {
 	player.aggro.current = 0;
 	player.aggro.level = 0;
 
-	if(game.difficulty == 'easy') { 
+	if(game.difficulty == 'easy' || game.difficulty == 'medium') { 
 		heal(player, 999);
 	}
 
@@ -1485,32 +1494,32 @@ function setDifficulty() {
 			player.health.max = 100;
 		}
 	} else if(game.difficulty=='medium') {
-		game.questChance = 1.6;
-		game.fountainChance = 1.4;
+		game.questChance = 1.8;
+		game.fountainChance = 1.6;
 		if(!game.debug) {
 			player.health.base = 75;
 			player.health.current = 75;
 			player.health.max = 75;
 		}
 	} else if(game.difficulty=='hard') {
-		game.questChance = 1.6;
-		game.fountainChance = 1.4;
+		game.questChance = 1.8;
+		game.fountainChance = 1.6;
 		if(!game.debug) {
 			player.health.base = 65;
 			player.health.current = 65;
 			player.health.max = 65;
 		}
 	} else if(game.difficulty=='expert') {
-		game.questChance = 1.2;
-		game.fountainChance = 1;
+		game.questChance = 1.6;
+		game.fountainChance = 1.4;
 		if(!game.debug) {
 			player.health.base = 65;
 			player.health.current = 55;
 			player.health.max = 65;
 		}
 	} else if(game.difficulty=='nightmare') {
-		game.questChance = 1;
-		game.fountainChance = .8;
+		game.questChance = 1.4;
+		game.fountainChance = 1.2;
 		if(!game.debug) {
 			player.health.base = 60;
 			player.health.current = 50;
@@ -1519,97 +1528,223 @@ function setDifficulty() {
 	}
 }
 
-function buildScenario() {
+function buildScenario(which = 'frozen_forest_combine') {
 
 	// build initial deck
 	//deck.buildDeck();
 
-	// treasures
-	addTreasure('gift_of_power');
-	//addTreasure('pewter_mug');
-	addTreasure('pridwen');
-	addTreasure('amulet');
-	addTreasure('frozen_knife');
-	//addTreasure('sparkling_fragment');
-	addTreasure('signet_ring');
-	addTreasure('talisman');
-	addTreasure('excalibur');
-	addTreasure('sifter');
-	addTreasure('hummingbird_feather');
-	addTreasure('lemon');
-	addTreasure('winged_shroud');
+	switch(which) {
+		case 'frozen_forest_combine':
 
-	// candy
-	addCandy('orange_gobstopper');
-	addCandy('cherry_cordial');
+			// treasures
+			addTreasure('gift_of_power');
+			//addTreasure('pewter_mug');
+			addTreasure('pridwen');
+			addTreasure('amulet');
+			addTreasure('frozen_knife');
+			//addTreasure('sparkling_fragment');
+			addTreasure('signet_ring');
+			addTreasure('talisman');
+			addTreasure('excalibur');
+			addTreasure('sifter');
+			addTreasure('hummingbird_feather');
+			addTreasure('lemon');
+			addTreasure('winged_shroud');
 
-	// cards
-	/*addCardToDeck('rainbow_orb');
-	addCardToDeck('leather_armor');
-	addCardToDeck('stun');
-	addCardToDeck('razzle');
-	addCardToDeck('self_enhance');
-	addCardToDeck('unstable_attack');
-	addCardToDeck('stomp');
-	addCardToDeck('chaos_charge');*/
-	addCardToDeck('tail_whip');
-	/*addCardToDeck('repel');
-	addCardToDeck('hammer_thrust');
-	addCardToDeck('remember');
-	addCardToDeck('cutting_ring');
-	addCardToDeck('thwart');
-	addCardToDeck('strange_mushroom');
-	addCardToDeck('safeguard');
-	//addCardToDeck('sparkle_stance');
-	//addCardToDeck('shimmer_stance');
-	addCardToDeck('delayed_charge');
-	addCardToDeck('fleeting_shield');
-	addCardToDeck('prescience');
-	addCardToDeck('glowing_orb');
-	addCardToDeck('mysterious_fissure');
-	//addCardToDeck('aura_stance');
-	addCardToDeck('fire_spell');
-	addCardToDeck('dazzle');
-	addCardToDeck('mezmerize');
-	addCardToDeck('adrenaline_rush');*/
+			// candy
+			addCandy('orange_gobstopper');
+			addCandy('cherry_cordial');
 
-	// shards
-	/*deck.attachShard(util.getCardById('stun', deck.cards), 'flame');
-	deck.attachShard(util.getCardById('razzle', deck.cards), 'flame');
-	deck.attachShard(util.getCardById('stomp', deck.cards), 'frost');
-	deck.attachShard(util.getCardById('repel', deck.cards), 'frost');
-	deck.attachShard(util.getCardById('repel', deck.cards), 'frost');
-	deck.attachShard(util.getCardById('hammer_thrust', deck.cards), 'frost');
-	deck.attachShard(util.getCardById('remember', deck.cards), 'frost');
-	deck.attachShard(util.getCardById('cutting_ring', deck.cards), 'frost');
-	deck.attachShard(util.getCardById('thwart', deck.cards), 'flame');
-	deck.attachShard(util.getCardById('thwart', deck.cards), 'frost');
-	deck.attachShard(util.getCardById('safeguard', deck.cards), 'flame');
-	deck.attachShard(util.getCardById('delayed_charge', deck.cards), 'flame');
-	deck.attachShard(util.getCardById('fleeting_shield', deck.cards), 'frost');
-	deck.attachShard(util.getCardById('prescience', deck.cards), 'flame');
-	deck.attachShard(util.getCardById('glowing_orb', deck.cards), 'frost');
-	deck.attachShard(util.getCardById('mysterious_fissure', deck.cards), 'flame');
-	deck.attachShard(util.getCardById('fire_spell', deck.cards), 'flame');
-	deck.attachShard(util.getCardById('dazzle', deck.cards), 'flame');
-	deck.attachShard(util.getCardById('mezmerize', deck.cards), 'flame');
-	deck.attachShard(util.getCardById('mezmerize', deck.cards), 'flame');*/
+			// cards
+			addCardToDeck('rainbow_orb');
+			addCardToDeck('leather_armor');
+			addCardToDeck('stun');
+			addCardToDeck('razzle');
+			addCardToDeck('self_enhance');
+			addCardToDeck('unstable_attack');
+			addCardToDeck('stomp');
+			addCardToDeck('chaos_charge');
+			addCardToDeck('tail_whip');
+			addCardToDeck('repel');
+			addCardToDeck('hammer_thrust');
+			addCardToDeck('remember');
+			addCardToDeck('cutting_ring');
+			addCardToDeck('thwart');
+			addCardToDeck('strange_mushroom');
+			addCardToDeck('safeguard');
+			//addCardToDeck('sparkle_stance');
+			//addCardToDeck('shimmer_stance');
+			addCardToDeck('delayed_charge');
+			addCardToDeck('fleeting_shield');
+			addCardToDeck('prescience');
+			addCardToDeck('glowing_orb');
+			addCardToDeck('mysterious_fissure');
+			//addCardToDeck('aura_stance');
+			addCardToDeck('fire_spell');
+			addCardToDeck('dazzle');
+			addCardToDeck('mezmerize');
+			addCardToDeck('adrenaline_rush');
 
-	// essence
-	updateEssenceLevels('shimmer', 14);
-	updateEssenceLevels('sparkle', 15);
-	updateEssenceLevels('aura', 10);
+			// shards
+			deck.attachShard(util.getCardById('stun', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('razzle', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('stomp', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('repel', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('repel', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('hammer_thrust', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('remember', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('cutting_ring', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('thwart', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('thwart', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('safeguard', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('delayed_charge', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('fleeting_shield', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('prescience', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('glowing_orb', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('mysterious_fissure', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('fire_spell', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('dazzle', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('mezmerize', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('mezmerize', deck.cards), 'flame');
 
-	// misc
-	gainCourage(9);
-	game.candyChance = 10;
-	game.shardChance = 45;
-	game.critChance = 16;
-	game.highestDmgRoll = 43;
-	game.boosterPack = 'combine';
-	game.uncommonChance = 30;
-    game.rareChance = 5;
-    game.legendaryChance = 0;
+			// essence
+			updateEssenceLevels('shimmer', 14);
+			updateEssenceLevels('sparkle', 15);
+			updateEssenceLevels('aura', 10);
+
+			// misc
+			gainCourage(9);
+			game.candyChance = 10;
+			game.shardChance = 45;
+			game.critChance = 16;
+			game.highestDmgRoll = 43;
+			game.boosterPack = 'combine';
+			game.uncommonChance = 30;
+			game.rareChance = 5;
+			game.legendaryChance = 0;
+			player.stance = 'sparkle';
+			
+		break;
+		case 'singularity_rainbow':
+
+			// treasures
+			addTreasure('gift_of_longevity');
+			addTreasure('frozen_knife');
+			addTreasure('awl_of_the_master');
+			addTreasure('torch');
+			addTreasure('magic_dust');
+			addTreasure('labrys_of_zeus');
+			addTreasure('hawthorn_staff');
+			addTreasure('alatyr');
+			addTreasure('shimmering_fragment');
+			addTreasure('swift_feather');
+			addTreasure('talisman');
+			addTreasure('winged_mantle');
+			addTreasure('gleaming_emerald');
+			addTreasure('pridwen');
+			addTreasure('vibrating_shiv');
+			addTreasure('hummingbird_feather');
+			addTreasure('falcon_feather');
+			addTreasure('luminous_crown');
+
+			// candy
+			addCandy('white_truffle');
+			addCandy('vanilla_pudding');
+
+			// cards
+			addCardToDeck('rainbow_orb');
+			addCardToDeck('shield');
+			addCardToDeck('leather_armor');
+			addCardToDeck('stun');
+			addCardToDeck('sparks');
+			addCardToDeck('remember');
+			addCardToDeck('rainbow_charge');
+			addCardToDeck('robustness');
+			addCardToDeck('ambush');
+			addCardToDeck('deter');
+			addCardToDeck('rainbow_charm');
+			addCardToDeck('aura_stance');
+			addCardToDeck('safeguard');
+			addCardToDeck('patience');
+			addCardToDeck('hardened_feathers');
+			addCardToDeck('amass');
+			addCardToDeck('sudden_barrage');
+			addCardToDeck('strange_tail');
+			addCardToDeck('devastator');
+			addCardToDeck('plate_armor');
+			addCardToDeck('shimmer_stance');
+			addCardToDeck('acuity');
+			addCardToDeck('luminous_rainbow_spell');
+			addCardToDeck('midas_touch');
+			addCardToDeck('stamina');
+			addCardToDeck('forbid');
+			addCardToDeck('adrenaline_rush');
+			addCardToDeck('deter');
+			addCardToDeck('grow');
+			addCardToDeck('secret_arts');
+			addCardToDeck('overpowered');
+			addCardToDeck('mystical_energy');
+			addCardToDeck('attuned_barrier');
+			addCardToDeck('weaponsmith');
+			addCardToDeck('blazing_torch');
+			addCardToDeck('prisma');
+			addCardToDeck('bulwark');
+			addCardToDeck('crippling_stare');
+
+			// shards
+			deck.attachShard(util.getCardById('shield', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('stun', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('sparks', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('remember', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('remember', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('rainbow_charge', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('robustness', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('deter', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('deter', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('safeguard', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('patience', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('amass', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('amass', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('sudden_barrage', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('acuity', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('acuity', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('midas_touch', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('stamina', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('forbid', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('forbid', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('adrenaline_rush', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('mystical_energy', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('mystical_energy', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('attuned_barrier', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('attuned_barrier', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('bulwark', deck.cards), 'frost');
+
+			// essence
+			updateEssenceLevels('shimmer', 14);
+			updateEssenceLevels('sparkle', 8);
+			updateEssenceLevels('aura', 22);
+
+			// misc
+			//gainCourage(0);
+			game.candyChance = 40;
+			game.shardChance = 10;
+			game.critChance = 21;
+			game.highestDmgRoll = 142;
+			game.boosterPack = 'rainbow';
+			game.uncommonChance = 50;
+			game.rareChance = 12;
+			game.legendaryChance = 0;
+			player.stance = 'aura';
+			player.health.max = 130;
+			player.health.current = 120;
+			player.health.base = 75;
+			player.rainbow.max = 35;
+			player.rainbow.base = 8;
+			player.rainbow.current = 8;
+			player.armor = 120;
+		
+		break;
+	} 
 
 }
 
@@ -2025,6 +2160,9 @@ async function startCombat(tile = false) {
 	$('.start-arrow').hide();
 	$('.combat-text, .combat-text h2.begin-combat').addClass('shown');
 
+	// sometimes a rare bug causes .courage-amount not to clear
+	$('.courage-amount').empty();
+
 	if(tile) {
 		if(tile.hasClass('arena')) {
 			if(game.playsounds) sounds.play('aggroLevel');
@@ -2308,6 +2446,10 @@ function changeStance(stance) {
 	} else if(player.stance == 'sparkle') { // this mean's the player's previous stance was sparkle because it hasn't changed yet
 		player.might.base -= 3;
 		player.might.current -= 3;
+	}
+	// check for shapeshifter
+	if(player.shapeshifter.current > 0) {
+		applyBlock(player.shapeshifter.current, player);
 	}
 }
 
@@ -2677,7 +2819,7 @@ async function monsterAction(action = 'perform') {
 
 			// check for resurrect
 			if(thisMonster.resurrect.enabled) {
-				let actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect}];
+				let actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, form: 'ghost'}];
 				let update = processActions(actions, thisMonster);
 			}
 
@@ -2858,17 +3000,18 @@ async function monsterAction(action = 'perform') {
 						let symbol = '+';
 						if(id == 'summonMonster') {
 							if(what.constructor === Array) {
-								let theseMonsters = ' Random ';
+								let theseMonsters = ' Random (';
 								for(let j = 0; j < what.length; j++) {
 									let thisMonster = monsters.monsters.filter(k => k.id == what[j]);
 									theseMonsters += thisMonster[0].name + ', ';
 								}
-								what = theseMonsters.slice(0, -2);
+								what = theseMonsters.slice(0, -2) + ')';
 							} else {
 								what = monsters.monsters.filter(k => k.id == what);
 								what = ' ' + what[0].name;
 							}
 							symbol = '&times;';
+							type = type != undefined ? ' (' + type + ')' : '';
 						} else if(id == 'kill') {
 							name = 'Die';
 							what = '';
@@ -4863,7 +5006,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							if(addCard == '') addThisCard = thisCard.id;
 
 							if(actions[e].select != undefined) {
-								thisCard = combatDeck.initCard(thisCard);
+								thisCard = combatDeck.initCard(thisCard, modifiers);
 								combatDeck.chooseCards.push(thisCard);
 								game.toPile = actions[e].to;
 								if(shards.length > 0) {
@@ -5176,11 +5319,12 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						}
 					break;
 					case 'summonMonster':
+						let form = actions[e].form !== undefined ? actions[e].form : false;
 						if(actions[e].what.constructor === Array) {
 							for(let i = 0; i < actions[e].value; i++) {
 								let id = game.round + '-' + i;
 								let what = util.randFromArray(actions[e].what);
-								monsters.summonMonster(what, id);
+								monsters.summonMonster(what, id, form);
 								await util.wait(game.animationGap);
 							}
 						} else if(actions[e].what == 'random') {
@@ -5188,13 +5332,13 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								let id = game.round + '-' + i;
 								let possibleMonsters = monsters.monsters.filter(i => i.category == 'normal' && i.breed != 'ghost' && i.context == game.overworld);
 								let what = util.randFromArray(possibleMonsters);
-								monsters.summonMonster(what.id, id);
+								monsters.summonMonster(what.id, id, form);
 								await util.wait(game.animationGap);
 							}
 						} else {
 							for(let i = 0; i < actions[e].value; i++) {
 								let id = game.round + '-' + i;
-								monsters.summonMonster(actions[e].what, id);
+								monsters.summonMonster(actions[e].what, id, form);
 								await util.wait(game.animationGap);
 							}
 						}
@@ -5205,6 +5349,14 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						} else if(actions[e].to=='self') {
 							kill(monster);
 						}
+					break;
+					case 'rainbowShield':
+						var blk = Math.round(actions[e].value * player.rainbow.max);
+						applyBlock(blk, player);
+					break;
+					case 'chargedShield':
+						var blk = Math.round(actions[e].value * player.rainbow.current);
+						applyBlock(blk, player);
 					break;
 
 				}
@@ -6179,7 +6331,6 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 			}
 
 			// stop combat if all monsters are dead
-			// this is possible when player has retaliate/spikes
 			for(let i = 0; i < game.currentMonsters.length; i++) {
 				monsters.updateMonsterStats(game.currentMonsters[i]);
 				if(monsters.dying(game.currentMonsters[i])) {
@@ -6353,6 +6504,21 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 
 				setStatus(false);
 				game.message(thisTo.name + ' (' + thisTo.guid + ') loses ' + healthLost + ' health');
+			}
+
+			// check again because monster could have died from spikes/retaliate this hit
+			for(let i = 0; i < game.currentMonsters.length; i++) {
+				monsters.updateMonsterStats(game.currentMonsters[i]);
+				if(monsters.dying(game.currentMonsters[i])) {
+					if(game.playsounds) sounds.play('death');
+				}
+				if(monsters.dead(game.currentMonsters[i])) {
+					util.removeMonster(game.currentMonsters[i]);
+				}
+				if(monsters.allDead()) {
+					endCombat();
+					return;
+				}
 			}
 
 		}

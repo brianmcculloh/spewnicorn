@@ -1249,7 +1249,7 @@ const ALL_TREASURES = [
         id:'guild_payment', 
         name: 'Guild Payment', 
         courage: 10,
-        permanent: false,
+        permanent: true,
         abilities: [
             {ability: 'guild_member', baseTurns: -1, enabled: true, permanent: true}
         ],
@@ -1901,7 +1901,7 @@ const ALL_TREASURES = [
     }),
     new Treasure({
         id:'winged_mantle', 
-        name: "Wingled Mantle", 
+        name: "Winged Mantle", 
         courage: 20,
         tier: 4,
         weight: 6,

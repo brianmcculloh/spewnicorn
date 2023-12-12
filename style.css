@@ -2251,7 +2251,7 @@ body.arena .monster-panel {
 }
 .monster .monster-stats {
 	position:absolute;
-	top:0;
+	top:12px;
 	z-index:8;
 	text-shadow: 
 		2px 2px 0px rgba(0, 0, 0, 1), 
@@ -3840,6 +3840,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-dreadfurnace .card-image {
 	background-position:calc(-585px * .92) calc(-8378px * .92);
 }
+#card-provisioned_attack .card-image {
+	background-position:calc(-1170px * .92) calc(-8535px * .92);
+}
 
 /* TOOL */
 #card-shield .card-image {
@@ -4160,6 +4163,18 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-weaponsmith .card-image {
 	background-position:calc(-195px * .92) calc(-8535px * .92);
 }
+#card-deter .card-image {
+	background-position:calc(-390px * .92) calc(-8535px * .92);
+}
+#card-attuned_barrier .card-image {
+	background-position:calc(-585px * .92) calc(-8535px * .92);
+}
+#card-charged_barrier .card-image {
+	background-position:calc(-780px * .92) calc(-8535px * .92);
+}
+#card-garrison .card-image {
+	background-position:calc(-975px * .92) calc(-8535px * .92);
+}
 
 
 /* ABILITY */
@@ -4297,6 +4312,15 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 #card-rebuke .card-image {
 	background-position:calc(-975px * .92) calc(-6490px * .92);
+}
+#card-non_newtonian .card-image {
+	background-position:calc(-1170px * .92) calc(-6490px * .92);
+}
+#card-supernatural .card-image {
+	background-position:calc(-1365px * .92) calc(-6490px * .92);
+}
+#card-stance_dance .card-image {
+	background-position:0 calc(-8848px * .92);
 }
 
 
@@ -4523,6 +4547,12 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-broken .card-image {
 	background-position:calc(-195px * .92) calc(-5544px * .92);
 }
+#card-gunk .card-image {
+	background-position:calc(-390px * .92) calc(-5544px * .92);
+}
+#card-mired .card-image {
+	background-position:calc(-585px * .92) calc(-5544px * .92);
+}
 
 
 .card .play-card {
@@ -4582,7 +4612,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	font-size:28px;
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(9000px * .92);
+	background-size:calc(1620px * .92) calc(9005px * .92);
 	background-position:calc(-800px * .92) calc(-861px * .92);
 	width:calc(74px * .92);
 	height:calc(102px * .92);
@@ -4643,7 +4673,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card.unplayable .card-age {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .6) calc(9000px * .6);
+	background-size:calc(1620px * .6) calc(9005px * .6);
 	background-position:calc(-1096px * .6) calc(-861px * .6);
 	width:calc(50px * .6);
 	height:calc(50px * .6);
@@ -4680,7 +4710,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .pack {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .9) calc(9000px * .9);
+	background-size:calc(1620px * .9) calc(9005px * .9);
 	width:calc(66px * .9);
 	height:calc(69px * .9);
 	display:flex;
@@ -4699,7 +4729,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .linger, .card .use, .card .expire {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .8) calc(9000px * .8);
+	background-size:calc(1620px * .8) calc(9005px * .8);
 	width:calc(50px * .8);
 	height:calc(50px * .8);
 	display:flex;
@@ -4718,7 +4748,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .vanish, .card .retain:not(.amount), .card .ephemeral, .card .breakable, .card .combinable, .card .card-stance, .card .tradeable, .card .weapon, .card .aoe {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .8) calc(9000px * .8);
+	background-size:calc(1620px * .8) calc(9005px * .8);
 	width:calc(50px * .8);
 	height:calc(50px * .8);
 	display:flex;
@@ -5100,7 +5130,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .pack-button {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(9000px * .92);
+	background-size:calc(1620px * .92) calc(9005spx * .92);
 	width:calc(270px * .92);
 	height:calc(414px * .92);
 	scale:1;
