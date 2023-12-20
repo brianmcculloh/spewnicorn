@@ -195,6 +195,26 @@ export default class Util {
             combinableDom += '<div class="combinable tooltip" data-powertip="' + combinableTip + '"><span></span></div>';
         }
 
+        let unaddable = false;
+        unaddable = !util.getCardAttribute(card, 'addable');
+        let unaddableDom = '';
+        let unaddableTip = '';
+        if(unaddable) {
+            unaddableTip = "<span class='highlight'>Unaddable:</span> This card is not available in card reward screens or the market";
+            unaddableDom += '<div class="unaddable tooltip" data-powertip="' + unaddableTip + '"><span></span></div>';
+        }
+        // maybe this is too much info and unnecessary for player to know?
+        unaddableDom = '';
+
+        let natural = false;
+        natural = util.getCardAttribute(card, 'natural');
+        let naturalDom = '';
+        let naturalTip = '';
+        if(natural) {
+            naturalTip = "<span class='highlight'>Natural:</span> This card starts on the top of your draw pile each combat";
+            naturalDom += '<div class="natural tooltip" data-powertip="' + naturalTip + '"><span></span></div>';
+        }
+
         let aura = false;
         aura = util.getCardAttribute(card, 'aura');
         let auraDom = '';
@@ -261,11 +281,10 @@ export default class Util {
         }
         
         let unplayable = card.playable ? '' : ' unplayable';
-        let addable = card.addable ? ' addable' : ' unaddable';
         let tooltipClass = slots != '' ? ' tooltip' : '';
         let tooltip = slots != '' ? card.slotDesc : '';
         pack = card.pack ? ' ' + card.pack + '-pack' : '';
-        $("<div class='card-wrapper drawing'><div class='card " + card.tier + unplayable + combinable + pack + " " + card.type + " " + cssClass + "' id='card-" + card.id + "' data-id='" + card.id + "' data-guid='" + card.guid + "' data-powertip='" + tooltip + "'><div class='card-image'></div><div class='card-frame'></div><div class='card-type'>" + card.type + "</div><div class='card-rarity'></div>" + manaDom + ageDom + "<div class='bubbles-left'>" + useDom + expireDom + lingerDom + "</div><div class='bubbles-right'>" + vanishDom + retainDom + ephemeralDom + breakableDom + combinableDom + auraDom + sparkleDom + shimmerDom + tradeDom + weaponDom + aoeDom + "</div><div class='bubbles-bottom-left'>" + packDom + "</div><div class='name'>" + card.name + "</div><div class='desc'><div class='desc-inner'>" + card.desc + "</div></div><div class='slots" + tooltipClass + "' data-powertip='" + tooltip + "'>" + slots + "</div><div class='card-courage' data-amount='" + card.courage + "'>" + card.courage + "</div></div></div>")
+        $("<div class='card-wrapper drawing'><div class='card " + card.tier + unplayable + combinable + pack + " " + card.type + " " + cssClass + "' id='card-" + card.id + "' data-id='" + card.id + "' data-guid='" + card.guid + "' data-powertip='" + tooltip + "'><div class='card-image'></div><div class='card-frame'></div><div class='card-type'>" + card.type + "</div><div class='card-rarity'></div>" + manaDom + ageDom + "<div class='bubbles-left'>" + useDom + expireDom + lingerDom + "</div><div class='bubbles-right'>" + vanishDom + retainDom + ephemeralDom + breakableDom + combinableDom + auraDom + sparkleDom + shimmerDom + tradeDom + weaponDom + aoeDom + unaddableDom + naturalDom + "</div><div class='bubbles-bottom-left'>" + packDom + "</div><div class='name'>" + card.name + "</div><div class='desc'><div class='desc-inner'>" + card.desc + "</div></div><div class='slots" + tooltipClass + "' data-powertip='" + tooltip + "'>" + slots + "</div><div class='card-courage' data-amount='" + card.courage + "'>" + card.courage + "</div></div></div>")
             .appendTo(to)
             .delay(1)
             .queue(function() {

@@ -5,11 +5,11 @@ const ALL_STARTING_OPTIONS = [
     {att: 'courage', name: '+8 Courage', amount: 8},
     {att: 'armor', name: '+40 Armor', amount: 40},
     {att: 'health', key: 'max', name: '+20 Max Health', amount: 20},
-    {att: 'aura', key: 'current', name: '+4 Aura', amount: 4},
-    {att: 'sparkle', key: 'current', name: '+4 Sparkle', amount: 4},
-    {att: 'shimmer', key: 'current', name: '+4 Shimmer', amount: 4},
+    {att: 'aura', key: 'current', name: '+5 Aura', amount: 5},
+    {att: 'sparkle', key: 'current', name: '+5 Sparkle', amount: 5},
+    {att: 'shimmer', key: 'current', name: '+5 Shimmer', amount: 5},
     {att: 'rainbow', key: 'base', name: '+8 Rainbow Charge', amount: 8},
-    {att: 'aggro', key: 'current', name: '-5 Aggro', entity: 'game', amount: -5},
+    {att: 'aggro', key: 'current', name: '-6 Aggro', entity: 'game', amount: -6},
     {action: 'addRare', name: 'Add a random rare card, lose 12 health'},
     {action: 'addCommonTreasure', name: 'Add a random common treasure'},
     {action: 'addUncommonTreasure', name: 'Add a random uncommon treasure, lose 20 health'},
@@ -270,7 +270,7 @@ const ALL_EFFECTS = [
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'irradiate', amount: 5, turns: -1}
     // hex      {effect: 'irradiate', amount: -8, hex: true}
-    {id: 'irradiate', name: 'Irradiate', desc: 'Deal x damage to all enemies at the start of each turn', x: 0, y: -2304, hex: false},
+    {id: 'irradiate', name: 'Irradiate', desc: 'Deal x damage to all enemies at the start of your turn', x: -160, y: -7584, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
@@ -317,6 +317,24 @@ const ALL_EFFECTS = [
     // hex      {effect: 'shapeshifter', amount: 1, hex: true}
     {id: 'shapeshifter', name: 'Shapeshifter', desc: 'Gain x block each time you change stances', x: -32, y: -5984, hex: false},
 
+    // Usage:
+    // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
+    // buff     {effect: 'fend', amount: 2, turns: -1}
+    // hex      {effect: 'fend', amount: 1, hex: true}
+    {id: 'fend', name: 'Fend', desc: 'Gain x block each time you combine cards', x: -320, y: -5856, hex: false},
+
+    // Usage:
+    // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
+    // buff     {effect: 'ward', amount: 2, turns: -1}
+    // hex      {effect: 'ward', amount: 1, hex: true}
+    {id: 'ward', name: 'Ward', desc: 'Gain x block each time you destroy a card', x: -162, y: -5856, hex: false},
+
+    // Usage:
+    // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
+    // buff     {effect: 'cover', amount: 2, turns: -1}
+    // hex      {effect: 'cover', amount: 1, hex: true}
+    {id: 'cover', name: 'Cover', desc: 'Gain x block each time you activate your magic rainbow', x: -64, y: -5856, hex: false},
+
 ];
 /*********************************************
  * 
@@ -334,7 +352,7 @@ const ALL_ABILITIES = [
 
     // Usage:
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
-    // buff     {ability: 'protection', turns: 2, enabled: true}
+    //  buff     {ability: 'protection', turns: 2, enabled: true}
     {id: 'protection', name: 'Protection', desc: 'Retain block each turn', context: 'turn', x: -160, y: -1182, sound: 'effect10', offset: true},
 
     // Usage:
@@ -421,6 +439,16 @@ const ALL_ABILITIES = [
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'supernatural', baseTurns: -1, enabled: true}
     {id: 'supernatural', name: 'Supernatural', desc: 'Natural cards are always drawn first', context: 'turn', x: -96, y: -5760},
+
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'eternal', baseTurns: -1, enabled: true}
+    {id: 'eternal', name: 'Eternal', desc: 'Cannot be debuffed', context: 'turn', x: -448, y: -5760, offset: true},
+
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'frozen', baseTurns: -1, enabled: true}
+    {id: 'frozen', name: 'Frozen', desc: 'Skip this turn', context: 'turn', x: -160, y: -6464, offset: true},
 
 ];
 /*********************************************
@@ -571,8 +599,8 @@ export default function Game() {
     let tutorial = false; // TODO: set to false
     let debug = false;
     let dev = false;
-    let scenario = 'singularity'; // normal, frost, flame, or singularity - set to normal for regular gameplay
-    let scenarioWhich = 'singularity_rainbow';
+    let scenario = 'normal'; // normal, frost, flame, or singularity - set to normal for regular gameplay
+    let scenarioWhich = 'normal'; // set to normal to not load a scenario
     let libraryBuilt = false;
     let armoryBuilt = false;
     let essences = ALL_ESSENCES;

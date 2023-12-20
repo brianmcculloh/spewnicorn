@@ -330,6 +330,15 @@ const ALL_CARDS = [
     Release
     Acquire
     Dismantle
+    Atomic
+    Nuclear
+    Head Shot
+    Thrash
+    Forestall
+    Evade
+    Blaze of Magic
+    Magic Burst
+
 
     Clutter Cards:
 
@@ -472,6 +481,8 @@ const ALL_CARDS = [
     Concuss
     Blitz
     Wing Sweep
+    Timed Attack
+    Cheap Shot
 
 
     Uncommon:
@@ -493,6 +504,7 @@ const ALL_CARDS = [
     Surprise Attack
     Auto Attack
     Sudden Barrage
+    Thwack
 
 
     Rare:
@@ -545,6 +557,8 @@ const ALL_CARDS = [
     Hardened Feathers
     Attuned Barrier
     Charged Barrier
+    Fissile
+    Sidestep
 
     Uncommon:
 
@@ -576,6 +590,7 @@ const ALL_CARDS = [
     Frost Armor
     Flame Armor
     Garrison
+    Elude
 
 
     Rare:
@@ -601,6 +616,8 @@ const ALL_CARDS = [
     Purify
     Forbid
     Weaponsmith
+    Scholar
+    Paralyzing Touch
 
 
     Legendary:
@@ -644,6 +661,11 @@ const ALL_CARDS = [
     Strange Tail
     Rebuke
     Non-Newtonian
+    Supernatural
+    Layers
+    Emergence
+    Screen
+
 
 
 
@@ -699,6 +721,7 @@ const ALL_CARDS = [
     Sparkling Rainbow Spell
     Shimmering Rainbow Spell
     Luminous Rainbow Spell
+    Flash of Magic
 
     Uncommon:
 
@@ -720,6 +743,7 @@ const ALL_CARDS = [
     Ice Spell
     Delayed Spell
     Sacrificial Spell
+    Magic Flare
 
     Rare:
 
@@ -872,7 +896,7 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'shimmer', name: 'Shimmer', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        id: 'shimmer', name: 'Shimmer', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true, pack: 'combine', 
         sound: 'shimmerAmount',
         descOverride: '<span class="desc-item-value">+<span class="amount shimmer-amount" data-amount="1">1</span> Shimmer (+<span class="amount speed-amount" data-amount="2">2</span> Speed at max level)</span>',
         slots: 1,
@@ -887,7 +911,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'sparkle', name: 'Sparkle', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        id: 'sparkle', name: 'Sparkle', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true, pack: 'combine', 
         sound: 'sparkleAmount',
         descOverride: '<span class="desc-item-value">+<span class="amount sparkle-amount" data-amount="1">1</span> Sparkle (+<span class="amount health-amount" data-amount="5">5</span> Health at max level)</span>',
         slots: 1,
@@ -902,7 +926,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'aura', name: 'Aura', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        id: 'aura', name: 'Aura', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true, pack: 'combine', 
         sound: 'auraAmount',
         descOverride: '<span class="desc-item-value">+<span class="amount aura-amount" data-amount="1">1</span> Aura (+<span class="amount mana-amount" data-amount="1">1</span> Mana at max level)</span>',
         slots: 1,
@@ -917,7 +941,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'courage', name: 'Courage', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        id: 'courage', name: 'Courage', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true, pack: 'combine', 
         slots: 1,
         actions: [
             {action: 'stat', what: 'courage', value: 1},
@@ -1016,7 +1040,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'impresa', name: 'Impresa', type: 'magic', mana: 1, tier: 'uncommon', addable: false, retain: true, vanish: true,
+        id: 'impresa', name: 'Impresa', type: 'magic', mana: 1, tier: 'uncommon', addable: false, retain: true, vanish: true, pack: 'rainbow', 
         magic: [{type: 'aligned', amount: 5}], 
         slots: 1,
         combine: {
@@ -1033,7 +1057,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'ouroboros', name: 'Ouroboros', type: 'magic', mana: 0, tier: 'rare', addable: false, retain: true, vanish: true,
+        id: 'ouroboros', name: 'Ouroboros', type: 'magic', mana: 0, tier: 'rare', addable: false, retain: true, vanish: true, pack: 'rainbow', 
         dmg: [4],
         blk: [6],
         magic: [{type: 'aligned', amount: 10}], 
@@ -1054,7 +1078,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'tesseract', name: 'Tesseract', type: 'magic', target: 'monster', mana: 3, addable: false, retain: true, vanish: true, tier: 'legendary',
+        id: 'tesseract', name: 'Tesseract', type: 'magic', target: 'monster', mana: 3, addable: false, retain: true, vanish: true, tier: 'legendary', pack: 'rainbow', 
         dmg: [10],
         blk: [15],
         magic: [{type: 'aligned', amount: 40}], 
@@ -1085,7 +1109,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'battle_move', name: 'Battle Move', type: 'attack', mana: 1, tier: 'uncommon', target: 'monster', addable: false, retain: true, vanish: true,
+        id: 'battle_move', name: 'Battle Move', type: 'attack', mana: 1, tier: 'uncommon', target: 'monster', addable: false, retain: true, vanish: true, pack: 'combine', 
         dmg: [9],
         //sound: 'attack17',
         slots: 1,
@@ -1102,7 +1126,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'battle_combo', name: 'Battle Combo', type: 'tool', mana: 0, tier: 'rare', addable: false, retain: true, vanish: true,
+        id: 'battle_combo', name: 'Battle Combo', type: 'tool', mana: 0, tier: 'rare', addable: false, retain: true, vanish: true, pack: 'combine', 
         blk: [9],
         slots: 1,
         effects: [
@@ -1125,7 +1149,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'battle_sequence', name: 'Battle Sequence', type: 'tool', mana: 3, retain: true, addable: false, vanish: true, tier: 'legendary',
+        id: 'battle_sequence', name: 'Battle Sequence', type: 'tool', mana: 3, retain: true, addable: false, vanish: true, tier: 'legendary', pack: 'combine', 
         effects: [
             {effect: 'fierce', amount: 15, turns: 1},
             {effect: 'mastery', amount: 3, turns: 1},
@@ -1172,7 +1196,7 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'self_enhance', name: 'Self-Enhance', type: 'tool', mana: 1, addable: false, tier: 'uncommon', retain: true, vanish: true,
+        id: 'self_enhance', name: 'Self-Enhance', type: 'tool', mana: 1, addable: false, tier: 'uncommon', retain: true, vanish: true, pack: 'combine', 
         blk: [16],
         slots: 1,
         combine: {
@@ -1188,7 +1212,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'self_advance', name: 'Self-Advance', type: 'tool', tier: 'rare', mana: 0, addable: false, retain: true, vanish: true,
+        id: 'self_advance', name: 'Self-Advance', type: 'tool', tier: 'rare', mana: 0, addable: false, retain: true, vanish: true, pack: 'combine', 
         blk: [5],
         armor: [3],
         slots: 1,
@@ -1209,7 +1233,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'self_fulfill', name: 'Self-Fulfill', type: 'tool', mana: 3, retain: true, addable: false, vanish: true, tier: 'legendary',
+        id: 'self_fulfill', name: 'Self-Fulfill', type: 'tool', mana: 3, retain: true, addable: false, vanish: true, tier: 'legendary', pack: 'combine', 
         additionalDesc: 'Achievement unlocked',
         actions: [
             {action: 'addCard', value: 4, what: 'self_enhance', to: 'discardCards'},
@@ -1260,7 +1284,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'rainbow_converter', name: 'Rainbow Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        id: 'rainbow_converter', name: 'Rainbow Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true, pack: 'rainbow', 
         sound: 'magic4',
         slots: 1,
         actions: [
@@ -1271,7 +1295,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'chaos_converter', name: 'Chaos Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        id: 'chaos_converter', name: 'Chaos Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true, pack: 'rainbow', 
         sound: 'magic4',
         slots: 1,
         actions: [
@@ -1282,7 +1306,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'dark_converter', name: 'Dark Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        id: 'dark_converter', name: 'Dark Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true, pack: 'rainbow', 
         sound: 'magic4',
         slots: 1,
         actions: [
@@ -1293,7 +1317,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'elemental_converter', name: 'Elemental Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true,
+        id: 'elemental_converter', name: 'Elemental Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true, pack: 'rainbow', 
         sound: 'magic4',
         slots: 1,
         actions: [
@@ -1304,7 +1328,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'sparks', name: 'Sparks', type: 'magic', mana: 0, addable: false, vanish: true,
+        id: 'sparks', name: 'Sparks', type: 'magic', mana: 0, addable: false, vanish: true, 
         sound: 'magic5',
         magic: [{type: 'aligned', amount: 2}], 
         slots: 1,
@@ -1559,7 +1583,84 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'spewnicorn_spray', name: 'Spewnicorn Spray', target: 'monster', type: 'tool', mana: 0, breakable: true, use: 3, tier: 'legendary',
+        id: 'atomic', name: 'Atomic', type: 'ability', mana: 1, addable: false, pack: 'combine', tier: 'uncommon', retain: true,
+        slots: 1,
+        effects: [
+            {effect: 'irradiate', amount: 10, turns: -1}
+        ],
+        combine: {
+            actions: [
+                {action: 'addCard', value: 1, what: 'nuclear', to: 'drawCards'},
+            ]
+        },
+        shardUpgrades: {
+            effects: [
+                {effect: 'irradiate', amount: 15, turns: -1}
+            ],
+        },
+    }),
+    new Cards({
+        id: 'nuclear', name: 'Nuclear', type: 'ability', mana: 1, addable: false, pack: 'combine', tier: 'rare',
+        slots: 1,
+        effects: [
+            {effect: 'irradiate', amount: 60, turns: -1}
+        ],
+        shardUpgrades: {
+            effects: [
+                {effect: 'irradiate', amount: 90, turns: -1}
+            ],
+        },
+    }),
+    new Cards({
+        id: 'head_shot', name: 'Head Shot', type: 'attack', target: 'monster', mana: 0, pack: 'combine', addable: false, natural: true, 
+        dmg: [21],
+        slots: 1,
+        shardUpgrades: {
+            dmg: [30]
+        },
+    }),
+    new Cards({
+        id: 'thrash', name: 'Thrash', type: 'attack', target: 'monster', mana: 1, pack: 'combine', retain: true, natural: true, tier: 'uncommon', addable: false, 
+        dmg: [30],
+        slots: 1,
+        shardUpgrades: {
+            dmg: [45]
+        },
+    }),
+    new Cards({
+        id: 'forestall', name: 'Forestall', type: 'tool', mana: 0, pack: 'combine', natural: true, addable: false, 
+        blk: [20],
+        slots: 1,
+        shardUpgrades: {
+            blk: [30]
+        },
+    }),
+    new Cards({
+        id: 'evade', name: 'Evade', type: 'tool', mana: 1, pack: 'combine', retain: true, natural: true, tier: 'uncommon', addable: false, 
+        blk: [32],
+        slots: 1,
+        shardUpgrades: {
+            blk: [48]
+        },
+    }),
+    new Cards({
+        id: 'blaze_of_magic', name: 'Blaze of Magic', type: 'magic', mana: 0, pack: 'combine', natural: true, addable: false, 
+        magic: [{type: 'aligned', amount: 12}], 
+        slots: 1,
+        shardUpgrades: {
+            magic: [{type: 'aligned', amount: 18}], 
+        },
+    }),
+    new Cards({
+        id: 'magic_burst', name: 'Magic Burst', type: 'magic', mana: 1, pack: 'combine', retain: true, natural: true, tier: 'uncommon', addable: false, 
+        magic: [{type: 'aligned', amount: 20}], 
+        slots: 1,
+        shardUpgrades: {
+            magic: [{type: 'aligned', amount: 30}], 
+        },
+    }),
+    new Cards({
+        id: 'spewnicorn_spray', name: 'Spewnicorn Spray', target: 'monster', type: 'tool', mana: 0, breakable: true, use: 3, tier: 'legendary', addable: false, 
         descOverride: 'Deus Ex Machina.',
         blk: [50],
         effects: [
@@ -1634,9 +1735,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'debris', name: 'Debris', type: 'clutter', mana: 1, vanish: true, addable: false, natural: true,
+        additionalDesc: 'It gets in the way.',
     }),
     new Cards({
         id: 'chaff', name: 'Chaff', type: 'clutter', addable: false, natural: true, ephemeral: true, playable: false, 
+        additionalDesc: 'It rises to the top.',
     }),
     new Cards({
         id: 'gunk', name: 'Gunk', type: 'clutter', addable: false, playable: false, 
@@ -1770,11 +1873,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'shiv_of_the_abyss', name: 'Shiv of the Abyss', type: 'attack', mana: 3, target: 'monster', weight: .1, tier: 'legendary', addable: false, weapon: true,
-        dmg: [20, 20, 20, 20, 20],
+        dmg: [24, 24, 24, 24, 24],
         additionalDesc: 'Level VI Weapon',
         slots: 1,
         shardUpgrades: {
-            dmg: [24, 24, 24, 24, 24]
+            dmg: [30, 30, 30, 30, 30]
         },
     }),
     new Cards({
@@ -1838,14 +1941,14 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'nightfury', name: 'Nightfury', type: 'attack', mana: 3, target: 'monster', weight: .1, addable: false, tier: 'legendary', weapon: true,
-        dmg: [50],
+        dmg: [60],
         effects: [
             {effect: 'punch', amount: .25, turns: -1},
         ],
         additionalDesc: 'Level VI Weapon',
         slots: 1,
         shardUpgrades: {
-            dmg: [60]
+            dmg: [75]
         },
     }),
     new Cards({
@@ -1932,50 +2035,50 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'forge', name: 'Forge', type: 'attack', mana: 3, target: 'monster', weight: .2, addable: false, tier: 'legendary',  weapon: true,
-        dmg: [40],
+        dmg: [50],
         effects: [
             {effect: 'punch', amount: .4, turns: 1},
         ],
         additionalDesc: 'Level V Weapon',
         slots: 1,
         shardUpgrades: {
-            dmg: [50]
+            dmg: [65]
         },
     }),
     new Cards({
         id: 'dragons_bane', name: "Dragon's Bane", type: 'attack', mana: 3, target: 'monster', weight: .2, addable: false, tier: 'legendary',  weapon: true,
-        dmg: [40],
+        dmg: [50],
         effects: [
             {effect: 'might', amount: 8, turns: 1},
         ],
         additionalDesc: 'Level V Weapon',
         slots: 1,
         shardUpgrades: {
-            dmg: [50]
+            dmg: [65]
         },
     }),
     new Cards({
         id: 'endless_edge', name: 'Endless Edge', type: 'attack', mana: 3, target: 'monster', weight: .2, addable: false, tier: 'legendary',  weapon: true,
-        dmg: [10, 10, 10, 10],
+        dmg: [10, 10, 10, 10, 10],
         effects: [
             {effect: 'punch', amount: .4, turns: 1},
         ],
         additionalDesc: 'Level V Weapon',
         slots: 1,
         shardUpgrades: {
-            dmg: [10, 10, 10, 10, 10]
+            dmg: [10, 10, 10, 10, 10, 10]
         },
     }),
     new Cards({
         id: 'deathmaker', name: 'Deathmaker', type: 'attack', mana: 3, target: 'monster', weight: .2, addable: false, tier: 'legendary',  weapon: true,
-        dmg: [10, 10, 10, 10],
+        dmg: [10, 10, 10, 10, 10],
         effects: [
             {effect: 'might', amount: 8, turns: 1},
         ],
         additionalDesc: 'Level V Weapon',
         slots: 1,
         shardUpgrades: {
-            dmg: [10, 10, 10, 10, 10]
+            dmg: [10, 10, 10, 10, 10, 10]
         },
     }),
     new Cards({
@@ -2059,7 +2162,7 @@ const ALL_CARDS = [
         additionalDesc: 'Level VII Weapon',
         slots: 1,
         shardUpgrades: {
-            dmg: [80]
+            dmg: [85]
         },
     }),
     new Cards({
@@ -2071,7 +2174,7 @@ const ALL_CARDS = [
         additionalDesc: 'Level VII Weapon',
         slots: 1,
         shardUpgrades: {
-            dmg: [60]
+            dmg: [65]
         },
     }),
     new Cards({
@@ -2357,42 +2460,42 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'darkfeather', name: "Darkfeather", type: 'magic', mana: 3, weight: .05, weapon: true, addable: false, tier: 'rare',
-        magic: [{type: 'dark', amount: 60}],
+        magic: [{type: 'dark', amount: 70}],
         sound: 'magic4',
         additionalDesc: 'Level VII Weapon',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'dark', amount: 80}],
+            magic: [{type: 'dark', amount: 85}],
         },
     }),
     new Cards({
         id: 'heart_of_chaos', name: "Heart of Chaos", type: 'magic', mana: 3, weight: .05, weapon: true, addable: false, tier: 'rare',
-        magic: [{type: 'chaos', amount: 60}],
+        magic: [{type: 'chaos', amount: 70}],
         sound: 'magic4',
         additionalDesc: 'Level VII Weapon',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'chaos', amount: 80}],
+            magic: [{type: 'chaos', amount: 85}],
         },
     }),
     new Cards({
         id: 'evernature', name: "Evernature", type: 'magic', mana: 3, weight: .05, weapon: true, addable: false, tier: 'rare',
-        magic: [{type: 'elemental', amount: 60}],
+        magic: [{type: 'elemental', amount: 70}],
         sound: 'magic4',
         additionalDesc: 'Level VII Weapon',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'elemental', amount: 80}],
+            magic: [{type: 'elemental', amount: 85}],
         },
     }),
     new Cards({
         id: 'arcana_prismatica', name: "Arcana Prismatica", type: 'magic', mana: 3, weight: .05, weapon: true, addable: false, tier: 'rare',
-        magic: [{type: 'rainbow', amount: 70}],
+        magic: [{type: 'rainbow', amount: 80}],
         sound: 'magic4',
         additionalDesc: 'Level VII Weapon',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'rainbow', amount: 90}],
+            magic: [{type: 'rainbow', amount: 95}],
         },
     }),
     new Cards({
@@ -2593,7 +2696,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'skycaller', name: "Skycaller", type: 'magic', mana: 3, weight: .05, use: 2, weapon: true, addable: false, tier: 'legendary',
-        magic: [{type: 'aligned', amount: 20}],
+        magic: [{type: 'aligned', amount: 30}],
         effects: [
             {effect: 'summon', amount: 5, turns: -1}
         ],
@@ -2602,7 +2705,7 @@ const ALL_CARDS = [
         slots: 1,
         shardUpgrades: {
             use: 3,
-            magic: [{type: 'aligned', amount: 30}],
+            magic: [{type: 'aligned', amount: 45}],
             effects: [
                 {effect: 'summon', amount: 7, turns: -1}
             ],
@@ -2610,7 +2713,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'windrift', name: "Windrift", type: 'magic', mana: 3, weight: .05, use: 2, weapon: true, addable: false, tier: 'legendary',
-        magic: [{type: 'aligned', amount: 20}],
+        magic: [{type: 'aligned', amount: 30}],
         effects: [
             {effect: 'conjure', amount: 3, turns: -1}
         ],
@@ -2619,7 +2722,7 @@ const ALL_CARDS = [
         slots: 1,
         shardUpgrades: {
             use: 3,
-            magic: [{type: 'aligned', amount: 30}],
+            magic: [{type: 'aligned', amount: 45}],
             effects: [
                 {effect: 'conjure', amount: 4, turns: -1}
             ],
@@ -2627,7 +2730,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'ember', name: "Ember", type: 'magic', mana: 3, weight: .05, use: 2, weapon: true, addable: false, tier: 'legendary',
-        magic: [{type: 'aligned', amount: 20}],
+        magic: [{type: 'aligned', amount: 30}],
         effects: [
             {effect: 'sorcery', amount: .3, turns: -1}
         ],
@@ -2636,7 +2739,7 @@ const ALL_CARDS = [
         slots: 1,
         shardUpgrades: {
             use: 3,
-            magic: [{type: 'aligned', amount: 30}],
+            magic: [{type: 'aligned', amount: 45}],
             effects: [
                 {effect: 'sorcery', amount: .4, turns: -1}
             ],
@@ -2644,7 +2747,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'deepcore', name: "Deepcore", type: 'magic', mana: 3, weight: .05, use: 2, weapon: true, addable: false, tier: 'legendary',
-        magic: [{type: 'aligned', amount: 20}],
+        magic: [{type: 'aligned', amount: 30}],
         effects: [
             {effect: 'lightning', amount: 3, turns: -1}
         ],
@@ -2653,7 +2756,7 @@ const ALL_CARDS = [
         slots: 1,
         shardUpgrades: {
             use: 3,
-            magic: [{type: 'aligned', amount: 30}],
+            magic: [{type: 'aligned', amount: 45}],
             effects: [
                 {effect: 'lightning', amount: 4, turns: -1}
             ],
@@ -2661,7 +2764,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'felcrystal', name: "Felcrystal", type: 'magic', mana: 3, weight: .05, use: 2, weapon: true, addable: false, tier: 'legendary',
-        magic: [{type: 'aligned', amount: 20}],
+        magic: [{type: 'aligned', amount: 30}],
         effects: [
             {effect: 'thunder', amount: .3, turns: -1}
         ],
@@ -2670,7 +2773,7 @@ const ALL_CARDS = [
         slots: 1,
         shardUpgrades: {
             use: 3,
-            magic: [{type: 'aligned', amount: 30}],
+            magic: [{type: 'aligned', amount: 45}],
             effects: [
                 {effect: 'thunder', amount: .4, turns: -1}
             ],
@@ -2759,7 +2862,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'dreadfurnace', name: "Dreadfurnace", type: 'magic', mana: 3, weight: .05, use: 2, weapon: true, addable: false, tier: 'legendary',
-        magic: [{type: 'aligned', amount: 15}],
+        magic: [{type: 'aligned', amount: 25}],
         effects: [
             {effect: 'mage', amount: 2, turns: -1},
             {effect: 'enchanter', amount: 2, turns: -1}
@@ -2772,7 +2875,7 @@ const ALL_CARDS = [
                 {effect: 'mage', amount: 3, turns: -1},
                 {effect: 'enchanter', amount: 3, turns: -1}
             ],
-            magic: [{type: 'aligned', amount: 20}],
+            magic: [{type: 'aligned', amount: 40}],
         },
     }),
 
@@ -2987,6 +3090,27 @@ const ALL_CARDS = [
         },
         bothShardUpgrades: {
             dmg: [16]
+        },
+    }),
+    new Cards({
+        id: 'timed_attack', name: 'Timed Attack', type: 'attack', mana: 1, retain: true, pack: 'combine',
+        dmg: [5, 5],
+        slots: 1,
+        shardUpgrades: {
+            dmg: [9, 9]
+        },
+    }),
+    new Cards({
+        id: 'cheap_shot', name: 'Cheap Shot', type: 'attack', mana: 0, pack: 'combine', vanish: true,
+        dmg: [7],
+        slots: 1,
+        shardUpgrades: {
+            dmg: [12]
+        },
+        combine: {
+            actions: [
+                {action: 'addCard', value: 1, what: 'head_shot', to: 'drawCards'},
+            ]
         },
     }),
 
@@ -3255,27 +3379,51 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'provisioned_attack', name: 'Provisioned Attack', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', natural: true, vanish: true,
-        dmg: [16],
+        id: 'provisioned_attack', name: 'Provisioned Attack', type: 'attack', target: 'monster', mana: 1, tier: 'uncommon', vanish: true,
+        dmg: [15],
         actions: [
             {action: 'addCard', value: 1, what: 'provisioned_attack', to: 'drawCards'},
         ],
         slots: 2,
         fireShardUpgrades: {
-            dmg: [28],
+            dmg: [20],
+            actions: [
+                {action: 'addCard', value: 1, what: 'provisioned_attack', to: 'drawCards', with: ['flame']},
+            ],
+            dmg_2: [30],
             actions_2: [
                 {action: 'addCard', value: 1, what: 'provisioned_attack', to: 'drawCards', with: ['flame', 'flame']},
             ],
         },
         iceShardUpgrades: {
-            mana: 0,
+            dmg: [20],
+            actions: [
+                {action: 'addCard', value: 1, what: 'provisioned_attack', to: 'drawCards', with: ['frost']},
+            ],
+            dmg_2: [30],
             actions_2: [
                 {action: 'addCard', value: 1, what: 'provisioned_attack', to: 'drawCards', with: ['frost', 'frost']},
             ],
         },
         bothShardUpgrades: {
-            dmg: [28]
+            dmg: [25],
+            actions: [
+                {action: 'addCard', value: 1, what: 'provisioned_attack', to: 'drawCards', with: ['frost', 'flame']},
+            ],
         }
+    }),
+    new Cards({
+        id: 'thwack', name: 'Thwack', type: 'attack', target: 'monster', mana: 1, pack: 'combine', retain: true, vanish: true,
+        dmg: [15],
+        slots: 1,
+        shardUpgrades: {
+            dmg: [25]
+        },
+        combine: {
+            actions: [
+                {action: 'addCard', value: 1, what: 'thrash', to: 'drawCards'},
+            ]
+        },
     }),
 
 
@@ -3983,6 +4131,37 @@ const ALL_CARDS = [
             ],
         },
     }),
+    new Cards({
+        id: 'fissile', name: 'Fissile', type: 'tool', mana: 0, retain: true, pack: 'combine', vanish: true, 
+        slots: 1,
+        effects: [
+            {effect: 'irradiate', amount: 4, turns: 2}
+        ],
+        combine: {
+            actions: [
+                {action: 'addCard', value: 1, what: 'atomic', to: 'drawCards'},
+            ]
+        },
+        shardUpgrades: {
+            effects: [
+                {effect: 'irradiate', amount: 8, turns: 2}
+            ],
+        },
+    }),
+    new Cards({
+        id: 'sidestep', name: 'Sidestep', type: 'tool', mana: 0, pack: 'combine', vanish: true,
+        blk: [8],
+        slots: 1,
+        shardUpgrades: {
+            blk: [14]
+        },
+        combine: {
+            actions: [
+                {action: 'addCard', value: 1, what: 'forestall', to: 'drawCards'},
+            ]
+        },
+    }),
+
 
 
 
@@ -4593,6 +4772,19 @@ const ALL_CARDS = [
             blk: [30]
         }
     }),
+    new Cards({
+        id: 'elude', name: 'Elude', type: 'tool', tier: 'uncommon', mana: 1, retain: true, pack: 'combine', vanish: true,
+        blk: [15],
+        slots: 1,
+        shardUpgrades: {
+            blk: [22]
+        },
+        combine: {
+            actions: [
+                {action: 'addCard', value: 1, what: 'evade', to: 'drawCards'},
+            ]
+        },
+    }),
 
 
 
@@ -4977,6 +5169,30 @@ const ALL_CARDS = [
                 {action: 'addCard', value: 4, type: 'weapon', tier: 'common', to: 'handCards', with: ['frost'], modifiers: {mana: 0, vanish: true}},
             ],
         }
+    }),
+    new Cards({
+        id: 'scholar', name: 'Scholar', type: 'tool', mana: 1, pack: 'combine', tier: 'rare', weight: 3, courage: 5, 
+        effects: [
+            {effect: 'wisdom', amount: 1, turns: -1}
+        ],
+        slots: 1,
+        shardUpgrades: {
+            natural: true
+        },
+    }),
+    new Cards({
+        id: 'paralyzing_touch', name: 'Paralyzing Touch', type: 'tool', target: 'monster', mana: 1, vanish: true, tier: 'rare', weight: 4, courage: 6, 
+        abilities: [
+            {ability: 'frozen', turns: 1, enabled: true}
+        ],
+        slots: 2,
+        shardUpgrades: {
+            vanish: false,
+            use: 1
+        },
+        bothShardUpgrades: {
+            use: 2
+        },
     }),
 
 
@@ -5440,6 +5656,42 @@ const ALL_CARDS = [
             natural: true
         }
     }),
+    new Cards({
+        id: 'layers', name: 'Layers', type: 'ability', mana: 1, tier: 'uncommon', courage: 4, pack: 'combine', 
+        effects: [
+            {effect: 'fend', amount: 10, turns: -1}
+        ],
+        slots: 1,
+        shardUpgrades: {
+            effects: [
+                {effect: 'fend', amount: 18, turns: -1}
+            ],
+        }
+    }),
+    new Cards({
+        id: 'emergence', name: 'Emergence', type: 'ability', mana: 1, tier: 'uncommon', courage: 4, pack: 'cycle', 
+        effects: [
+            {effect: 'ward', amount: 10, turns: -1}
+        ],
+        slots: 1,
+        shardUpgrades: {
+            effects: [
+                {effect: 'ward', amount: 18, turns: -1}
+            ],
+        }
+    }),
+    new Cards({
+        id: 'screen', name: 'Screen', type: 'ability', mana: 1, tier: 'uncommon', courage: 4, pack: 'rainbow', 
+        effects: [
+            {effect: 'cover', amount: 10, turns: -1}
+        ],
+        slots: 1,
+        shardUpgrades: {
+            effects: [
+                {effect: 'cover', amount: 18, turns: -1}
+            ],
+        }
+    }),
     
     
 
@@ -5653,19 +5905,19 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'radioactive', name: 'Radioactive', type: 'ability', mana: 2, tier: 'rare', courage: 5, weight: 3, 
+        id: 'radioactive', name: 'Radioactive', type: 'ability', mana: 1, tier: 'rare', courage: 5, weight: 3, 
         effects: [
-            {effect: 'irradiate', amount: 4, turns: -1}
+            {effect: 'irradiate', amount: 6, turns: -1}
         ],
         slots: 2,
         shardUpgrades: {
             effects: [
-                {effect: 'irradiate', amount: 6, turns: -1}
+                {effect: 'irradiate', amount: 10, turns: -1}
             ],
         },
         bothShardUpgrades: {
             effects: [
-                {effect: 'irradiate', amount: 8, turns: -1}
+                {effect: 'irradiate', amount: 14, turns: -1}
             ],
         }
     }),
@@ -5992,9 +6244,6 @@ const ALL_CARDS = [
             use: 6
         },
     }),
-
-
-
     new Cards({
         id: 'beautiful_spell', name: 'Beautiful Spell', type: 'magic', mana: 1, weight: 2, tier: 'common', 
         magic: [{type: 'elemental', amount: 7}], 
@@ -6066,6 +6315,20 @@ const ALL_CARDS = [
         aura: {
             magic: [{type: 'rainbow', amount: 12}], 
         }
+    }),
+    new Cards({
+        id: 'flash_of_magic', name: 'Flash of Magic', type: 'magic', mana: 0, pack: 'combine', vanish: true,
+        magic: [{type: 'aligned', amount: 4}], 
+        sound: 'magic2',
+        slots: 1,
+        shardUpgrades: {
+            magic: [{type: 'aligned', amount: 7}], 
+        },
+        combine: {
+            actions: [
+                {action: 'addCard', value: 1, what: 'blaze_of_magic', to: 'handCards'},
+            ]
+        },
     }),
 
 
@@ -6296,6 +6559,20 @@ const ALL_CARDS = [
         slots: 1,
         shardUpgrades: {
             retain: true
+        },
+    }),
+    new Cards({
+        id: 'magic_flare', name: 'Magic Flare', type: 'magic', tier: 'uncommon', mana: 1, pack: 'combine', vanish: true, retain: true,
+        magic: [{type: 'aligned', amount: 8}], 
+        sound: 'magic2',
+        slots: 1,
+        shardUpgrades: {
+            magic: [{type: 'aligned', amount: 14}], 
+        },
+        combine: {
+            actions: [
+                {action: 'addCard', value: 1, what: 'magic_burst', to: 'handCards'},
+            ]
         },
     }),
 
@@ -6820,7 +7097,6 @@ export function Deck() {
             addCard('spewnicorn_spray');
         }
 
-
         // this is how to add a shard on init - DEV MODE ONLY
         //attachShard(util.getCardById('strange_tail', this.cards), 'frost');
 
@@ -6932,10 +7208,10 @@ export function Deck() {
         let triggerDesc = buildTriggerDescription(trigger, desc);
         desc += triggerDesc;
 
-        let natural = shard ? util.getShardAttribute(card, shard, 'natural') : util.getCardAttribute(card, 'natural');
+        /*let natural = shard ? util.getShardAttribute(card, shard, 'natural') : util.getCardAttribute(card, 'natural');
         if(natural) {
             desc += '<div class="desc-item"><span class="highlight">Natural</span></div>';
-        }
+        }*/ // we're using a bubble indicator for this now
 
         let dmg = shard ? util.getShardAttribute(card, shard, 'dmg') : util.getCardAttribute(card, 'dmg');
         if(dmg.length > 0) {
@@ -7051,6 +7327,11 @@ export function Deck() {
             if(breakable !== '') {
                 let prefix = breakable ? '' : 'Lose ';
                 desc += '<div class="desc-item">' + prefix + '<span class="highlight">Breakable</span></div>';
+            }
+            let natural = util.getShardAttribute(card, shard, 'natural');
+            if(natural !== '') {
+                let prefix = natural ? '' : 'Lose ';
+                desc += '<div class="desc-item">' + prefix + '<span class="highlight">Natural</span></div>';
             }
         } else {
             // does not apply to shard
