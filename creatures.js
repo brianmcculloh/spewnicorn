@@ -350,7 +350,7 @@ const ALL_MONSTERS = [
         id: 'pixie', 
         breed: 'pixie',
         name: 'Pixie', 
-        health: {base: 22, current: 0, max: 22},
+        health: {base: 32, current: 0, max: 32},
         pattern: 'fixed',
         moveSet: [
             {effects: [
@@ -398,7 +398,7 @@ const ALL_MONSTERS = [
         id: 'stone_walker', 
         breed: 'stone_walker',
         name: 'Stone Walker', 
-        health: {base: 30, current: 0, max: 30},
+        health: {base: 34, current: 0, max: 34},
         armor: 10,
         pattern: 'random',
         moveSet: [
@@ -416,7 +416,7 @@ const ALL_MONSTERS = [
         id: 'sludge', 
         breed: 'sludge',
         name: 'Sludge', 
-        health: {base: 20, current: 0, max: 20},
+        health: {base: 26, current: 0, max: 26},
         block: 20,
         pattern: 'fixed',
         moveSet: [
@@ -452,7 +452,7 @@ const ALL_MONSTERS = [
         id: 'imp', 
         breed: 'imp',
         name: 'Imp', 
-        health: {base: 35, current: 0, max: 35},
+        health: {base: 40, current: 0, max: 40},
         pattern: 'random',
         moveSet: [
             {effects: [
@@ -474,7 +474,7 @@ const ALL_MONSTERS = [
         id: 'frost_pixie', 
         breed: 'pixie',
         name: 'Frost Pixie', 
-        health: {base: 44, current: 0, max: 44},
+        health: {base: 64, current: 0, max: 64},
         pattern: 'fixed',
         moveSet: [
             {effects: [
@@ -524,7 +524,7 @@ const ALL_MONSTERS = [
         id: 'frost_stone_walker', 
         breed: 'stone_walker',
         name: 'Frost Stone Walker', 
-        health: {base: 60, current: 0, max: 60},
+        health: {base: 68, current: 0, max: 68},
         armor: 20,
         pattern: 'random',
         moveSet: [
@@ -543,7 +543,7 @@ const ALL_MONSTERS = [
         id: 'frost_sludge',
         breed: 'sludge', 
         name: 'Frost Sludge', 
-        health: {base: 40, current: 0, max: 40},
+        health: {base: 52, current: 0, max: 52},
         block: 40,
         pattern: 'fixed',
         moveSet: [
@@ -580,7 +580,7 @@ const ALL_MONSTERS = [
         id: 'frost_imp', 
         breed: 'imp',
         name: 'Frost Imp', 
-        health: {base: 70, current: 0, max: 70},
+        health: {base: 80, current: 0, max: 80},
         pattern: 'random',
         moveSet: [
             {effects: [
@@ -602,7 +602,7 @@ const ALL_MONSTERS = [
         id: 'flame_pixie', 
         breed: 'pixie',
         name: 'Flame Pixie', 
-        health: {base: 22, current: 0, max: 22},
+        health: {base: 32, current: 0, max: 32},
         pattern: 'fixed',
         moveSet: [
             {effects: [
@@ -652,7 +652,7 @@ const ALL_MONSTERS = [
         id: 'flame_stone_walker', 
         breed: 'stone_walker',
         name: 'Flame Stone Walker', 
-        health: {base: 30, current: 0, max: 30},
+        health: {base: 34, current: 0, max: 34},
         armor: 10,
         pattern: 'random',
         moveSet: [
@@ -671,7 +671,7 @@ const ALL_MONSTERS = [
         id: 'flame_sludge', 
         breed: 'sludge',
         name: 'Flame Sludge', 
-        health: {base: 20, current: 0, max: 20},
+        health: {base: 26, current: 0, max: 26},
         block: 20,
         pattern: 'fixed',
         moveSet: [
@@ -708,7 +708,7 @@ const ALL_MONSTERS = [
         id: 'flame_imp', 
         breed: 'imp',
         name: 'Flame Imp', 
-        health: {base: 35, current: 0, max: 35},
+        health: {base: 40, current: 0, max: 40},
         pattern: 'random',
         moveSet: [
             {effects: [
@@ -2790,6 +2790,7 @@ const ALL_MONSTERS = [
         unreachable: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
         resurrect: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
         eternal: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
+        vex: {base: 2, current: 0, temp: [], turns: -1},
     }),
 
 

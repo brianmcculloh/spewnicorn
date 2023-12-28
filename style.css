@@ -386,7 +386,7 @@ h2::after {
 	background-image:url('./images/panel-middle-right.png');
 }
 .unavailable {
-	pointer-events:none;
+	pointer-events:none !important;
 }
 input[type="text"] {
 	background:rgba(0,0,0,.5);
@@ -4209,7 +4209,10 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	background-position:calc(-975px * .92) calc(-8692px * .92);
 }
 #card-paralyzing_touch .card-image {
-	background-position:0 calc(-8692px * .92);
+	background-position:0 calc(-9006px * .92);
+}
+#card-blitzkrieg .card-image {
+	background-position:calc(-195px * .92) calc(-9006px * .92);
 }
 
 
@@ -5084,6 +5087,10 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 .card .desc .effect-text, .card .desc .ability-text {
 	text-transform:uppercase;
+}
+.card .desc .effect-description, .card .desc .ability-description {
+	font-size:13px;
+	color:rgba(0,0,0,.5);
 }
 .card .desc .desc-behavior {
 	color:brown;

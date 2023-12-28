@@ -103,11 +103,10 @@
  * 
  * PHASE V: 
  * 
- * TODO: bless didn't work in one of the fights on the turn it was played - is it because of fortress?
- * TODO: build a combine deck to the flame guardian and create as scenario
- * TODO: build a cycle deck to the frost guardian and the super grost guardian and create as scenario
- * TODO: test out the new flame guardian moveset
- * TODO: test the singularity fight
+ * TODO: do surge and blitzkrieg have the same card art?
+ * TODO: build a cycle deck to the super frost or flame guardian and create as scenario
+ * TODO: test out the new flame guardian moveset for balancing
+ * TODO: test the singularity fight for balancing
  * TODO: implement mechanics first and then add some more cards after that
  * 
  * 
@@ -1472,7 +1471,7 @@ function init_map_2() {
 	updateAggro();
 
 	if(game.scenario!='normal') {
-		buildScenario();
+		buildScenario(game.scenarioWhich);
 	}
 	setStatus();
 
@@ -1855,6 +1854,159 @@ function buildScenario(which = 'frozen_forest_combine') {
 			player.aggro.level = 2;
 
 		break;
+
+		case 'frost_combine':
+			// treasures
+			addTreasure('gift_of_protection');
+			addTreasure('snakestone');
+			addTreasure('dew_of_yarva');
+			addTreasure('hummingbird_feather');
+			addTreasure('red_envelope');
+			addTreasure('charged_wand');
+			addTreasure('signet_ring');
+			addTreasure('hickory_staff');
+
+			// candy
+			addCandy('vanilla_pudding');
+
+			// cards
+			addCardToDeck('rainbow_orb');
+			addCardToDeck('shield');
+			addCardToDeck('leather_armor');
+			addCardToDeck('stun');
+			addCardToDeck('self_enhance');
+			addCardToDeck('thwack');
+			addCardToDeck('concuss');
+			addCardToDeck('thwack');
+			addCardToDeck('provisioned_attack');
+			addCardToDeck('flash_of_magic');
+			addCardToDeck('shimmer_stance');
+			addCardToDeck('bravery');
+			addCardToDeck('neigh');
+			addCardToDeck('flash_of_magic');
+			addCardToDeck('paralyzing_touch');
+			addCardToDeck('rainbow_charm');
+			addCardToDeck('delightful');
+			addCardToDeck('thwart');
+			addCardToDeck('dark_codex');
+			addCardToDeck('aura_stance');
+			addCardToDeck('sparkle_stance');
+			addCardToDeck('blockade');
+
+			// shards
+			deck.attachShard(util.getCardById('shield', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('stun', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('concuss', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('provisioned_attack', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('provisioned_attack', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('bravery', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('neigh', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('paralyzing_touch', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('paralyzing_touch', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('delightful', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('thwart', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('thwart', deck.cards), 'frost');
+
+			// essence
+			updateEssenceLevels('shimmer', 24);
+			updateEssenceLevels('sparkle', 17);
+			updateEssenceLevels('aura', 17);
+
+			// misc
+			gainCourage(19);
+			game.candyChance = 40;
+			game.shardChance = 20;
+			game.critChance = 4;
+			game.highestDmgRoll = 66;
+			game.boosterPack = 'combine';
+			game.uncommonChance = 50;
+			game.rareChance = 0;
+			game.legendaryChance = 0;
+			game.overworld = 'forest';
+			player.stance = 'shimmer';
+			player.health.max = 141;
+			player.health.current = 119;
+			player.health.base = 75;
+			player.rainbow.max = 20;
+			player.rainbow.base = 0;
+			player.rainbow.current = 0;
+			player.armor = 39;
+			player.aggro.current = 18;
+			player.aggro.level = 2;
+
+		break;
+
+		case 'frost_cycle':
+			// treasures
+			addTreasure('gift_of_conjuring');
+			addTreasure('pridwen');
+			addTreasure('glowing_sludge');
+			addTreasure('ancient_runestone');
+			addTreasure('hickory_staff');
+			addTreasure('hemlock_staff');
+
+			// candy
+			addCandy('peanut_butter_cup');
+			addCandy('nut_clusters');
+
+			// cards
+			addCardToDeck('shield');
+			addCardToDeck('shield');
+			addCardToDeck('leather_armor');
+			addCardToDeck('stun');
+			addCardToDeck('bottled_speed');
+			addCardToDeck('tail_whip');
+			addCardToDeck('quick_stab');
+			addCardToDeck('elemental_charm');
+			addCardToDeck('cleanse');
+			addCardToDeck('divert');
+			addCardToDeck('amass');
+			addCardToDeck('glowing_orb');
+			addCardToDeck('make_ready');
+			addCardToDeck('delayed_charge');
+			addCardToDeck('shimmer_stance');
+			addCardToDeck('strange_mushroom');
+			addCardToDeck('seeing_ring');
+			addCardToDeck('strangefire');
+			addCardToDeck('devastator');
+			addCardToDeck('paralyzing_touch');
+
+			// shards
+			deck.attachShard(util.getCardById('stun', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('cleanse', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('cleanse', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('amass', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('amass', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('make_ready', deck.cards), 'frost');
+
+			// essence
+			updateEssenceLevels('shimmer', 12);
+			updateEssenceLevels('sparkle', 3);
+			updateEssenceLevels('aura', 2);
+
+			// misc
+			gainCourage(35);
+			game.candyChance = 60;
+			game.shardChance = 40;
+			game.critChance = 3;
+			game.highestDmgRoll = 60;
+			game.boosterPack = 'cycle';
+			game.uncommonChance = 50;
+			game.rareChance = 0;
+			game.legendaryChance = 0;
+			game.overworld = 'forest';
+			player.stance = 'shimmer';
+			player.health.max = 125;
+			player.health.current = 123;
+			player.health.base = 75;
+			player.rainbow.max = 20;
+			player.rainbow.base = 0;
+			player.rainbow.current = 0;
+			player.armor = 63;
+			player.aggro.current = 18;
+			player.aggro.level = 2;
+
+		break;
 	} 
 
 }
@@ -2075,7 +2227,7 @@ function updateCardDescription(elem, cards) {
 		}
 		$(this).addClass(css);
 	});
-	elem.find('.courage-amount, .shimmer-amount, .sparkle-amount, .aura-amount').each(function(e) {
+	/*elem.find('.courage-amount, .shimmer-amount, .sparkle-amount, .aura-amount').each(function(e) {
 		let originalValue = $(this).data('amount');
 		let adjustedValue = originalValue;
 		if(card.age > 0) {
@@ -2094,7 +2246,7 @@ function updateCardDescription(elem, cards) {
 			css = 'worse';
 		}
 		$(this).addClass(css);
-	});
+	});*/
 	let use = util.getCardAttribute(card, 'use');
 	elem.find('.use').html(use);
 	let linger = util.getCardAttribute(card, 'linger');
@@ -2750,6 +2902,8 @@ async function beginTurn() {
 	clearTurnEffects(player, false, true);
 	clearTurnAbilities(player, false, true);
 
+	monsters.updateStatusBar();
+
 	setStatus();
 
 	await util.wait(1000);
@@ -3234,7 +3388,7 @@ async function endTurn(checkRetain = true) {
 
 	// retain cards
 	$('.player-cards .card').removeClass('playable selected');
-	if(player.retain.current > 0 && checkRetain) {
+	if(player.retain.current > 0 && checkRetain && combatDeck.handCards.length > 0) {
 		$('.player-panel .standard-message').html('choose cards to retain').addClass('shown');
 		$('.retain-done').addClass('shown');
 		$('.player-cards .card').addClass('retainable');
@@ -3634,48 +3788,58 @@ function applyAbility(ability, to, turns = -1) {
 	let active = to[ability.ability].enabled && to[ability.ability].baseTurns == -1;
 	let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
 
-	to[ability.ability].enabled = ability.enabled;
-	let statusDom = $('.player .status-text');
-	if(to.type=='monster') {
-		statusDom = $('.monster[data-guid=' + to.guid + '] .status-text');
+	let isHex = false;
+	if(gameAbility.hex) {
+		isHex = true;
 	}
-	if(!active) {
-		if(to[ability.ability].permanent) {
-			to[ability.ability].baseTurns += turns;
-		} else {
-			to[ability.ability].baseTurns = ability.baseTurns;
-		}
-	}
-	if(ability.hex) {
-		to[ability.ability].turns = 0;
-		to[ability.ability].enabled = false;
-		if(game.playsounds) sounds.play('hex');
-		game.statusAnimations({data: gameAbility.name, to: statusDom, hex: true});
-		// deal with angered effect
-		if(to.angered.current > 0) {
-			let angeredEffect = {effect: 'might', amount: to.angered.current, turns: -1};
-			applyEffect(angeredEffect, to);
-		}
+	// check for vex
+	if(to.vex.current > 0 && isHex) {
+		to.vex.current -= 1;
+		if(game.playsounds) sounds.play('vex');
 	} else {
+		to[ability.ability].enabled = ability.enabled;
+		let statusDom = $('.player .status-text');
+		if(to.type=='monster') {
+			statusDom = $('.monster[data-guid=' + to.guid + '] .status-text');
+		}
 		if(!active) {
-			if(ability.baseTurns == -1) { // if we're applying a temporary ability on top of a permanent one
-				to[ability.ability].turns = -1;
+			if(to[ability.ability].permanent) {
+				to[ability.ability].baseTurns += turns;
 			} else {
-				to[ability.ability].turns += turns;
+				to[ability.ability].baseTurns = ability.baseTurns;
 			}
 		}
-		let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
-		let sound = gameAbility.sound ? gameAbility.sound : 'applyAbility';
-		if(game.playsounds) sounds.play(sound);
-		game.statusAnimations({data: gameAbility.name, to: statusDom, hex: false});
-	}
-	if(to[ability.ability].baseTurns < -1) to[ability.ability].baseTurns = -1;
-	if(to[ability.ability].turns < -1) to[ability.ability].turns = -1;
-	if(ability.persist) {
-		to[ability.ability].persist = ability.persist;
-	}
-	if(ability.permanent) {
-		to[ability.ability].permanent = ability.permanent;
+		if(ability.hex) {
+			to[ability.ability].turns = 0;
+			to[ability.ability].enabled = false;
+			if(game.playsounds) sounds.play('hex');
+			game.statusAnimations({data: gameAbility.name, to: statusDom, hex: true});
+			// deal with angered effect
+			if(to.angered.current > 0) {
+				let angeredEffect = {effect: 'might', amount: to.angered.current, turns: -1};
+				applyEffect(angeredEffect, to);
+			}
+		} else {
+			if(!active) {
+				if(ability.baseTurns == -1) { // if we're applying a temporary ability on top of a permanent one
+					to[ability.ability].turns = -1;
+				} else {
+					to[ability.ability].turns += turns;
+				}
+			}
+			let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
+			let sound = gameAbility.sound ? gameAbility.sound : 'applyAbility';
+			if(game.playsounds) sounds.play(sound);
+			game.statusAnimations({data: gameAbility.name, to: statusDom, hex: false});
+		}
+		if(to[ability.ability].baseTurns < -1) to[ability.ability].baseTurns = -1;
+		if(to[ability.ability].turns < -1) to[ability.ability].turns = -1;
+		if(ability.persist) {
+			to[ability.ability].persist = ability.persist;
+		}
+		if(ability.permanent) {
+			to[ability.ability].permanent = ability.permanent;
+		}
 	}
 	if(to.type == 'monster') monsters.updateStatusBar();
 
@@ -3916,7 +4080,7 @@ function loot(type, tier = 3) {
 			}
 			// chance for candy
 			if(util.chance(game.candyChance)) {
-				game.candyChance -= 15;
+				game.candyChance -= 20;
 				if(game.candyChance < 0) game.candyChance = 0;
 				let candy = util.weightedRandom(treasures.candies);
 				//let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
@@ -3971,7 +4135,7 @@ function rewardsScreen() {
 		util.appendCard(card, '.rewards-cards');
 	}
 	if(util.chance(game.candyChance)) {
-		game.candyChance -= 30;
+		game.candyChance -= 20;
 		if(game.candyChance < 0) game.candyChance = 0;
 		let candy = util.weightedRandom(treasures.candies);
 		//let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
@@ -4671,7 +4835,11 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 
 	let currentMonster = false;
 	if(monster != undefined) {
-		currentMonster = game.currentMonsters.filter(i => i.guid == monster.data('guid'));
+		if(monster == 'random') {
+			currentMonster = [util.randFromArray(game.currentMonsters)];
+		} else {
+			currentMonster = game.currentMonsters.filter(i => i.guid == monster.data('guid'));
+		}
 	}
 
 	let mana = util.getCardAttribute(card, 'mana');
@@ -4792,6 +4960,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 			}
 		}
 		let freeCard = util.randFromArray(possibleCards);
+		console.log('tried to bless', freeCard);
 		if(freeCard != undefined) {	
 			freeCard.mana = 0;
 			if(freeCard.shardUpgrades.mana != undefined) freeCard.shardUpgrades.mana = 0;
@@ -5298,52 +5467,112 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					case 'discard':
 						// currently only cards can invoke this action, so make sure invoking card isn't the only one in hand
 						if(combatDeck.handCards.length > 1) {
-							$('.discard-message').html('choose cards to <span>discard</span>').addClass('shown');
-							//$('.discard-done').addClass('shown');
-							$('.player-cards .card').addClass('discardable').removeClass('playable');
-							$('.draw-card, .draw-all').addClass('disabled');
-							$('body').addClass('discarding selecting');
-							game.toDiscard = actions[e].value;
-							update = false;
+							if(game.autoplay) {
+								let handCards = $('.player-cards .card');
+								let randomCard = $(util.randFromArray(handCards));
+								discardCard(randomCard);
+							} else {
+								$('.discard-message').html('choose cards to <span>discard</span>').addClass('shown');
+								//$('.discard-done').addClass('shown');
+								$('.player-cards .card').addClass('discardable').removeClass('playable');
+								$('.draw-card, .draw-all').addClass('disabled');
+								$('body').addClass('discarding selecting');
+								game.toDiscard = actions[e].value;
+								update = false;
+							}
 						}
 					break;
 					case 'destroy':
 						// currently only cards can invoke this action, so make sure invoking card isn't the only one in hand
 						if(combatDeck.handCards.length > 1) {
-							$('.destroy-message').html('choose cards to <span>destroy</span>').addClass('shown');
-							if(actions[e].optional) {
-								game.destroyOptional = true;
-								$('.destroy-done').addClass('shown');
+							if(game.autoplay) {
+								let handCards = $('.player-cards .card');
+								let randomCard = $(util.randFromArray(handCards));
+								destroyCard(randomCard);
+							} else {
+								$('.destroy-message').html('choose cards to <span>destroy</span>').addClass('shown');
+								if(actions[e].optional) {
+									game.destroyOptional = true;
+									$('.destroy-done').addClass('shown');
+								}
+								$('.player-cards .card').addClass('destroyable').removeClass('playable');
+								$('.draw-card, .draw-all').addClass('disabled');
+								$('body').addClass('destroying selecting');
+								game.toDestroy = actions[e].value;
+								update = false;
 							}
-							$('.player-cards .card').addClass('destroyable').removeClass('playable');
-							$('.draw-card, .draw-all').addClass('disabled');
-							$('body').addClass('destroying selecting');
-							game.toDestroy = actions[e].value;
-							update = false;
 						}
 					break;
 					case 'findDrawCard':
 						if(combatDeck.drawCards.length > 0) {
-							game.toPick = actions[e].value;
-							viewDrawCards();
-							$('.draw-cards-panel .card').addClass('pickable');
-							$('.draw-cards-panel .message').html('Add cards to your hand');
+							if(game.autoplay) {
+								for(let i = 0; i < actions[e].value; i++) {
+									viewDrawCards();
+									await util.wait(500);
+									let drawCards = $('.draw-cards-panel .card');
+									if(drawCards.length > 0) {
+										let randomCard = $(util.randFromArray(drawCards));
+										addCardTo('drawCards', randomCard);
+									}
+									$('.draw-cards-panel').removeClass('shown');
+									$('.draw-cards-panel .card').removeClass('pickable');
+									$('.draw-cards-panel .message').html('');
+									await util.wait(250);
+								}
+							} else {
+								game.toPick = actions[e].value;
+								viewDrawCards();
+								$('.draw-cards-panel .card').addClass('pickable');
+								$('.draw-cards-panel .message').html('Add cards to your hand');
+							}
 						}
 					break;
 					case 'findDiscardCard':
 						if(combatDeck.discardCards.length > 0) {
-							game.toPick = actions[e].value;
-							viewDiscardCards();
-							$('.discard-cards-panel .card').addClass('pickable');
-							$('.discard-cards-panel .message').html('Add cards to your hand');
+							if(game.autoplay) {
+								for(let i = 0; i < actions[e].value; i++) {
+									viewDiscardCards();
+									await util.wait(500);
+									let discardCards = $('.discard-cards-panel .card');
+									if(discardCards.length > 0) {
+										let randomCard = $(util.randFromArray(discardCards));
+										addCardTo('discardCards', randomCard);
+									}
+									$('.discard-cards-panel').removeClass('shown');
+									$('.discard-cards-panel .card').removeClass('pickable');
+									$('.discard-cards-panel .message').html('');
+									await util.wait(250);
+								}
+							} else {
+								game.toPick = actions[e].value;
+								viewDiscardCards();
+								$('.discard-cards-panel .card').addClass('pickable');
+								$('.discard-cards-panel .message').html('Add cards to your hand');
+							}
 						}
 					break;
 					case 'findDeadCard':
 						if(combatDeck.deadCards.length > 0) {
-							game.toPick = actions[e].value;
-							viewDeadCards();
-							$('.dead-cards-panel .card').addClass('pickable');
-							$('.dead-cards-panel .message').html('Add cards to your hand');
+							if(game.autoplay) {
+								for(let i = 0; i < actions[e].value; i++) {
+									viewDeadCards();
+									await util.wait(500);
+									let deadCards = $('.dead-cards-panel .card');
+									if(deadCards.length > 0) {
+										let randomCard = $(util.randFromArray(deadCards));
+										addCardTo('deadCards', randomCard);
+									}
+									$('.dead-cards-panel').removeClass('shown');
+									$('.dead-cards-panel .card').removeClass('pickable');
+									$('.dead-cards-panel .message').html('');
+									await util.wait(250);
+								}
+							} else {
+								game.toPick = actions[e].value;
+								viewDeadCards();
+								$('.dead-cards-panel .card').addClass('pickable');
+								$('.dead-cards-panel .message').html('Add cards to your hand');
+							}
 						}
 					break;
 					case 'stat':
@@ -5358,9 +5587,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							}
 						}
 
-						// if a card was played, check for age multiply effects
-						// but don't do so for mana/speed
-						if(playedCard && what != 'mana' && what != 'speed') {
+						// if a card was played, check for age multiply effects only for certain stats
+						if(playedCard && what == 'health') {
 							if(playedCard.age > 0) {
 								if(player.wisdom.current != 1) {
 									value += Math.round(playedCard.age * player.wisdom.current);
@@ -5406,6 +5634,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 									} else {
 										heal(player, value);
 									}
+								} else if(what == 'courage') {
+									gainCourage(value);
 								// we will actually increase the essence stats within the updateEssenceLevels function called below
 								} else if(what != 'aura' && what != 'sparkle' && what != 'shimmer') {
 									player[what][key] += value;
@@ -5467,8 +5697,24 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						let card = combatDeck.getOldestPlayableCard(combatDeck.handCards, playedCard);
 						if(card) {
 							let domCard = util.getDomCardByGuid(card.guid);
-							playCard(domCard, undefined, false, false)
+							playCard(domCard, 'random', false, false)
 						}
+					break;
+					case 'playHand':
+						let theseCards = combatDeck.handCards;
+						game.autoplay = true;
+						$('body, .map-inner').addClass('unavailable');
+						$('body').removeClass('combating');
+						for(let i = 0; i < theseCards.length; i++) {
+							if(theseCards[i].guid != playedCard.guid) {
+								let domCard = util.getDomCardByGuid(theseCards[i].guid);
+								await playCard(domCard, 'random', false, false);
+								await util.wait(game.animationGap);
+							}
+						}
+						game.autoplay = false;
+						$('body, .map-inner').removeClass('unavailable');
+						$('body').addClass('combating');
 					break;
 					case 'summonMonster':
 						let form = actions[e].form !== undefined ? actions[e].form : false;
@@ -6421,6 +6667,8 @@ async function activateRainbow(type, to) {
 			return;
 		}
 	}
+
+	monsterIntent();
 
 	return magicPower;
 }

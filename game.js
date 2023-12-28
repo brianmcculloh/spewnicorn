@@ -231,7 +231,7 @@ const ALL_EFFECTS = [
     // creature {base: 1, current: 0, temp: 2, turns: 2, persist: false} // base is default 1 (100%), so 1 would be 200% and -1 would be 0%
     // buff     {effect: 'wisdom', amount: 1, turns: -1}
     // hex      {effect: 'wisdom', amount: -1, hex: true}
-    {id: 'wisdom', name: 'Wisdom', desc: 'Card age boosts damage, block, and magic', x: -416, y: -6304, sound: 'effect28', hex: false},
+    {id: 'wisdom', name: 'Wisdom', desc: 'Card age boosts damage, block, armor, magic, and health amounts', x: -416, y: -6304, sound: 'effect28', hex: false},
     
     // Usage:
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
@@ -448,7 +448,7 @@ const ALL_ABILITIES = [
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'frozen', baseTurns: -1, enabled: true}
-    {id: 'frozen', name: 'Frozen', desc: 'Skip this turn', context: 'turn', x: -160, y: -6464, offset: true},
+    {id: 'frozen', name: 'Frozen', desc: 'Lose this turn', context: 'turn', x: -160, y: -6464, offset: true, hex: true},
 
 ];
 /*********************************************
@@ -523,6 +523,10 @@ const ALL_ACTIONS = [
     {id: 'playOldest', name: 'Play Oldest', desc: 'Play your oldest card in hand for free'},
 
     // Usage:
+    // {action: 'playHand'}
+    {id: 'playHand', name: 'Play Your Entire Hand', desc: 'Play all cards in your hand for free'},
+
+    // Usage:
     // {action: 'summonMonster'}
     {id: 'summonMonster', name: 'Summon', desc: 'Summons a new monster', sound: 'effect42'},
 
@@ -553,7 +557,7 @@ export default function Game() {
     let fountainChance = 1.4;
     let questChance = 1.6;
     let treasureChance = 0; // TODO: set to 0
-    let candyChance = 0; // TODO: set to 0
+    let candyChance = 50; // TODO: set to 50
     let shardChance = 0; // TODO: set to 0
     let uncommonChance = 10;
     let rareChance = 0;
@@ -573,6 +577,7 @@ export default function Game() {
     let toTransmute = [];
     let toPile = '';
     let fromPile = '';
+    let autoplay = false;
     let currentQuest;
     let combatEndedFlag = true;
     let courageTreasureAmount = 5;
@@ -762,6 +767,7 @@ export default function Game() {
         toShow,
         toTransmute,
         fromPile,
+        autoplay,
         currentQuest,
         combatEndedFlag,
         courageTreasureAmount,
