@@ -823,7 +823,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         effects: [
-            {effect: 'might', base: 4}
+            {effect: 'might', base: 3}
         ],
         x: -416,
         y: -2912
@@ -835,7 +835,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         effects: [
-            {effect: 'muster', base: 4}
+            {effect: 'muster', base: 3}
         ],
         x: -416,
         y: -3200
@@ -847,7 +847,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         effects: [
-            {effect: 'solid', base: 6}
+            {effect: 'solid', base: 4}
         ],
         x: -416,
         y: -3040
@@ -859,7 +859,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         effects: [
-            {effect: 'conjure', base: 4}
+            {effect: 'conjure', base: 3}
         ],
         x: -416,
         y: -2976
@@ -871,7 +871,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         effects: [
-            {effect: 'summon', base: 8}
+            {effect: 'summon', base: 6}
         ],
         x: -416,
         y: -3008
@@ -883,7 +883,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         effects: [
-            {effect: 'lightning', base: 6}
+            {effect: 'lightning', base: 4}
         ],
         x: -416,
         y: -3072
@@ -908,7 +908,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         effects: [
-            {effect: 'craft', base: 4}
+            {effect: 'craft', base: 3}
         ],
         x: -416,
         y: -2880
@@ -1848,6 +1848,7 @@ const ALL_TREASURES = [
         id:'organic_shield', 
         name: "Organic Shield", 
         tier: 3,
+        weight: 2,
         courage: 15,
         permanent: true,
         effects: [
@@ -1861,6 +1862,7 @@ const ALL_TREASURES = [
         id:'organic_armor', 
         name: "Organic Armor", 
         tier: 3,
+        weight: 2,
         courage: 15,
         permanent: true,
         effects: [
@@ -1874,6 +1876,7 @@ const ALL_TREASURES = [
         id:'organic_staff', 
         name: "Organic Staff", 
         tier: 3,
+        weight: 2,
         courage: 15,
         permanent: true,
         effects: [
@@ -2007,6 +2010,7 @@ const ALL_TREASURES = [
         id:'eternal_sword', 
         name: "Eternal Sword", 
         tier: 4,
+        weight: 2,
         courage: 20,
         permanent: true,
         effects: [
@@ -2020,6 +2024,7 @@ const ALL_TREASURES = [
         id:'eternal_shield', 
         name: "Eternal Shield", 
         tier: 4,
+        weight: 2,
         courage: 20,
         permanent: true,
         effects: [
@@ -2033,6 +2038,7 @@ const ALL_TREASURES = [
         id:'eternal_staff', 
         name: "Eternal Staff", 
         tier: 4,
+        weight: 2,
         courage: 20,
         permanent: true,
         effects: [
@@ -2068,7 +2074,7 @@ const ALL_TREASURES = [
         permanent: true,
         owned: true,
         effects: [
-            {effect: 'solid', base: 6}
+            {effect: 'solid', base: 4}
         ],
         x: -192,
         y: -12672
@@ -2082,7 +2088,7 @@ const ALL_TREASURES = [
         permanent: true,
         owned: true,
         effects: [
-            {effect: 'might', base: 4}
+            {effect: 'might', base: 3}
         ],
         x: -416,
         y: -8800

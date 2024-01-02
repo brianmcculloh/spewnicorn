@@ -554,6 +554,7 @@ export default function Game() {
     let overworld = 'forest'; // forest, frost, flame
     let boosterPack = 'basic';
     let arenasComplete = 0;
+    let arenasRequired = 2;
     let fountainChance = 1.4;
     let questChance = 1.6;
     let treasureChance = 0; // TODO: set to 0
@@ -744,6 +745,7 @@ export default function Game() {
         overworld,
         boosterPack,
         arenasComplete,
+        arenasRequired,
         fountainChance,
         questChance,
         treasureChance,

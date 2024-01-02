@@ -103,8 +103,8 @@
  * 
  * PHASE V: 
  * 
- * TODO: do surge and blitzkrieg have the same card art?
- * TODO: build a cycle deck to the super frost or flame guardian and create as scenario
+ * TODO: process card block before attack and make sure card description reflects that order
+ * TODO: run another cycle, magic, and combine deck to test out changed cards since last runs
  * TODO: test out the new flame guardian moveset for balancing
  * TODO: test the singularity fight for balancing
  * TODO: implement mechanics first and then add some more cards after that
@@ -182,6 +182,10 @@
  * Card: Hide - gain block but lose might
  * Card: rainbow pack - do damage or gain temp might equal to max rainbow
  * Card: rainbow pack - do aoe damage equal to current summoned rainbow amount
+ * Card: combine pack - play a card and then remove it from deck - breakable with use 3
+ * Card: rainbow pack - does your currently charged rainbow amount of damage to a random enemy each turn
+ * Card: gain block but add junk/debris cards to hand
+ * Card: rainbow pack - does x damage to target for every magic card in deck
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -594,7 +598,7 @@ jQuery(document).ready(function($) {
 		map.clickTile($(this));
 
 		$('.tile.arena.visited').removeClass('clickable');
-		if(game.arenasComplete < 2) {
+		if(game.arenasComplete < game.arenasRequired) {
 			$('.tile.ice-gate').removeClass('clickable').data('powertip', 'Ice Gate: <span class="highlight">LOCKED</span>').attr('data-powertip', 'Ice Gate: <span class="highlight">LOCKED</span>');
 			$('.tile.fire-gate').removeClass('clickable').data('powertip', 'Fire Gate: <span class="highlight">LOCKED</span>').attr('data-powertip', 'Fire Gate: <span class="highlight">LOCKED</span>');
 		} else {
@@ -1481,6 +1485,7 @@ function setDifficulty() {
 	if(game.difficulty=='easy') {
 		game.questChance = 2.2;
 		game.fountainChance = 2;
+		game.arenasRequired = 1;
 		if(!game.debug) {
 			player.health.base = 100;
 			player.health.current =100;
@@ -1489,6 +1494,7 @@ function setDifficulty() {
 	} else if(game.difficulty=='medium') {
 		game.questChance = 1.8;
 		game.fountainChance = 1.6;
+		game.arenasRequired = 2;
 		if(!game.debug) {
 			player.health.base = 75;
 			player.health.current = 75;
@@ -1497,6 +1503,7 @@ function setDifficulty() {
 	} else if(game.difficulty=='hard') {
 		game.questChance = 1.8;
 		game.fountainChance = 1.6;
+		game.arenasRequired = 3;
 		if(!game.debug) {
 			player.health.base = 65;
 			player.health.current = 65;
@@ -1505,6 +1512,7 @@ function setDifficulty() {
 	} else if(game.difficulty=='expert') {
 		game.questChance = 1.6;
 		game.fountainChance = 1.4;
+		game.arenasRequired = 3;
 		if(!game.debug) {
 			player.health.base = 65;
 			player.health.current = 55;
@@ -1513,6 +1521,7 @@ function setDifficulty() {
 	} else if(game.difficulty=='nightmare') {
 		game.questChance = 1.4;
 		game.fountainChance = 1.2;
+		game.arenasRequired = 3;
 		if(!game.debug) {
 			player.health.base = 60;
 			player.health.current = 50;
@@ -1622,6 +1631,7 @@ function buildScenario(which = 'frozen_forest_combine') {
 			player.stance = 'sparkle';
 			
 		break;
+
 		case 'singularity_rainbow':
 
 			// treasures
@@ -2005,6 +2015,111 @@ function buildScenario(which = 'frozen_forest_combine') {
 			player.armor = 63;
 			player.aggro.current = 18;
 			player.aggro.level = 2;
+
+		break;
+
+		case 'super_frost_cycle':
+			// treasures
+			addTreasure('hemlock_staff');
+			addTreasure('gift_of_protection');
+			addTreasure('unending_hourglass');
+			addTreasure('red_envelope');
+			addTreasure('pewter_mug');
+			addTreasure('mark_of_narfallow');
+			addTreasure('bronze_helm');
+			addTreasure('sifter');
+			addTreasure('signet_ring');
+			addTreasure('excalibur');
+			addTreasure('falcon_feather');
+			addTreasure('swift_feather');
+			addTreasure('eternal_shield');
+			addTreasure('organic_staff');
+			addTreasure('hawthorn_staff');
+			addTreasure('ornamental_staff');
+			addTreasure('hickory_staff');
+
+			// candy
+			addCandy('gumball');
+			addCandy('candy_lemon_slice');
+			addCandy('blueberry_gobstopper');
+
+			// cards
+			addCardToDeck('stun');
+			addCardToDeck('bottled_speed');
+			addCardToDeck('plate_armor');
+			addCardToDeck('tail_whip');
+			addCardToDeck('tail_whip');
+			addCardToDeck('strange_mushroom');
+			addCardToDeck('auto_attack');
+			addCardToDeck('recoil');
+			addCardToDeck('clever_maneuver');
+			addCardToDeck('blockade');
+			addCardToDeck('target');
+			addCardToDeck('repel');
+			addCardToDeck('hardened_features');
+			addCardToDeck('aura_stance');
+			addCardToDeck('devastator');
+			addCardToDeck('flywheel');
+			addCardToDeck('remember');
+			addCardToDeck('critical_hit');
+			addCardToDeck('elite_maneuver');
+			addCardToDeck('fractured_orb');
+			addCardToDeck('robustness');
+			addCardToDeck('cutting_ring');
+			addCardToDeck('sparkle_stance');
+			addCardToDeck('paralyzing_touch');
+			addCardToDeck('whinny');
+			addCardToDeck('sacrifice');
+			addCardToDeck('entity');
+			addCardToDeck('overpowered');
+			addCardToDeck('reaper');
+
+			// shards
+			deck.attachShard(util.getCardById('stun', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('tail_whip', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('tail_whip', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('auto_attack', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('recoil', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('clever_maneuver', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('blockade', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('blockade', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('target', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('repel', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('repel', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('devastator', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('devastator', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('remember', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('remember', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('critical_hit', deck.cards), 'flame');
+			deck.attachShard(util.getCardById('elite_maneuver', deck.cards), 'frost');
+			deck.attachShard(util.getCardById('cutting_ring', deck.cards), 'flame');
+
+			// essence
+			updateEssenceLevels('shimmer', 7);
+			updateEssenceLevels('sparkle', 12);
+			updateEssenceLevels('aura', 17);
+
+			// misc
+			gainCourage(8);
+			game.candyChance = 20;
+			game.shardChance = 45;
+			game.critChance = 6;
+			game.highestDmgRoll = 93;
+			game.boosterPack = 'cycle';
+			game.uncommonChance = 20;
+			game.rareChance = 18;
+			game.legendaryChance = 0;
+			game.overworld = 'frost';
+			player.stance = 'aura';
+			player.health.max = 135;
+			player.health.current = 120;
+			player.health.base = 75;
+			player.rainbow.max = 20;
+			player.rainbow.base = 0;
+			player.rainbow.current = 0;
+			player.armor = 97;
+			player.aggro.current = 16;
+			player.aggro.level = 3;
 
 		break;
 	} 
@@ -6901,13 +7016,13 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 
 				}
 				// check for resurrect
-				if(thisTo.resurrect.enabled && cardWasPlayed) {
+				if(thisTo.resurrect.enabled) {
 					game.toResurrect += 1;
 					if(game.playsounds) sounds.play('effect44');
 				}
 
 				// check for hardened
-				if(thisTo.hardened.current > 0 && cardWasPlayed) {
+				if(thisTo.hardened.current > 0) {
 					thisTo.block += thisTo.hardened.current;
 				}
 
