@@ -103,7 +103,7 @@
  * 
  * PHASE V:
  * 
- * TODO: run another cycle, magic, and combine deck to test out changed cards since last runs
+ * TODO: run another cycle and combine deck to test out changed cards since last runs
  * TODO: test out the new flame guardian moveset for balancing
  * TODO: test the singularity fight for balancing
  * TODO: implement mechanics first and then add some more cards after that

@@ -448,7 +448,7 @@ const ALL_ABILITIES = [
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'frozen', baseTurns: -1, enabled: true}
-    {id: 'frozen', name: 'Frozen', desc: 'Lose this turn', context: 'turn', x: -160, y: -6464, offset: true, hex: true},
+    {id: 'frozen', name: 'Frozen', desc: 'Lose this turn', context: 'turn', x: -384, y: -6560, offset: true, hex: true},
 
 ];
 /*********************************************
