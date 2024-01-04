@@ -101,9 +101,8 @@
  * Card Prices - DONE
  * 
  * 
- * PHASE V: 
+ * PHASE V:
  * 
- * TODO: process card block before attack and make sure card description reflects that order
  * TODO: run another cycle, magic, and combine deck to test out changed cards since last runs
  * TODO: test out the new flame guardian moveset for balancing
  * TODO: test the singularity fight for balancing
@@ -3411,11 +3410,17 @@ async function monsterAction(action = 'perform') {
 						} else if(id == 'kill') {
 							name = 'Die';
 							what = '';
+							type = '';
+							value = '';
+							to = '';
 						} else {
 							what = what != undefined ? ' (' + what + ')' : '';
 							type = type != undefined ? ' (' + type + ')' : '';
 						}
 						value = value != undefined ? ' ' + symbol + value : '';
+						if(to == 'drawCards') to = 'Draw Cards';
+						if(to == 'handCards') to = 'Hand';
+						if(to == 'discardCards') to = 'Discard Cards';
 						if(id == 'removeHexes' || id == 'summonMonster' || id == 'kill') {
 							to = '';
 						} else if(id == 'removeBuffs') {
@@ -3423,9 +3428,6 @@ async function monsterAction(action = 'perform') {
 						} else {
 							to = value != undefined ? ' to ' + to : '';
 						}
-						if(to == 'drawCards') to = 'Draw Cards';
-						if(to == 'handCards') to = 'Hand Cards';
-						if(to == 'discardCards') to = 'Discard Cards';
 						if(desc != undefined) {
 							// custom description
 							intentTooltip = desc;
@@ -5142,16 +5144,16 @@ async function processCard(card, currentMonster, type, multiply = 1, cardWasPlay
 		}
 	}
 
-	let dmg = util.getCardAttribute(card, 'dmg', type);
-	await processDmg(dmg, target, multiply, card, type, cardWasPlayed);
-
-	if(monsters.allDead()) return;
-
 	let blk = util.getCardAttribute(card, 'blk', type);
 	await processBlk(blk, multiply, card, cardWasPlayed);
 
 	let armor = util.getCardAttribute(card, 'armor', type);
 	await processArmor(armor, multiply, card, cardWasPlayed);
+
+	let dmg = util.getCardAttribute(card, 'dmg', type);
+	await processDmg(dmg, target, multiply, card, type, cardWasPlayed);
+
+	if(monsters.allDead()) return;
 
 	let effects = util.getCardAttribute(card, 'effects', type);
 	await processEffects(effects, currentMonster, multiply, card, cardWasPlayed);
@@ -5694,6 +5696,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						let key = actions[e].key;
 						let what = actions[e].what;
 						let value = actions[e].value;
+						let additive = actions[e].additive !== undefined ? actions[e].additive : true;
 
 						if(value==='double') {
 							value = player[what][key];
@@ -5753,7 +5756,11 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 									gainCourage(value);
 								// we will actually increase the essence stats within the updateEssenceLevels function called below
 								} else if(what != 'aura' && what != 'sparkle' && what != 'shimmer') {
-									player[what][key] += value;
+									if(additive) {
+										player[what][key] += value;
+									} else {
+										player[what][key] = value;
+									}
 									// it's possible rainbow gets reduced below base value - don't let this happen
 									// we actually removed this because it didn't make sense
 									//if(player.rainbow.base > player.rainbow.max) player.rainbow.max = player.rainbow.base;

@@ -64,7 +64,7 @@ const ALL_EFFECTS = [
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'might', amount: 5, turns: -1}
     // hex      {effect: 'might', amount: -8, hex: true}
-    {id: 'might', name: 'Might', desc: 'Your attack cards do x extra damage', x: -288, y: -4960, sound: 'effect30', hex: false},
+    {id: 'might', name: 'Might', desc: 'Your attacks do x extra damage', x: -288, y: -4960, sound: 'effect30', hex: false},
 
     // Usage:
     // creature {base: 1.1, current: 0, temp: 0, turns: -1, persist: false}, // value should range from 0 (0%) to 2 (200%) - haven't tested higher
@@ -131,7 +131,7 @@ const ALL_EFFECTS = [
     // creature {base: 3, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'heal', amount: 3, turns: -1}
     // hex      {effect: 'heal', amount: -3, hex: true}
-    {id: 'heal', name: 'Heal', desc: 'Health gained at the end of combat (start of turn for monsters)', x: -32, y: -6592, sound: 'effect7', hex: false},
+    {id: 'heal', name: 'Heal', desc: 'Health gained at the end of combat', x: -32, y: -6592, sound: 'effect7', hex: false},
 
     // Usage:
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
@@ -148,7 +148,7 @@ const ALL_EFFECTS = [
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'momentum', amount: 1, turns: -1}
-    {id: 'momentum', name: 'Momentum', desc: 'Cards played this turn hit progressively harder', x: -286, y: -6562, sound: 'effect32', hex: false},
+    {id: 'momentum', name: 'Momentum', desc: 'Increase attack damage x amount per attack this turn', x: -286, y: -6562, sound: 'effect32', hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
@@ -160,7 +160,7 @@ const ALL_EFFECTS = [
     // creature {base: .9, current: 0, temp: 0, turns: -1, persist: false}, // value should range from .1 (10%) to .9 (90%) - does NOT work exactly the same as punch!
     // buff     {effect: 'resistance', amount: .9, turns: 2}
     // hex     {effect: 'resistance', amount: -.1, hex: true} // untested
-    {id: 'resistance', name: 'Resistance', desc: 'Incoming magic damage multiplier', x: -32, y: -5152, sound: 'effect35', delay: true, hex: false},
+    {id: 'resistance', name: 'Resistance', desc: 'Resists magic damage', x: -32, y: -5152, sound: 'effect35', delay: true, hex: false},
 
     // Usage:
     // creature {base: 5, current: 0, temp: 0, turns: -1, persist: false}

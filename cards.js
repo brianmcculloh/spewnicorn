@@ -2042,7 +2042,7 @@ const ALL_CARDS = [
         id: 'forge', name: 'Forge', type: 'attack', mana: 2, target: 'monster', weight: .2, addable: false, tier: 'legendary',  weapon: true,
         dmg: [50],
         effects: [
-            {effect: 'punch', amount: .4, turns: 1},
+            {effect: 'punch', amount: .4, turns: 2},
         ],
         additionalDesc: 'Level V Weapon',
         slots: 1,
@@ -2052,14 +2052,15 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'dragons_bane', name: "Dragon's Bane", type: 'attack', mana: 3, target: 'monster', weight: .2, addable: false, tier: 'legendary',  weapon: true,
+        id: 'dragons_bane', name: "Dragon's Bane", type: 'attack', mana: 2, target: 'monster', weight: .2, addable: false, tier: 'legendary',  weapon: true,
         dmg: [50],
         effects: [
-            {effect: 'might', amount: 8, turns: 1},
+            {effect: 'might', amount: 8, turns: 2},
         ],
         additionalDesc: 'Level V Weapon',
         slots: 1,
         shardUpgrades: {
+            mana: 1,
             dmg: [65]
         },
     }),
@@ -2067,7 +2068,7 @@ const ALL_CARDS = [
         id: 'endless_edge', name: 'Endless Edge', type: 'attack', mana: 2, target: 'monster', weight: .2, addable: false, tier: 'legendary',  weapon: true,
         dmg: [10, 10, 10, 10, 10],
         effects: [
-            {effect: 'punch', amount: .4, turns: 1},
+            {effect: 'punch', amount: .4, turns: 2},
         ],
         additionalDesc: 'Level V Weapon',
         slots: 1,
@@ -2080,7 +2081,7 @@ const ALL_CARDS = [
         id: 'deathmaker', name: 'Deathmaker', type: 'attack', mana: 2, target: 'monster', weight: .2, addable: false, tier: 'legendary',  weapon: true,
         dmg: [10, 10, 10, 10, 10],
         effects: [
-            {effect: 'might', amount: 8, turns: 1},
+            {effect: 'might', amount: 8, turns: 2},
         ],
         additionalDesc: 'Level V Weapon',
         slots: 1,
@@ -7272,20 +7273,6 @@ export function Deck() {
             desc += '<div class="desc-item"><span class="highlight">Natural</span></div>';
         }*/ // we're using a bubble indicator for this now
 
-        let dmg = shard ? util.getShardAttribute(card, shard, 'dmg') : util.getCardAttribute(card, 'dmg');
-        if(dmg.length > 0) {
-            desc += '<div class="desc-item desc-dmg">Deal ';
-            for(let i = 0; i < dmg.length; i++) {
-                desc += '<span class="amount dmg" data-amount="' + dmg[i] + '">' + dmg[i] + '</span>, ';
-            }
-            desc = desc.slice(0, -2);
-            if(card.mana == '?') {
-                desc += ' damage ? times</div>';
-            } else {
-                desc += ' damage</div>';
-            }
-        }
-
         let blk = shard ? util.getShardAttribute(card, shard, 'blk') : util.getCardAttribute(card, 'blk');
         if(blk.length > 0) {
             desc += '<div class="desc-item">Gain ';
@@ -7313,6 +7300,21 @@ export function Deck() {
                 desc += ' armor</div>';
             }
         }
+
+        let dmg = shard ? util.getShardAttribute(card, shard, 'dmg') : util.getCardAttribute(card, 'dmg');
+        if(dmg.length > 0) {
+            desc += '<div class="desc-item desc-dmg">Deal ';
+            for(let i = 0; i < dmg.length; i++) {
+                desc += '<span class="amount dmg" data-amount="' + dmg[i] + '">' + dmg[i] + '</span>, ';
+            }
+            desc = desc.slice(0, -2);
+            if(card.mana == '?') {
+                desc += ' damage ? times</div>';
+            } else {
+                desc += ' damage</div>';
+            }
+        }
+
         let magicDesc = '';
         let magic = shard ? util.getShardAttribute(card, shard, 'magic') : util.getCardAttribute(card, 'magic');
         if(magic.length > 0) {
