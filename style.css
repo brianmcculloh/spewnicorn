@@ -2095,7 +2095,7 @@ body.selecting .combat .overlay {
 	align-items:center;
 	justify-content:center;
 	margin:0 auto;
-	padding:50px 50px 35px 50px;
+	padding:50px 50px 35px 180px;
 	/*width:100vw;*/
 }
 body.arena .monster-panel {
@@ -3159,7 +3159,7 @@ body.arena .monster-panel {
 /* magic rainbow */
 .magic-rainbow {
 	position:absolute;
-	left:0px;
+	left:-25px;
 	top:-120px;
 	width:238px;
 	height:115px;

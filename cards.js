@@ -1794,8 +1794,8 @@ const ALL_CARDS = [
     new Cards({
         id: 'briars', name: 'Briars', type: 'clutter', addable: false, playable: false, 
         draw: {
-            effects: [
-                {effect: 'speed', amount: -1, turns: 1, hex: true},
+            actions: [
+                {action: 'stat', what: 'speed', key: 'current', value: -1}
             ],
             target: 'player'
         }
@@ -1812,8 +1812,8 @@ const ALL_CARDS = [
     new Cards({
         id: 'mired', name: 'Mired', type: 'clutter', addable: false, playable: false,
         draw: {
-            effects: [
-                {effect: 'mana', amount: -1, turns: 1, hex: true},
+            actions: [
+                {action: 'stat', what: 'mana', key: 'current', value: -1}
             ],
             target: 'player'
         }
@@ -5231,16 +5231,16 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'blitzkrieg', name: 'Blitzkrieg', type: 'tool',tier: 'rare', mana: 3, courage: 5,
+        id: 'blitzkrieg', name: 'Blitzkrieg', type: 'tool',tier: 'rare', mana: 3, courage: 5, vanish: true,
         actions: [
             {action: 'playHand'}
         ],
         slots: 2,
         shardUpgrades: {
-            mana: 2
+            vanish: false
         },
         bothShardUpgrades: {
-            mana: 1
+            mana: 2
         }
     }),
 
@@ -5873,12 +5873,12 @@ const ALL_CARDS = [
     new Cards({
         id: 'magic_multiplier', name: 'Magic Multiplier', type: 'ability', mana: 3, tier: 'rare', courage: 5, 
         effects: [
-            {effect: 'sorcery', amount: .3, turns: -1}
+            {effect: 'sorcery', amount: .4, turns: -1}
         ],
         slots: 2,
         shardUpgrades: {
             effects: [
-                {effect: 'sorcery', amount: .4, turns: -1}
+                {effect: 'sorcery', amount: .5, turns: -1}
             ],
         },
         iceShardUpgrades: {
@@ -5886,7 +5886,7 @@ const ALL_CARDS = [
         },
         bothShardUpgrades: {
             effects: [
-                {effect: 'sorcery', amount: .5, turns: -1}
+                {effect: 'sorcery', amount: .6, turns: -1}
             ],
         },
     }),
@@ -7154,7 +7154,6 @@ export function Deck() {
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
         }
-
 
 
         // this is how to add a shard on init - DEV MODE ONLY

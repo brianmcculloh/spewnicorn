@@ -1761,7 +1761,7 @@ const ALL_TREASURES = [
         weight: 3,
         permanent: true,
         effects: [
-            {effect: 'punch', base: .2}
+            {effect: 'punch', base: .25}
         ],
         x: -96,
         y: -10240
@@ -1774,7 +1774,7 @@ const ALL_TREASURES = [
         weight: 3,
         permanent: true,
         effects: [
-            {effect: 'muster', base: 4}
+            {effect: 'muster', base: 6}
         ],
         x: -480,
         y: -672
@@ -1839,7 +1839,7 @@ const ALL_TREASURES = [
         weight: 3,
         permanent: true,
         effects: [
-            {effect: 'thunder', base: .2}
+            {effect: 'thunder', base: .25}
         ],
         x: -128,
         y: -9824
@@ -1910,7 +1910,7 @@ const ALL_TREASURES = [
         weight: 4,
         permanent: true,
         effects: [
-            {effect: 'punch', base: .3}
+            {effect: 'punch', base: .35}
         ],
         x: -256,
         y: -14112
@@ -1923,7 +1923,7 @@ const ALL_TREASURES = [
         weight: 4,
         permanent: true,
         effects: [
-            {effect: 'thunder', base: .3}
+            {effect: 'thunder', base: .35}
         ],
         x: -448,
         y: -14048
@@ -2001,7 +2001,7 @@ const ALL_TREASURES = [
         weight: 4,
         permanent: true,
         effects: [
-            {effect: 'momentum', base: 3}
+            {effect: 'momentum', base: 4}
         ],
         x: -160,
         y: -13088

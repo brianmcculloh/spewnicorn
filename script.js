@@ -103,7 +103,8 @@
  * 
  * PHASE V:
  * 
- * TODO: run another cycle and combine deck to test out changed cards since last runs
+ * TODO: sparkle stance might seems to be stacking every turn - check the temp array functionality
+ * TODO: run another cycle deck to test out changed cards since last runs
  * TODO: test out the new flame guardian moveset for balancing
  * TODO: test the singularity fight for balancing
  * TODO: implement mechanics first and then add some more cards after that
@@ -185,6 +186,7 @@
  * Card: rainbow pack - does your currently charged rainbow amount of damage to a random enemy each turn
  * Card: gain block but add junk/debris cards to hand
  * Card: rainbow pack - does x damage to target for every magic card in deck
+ * Card: do 100 damage to everyone in combat
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -1424,6 +1426,7 @@ function init() {
 function init_singularity() {
 	game.map = 3;
 	game.floor = 0;
+	if(game.debug) $('body').addClass('debug');
 	//player.aggro.current = 0;
 	//player.aggro.level = 0;
 	if(game.difficulty == 'easy' || game.difficulty == 'medium') { 
@@ -1445,6 +1448,7 @@ function init_map_2() {
 	game.floor = 0;
 	player.aggro.current = 0;
 	player.aggro.level = 0;
+	if(game.debug) $('body').addClass('debug');
 
 	if(game.difficulty == 'easy' || game.difficulty == 'medium') { 
 		heal(player, 999);
@@ -2587,6 +2591,10 @@ async function startCombat(tile = false) {
 	$('.candy').removeClass('trashable').addClass('clickable');
 	$('body').addClass('combating');
 	$('.player-cards').removeClass('unavailable').empty();
+	$('body').removeClass('discarding');
+	$('.discard-done').removeClass('shown');
+	$('.card').removeClass('discard discardable');
+	$('.discard-message').removeClass('shown');
 	
 	if(tile) {
 		if(!tile.hasClass('visited')) {
@@ -3767,8 +3775,10 @@ function removeBuffs(to) {
 function applyEffect(effect, to, turns = -1) {
 	let gameEffect = game.effects.find(({ id }) => id === effect.effect);
 	let isHex = false;
-	if(gameEffect.hex || effect.hex) {
-		isHex = true;
+	if(gameEffect!==undefined) {
+		if(gameEffect.hex || effect.hex) {
+			isHex = true;
+		}
 	}
 	// check for vex
 	if(to.vex.current > 0 && isHex) {
@@ -3803,7 +3813,15 @@ function applyEffect(effect, to, turns = -1) {
 							to[effect.effect].temp[0] = Math.round(((to[effect.effect].temp[0] + effect.amount) + Number.EPSILON) * 100) / 100;
 						}
 					} else {
-						to[effect.effect].temp.push(effect.amount);  //TODO: test sparkle stance + excalibur against mummy: mummy hexes might which disrupts temp array
+						// old way of doing it. two 1 turn effects would add effect for 2 turns instead of combining for one turn
+						//to[effect.effect].temp.push(effect.amount);  //TODO: test sparkle stance + excalibur against mummy: mummy hexes might which disrupts temp array
+						for(let i = 1; i <= turns; i++) {
+							if(to[effect.effect].temp.length == 0) {
+								to[effect.effect].temp.push(effect.amount);
+							} else {
+								to[effect.effect].temp[i - 1] = Math.round(((to[effect.effect].temp[i - 1] + effect.amount) + Number.EPSILON) * 100) / 100;
+							}
+						}
 					}
 				}
 			}
@@ -3901,7 +3919,6 @@ function clearCombatAbilities() {
 }
 
 function applyAbility(ability, to, turns = -1) {
-
 	let active = to[ability.ability].enabled && to[ability.ability].baseTurns == -1;
 	let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
 
@@ -4814,6 +4831,9 @@ function discardCards() {
 
 async function discardCard(elem) {
 	let card = util.getCardByGuid(elem.data('guid'), combatDeck.handCards);
+
+	if(card==undefined) return;
+
 	combatDeck.discardCard(card, combatDeck);
 
 	await processCard(card, false, 'discard');
@@ -4953,7 +4973,8 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	let currentMonster = false;
 	if(monster != undefined) {
 		if(monster == 'random') {
-			currentMonster = [util.randFromArray(game.currentMonsters)];
+			let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
+			currentMonster = [util.randFromArray(currentMonsters)];
 		} else {
 			currentMonster = game.currentMonsters.filter(i => i.guid == monster.data('guid'));
 		}
@@ -5328,13 +5349,13 @@ async function processEffects(effects, currentMonster = false, multiply = 1, car
 		}
 	}
 }
-async function processAbilities(abilities, currentMonster, card = false, cardWasPlayed = false) {
+async function processAbilities(abilities, currentMonster = false, card = false, cardWasPlayed = false) {
 	if(abilities != undefined) {
 		for(let e = 0; e < abilities.length; e++) {
 			for(let k = 0; k < currentMonster.length; k++) {
 				let to = player
 				let turns = abilities[e].turns == undefined ? -1 : abilities[e].turns;
-				if(abilities[e].hex && currentMonster) {
+				if(abilities[e].hex && currentMonster[k]) {
 					to = currentMonster[k];
 					turns = 0; // hexes always completely remove the buff
 				} else if(abilities[e].hex) {
@@ -5342,7 +5363,7 @@ async function processAbilities(abilities, currentMonster, card = false, cardWas
 					to = util.shuffle(currentMonsters);
 					to = to[0];
 					turns = 0;
-				} else if(currentMonster) {
+				} else if(currentMonster[k] && card.target=='monster') {
 					to = currentMonster[k];
 				}
 				applyAbility(abilities[e], to, turns);
