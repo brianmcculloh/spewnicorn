@@ -908,7 +908,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         effects: [
-            {effect: 'craft', base: 3}
+            {effect: 'craft', base: 4}
         ],
         x: -416,
         y: -2880
@@ -1218,7 +1218,7 @@ const ALL_TREASURES = [
         tier: 1,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'mana', key: 'current', value: 1},
+            {action: 'stat', what: 'mana', key: 'current', value: 2},
         ],
         trigger: {counter: 0, when: 'turns', at: 3, per: 'combat', once: false, activated: false},
         x: -0,
@@ -1229,7 +1229,7 @@ const ALL_TREASURES = [
         name: "Candlestick", 
         permanent: true,
         actions: [
-            {action: 'stat', what: 'speed', key: 'current', value: 1},
+            {action: 'stat', what: 'speed', key: 'current', value: 2},
         ],
         trigger: {counter: 0, when: 'cardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -64,
@@ -1266,7 +1266,7 @@ const ALL_TREASURES = [
         weight: 3,
         permanent: true,
         effects: [
-            {effect: 'irradiate', amount: 10, turns: -1}
+            {effect: 'irradiate', base: 10}
         ],
         x: -256,
         y: -5472
@@ -1462,7 +1462,7 @@ const ALL_TREASURES = [
         name: "Pendant", 
         weight: 4,
         effects: [
-            {effect: 'might', amount: 2, turns: -1, persist: false}
+            {effect: 'might', amount: 4, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'attackCardsPlayed', at: 3, per: 'turn', once: false, activated: false},
         x: -320,
@@ -1474,7 +1474,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 4,
         effects: [
-            {effect: 'solid', amount: 2, turns: -1, persist: false}
+            {effect: 'solid', amount: 4, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'toolCardsPlayed', at: 3, per: 'turn', once: false, activated: false},
         x: -192,
@@ -1486,7 +1486,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 4,
         effects: [
-            {effect: 'conjure', amount: 4, turns: -1, persist: false}
+            {effect: 'conjure', amount: 6, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'magicCardsPlayed', at: 3, per: 'turn', once: false, activated: false},
         x: -480,
@@ -1499,8 +1499,8 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 3,
         actions: [
-            {action: 'stat', what: 'mana', key: 'current', value: 1},
-            {action: 'draw', value: 1}
+            {action: 'stat', what: 'mana', key: 'current', value: 2},
+            {action: 'draw', value: 2}
         ],
         trigger: {counter: 0, when: 'toolCardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -32,
@@ -1513,7 +1513,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 2,
         effects: [
-            {effect: 'punch', amount: .5, turns: 2, persist: true}
+            {effect: 'punch', amount: .75, turns: 2, persist: true}
         ],
         trigger: {counter: 0, when: 'attackCardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -128,
@@ -1526,7 +1526,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 2,
         effects: [
-            {effect: 'sorcery', amount: .5, turns: 2, persist: true}
+            {effect: 'sorcery', amount: .75, turns: 2, persist: true}
         ],
         trigger: {counter: 0, when: 'magicCardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -288,
@@ -1539,7 +1539,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 2,
         effects: [
-            {effect: 'craft', amount: 4, turns: -1, persist: false}
+            {effect: 'craft', amount: 6, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'toolCardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -384,
@@ -1602,7 +1602,7 @@ const ALL_TREASURES = [
         name: "Charged Gauntlet", 
         weight: 4,
         effects: [
-            {effect: 'lightning', amount: 2, turns: -1, persist: false}
+            {effect: 'lightning', amount: 4, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'magicCardsPlayed', at: 3, per: 'turn', once: false, activated: false},
         x: -354,
@@ -1615,7 +1615,7 @@ const ALL_TREASURES = [
         tier: 2,
         weight: 2,
         effects: [
-            {effect: 'thunder', amount: .5, turns: 2, persist: true}
+            {effect: 'thunder', amount: .75, turns: 2, persist: true}
         ],
         trigger: {counter: 0, when: 'magicCardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -480,

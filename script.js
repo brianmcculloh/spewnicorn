@@ -103,8 +103,7 @@
  * 
  * PHASE V:
  * 
- * TODO: sparkle stance might seems to be stacking every turn - check the temp array functionality
- * TODO: run another cycle deck to test out changed cards since last runs
+ * TODO: run another cycle deck and make sure arenas can't be visited twice
  * TODO: test out the new flame guardian moveset for balancing
  * TODO: test the singularity fight for balancing
  * TODO: implement mechanics first and then add some more cards after that
@@ -207,6 +206,7 @@
  * 
  * 
  * BUGS [can't replicate]:
+ * BUG: candy that enshardens all cards sharded the permanent deck cards rather than the temp hand cards
  * BUG: done button ghost showing on subsequent combats - if this happens again, inspect the class of the button because .button-done is hidden on combat end and start
  * BUG: i was in a fight where i was at 0 health and armor but some block and i didn't die.
  * BUG: scenario: gold leaf treasure, rest site shard directly into quest (can't remember - think it was remove a card?) into arena
@@ -1079,28 +1079,32 @@ jQuery(document).ready(function($) {
 			let thisGuid = $(this).data('guid');
 			game.toTransmute = game.toTransmute.filter(j => j.guid !== thisGuid);
 		} else {
-			$(this).addClass('selected');
-			game.toPick -= 1;
-			let theseCards = deck.cards;
-			if(!game.combatEndedFlag) theseCards = combatDeck.allCards(combatDeck);
-			let thisCard = util.getCardByGuid($(this).data('guid'), theseCards);
-			game.toTransmute.push(thisCard);
-			if(game.toPick == 0) {
-				let permanent = combatDeck.transmuteCards(combatDeck, deck, player);
-				if(permanent) {
-					for(let i = 0; i < game.toTransmute.length; i++) {
-						removeCardFromDeck(game.toTransmute[i].guid);
-					}
-				}
-				game.toTransmute = [];
-				$('.choose-cards-panel').removeClass('shown');
-				$('.choose-cards-panel .card').removeClass('pickable');
-				$('.choose-cards-panel .message').html('');
-				$('.choose-cards-panel .cards').empty();
-				$('.choose-cards-panel .done').show();
+			if(game.toPick > 0) {
+				$(this).addClass('selected');
+				game.toPick -= 1;
+				let theseCards = deck.cards;
+				if(!game.combatEndedFlag) theseCards = combatDeck.allCards(combatDeck);
+				let thisCard = util.getCardByGuid($(this).data('guid'), theseCards);
+				game.toTransmute.push(thisCard);
 			}
 		}
 
+	});
+
+	$(document).on('click', '.choose-cards-panel .done.transmute', function(e) {
+		let permanent = combatDeck.transmuteCards(combatDeck, deck, player);
+		if(permanent) {
+			for(let i = 0; i < game.toTransmute.length; i++) {
+				removeCardFromDeck(game.toTransmute[i].guid);
+			}
+		}
+		game.toTransmute = [];
+		$('.choose-cards-panel').removeClass('shown');
+		$('.choose-cards-panel .card').removeClass('pickable');
+		$('.choose-cards-panel .message').html('');
+		$('.choose-cards-panel .cards').empty();
+		$('.choose-cards-panel .done').show();
+		$('.choose-cards-panel .done').removeClass('transmute');
 	});
 
 	$(document).on('click', '.choose-cards-panel .removable', function(e) {
@@ -1293,7 +1297,7 @@ jQuery(document).ready(function($) {
 			.delay(500)
 			.queue(function() {
 				$('.trade-cards-panel').removeClass('shown');
-				if(!player.guild_member.enabled) {
+				if(!player.guild_member.enabled || !deck.getTradeableCards()) {
 					$('.courage-trade').removeClass('shown');
 				}
 				$(this).parent().remove().dequeue();
@@ -1384,8 +1388,8 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('labrys_of_zeus'); // use this to manually add treasures
-	//addCandy('nut_clusters'); // use this to manually add candies
+	//addTreasure('glowing_sludge'); // use this to manually add treasures
+	//addCandy('peppermint_candy_stick'); // use this to manually add candies
 
 	if(game.debug) $('body').addClass('debug');
 	if(game.tutorial) {
@@ -2940,7 +2944,7 @@ async function beginTurn() {
 					//player.might.current += tempMight; // this was updated to use applyEffect instead
 					//player.might.temp.push(tempMight);
 					let effect = {effect: 'might', amount: tempMight, turns: 1};
-					applyEffect(effect, player);
+					applyEffect(effect, player, 1);
 				}
 			} else if(player.stance == 'shimmer') {
 				//player.speed.current = player.speed.base + Math.round(player.speed.current * player.shimmer.level) + extraSpeed; // old way of doing this was speed
@@ -5012,6 +5016,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 		player.mana.current -= mana;
 	}
 	if(player.mana.current <= 0) player.mana.current = 0;
+	if(player.speed.current <= 0) player.speed.current = 0;
 
 	// process per card effects
 	if(player.antimomentumAmount > 0) {
@@ -5354,6 +5359,7 @@ async function processAbilities(abilities, currentMonster = false, card = false,
 		for(let e = 0; e < abilities.length; e++) {
 			for(let k = 0; k < currentMonster.length; k++) {
 				let to = player
+				let abilityTarget = abilities[e].target !== undefined ? abilities[e].target : 'monster';
 				let turns = abilities[e].turns == undefined ? -1 : abilities[e].turns;
 				if(abilities[e].hex && currentMonster[k]) {
 					to = currentMonster[k];
@@ -5363,7 +5369,7 @@ async function processAbilities(abilities, currentMonster = false, card = false,
 					to = util.shuffle(currentMonsters);
 					to = to[0];
 					turns = 0;
-				} else if(currentMonster[k] && card.target=='monster') {
+				} else if(currentMonster[k] && card.target=='monster' && abilityTarget=='monster') {
 					to = currentMonster[k];
 				}
 				applyAbility(abilities[e], to, turns);
@@ -5522,7 +5528,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						if(cards.length > 0) {
 							if(game.toPick > cards.length) game.toPick = cards.length;
 							viewChooseCards(cards, 'transmutable');
-							$('.choose-cards-panel .done').hide();
+							$('.choose-cards-panel .done').addClass('transmute');
 						}
 					break;
 					case 'remove':
@@ -5532,7 +5538,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							if(game.toPick > cards.length) game.toPick = cards.length;
 							viewChooseCards(cards, 'removable');
 						}
-					break;
+					break; //{action: 'ensharden', type: 'frost', select: -1, from: 'handCards', random: true}
 					case 'ensharden':
 						game.toPick = actions[e].select;
 						game.toPile = actions[e].from;
@@ -5718,6 +5724,13 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						let what = actions[e].what;
 						let value = actions[e].value;
 						let additive = actions[e].additive !== undefined ? actions[e].additive : true;
+						let hex = actions[e].hex !== undefined ? actions[e].hex : false;
+
+						if(player.vex.current > 0 && hex) {
+							player.vex.current -= 1;
+							if(game.playsounds) sounds.play('vex');
+							break;
+						}
 
 						if(value==='double') {
 							value = player[what][key];

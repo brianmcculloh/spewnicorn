@@ -2829,6 +2829,9 @@ body.arena .monster-panel {
 .monster.dead {
 	opacity:.2;
 }
+.monster.hidden {
+	display:none;
+}
 .monster .meter {
 	position:absolute;
 	width:100%;

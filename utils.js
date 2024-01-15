@@ -440,7 +440,7 @@ export default class Util {
     }
     removeMonster(monster) {
         if(monster.breed == 'ghost' || game.mapType == 'singularity') {
-            $('.monster[data-guid=' + monster.guid + ']').remove();
+            $('.monster[data-guid=' + monster.guid + ']').addClass('hidden').removeClass('clickable');
         } else {
             $('.monster[data-guid=' + monster.guid + ']').addClass('dead').removeClass('clickable');
         }

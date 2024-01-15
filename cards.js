@@ -817,10 +817,10 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'rainbow_orb', name: 'Rainbow Orb', type: 'magic', mana: 0, addable: false,
-        magic: [{type: 'rainbow', amount: 2}], 
+        magic: [{type: 'rainbow', amount: 3}], 
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'rainbow', amount: 4}], 
+            magic: [{type: 'rainbow', amount: 5}], 
         },
     }),
 
@@ -2724,7 +2724,7 @@ const ALL_CARDS = [
         id: 'skycaller', name: "Skycaller", type: 'magic', mana: 2, weight: .05, use: 2, weapon: true, addable: false, tier: 'legendary',
         magic: [{type: 'aligned', amount: 30}],
         effects: [
-            {effect: 'summon', amount: 5, turns: -1}
+            {effect: 'summon', amount: 7, turns: -1}
         ],
         sound: 'magic4',
         additionalDesc: 'Level VII Weapon',
@@ -2734,7 +2734,7 @@ const ALL_CARDS = [
             use: 3,
             magic: [{type: 'aligned', amount: 45}],
             effects: [
-                {effect: 'summon', amount: 7, turns: -1}
+                {effect: 'summon', amount: 9, turns: -1}
             ],
         },
     }),
@@ -2778,7 +2778,7 @@ const ALL_CARDS = [
         id: 'deepcore', name: "Deepcore", type: 'magic', mana: 2, weight: .05, use: 2, weapon: true, addable: false, tier: 'legendary',
         magic: [{type: 'aligned', amount: 30}],
         effects: [
-            {effect: 'lightning', amount: 3, turns: -1}
+            {effect: 'lightning', amount: 5, turns: -1}
         ],
         sound: 'magic4',
         additionalDesc: 'Level VII Weapon',
@@ -2788,7 +2788,7 @@ const ALL_CARDS = [
             use: 3,
             magic: [{type: 'aligned', amount: 45}],
             effects: [
-                {effect: 'lightning', amount: 4, turns: -1}
+                {effect: 'lightning', amount: 7, turns: -1}
             ],
         },
     }),
@@ -3034,10 +3034,15 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'burning_strike', name: 'Burning Strike', type: 'attack', mana: 2, target: 'monster', expire: 1,
+        id: 'burning_strike', name: 'Burning Strike', type: 'attack', mana: 2, target: 'monster', expire: 3,
         dmg: [40],
-        slots: 1,
+        slots: 2,
         shardUpgrades: {
+            dmg: [45],
+            expire: 4
+        },
+        bothShardUpgrades: {
+            expire: 5,
             natural: true
         },
     }),
@@ -3316,13 +3321,13 @@ const ALL_CARDS = [
         dmg: [20],
         sound: 'attack8',
         abilities: [
-            {ability: 'panic', turns: 2, enabled: true}
+            {ability: 'panic', turns: 2, enabled: true, target: 'player'}
         ],
         slots: 1,
         shardUpgrades: {
             dmg: [30],
             abilities: [
-                {ability: 'panic', turns: 3, enabled: true}
+                {ability: 'panic', turns: 3, enabled: true, target: 'player'}
             ],
         },
         bothShardUpgrades: {
@@ -3608,31 +3613,37 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'freeze', name: 'Freeze', type: 'attack', target: 'monster', mana: 3, tier: 'rare', weight: 1, courage: 5, 
+        id: 'freeze', name: 'Freeze', type: 'attack', target: 'monster', mana: 3, tier: 'rare', weight: 1, courage: 5, vanish: true,
         dmg: [20],
         sound: 'attack10',
         actions: [
             {action: 'ensharden', type: 'frost', select: -1, from: 'handCards', random: true}
         ],
-        slots: 1,
+        slots: 2,
         shardUpgrades: {
             actions: [
                 {action: 'ensharden', type: 'frost', select: -1, from: 'allCards', random: true}
             ],
         },
+        bothShardUpgrades: {
+            mana: 2
+        },
     }),
     new Cards({
-        id: 'scorch', name: 'Scorch', type: 'attack', target: 'monster', mana: 3, tier: 'rare', weight: 1, courage: 5, 
+        id: 'scorch', name: 'Scorch', type: 'attack', target: 'monster', mana: 3, tier: 'rare', weight: 1, courage: 5, vanish: true,
         dmg: [20],
         sound: 'attack11',
         actions: [
             {action: 'ensharden', type: 'flame', select: -1, from: 'handCards', random: true}
         ],
-        slots: 1,
+        slots: 2,
         shardUpgrades: {
             actions: [
                 {action: 'ensharden', type: 'flame', select: -1, from: 'allCards', random: true}
             ],
+        },
+        bothShardUpgrades: {
+            mana: 2
         },
     }),
     new Cards({
@@ -7157,7 +7168,7 @@ export function Deck() {
 
 
         // this is how to add a shard on init - DEV MODE ONLY
-        //attachShard(util.getCardById('remember', this.cards), 'flame');
+        //attachShard(util.getCardById('nullify', this.cards), 'flame');
 
         
     }
@@ -7729,6 +7740,9 @@ export function Deck() {
                     tier = tier != undefined ? ' ' + tier : '';
                     from = from != undefined ? ' ' + util.getFromDisplay(from) : '';
                     select = from == ' all cards' ? '' : select;
+                    if(id == 'transmute') {
+                        select = ' up to ' + select;
+                    }
                     name = name == 'Add Card' ? 'Add' : name;
                     if(cardWith != undefined) {
                         if(cardWith.length > 1) {
