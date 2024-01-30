@@ -59,6 +59,9 @@
  * Effect: Antimatter - whenever antimomentum activates, gain x momentum
  * Effect: whenever you gain courage, gain x more (via new treasure)
  * Ability: trade card cost locks in at current rate (via new treasure)
+ * Effect: Medic - heal x every time you gain courage or essence
+ * Ability: impotent - can only play tool cards
+ * Effect: apply x times max rainbow block each time you activate rainbow
  * 
  * 
  * 
@@ -103,7 +106,6 @@
  * 
  * PHASE V:
  * 
- * TODO: run another cycle deck and make sure arenas can't be visited twice
  * TODO: test out the new flame guardian moveset for balancing
  * TODO: test the singularity fight for balancing
  * TODO: implement mechanics first and then add some more cards after that
@@ -186,6 +188,9 @@
  * Card: gain block but add junk/debris cards to hand
  * Card: rainbow pack - does x damage to target for every magic card in deck
  * Card: do 100 damage to everyone in combat
+ * Card: uncommon/rare cards that vanish but permanently hex might/punch a higher amount than whinny/neigh
+ * Card: rare 0 cost - when drawn gain 1 turn of impotent. can only be played if only card in hand. when played do something very good like freeze all enemies and gain might
+ * Card: percentage changes of doing different things
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -201,11 +206,13 @@
  * Treasure: +5 irradiate
  * Treasure: +20 irradiate on turn 1
  * Candy: add cards to hand
+ * Candy: increase max health
  * 
  * 
  * 
  * 
  * BUGS [can't replicate]:
+ * BUG #1: i played malevolent blow against frost void fairy when they had ~10 health left on turn when they were unreachable, and their current health number disappeared and they couldn't be harmed further
  * BUG: candy that enshardens all cards sharded the permanent deck cards rather than the temp hand cards
  * BUG: done button ghost showing on subsequent combats - if this happens again, inspect the class of the button because .button-done is hidden on combat end and start
  * BUG: i was in a fight where i was at 0 health and armor but some block and i didn't die.
@@ -1092,19 +1099,9 @@ jQuery(document).ready(function($) {
 	});
 
 	$(document).on('click', '.choose-cards-panel .done.transmute', function(e) {
-		let permanent = combatDeck.transmuteCards(combatDeck, deck, player);
-		if(permanent) {
-			for(let i = 0; i < game.toTransmute.length; i++) {
-				removeCardFromDeck(game.toTransmute[i].guid);
-			}
-		}
-		game.toTransmute = [];
-		$('.choose-cards-panel').removeClass('shown');
-		$('.choose-cards-panel .card').removeClass('pickable');
-		$('.choose-cards-panel .message').html('');
-		$('.choose-cards-panel .cards').empty();
-		$('.choose-cards-panel .done').show();
-		$('.choose-cards-panel .done').removeClass('transmute');
+		
+		transmuteCards();
+
 	});
 
 	$(document).on('click', '.choose-cards-panel .removable', function(e) {
@@ -3449,6 +3446,8 @@ async function monsterAction(action = 'perform') {
 						}
 						if(id == 'removeHexes') {
 							intent += '<span class="intent-buff action-buff intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
+						} else if(id == 'summonMonster') {
+							intent += '<span class="intent-summon action-hex intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
 						} else {
 							intent += '<span class="intent-hex action-hex intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
 						}
@@ -3608,20 +3607,27 @@ function endMonsterTurn() {
 function clearTurnEffects(from, delay = false, offset = false) {
 	for(let i = 0; i < game.effects.length; i++) {
 		if(((!delay && !game.effects[i].delay && !offset && !game.effects[i].offset) || (delay && game.effects[i].delay) || (offset && game.effects[i].offset)) && game.effects[i].id != 'fatality') {
-			let index = from[game.effects[i].id].turns < 1 ? 0 : from[game.effects[i].id].turns - 1;
+			//let index = from[game.effects[i].id].turns < 1 ? 0 : from[game.effects[i].id].turns - 1;
+			let index = 0; // shouldn't this always be the first element in the array, since that's always the current turn?
 			let temp = from[game.effects[i].id].temp[index] != undefined ? from[game.effects[i].id].temp[index] : false;
 
-			/* for debugging sparkle stance temp might + permanent sources like excalibur + mummy might debuff
-			if(game.effects[i].id=='might') {
-				console.log(from[game.effects[i].id].temp);
-				console.log(index);
-				console.log(from[game.effects[i].id].temp[index]);
-				console.log(from[game.effects[i].id].turns);
-			} */
+			// for debugging specific effect
+			/*if(game.effects[i].id=='might' && from.id=='player') {
+				console.log('temp', from[game.effects[i].id].temp); // [2, 2]
+				console.log('index', index); // 1
+				console.log('temp', temp); // 2
+				console.log('turns', from[game.effects[i].id].turns); // 2
+			}*/	
 
 			if(temp) {
-				from[game.effects[i].id].temp.splice(index, 1);
+				//from[game.effects[i].id].temp.splice(index, 1);
+				from[game.effects[i].id].temp.splice(0, 1); // we always want to remove the first element in temp array because that's what turn it is
 				from[game.effects[i].id].current -= temp;
+				//we have removed this turn's effect, but if there are more turns, need to re-add next turn's temp to current (without then removing it)
+				temp = from[game.effects[i].id].temp[0] != undefined ? from[game.effects[i].id].temp[0] : false;
+				if(temp) {
+					from[game.effects[i].id].current += temp;
+				}
 			}
 
 			if(from[game.effects[i].id].turns > 0) {
@@ -3731,6 +3737,7 @@ function removeHexes(to) {
 			// it's possible a monster hexed an effect and then a player buffed the same effect but not to the extent it was previously hexed
 			// e.g. monster hexes might -2 and player buffs might +1 resulting in "hexed" flag getting set to false but might is still at -1
 			let isHexed = to[game.effects[i].id].hexed; // this isn't really used because we're figuring out hexed logic below
+			let isHex = game.effects[i].hex;
 			if(game.effects[i].id == 'sorcery' || game.effects[i].id == 'punch' || game.effects[i].id == 'thunder') {
 				if(to[game.effects[i].id].current < 1) {
 					isHexed = true;
@@ -3738,7 +3745,7 @@ function removeHexes(to) {
 					isHexed = false;
 				}
 			} else {
-				if(to[game.effects[i].id].current < 0) {
+				if(to[game.effects[i].id].current < 0 || isHex) {
 					isHexed = true;
 				} else {
 					isHexed = false;
@@ -3759,7 +3766,8 @@ function removeBuffs(to) {
 	if(!to.eternal.enabled) {
 		for(let i = 0; i < game.effects.length; i++) {
 			if(game.effects[i].id != 'rainbow' && to[game.effects[i].id]!==undefined) {
-				if(to[game.effects[i].id].hexed!==true) {
+				let isHex = game.effects[i].hex;
+				if(to[game.effects[i].id].hexed!==true && !isHex) {
 					let current = game.effects[i].id == 'sorcery' || game.effects[i].id == 'punch' || game.effects[i].id == 'thunder' ? 1 : 0;
 					to[game.effects[i].id].temp = [];
 					to[game.effects[i].id].turns = 0;
@@ -3799,7 +3807,7 @@ function applyEffect(effect, to, turns = -1) {
 			//let amt = (effect.effect == 'conjure' && isHex) ? 0 : Math.round(((to[effect.effect].current + effect.amount) + Number.EPSILON) * 100) / 100;
 			let amt = Math.round(((to[effect.effect].current + effect.amount) + Number.EPSILON) * 100) / 100;
 			// punch, speed, and thunder should never go below 0
-			if(effect.effect == 'punch' || effect.effect == 'speed' || effect.effect == 'thunder') {
+			if(effect.effect == 'punch' || effect.effect == 'speed' || effect.effect == 'thunder' || effect.effect == 'sorcery' || effect.effect == 'resistance') {
 				if(amt < 0) {
 					amt = 0;
 				}
@@ -3820,10 +3828,13 @@ function applyEffect(effect, to, turns = -1) {
 						// old way of doing it. two 1 turn effects would add effect for 2 turns instead of combining for one turn
 						//to[effect.effect].temp.push(effect.amount);  //TODO: test sparkle stance + excalibur against mummy: mummy hexes might which disrupts temp array
 						for(let i = 1; i <= turns; i++) {
+							let tempAmount = to[effect.effect].temp[i - 1] + effect.amount;
+							if(tempAmount===undefined || isNaN(parseFloat(tempAmount))) tempAmount = effect.amount;
+							tempAmount = Math.round((tempAmount + Number.EPSILON) * 100) / 100;
 							if(to[effect.effect].temp.length == 0) {
 								to[effect.effect].temp.push(effect.amount);
 							} else {
-								to[effect.effect].temp[i - 1] = Math.round(((to[effect.effect].temp[i - 1] + effect.amount) + Number.EPSILON) * 100) / 100;
+								to[effect.effect].temp[i - 1] = tempAmount;
 							}
 						}
 					}
@@ -4808,11 +4819,11 @@ function markDestroy(elem) {
 
 }
 
-function discardCards() {
+async function discardCards() {
 
-	$('.card.discard').each(function(e) {
+	$('.card.discard').each(async function(e) {
 
-		discardCard($(this));
+		await discardCard($(this));
 
 	}).promise().done(function() {
 
@@ -4840,16 +4851,20 @@ async function discardCard(elem) {
 
 	combatDeck.discardCard(card, combatDeck);
 
+	if(player.preserve.current > 0) {
+		applyBlock(player.preserve.current, player);
+	}
+
 	await processCard(card, false, 'discard');
 
 	setStatus();
 }
 
-function destroyCards() {
+async function destroyCards() {
 
-	$('.card.destroy').each(function(e) {
+	$('.card.destroy').each(async function(e) {
 
-		destroyCard($(this));
+		await destroyCard($(this));
 
 	}).promise().done(function() {
 
@@ -4890,6 +4905,21 @@ async function destroyCard(elem) {
 	setStatus();
 }
 
+function transmuteCards() {
+	let permanent = combatDeck.transmuteCards(combatDeck, deck, player);
+	if(permanent) {
+		for(let i = 0; i < game.toTransmute.length; i++) {
+			removeCardFromDeck(game.toTransmute[i].guid);
+		}
+	}
+	game.toTransmute = [];
+	$('.choose-cards-panel').removeClass('shown');
+	$('.choose-cards-panel .card').removeClass('pickable');
+	$('.choose-cards-panel .message').html('');
+	$('.choose-cards-panel .cards').empty();
+	$('.choose-cards-panel .done').show();
+	$('.choose-cards-panel .done').removeClass('transmute');
+}
 
 function shouldDestroyCard(card) {
 
@@ -4969,6 +4999,8 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	let deckCard = util.getCardByGuid(elem.data('guid'), deck.cards);
 
 	if(card == undefined) return false;
+
+	card.playing = true;
 
 	let sound = card.sound ? card.sound : card.type + 'Card';
 
@@ -5117,6 +5149,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	combatDeck.updateCardPlayability(player, combatDeck);
 
 	elem.removeClass('playing');
+	card.playing = false;
 
 	// it's possible draw-card button has been disabled, but this card added speed
 	if(player.speed.current > 0 && combatDeck.handCards.length < 10) $('.draw-card, .draw-all').removeClass('disabled');
@@ -5407,8 +5440,15 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					if(game.playsounds && gameAction.sound !== undefined) sounds.play(gameAction.sound);
 				}
 				switch(actions[e].action) {
-					case 'addCard':
+					case 'addCard': {
 
+						let hex = actions[e].hex !== undefined ? actions[e].hex : false;
+						if(player.vex.current > 0 && hex) {
+							player.vex.current -= 1;
+							if(game.playsounds) sounds.play('vex');
+							break;
+						}
+						
 						//if(game.combatEndedFlag) return; //disabled this because it was not allowing the library quest to work
 						game.toShow = [];
 						let addCard = '';
@@ -5504,42 +5544,18 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						} else {
 							deck.showModifiedCards(combatDeck, player, true);
 						}
-
-					break;
-					case 'transmute':
-						$('.choose-cards-panel .message').html('choose cards to transmute').addClass('shown');
-						game.toPick = actions[e].select;
-						game.fromPile = actions[e].from;
-						var cards = [];
-						if(actions[e].from == 'handCards') {
-							if(playedCard) {
-								// don't include the card that was just played because it hasn't been discarded yet
-								cards = combatDeck.handCards.filter(i => i.guid !== playedCard.guid);
-							} else {
-								cards = combatDeck.handCards;
-							}
-						} else if(actions[e].from == 'drawCards') {
-							cards = combatDeck.drawCards;
-						} else if(actions[e].from == 'discardCards') {
-							cards = combatDeck.discardCards;
-						} else {
-							cards = deck.cards;
-						}
-						if(cards.length > 0) {
-							if(game.toPick > cards.length) game.toPick = cards.length;
-							viewChooseCards(cards, 'transmutable');
-							$('.choose-cards-panel .done').addClass('transmute');
-						}
-					break;
-					case 'remove':
+						break;
+					}
+					case 'remove': {
 						game.toPick = actions[e].select;
 						var cards = deck.cards;
 						if(cards.length > 0) {
 							if(game.toPick > cards.length) game.toPick = cards.length;
 							viewChooseCards(cards, 'removable');
 						}
-					break; //{action: 'ensharden', type: 'frost', select: -1, from: 'handCards', random: true}
-					case 'ensharden':
+						break; //{action: 'ensharden', type: 'frost', select: -1, from: 'handCards', random: true}
+					}
+					case 'ensharden': {
 						game.toPick = actions[e].select;
 						game.toPile = actions[e].from;
 						game.toShow = [];
@@ -5602,19 +5618,27 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						
 						deck.showModifiedCards(combatDeck, player, true);
 						
-					break;
-					case 'draw':
+						break;
+					}
+					case 'draw': {
 						for(let i = 0; i < actions[e].value; i++) {
 							addCardTo('draw', null, 'handCards', true, cardWasPlayed);
 						}
-					break;
-					case 'discard':
+						break;
+					}
+					case 'discard': {
 						// currently only cards can invoke this action, so make sure invoking card isn't the only one in hand
 						if(combatDeck.handCards.length > 1) {
 							if(game.autoplay) {
-								let handCards = $('.player-cards .card');
-								let randomCard = $(util.randFromArray(handCards));
-								discardCard(randomCard);
+								for(let i = 0; i < actions[e].value; i++) {
+									let handCards = combatDeck.handCards;
+									handCards = handCards.filter(i => i.playing == false);
+									let randomCard = util.randFromArray(handCards);
+									if(randomCard !== undefined) {
+										let domCard = util.getDomCardByGuid(randomCard.guid);
+										await discardCard(domCard);
+									}
+								}
 							} else {
 								$('.discard-message').html('choose cards to <span>discard</span>').addClass('shown');
 								//$('.discard-done').addClass('shown');
@@ -5625,14 +5649,21 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								update = false;
 							}
 						}
-					break;
-					case 'destroy':
+						break;
+					}
+					case 'destroy': {
 						// currently only cards can invoke this action, so make sure invoking card isn't the only one in hand
 						if(combatDeck.handCards.length > 1) {
 							if(game.autoplay) {
-								let handCards = $('.player-cards .card');
-								let randomCard = $(util.randFromArray(handCards));
-								destroyCard(randomCard);
+								for(let i = 0; i < actions[e].value; i++) {
+									let handCards = combatDeck.handCards;
+									handCards = handCards.filter(i => i.playing == false);
+									let randomCard = util.randFromArray(handCards);
+									if(randomCard !== undefined) {
+										let domCard = util.getDomCardByGuid(randomCard.guid);
+										await destroyCard(domCard);
+									}
+								}
 							} else {
 								$('.destroy-message').html('choose cards to <span>destroy</span>').addClass('shown');
 								if(actions[e].optional) {
@@ -5646,8 +5677,47 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								update = false;
 							}
 						}
-					break;
-					case 'findDrawCard':
+						break;
+					}
+					case 'transmute': {
+						game.toPick = actions[e].select;
+						game.fromPile = actions[e].from;
+						if(game.autoplay) {
+							for(let i = 0; i < actions[e].select; i++) {
+								let handCards = combatDeck.handCards;
+								handCards = handCards.filter(i => i.playing == false);
+								let randomCard = util.randFromArray(handCards);
+								if(randomCard !== undefined) {
+									game.toTransmute.push(randomCard);
+								}
+							}
+							transmuteCards();
+						} else {
+							$('.choose-cards-panel .message').html('choose cards to transmute').addClass('shown');
+							var cards = [];
+							if(actions[e].from == 'handCards') {
+								if(playedCard) {
+									// don't include the card that was just played because it hasn't been discarded yet
+									cards = combatDeck.handCards.filter(i => i.guid !== playedCard.guid);
+								} else {
+									cards = combatDeck.handCards;
+								}
+							} else if(actions[e].from == 'drawCards') {
+								cards = combatDeck.drawCards;
+							} else if(actions[e].from == 'discardCards') {
+								cards = combatDeck.discardCards;
+							} else {
+								cards = deck.cards;
+							}
+							if(cards.length > 0) {
+								if(game.toPick > cards.length) game.toPick = cards.length;
+								viewChooseCards(cards, 'transmutable');
+								$('.choose-cards-panel .done').addClass('transmute');
+							}
+						}
+						break;
+					}
+					case 'findDrawCard': {
 						if(combatDeck.drawCards.length > 0) {
 							if(game.autoplay) {
 								for(let i = 0; i < actions[e].value; i++) {
@@ -5670,8 +5740,9 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								$('.draw-cards-panel .message').html('Add cards to your hand');
 							}
 						}
-					break;
-					case 'findDiscardCard':
+						break;
+					}
+					case 'findDiscardCard': {
 						if(combatDeck.discardCards.length > 0) {
 							if(game.autoplay) {
 								for(let i = 0; i < actions[e].value; i++) {
@@ -5694,8 +5765,9 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								$('.discard-cards-panel .message').html('Add cards to your hand');
 							}
 						}
-					break;
-					case 'findDeadCard':
+						break;
+					}
+					case 'findDeadCard': {
 						if(combatDeck.deadCards.length > 0) {
 							if(game.autoplay) {
 								for(let i = 0; i < actions[e].value; i++) {
@@ -5718,8 +5790,9 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								$('.dead-cards-panel .message').html('Add cards to your hand');
 							}
 						}
-					break;
-					case 'stat':
+						break;
+					}
+					case 'stat': {
 						let key = actions[e].key;
 						let what = actions[e].what;
 						let value = actions[e].value;
@@ -5834,29 +5907,33 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								}
 							}
 						}
-					break;
-					case 'removeHexes':
+						break;
+					}
+					case 'removeHexes': {
 						if(actions[e].to=='player') {
 							removeHexes(player);
 						} else if(actions[e].to=='self') {
 							removeHexes(monster);
 						}
-					break;
-					case 'removeBuffs':
+						break;
+					}
+					case 'removeBuffs': {
 						if(actions[e].to=='player') {
 							removeBuffs(player);
 						} else if(actions[e].to=='self' || actions[e].to=='target') {
 							removeBuffs(monster[0]);
 						}
-					break;
-					case 'playOldest':
+						break;
+					}
+					case 'playOldest': {
 						let card = combatDeck.getOldestPlayableCard(combatDeck.handCards, playedCard);
 						if(card) {
 							let domCard = util.getDomCardByGuid(card.guid);
 							playCard(domCard, 'random', false, false)
 						}
-					break;
-					case 'playHand':
+						break;
+					}
+					case 'playHand': {
 						let theseCards = combatDeck.handCards;
 						game.autoplay = true;
 						$('body, .map-inner').addClass('unavailable');
@@ -5871,8 +5948,43 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						game.autoplay = false;
 						$('body, .map-inner').removeClass('unavailable');
 						$('body').addClass('combating');
-					break;
-					case 'summonMonster':
+						break;
+					}
+					case 'discardHand': {
+						let theseCards = combatDeck.handCards;
+						game.autoplay = true;
+						$('body, .map-inner').addClass('unavailable');
+						$('body').removeClass('combating');
+						for(let i = 0; i < theseCards.length; i++) {
+							if(theseCards[i].guid != playedCard.guid) {
+								let domCard = util.getDomCardByGuid(theseCards[i].guid);
+								await discardCard(domCard);
+								await util.wait(300);
+							}
+						}
+						game.autoplay = false;
+						$('body, .map-inner').removeClass('unavailable');
+						$('body').addClass('combating');
+						break;
+					}
+					case 'destroyHand': {
+						let theseCards = combatDeck.handCards;
+						game.autoplay = true;
+						$('body, .map-inner').addClass('unavailable');
+						$('body').removeClass('combating');
+						for(let i = 0; i < theseCards.length; i++) {
+							if(theseCards[i].guid != playedCard.guid) {
+								let domCard = util.getDomCardByGuid(theseCards[i].guid);
+								await destroyCard(domCard);
+								await util.wait(300);
+							}
+						}
+						game.autoplay = false;
+						$('body, .map-inner').removeClass('unavailable');
+						$('body').addClass('combating');
+						break;
+					}
+					case 'summonMonster': {
 						let form = actions[e].form !== undefined ? actions[e].form : false;
 						if(actions[e].what.constructor === Array) {
 							for(let i = 0; i < actions[e].value; i++) {
@@ -5901,22 +6013,26 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								await util.wait(game.animationGap);
 							}
 						}
-					break;
-					case 'kill':
+						break;
+					}
+					case 'kill': {
 						if(actions[e].to=='player') {
 							kill(player);
 						} else if(actions[e].to=='self') {
 							kill(monster);
 						}
-					break;
-					case 'rainbowShield':
+						break;
+					}
+					case 'rainbowShield': {
 						var blk = Math.round(actions[e].value * player.rainbow.max);
 						applyBlock(blk, player);
-					break;
-					case 'chargedShield':
+						break;
+					}
+					case 'chargedShield': {
 						var blk = Math.round(actions[e].value * player.rainbow.current);
 						applyBlock(blk, player);
-					break;
+						break;
+					}
 
 				}
 				await util.wait(game.animationGap);
@@ -6928,7 +7044,9 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 
 			// is player unreachable?
 			if(unreachable) {
-				thisDmg = 1;
+				if(thisDmg > 0) {
+					thisDmg = 1;
+				}
 				tank = true;
 			}
 

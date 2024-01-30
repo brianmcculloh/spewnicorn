@@ -207,7 +207,7 @@ const ALL_EFFECTS = [
     // Usage:
     // creature {base: 0, current: 2, temp: 2, turns: 2, persist: false}
     // buff     {effect: 'fatality', amount: 2, turns: 2}
-    {id: 'fatality', name: 'Fatality', desc: 'Your next attack card does x times your highest damage hit (fatalities do not increase highest damage hit value)', x: -288, y: -7232, sound: 'effect17', hex: false},
+    {id: 'fatality', name: 'Fatality', desc: 'Your next attack card does x times your highest unblocked non-fatality hit', x: -288, y: -7232, sound: 'effect17', hex: false},
 
     // Usage:
     // creature {base: 0, current: 0, temp: 1, turns: 2, persist: false}
@@ -334,6 +334,12 @@ const ALL_EFFECTS = [
     // buff     {effect: 'cover', amount: 2, turns: -1}
     // hex      {effect: 'cover', amount: 1, hex: true}
     {id: 'cover', name: 'Cover', desc: 'Gain x block each time you activate your magic rainbow', x: -64, y: -5856, hex: false},
+
+    // Usage:
+    // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
+    // buff     {effect: 'preserve', amount: 2, turns: -1}
+    // hex      {effect: 'preserve', amount: 1, hex: true}
+    {id: 'preserve', name: 'Preserve', desc: 'Gain x block each time you discard a card', x: -96, y: -7712, hex: false},
 
 ];
 /*********************************************
@@ -525,6 +531,14 @@ const ALL_ACTIONS = [
     // Usage:
     // {action: 'playHand'}
     {id: 'playHand', name: 'Play Your Entire Hand', desc: 'Play all cards in your hand for free'},
+
+    // Usage:
+    // {action: 'discardHand'}
+    {id: 'discardHand', name: 'Discard Your Entire Hand', desc: 'Discard all cards in your hand'},
+
+    // Usage:
+    // {action: 'destroyHand'}
+    {id: 'destroyHand', name: 'Destroy Your Entire Hand', desc: 'Destroy all cards in your hand'},
 
     // Usage:
     // {action: 'summonMonster'}

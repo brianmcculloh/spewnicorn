@@ -2822,6 +2822,9 @@ body.arena .monster-panel {
 .monster-intent .intent-buff {
 	background-position:-288px -6304px;
 }
+.monster-intent .intent-summon {
+	background-position:-480px -6208px;
+}
 
 .monster .monster-name {
 	font-size:25px;
@@ -4217,6 +4220,12 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-blitzkrieg .card-image {
 	background-position:calc(-195px * .92) calc(-9006px * .92);
 }
+#card-cascade .card-image {
+	background-position:calc(-390px * .92) calc(-9006px * .92);
+}
+#card-blank_slate .card-image {
+	background-position:calc(-585px * .92) calc(-9006px * .92);
+}
 
 
 /* ABILITY */
@@ -4378,6 +4387,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 #card-screen .card-image {
 	background-position:calc(-975px * .92) calc(-8848px * .92);
+}
+#card-cycle_barrier .card-image {
+	background-position:calc(-780px * .92) calc(-9006px * .92);
 }
 
 

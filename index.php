@@ -52,9 +52,9 @@
 
         <div class="difficulties">
           <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="Adds a <span class='highlight'>Spewnicorn Spray</span> to your deck, decreases aggro, heal to full after gates, and extra magic fountains and quests.">Easy</span></div>
-          <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="No <span class='highlight'>Spewnicorn Spray</span> added to your deck, standard aggro, standard amount of magic fountains and quests, and no healing after gates.">Medium</span></div>
-          <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="Reduced number of magic fountains and quests.">Hard</span></div>
-          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="Further reduced number of magic fountains and quests.">Expert</span></div>
+          <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="No <span class='highlight'>Spewnicorn Spray</span> added to your deck, standard aggro, standard amount of magic fountains and quests, and heal to full after gates.">Medium</span></div>
+          <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="Reduced number of magic fountains and quests, and no healing after gates.">Hard</span></div>
+          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="Even less magic fountains and quests than Hard difficulty.">Expert</span></div>
           <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="Hardly any magic fountains or quests.">Nightmare</span></div>
         </div>
 

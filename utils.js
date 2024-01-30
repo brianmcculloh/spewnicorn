@@ -440,7 +440,7 @@ export default class Util {
     }
     removeMonster(monster) {
         if(monster.breed == 'ghost' || game.mapType == 'singularity') {
-            $('.monster[data-guid=' + monster.guid + ']').addClass('hidden').removeClass('clickable');
+            $('.monster[data-guid=' + monster.guid + ']').addClass('hidden dead').removeClass('clickable');
         } else {
             $('.monster[data-guid=' + monster.guid + ']').addClass('dead').removeClass('clickable');
         }
@@ -751,7 +751,8 @@ export default class Util {
         return allCandies.find(({ id }) => id === candy);
     }
     getCardByGuid(add, allCards) {
-        return allCards.find(({ guid }) => guid === add);
+        let card = allCards.find(({ guid }) => guid === add);
+        return card;
     }
     getDomCardByGuid(guid) {
         return $('.card[data-guid=' + guid + ']:first');
