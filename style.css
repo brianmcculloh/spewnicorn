@@ -1767,6 +1767,7 @@ body.debug .status-toggle {
 	padding:26px 10px;
 	margin:0 calc(18px * 3 - 1px);
 	text-align:center;
+	text-transform:none;
 }
 .game-panel .message::before {
 	position:absolute;
@@ -1796,6 +1797,7 @@ body.debug .status-toggle {
 }
 .choose-booster-pack {
 	background-image:url('./images/booster1.png');
+	z-index:20;
 }
 .courage-screen {
 	background-image:url('./images/courage1.png');
@@ -5253,6 +5255,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 .pack-cards-panel h2 span, .pack-cards-panel .message span {
 	color:yellow;
+}
+.pack-cards-panel .message {
+	text-transform:none;
 }
 
 /* rewards screen */

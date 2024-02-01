@@ -254,7 +254,7 @@
 
         <div class="game-floor">Floor<span></span></div>
 
-        <div class="booster-pack">Pack<span class="tooltip" data-powertip="Basic"></span></div>
+        <div class="booster-pack tooltip" data-powertip="Basic">Pack<span></span></div>
 
         <div class="game-round">Round<span></span></div>
 
@@ -639,8 +639,9 @@
 
       <div class="buttons-wrapper">
 
-        <div class="button done">Done</div>
+        <div class="button done tooltip" data-powertip="Skip booster pack and play with only basic cards">Done</div>
         <div class="button view-map" data-game-panel="choose-booster-pack">View Map</div>
+        <div class="button view-basic tooltip" data-powertip="All basic cards plus selected booster pack cards">Available Cards</div>
 
       </div>
 
@@ -1045,7 +1046,7 @@
 
       <h2></h2>
 
-      <div class="message">These are all the possible card rewards for this booster pack, plus you start with <span></span></div>
+      <div class="message"></div>
 
       <div class="cards"></div>
 
@@ -1092,6 +1093,8 @@
       <div class="library-treasures"></div>
 
       <h2>All Cards</h2>
+
+      <div class="message">Every single card in the game, including non-reward, non-addable cards.</div>
 
       <div class="library-loader">Loading card library...</div>
 

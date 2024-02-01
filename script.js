@@ -62,6 +62,8 @@
  * Effect: Medic - heal x every time you gain courage or essence
  * Ability: impotent - can only play tool cards
  * Effect: apply x times max rainbow block each time you activate rainbow
+ * Mechanic: wild combine: can be combined with any other combined card - and when combined, add the card that the other card adds.
+ * --there could be multiple wild combine cards, each one doing a special thing when combined
  * 
  * 
  * 
@@ -93,6 +95,7 @@
  * Create and balance treasure - DONE
  * Create and balance candy - DONE
  * Create quests - DONE
+ * Current card counts: 99 total non-pack cards and 46 pack cards (non-legendary, addable, including addable weapons)
  * 
  * 
  * PHASE IV:
@@ -191,6 +194,8 @@
  * Card: uncommon/rare cards that vanish but permanently hex might/punch a higher amount than whinny/neigh
  * Card: rare 0 cost - when drawn gain 1 turn of impotent. can only be played if only card in hand. when played do something very good like freeze all enemies and gain might
  * Card: percentage changes of doing different things
+ * Card: do damage equal to total armor
+ * Card: deal x damage to enemy for each enemy in combat. sharded could either add more damage or turn into aoe
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -212,7 +217,6 @@
  * 
  * 
  * BUGS [can't replicate]:
- * BUG #1: i played malevolent blow against frost void fairy when they had ~10 health left on turn when they were unreachable, and their current health number disappeared and they couldn't be harmed further
  * BUG: candy that enshardens all cards sharded the permanent deck cards rather than the temp hand cards
  * BUG: done button ghost showing on subsequent combats - if this happens again, inspect the class of the button because .button-done is hidden on combat end and start
  * BUG: i was in a fight where i was at 0 health and armor but some block and i didn't die.
@@ -554,6 +558,23 @@ jQuery(document).ready(function($) {
 		viewPackCards(pack);
 
 	});
+	
+	$(document).on('click', '.booster-pack.clickable', function(e) {
+
+		if(game.playsounds) sounds.play('startingBonus');
+		$('.choose-booster-pack').addClass('shown');
+		$('.pack-cards-panel .select, .choose-booster-pack .view-map').hide();
+		$('.choose-booster-pack .message').html('You can view the cards in each booster pack here.');
+		$('.choose-booster-pack h2').html('Booster Packs');
+
+	});
+
+
+	$(document).on('click', '.view-basic', function(e) {
+
+		viewBasicCards();
+
+	});
 
 	$(document).on('click', '.pack-cards-panel .select', function(e) {
 	
@@ -561,6 +582,7 @@ jQuery(document).ready(function($) {
 		$('.pack-cards-panel').removeClass('shown');
 		$('.starting-booster-packs').removeClass('shown');
 		$('.choose-booster-pack').removeClass('shown');
+		$('.booster-pack').addClass('clickable');
 		startingBoosterPack($(this));
 
 	});
@@ -582,6 +604,7 @@ jQuery(document).ready(function($) {
 	$(document).on('click', '.choose-booster-pack .done', function(e) {
 
 		$('.choose-booster-pack').removeClass('shown');
+		$('.booster-pack').addClass('clickable');
 
 	});
 
@@ -2150,7 +2173,9 @@ function setStatus(updateCards = true) {
 	$('.discard-cards span').html(combatDeck.discardCards.length);
 	$('.dead-cards span').html(combatDeck.deadCards.length);
 	$('.game-courage > span').html(player.courage);
-	$('.booster-pack span').addClass(game.boosterPack + '-pack').data('powertip', 'Booster Pack: <span class="highlight">' + game.boosterPack.substr(0,1).toUpperCase()+game.boosterPack.substr(1) + '</span>').attr('data-powertip', 'Booster Pack: <span class="highlight">' + game.boosterPack.substr(0,1).toUpperCase()+game.boosterPack.substr(1) + '</span>');
+	$('.booster-pack span').addClass(game.boosterPack + '-pack');
+	$('.booster-pack').data('powertip', 'Selected Booster Pack: <span class="highlight">' + game.boosterPack.substr(0,1).toUpperCase()+game.boosterPack.substr(1) + '</span>. Click to view all booster pack cards.')
+					.attr('data-powertip', 'Selected Booster Pack: <span class="highlight">' + game.boosterPack.substr(0,1).toUpperCase()+game.boosterPack.substr(1) + '</span>. Click to view all booster pack cards.');
 	util.setTooltips('.booster-pack');
 	$('.game-floor span').html(game.floor);
 	$('.game-round span').html(game.round);
@@ -2469,6 +2494,7 @@ function viewPackCards(pack) {
 	} else if(pack == 'cycle') {
 		card = 'Bottled Speed';
 	}
+	$('.pack-cards-panel .message').html('These are all the possible card rewards for this booster pack, plus you start with <span></span>');
 	$('.pack-cards-panel .message span').html(card);
 	$('.pack-cards-panel .cards').empty();
 	$('.pack-cards-panel .select').attr('data-pack', pack);
@@ -2479,6 +2505,21 @@ function viewPackCards(pack) {
 		let slotDesc = deck.buildSlotsDescription(packCards[i]);
         packCards[i].slotDesc = slotDesc;
 		util.appendCard(packCards[i], '.pack-cards-panel .cards');
+	}
+}
+function viewBasicCards() {
+	if(game.playsounds) sounds.play('viewCards');
+	$('.pack-cards-panel').addClass('shown');
+	$('.pack-cards-panel h2').html('All available cards');
+	$('.pack-cards-panel .cards').empty();
+	$('.pack-cards-panel .message').html('These are all the basic cards plus your selected booster pack cards.')
+	let basicCards = AllCards().getAddableCards(false, false, false);
+	for(let i = 0; i < basicCards.length; i++) {
+		let desc = deck.buildDescription(basicCards[i]);
+        basicCards[i].desc = desc;
+		let slotDesc = deck.buildSlotsDescription(basicCards[i]);
+        basicCards[i].slotDesc = slotDesc;
+		util.appendCard(basicCards[i], '.pack-cards-panel .cards');
 	}
 }
 function viewArmory() {
@@ -3806,6 +3847,7 @@ function applyEffect(effect, to, turns = -1) {
 			// basically when monster hexes conjure we want to reduce any positive conjuring, not go negative
 			//let amt = (effect.effect == 'conjure' && isHex) ? 0 : Math.round(((to[effect.effect].current + effect.amount) + Number.EPSILON) * 100) / 100;
 			let amt = Math.round(((to[effect.effect].current + effect.amount) + Number.EPSILON) * 100) / 100;
+			let amtShow = effect.amount;
 			// punch, speed, and thunder should never go below 0
 			if(effect.effect == 'punch' || effect.effect == 'speed' || effect.effect == 'thunder' || effect.effect == 'sorcery' || effect.effect == 'resistance') {
 				if(amt < 0) {
@@ -3859,7 +3901,6 @@ function applyEffect(effect, to, turns = -1) {
 				to[effect.effect].turns = turns;
 			}
 			if(effect.persist) to[effect.effect].persist = effect.persist;
-			let amtShow = amt;
 			if(effect.effect == 'punch' || effect.effect == 'sorcery' || effect.effect == 'resistance' || effect.effect == 'thunder') {
 				amtShow = Math.round((amtShow + Number.EPSILON) * 100);
 				amtShow += '%';
@@ -5007,7 +5048,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	if(game.playsounds) sounds.play(sound);
 
 	let currentMonster = false;
-	if(monster != undefined) {
+	if(monster != undefined && card.target !== 'all') {
 		if(monster == 'random') {
 			let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
 			currentMonster = [util.randFromArray(currentMonsters)];
@@ -6688,8 +6729,8 @@ function crit(dmg, unreachable = false) {
 	let critDmg = Math.round(dmg * multiplier);
 	let fierce = player.fierce.current;
 	critDmg += fierce;
-	if(unreachable) critDmg = '<strike>' + critDmg + '</strike>' + ' 1';
-	$('.crit').addClass('shown').find('span').html(critDmg);
+	let critDmgShow = unreachable ? '<strike>' + critDmg + '</strike>' + ' 1' : critDmg;
+	$('.crit').addClass('shown').find('span').html(critDmgShow);
 	return critDmg;
 }
 

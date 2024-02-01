@@ -1830,7 +1830,7 @@ const ALL_CARDS = [
 
     /* WEAPONS */
     new Cards({
-        id: 'rusty_dagger', name: 'Rusty Dagger', type: 'attack', mana: 3, target: 'monster', weight: .8, weapon: true,
+        id: 'rusty_dagger', name: 'Rusty Dagger', type: 'attack', mana: 3, target: 'monster', weight: .8, weapon: true, pack: 'cycle',
         dmg: [6],
         additionalDesc: 'Level I Weapon',
         slots: 1,
@@ -1890,7 +1890,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'wooden_sword', name: 'Wooden Sword', type: 'attack', mana: 3, target: 'monster', weight: .8, weapon: true,
+        id: 'wooden_sword', name: 'Wooden Sword', type: 'attack', mana: 3, target: 'monster', weight: .8, weapon: true, pack: 'cycle',
         dmg: [6],
         additionalDesc: 'Level I Weapon',
         slots: 1,
@@ -1962,7 +1962,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'loggers_axe', name: "Logger's Axe", type: 'attack', mana: 3, target: 'monster', weight: .6, weapon: true,
+        id: 'loggers_axe', name: "Logger's Axe", type: 'attack', mana: 3, target: 'monster', weight: .6, weapon: true, pack: 'cycle',
         dmg: [6],
         additionalDesc: 'Level I Weapon',
         slots: 1,
@@ -2096,7 +2096,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'old_hammer', name: "Old Hammer", type: 'attack', mana: 3, target: 'monster', weight: .7, weapon: true,
+        id: 'old_hammer', name: "Old Hammer", type: 'attack', mana: 3, target: 'monster', weight: .7, weapon: true, pack: 'combine',
         dmg: [6],
         additionalDesc: 'Level I Weapon',
         slots: 1,
@@ -2119,7 +2119,7 @@ const ALL_CARDS = [
         id: 'tungsten_hammer', name: 'Tungsten Hammer', type: 'attack', mana: 3, target: 'monster', weight: 2, addable: false, tier: 'uncommon', weapon: true,
         dmg: [24],
         effects: [
-            {effect: 'punch', amount: .1, turns: -1, hex: true},
+            {effect: 'punch', amount: -.1, turns: -1, hex: true},
         ],
         additionalDesc: 'Level III Weapon',
         slots: 1,
@@ -2132,7 +2132,7 @@ const ALL_CARDS = [
         id: 'molten_hammer', name: "Molten Hammer", type: 'attack', mana: 3, target: 'monster', weight: 1, addable: false, tier: 'uncommon', weapon: true,
         dmg: [30],
         effects: [
-            {effect: 'punch', amount: .15, turns: -1, hex: true},
+            {effect: 'punch', amount: -.15, turns: -1, hex: true},
         ],
         additionalDesc: 'Level IV Weapon',
         slots: 1,
@@ -2145,7 +2145,7 @@ const ALL_CARDS = [
         id: 'hammer_of_justice', name: 'Hammer of Justice', type: 'attack', mana: 3, target: 'monster', weight: .8, addable: false, tier: 'rare', weapon: true,
         dmg: [40],
         effects: [
-            {effect: 'punch', amount: .2, turns: -1, hex: true},
+            {effect: 'punch', amount: -.2, turns: -1, hex: true},
         ],
         additionalDesc: 'Level V Weapon',
         slots: 1,
@@ -2158,7 +2158,7 @@ const ALL_CARDS = [
         id: 'gravitas', name: 'Gravitas', type: 'attack', mana: 3, target: 'monster', weight: .6, addable: false, tier: 'rare', weapon: true,
         dmg: [50],
         effects: [
-            {effect: 'punch', amount: .25, turns: -1, hex: true},
+            {effect: 'punch', amount: -.25, turns: -1, hex: true},
         ],
         additionalDesc: 'Level VI Weapon',
         slots: 1,
@@ -2171,7 +2171,7 @@ const ALL_CARDS = [
         id: 'firmament_mover', name: 'Firmament Mover', type: 'attack', mana: 2, target: 'monster', weight: .05, addable: false, tier: 'legendary', weapon: true,
         dmg: [70],
         effects: [
-            {effect: 'punch', amount: .35, turns: -1, hex: true},
+            {effect: 'punch', amount: -.35, turns: -1, hex: true},
         ],
         additionalDesc: 'Level VII Weapon',
         slots: 1,
@@ -2184,7 +2184,7 @@ const ALL_CARDS = [
         id: 'singing_mallet', name: 'Singing Mallet', type: 'attack', mana: 1, target: 'monster', weight: .05, addable: false, tier: 'legendary', weapon: true,
         dmg: [50],
         effects: [
-            {effect: 'punch', amount: .25, turns: -1, hex: true},
+            {effect: 'punch', amount: -.25, turns: -1, hex: true},
         ],
         additionalDesc: 'Level VII Weapon',
         slots: 1,
@@ -2194,7 +2194,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'blunt_pike', name: "Blunt Pike", type: 'attack', mana: 3, target: 'monster', weight: .8, weapon: true,
+        id: 'blunt_pike', name: "Blunt Pike", type: 'attack', mana: 3, target: 'monster', weight: .8, weapon: true, pack: 'combine',
         dmg: [6],
         additionalDesc: 'Level I Weapon',
         slots: 1,
@@ -2268,7 +2268,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'farmers_scythe', name: "Farmer's Scythe", type: 'attack', mana: 3, target: 'all', weight: .7, weapon: true,
+        id: 'farmers_scythe', name: "Farmer's Scythe", type: 'attack', mana: 3, target: 'all', weight: .7, weapon: true, pack: 'combine',
         dmg: [3],
         additionalDesc: 'Level I Weapon',
         slots: 1,
@@ -2412,7 +2412,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'hickory_wand', name: "Hickory Wand", type: 'magic', mana: 3, weight: .7, weapon: true,
+        id: 'hickory_wand', name: "Hickory Wand", type: 'magic', mana: 3, weight: .7, weapon: true, pack: 'rainbow',
         magic: [{type: 'aligned', amount: 5}],
         sound: 'magic4',
         additionalDesc: 'Level I Weapon',
@@ -2522,7 +2522,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'crooked_staff', name: "Crooked Staff", type: 'magic', mana: 3, weight: .8, weapon: true,
+        id: 'crooked_staff', name: "Crooked Staff", type: 'magic', mana: 3, weight: .8, weapon: true, pack: 'rainbow',
         magic: [{type: 'aligned', amount: 5}],
         sound: 'magic4',
         additionalDesc: 'Level I Weapon',
@@ -2816,7 +2816,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'burning_branch', name: "Burning Branch", type: 'magic', mana: 3, weight: .8, weapon: true,
+        id: 'burning_branch', name: "Burning Branch", type: 'magic', mana: 3, weight: .8, weapon: true, pack: 'rainbow',
         magic: [{type: 'aligned', amount: 5}],
         sound: 'magic4',
         additionalDesc: 'Level I Weapon',
@@ -2966,7 +2966,7 @@ const ALL_CARDS = [
         slots: 1,
         shardUpgrades: {
             natural: true,
-            dmg: [30]
+            dmg: [25]
         },
     }),
     new Cards({
@@ -3010,13 +3010,13 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'clever_trick', name: 'Clever Trick', type: 'attack', target: 'monster', mana: 1, weight: 3, courage: 3, pack: 'combine',
-        dmg: [5],
+        dmg: [10],
         actions: [
             {action: 'ensharden', type: 'random', select: -1, from: 'handCards', random: true}
         ],
         slots: 1,
         shardUpgrades: {
-            dmg: [10],
+            dmg: [15],
             retain: true
         },
     }),
@@ -3039,15 +3039,15 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'burning_strike', name: 'Burning Strike', type: 'attack', mana: 2, target: 'monster', expire: 3,
+        id: 'burning_strike', name: 'Burning Strike', type: 'attack', mana: 2, target: 'monster', expire: 2,
         dmg: [40],
         slots: 2,
         shardUpgrades: {
             dmg: [45],
-            expire: 4
+            expire: 3
         },
         bothShardUpgrades: {
-            expire: 5,
+            expire: 4,
             natural: true
         },
     }),
@@ -3515,29 +3515,29 @@ const ALL_CARDS = [
             blk: [4]
         },
         actions: [
-            {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'rare', to: 'handCards', modifiers: {mana: 0, vanish: true}},
+            {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'uncommon', to: 'handCards', modifiers: {mana: 0, vanish: true}},
         ],
         slots: 2,
         fireShardUpgrades: {
             actions: [
-                {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'rare', to: 'handCards', with: ['flame'], modifiers: {mana: 0, vanish: true}},
+                {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'uncommon', to: 'handCards', with: ['flame'], modifiers: {mana: 0, vanish: true}},
             ],
             actions_2: [
-                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'rare', to: 'handCards', with: ['flame'], modifiers: {mana: 0, vanish: true}},
+                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'uncommon', to: 'handCards', with: ['flame'], modifiers: {mana: 0, vanish: true}},
             ],
         },
         iceShardUpgrades: {
             actions: [
-                {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'rare', to: 'handCards', with: ['frost'], modifiers: {mana: 0, vanish: true}},
+                {action: 'addCard', select: 1, value: 3, type: 'attack', tier: 'uncommon', to: 'handCards', with: ['frost'], modifiers: {mana: 0, vanish: true}},
             ],
             actions_2: [
-                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'rare', to: 'handCards', with: ['frost'], modifiers: {mana: 0, vanish: true}},
+                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'uncommon', to: 'handCards', with: ['frost'], modifiers: {mana: 0, vanish: true}},
             ],
         },
         bothShardUpgrades: {
             dmg: [25],
             actions: [
-                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'rare', to: 'handCards', modifiers: {mana: 0, vanish: true}},
+                {action: 'addCard', select: 1, value: 4, type: 'attack', tier: 'uncommon', to: 'handCards', modifiers: {mana: 0, vanish: true}},
             ],
         },
     }),
@@ -3552,13 +3552,13 @@ const ALL_CARDS = [
         shardUpgrades: {
             actions: [
                 {action: 'addCard', value: 1, type: 'attack', tier: 'common', to: 'drawCards', modifiers: {mana: 0}},
-                {action: 'addCard', value: 1, type: 'attack', tier: 'uncommon', to: 'drawCards'},
+                {action: 'addCard', value: 1, type: 'attack', tier: 'uncommon', to: 'drawCards', modifiers: {mana: 0}},
                 {action: 'addCard', value: 1, type: 'attack', tier: 'rare', to: 'drawCards'},
             ],
         },
         bothShardUpgrades: {
             actions: [
-                {action: 'addCard', value: 1, type: 'attack', tier: 'common', to: 'drawCards', modifiers: {mana: 0}},
+                {action: 'addCard', value: 2, type: 'attack', tier: 'common', to: 'drawCards', modifiers: {mana: 0}},
                 {action: 'addCard', value: 1, type: 'attack', tier: 'uncommon', to: 'drawCards', modifiers: {mana: 0}},
                 {action: 'addCard', value: 1, type: 'attack', tier: 'rare', to: 'drawCards', modifiers: {mana: 0}},
             ],
@@ -3596,20 +3596,20 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'clever_barrage', name: 'Clever Barrage', type: 'attack', target: 'monster', mana: 3, tier: 'rare', ephemeral: true, courage: 4, pack: 'combine',
-        dmg: [5, 4, 3, 2, 1],
+        dmg: [6, 5, 4, 3],
         actions: [
             {action: 'ensharden', type: 'random', select: -1, from: 'handCards', random: true}
         ],
         slots: 2,
         shardUpgrades: {
-            dmg: [6, 5, 4, 3, 2, 1],
+            dmg: [7, 6, 5, 4, 3, 2],
             actions: [
                 {action: 'ensharden', type: 'random', select: -1, from: 'allCards', random: true}
             ],
             ephemeral: false,
         },
         bothShardUpgrades: {
-            dmg: [6, 5, 4, 3, 2, 1],
+            dmg: [8, 7, 6, 5, 4, 3, 2, 1],
             actions: [
                 {action: 'ensharden', type: 'random', select: -1, from: 'allCards', random: true}
             ],
@@ -3686,7 +3686,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'auxiliary_kill', name: 'Auxiliary Kill', type: 'attack', target: 'monster', mana: 2, tier: 'rare', weight: 6, courage: 3, pack: 'combine',
-        dmg: [24],
+        dmg: [25],
         sound: 'attack13',
         actions: [
             {action: 'playOldest'},
@@ -3701,7 +3701,7 @@ const ALL_CARDS = [
                 {action: 'playOldest'},
                 {action: 'addCard', value: 1, what: 'auxiliary', to: 'handCards', with: ['flame']},
             ],
-            dmg_2: [34]
+            dmg_2: [35]
         },
         iceShardUpgrades: {
             actions: [
@@ -3711,7 +3711,7 @@ const ALL_CARDS = [
             mana_2: 1
         },
         bothShardUpgrades: {
-            dmg_2: [28],
+            dmg_2: [30],
             actions: [
                 {action: 'playOldest'},
                 {action: 'addCard', value: 1, what: 'auxiliary', to: 'handCards'},
@@ -3720,20 +3720,20 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'mega_kill', name: 'Mega Kill', type: 'attack', target: 'monster', mana: 2, tier: 'rare', pack: 'combine', weight: 4, courage: 4, 
-        dmg: [10, 10],
+        dmg: [12, 12],
         sound: 'attack14',
         actions: [
             {action: 'addCard', value: 2, what: 'battle_move', to: 'drawCards'},
         ],
         slots: 2,
         shardUpgrades: {
-            dmg: [12, 12],
+            dmg: [14, 14],
             actions: [
                 {action: 'addCard', value: 3, what: 'battle_move', to: 'drawCards'},
             ],
         },
         bothShardUpgrades: {
-            dmg: [14, 14],
+            dmg: [16, 16],
             actions: [
                 {action: 'addCard', value: 4, what: 'battle_move', to: 'drawCards'},
             ],
@@ -5623,7 +5623,7 @@ const ALL_CARDS = [
     }),
 
     new Cards({
-        id: 'cardistry', name: 'Cardistry', type: 'ability', mana: 1, tier: 'uncommon', courage: 3,
+        id: 'cardistry', name: 'Cardistry', type: 'ability', mana: 1, tier: 'uncommon', courage: 3, pack: 'rainbow',
         effects: [
             {effect: 'wield', amount: 1, turns: -1}
         ],
@@ -5713,7 +5713,7 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'rebuke', name: 'Rebuke', type: 'ability', mana: 2, tier: 'uncommon', courage: 3, 
+        id: 'rebuke', name: 'Rebuke', type: 'ability', mana: 2, tier: 'uncommon', courage: 3, pack: 'combine', 
         effects: [
             {effect: 'angered', amount: 2, turns: -1}
         ],
@@ -6005,7 +6005,7 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'bolster', name: 'Bolster', type: 'ability', mana: 2, tier: 'rare', courage: 6, weight: 2, 
+        id: 'bolster', name: 'Bolster', type: 'ability', mana: 2, tier: 'rare', courage: 6, weight: 2, pack: 'cycle', 
         effects: [
             {effect: 'insulate', amount: 3, turns: -1}
         ],
@@ -6510,7 +6510,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'metamorphose', name: 'Metamorphose', type: 'magic', mana: 0, tier: 'uncommon', weight: 7, courage: 3, 
+        id: 'metamorphose', name: 'Metamorphose', type: 'magic', mana: 0, tier: 'uncommon', weight: 7, courage: 3, pack: 'rainbow',
         magic: [{type: 'aligned', amount: 5}],
         sound: 'magic10',
         actions: [
@@ -7205,7 +7205,7 @@ export function Deck() {
     let player = window.player;
 
     function buildDeck() {
-        addCard('jab');
+        /*addCard('jab');
         addCard('jab');
         addCard('jab');
         addCard('rainbow_orb');
@@ -7216,7 +7216,10 @@ export function Deck() {
         addCard('stun');
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
-        }
+        }*/
+
+        addCard('blitzkrieg');
+        addCard('sudden_barrage');
 
 
         // this is how to add a shard on init - DEV MODE ONLY

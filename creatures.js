@@ -3076,7 +3076,6 @@ export function Monster() {
         // due to Bug #1 we need to account for none numeric edge cases for monster health
         if(monster.health.current===undefined || monster.health.current===false || monster.health.current==='' || isNaN(parseFloat(monster.health.current))) {
             monster.health.current = 1;
-            healthLeft = 1;
         }
         let healthLeft = util.getStatPercentage(monster.health.current, monster.health.max);
         let armorLeft = util.getStatPercentage(monster.armor, monster.health.current);
