@@ -51,11 +51,11 @@
         <div class="button tutorial">Tutorial<span>Off</span></div>
 
         <div class="difficulties">
-          <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="Adds a <span class='highlight'>Spewnicorn Spray</span> to your deck, decreases aggro, heal to full after gates, and extra magic fountains and quests.">Easy</span></div>
-          <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="No <span class='highlight'>Spewnicorn Spray</span> added to your deck, standard aggro, standard amount of magic fountains and quests, and heal to full after gates.">Medium</span></div>
-          <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="Reduced number of magic fountains and quests, and no healing after gates.">Hard</span></div>
-          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="Even less magic fountains and quests than Hard difficulty.">Expert</span></div>
-          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="Hardly any magic fountains or quests.">Nightmare</span></div>
+          <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="1 arena required per map, start with a <span class='highlight'>Spewnicorn Spray</span> card, reduced aggro, heal to full after gates, extra magic fountains and quests, and start with 100 max health.">Easy</span></div>
+          <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="2 arenas required per map, do not start with a <span class='highlight'>Spewnicorn Spray</span> card, standard amount of magic fountains and quests, and start with 75 max health.">Medium</span></div>
+          <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="No healing after gates, and start with 65 max health.">Hard</span></div>
+          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="3 arenas required per map, visiting magic fountains and quests increases aggro, and start with 55 max health.">Expert</span></div>
+          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="Reduced number of magic fountains and quests, harder to gain essence levels, and increased aggro.">Nightmare</span></div>
         </div>
 
         <input id="custom-seed" class="tooltip" data-powertip="You can enter a custom seed or keep this blank to generate a random game." type="text" placeholder="Custom Seed..." />
@@ -93,11 +93,13 @@
 
           <p>You will also come across <span class="highlight">Magic Fountains</span> and <span class="highlight">Quests</span> that will aid you in your journey. You must prove your worth and unlock the Gates by fighting at least two <span class="highlight">Arenas</span> with powerful enemies.</p>
 
-          <p><span class="highlight">Courage</span> is gained by winning combats and is used as currency for buying items at the market. You can always hover over things to get more information about them, such as the meters at the top that show your <span class="aggro">Aggro</span> and <span class="crit">Crit</span> levels.</p>
+          <p><span class="highlight">Courage Coins</span> are gained by winning combats and are used as currency for buying items at the market. You can always hover over things to get more information about them, such as the meters at the top that show your <span class="aggro">Aggro</span> and <span class="crit">Crit</span> levels.</p>
 
           <p>During combat, your <span class="highlight">Speed</span> determines how many cards you can draw per turn. <span class="highlight">Mana</span> is used to play your cards. Some cards can be combined, which does not cost mana.</p>
 
-          <p><span class="aggro">Aggro</span> amount increases by 1 after each combat, and the aggro level multiplies attack damage from Arena and Guardian fights. The more aggro you create, the faster your aggro level will increase. <span>Crit</span> percentage, which increases by 1 for each attack card played, is the chance an attack is a critical hit (damage * 1.5). Crit percentage resets to 0 after a critical hit.</p>
+          <p><span class="aggro">Aggro</span> amount increases by 1 after each combat. Each aggro level increases monster blocks in the FROST forest and monster attacks in the FLAME Forest, and also highly increases Arena and Guardian attacks. The more aggro you create, the faster your aggro level will increase. Level 1: 75% increase to FROST Forest blocks and FLAME Forest attacks (increasing by 25% for each level), 150% increase to Arena and Guardian attacks (increasing by 50% for each level).</p>
+          
+          <p><span class="crit">Crit</span> percentage, which increases by 1 for each attack card played, is the chance an attack is a critical hit (damage * 1.5). Crit percentage resets to 0 after a critical hit.</p>
 
           <p><span class="highlight">Armor</span> absorbs 50% of incoming attack damage.</p>
 
@@ -106,6 +108,54 @@
           <p>You can play cards to charge up your <span class="highlight">Magic Rainbow</span>. Each time your rainbow charges to full, it activates and does damage to your foes. The type of magic summoned dictates how you apply damage. Your magic type becomes <span class="muddled">Muddled</span> when you mix magic types. <span class="highlight">Rainbow</span> magic does damage to all monsters, <span class="elemental">Elemental</span> magic does damage to all monsters ignoring block, <span class="dark">Dark</span> magic does damage to all monsters ignorning armor, <span class="chaos">Chaos</span> magic does triple damage to a random monster, and <span class="muddled">Muddled</span> magic does damage to a single random monster.</p>
 
           <p>That's it, on with the adventure!</p>
+
+          <p>&nbsp;</p><p>&nbsp;</p>
+
+
+
+
+          <h2>Helpful Tips</h2>
+
+          <p><span class="highlight">DESTROYING CARDS:</span> adds card to dead cards for this combat.</p>
+
+          <p><span class="highlight">DEAD CARDS:</span> cards that have been destroyed this combat.</p>
+
+          <p><span class="highlight">REMOVING CARDS:</span> permanently removes a card from your deck.</p>
+
+          <p><span class="highlight">COMBINING CARDS:</span> click a combinable card and then click another identical card to combine them. This will destroy both cards and create a new, more powerful card.</p>
+
+          <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+
+
+
+
+          <h2>RELEASE NOTES</h2>
+
+          <p>0.49 Alpha (2/8/2024)</p>
+
+          <ul>
+            <li>Nerfed the Everarmor card</li>
+            <li>Nerfed the Erupt card</li>
+            <li>Retooled the Scavenge card</li>
+            <li>Buffed the Seeing Ring card</li>
+            <li>Max health amount is now shown next to the health bar</li>
+            <li>Courage is now referred to as Courage Coins</li>
+            <li>Improved various tooltips to give more context</li>
+            <li>Improved various card descriptions to be less esoteric</li>
+            <li>Wisdom no longer affects max health</li>
+            <li>You can't gain more than 999 block</li>
+            <li>Seeing Ring doesn't break when trying to view draw cards</li>
+            <li>Fixed bug where game didn't end if player died to spikes or retaliate</li>
+            <li>Overhauled candies to make them more simple and useful</li>
+            <li>Various adjustments to difficulty settings</li>
+          </ul>
+
+          <p>0.48 Alpha (2/1/2024)</p>
+
+          <ul>
+            <li>Mana can no longer go below 0 from cards such as Mired</li>
+            <li>Slightly nerfed the Ultraumatron fight</li>
+          </ul>
 
         </div>
 
@@ -193,7 +243,7 @@
     </div>
 
     <div class="step" id="step4">
-      <span class="text"><span class="highlight">Courage</span> is gained by winning combats and is used as currency for buying items at the market.</span>
+      <span class="text"><span class="highlight">Courage Coins</span> are gained by winning combats and are used as currency for buying items at the market.</span>
       <div class="button next-button">Next</div>
       <svg class="arrow" height='100px' width='100px'  fill="#000000" xmlns="http://www.w3.org/2000/svg" data-name="Слой 1" viewBox="0 0 100 100" x="0px" y="0px"><title>Arrow-01-01-01-01-01</title><g><path d="M60.6212,58.098c2.7035,0.57418,5.1191-.43075,7.56517-1.22292a4.03413,4.03413,0,0,0,.55032-0.27677c0.97595-.49375,2.10176-0.72051,2.87275.06659,0.79855,0.81523.09669,1.82471-.37061,2.62319-3.8002,6.49327-7.65184,12.95645-11.44917,19.45137-1.4484,2.47727-2.88351,4.97-4.159,7.53794-0.87725,1.76611-1.378,3.71675-2.21771,5.50474-0.67868,1.44521-1.04872,3.12985-2.52417,4.12894a4.31881,4.31881,0,0,1-2.55039-2.47745c-1.3659-2.49518-2.0638-5.26387-3.49364-7.7377-1.67392-2.89614-2.97436-6.006-4.59591-8.93517-1.71856-3.10433-3.62448-6.10492-5.44769-9.15138-1.43842-2.40352-2.8609-4.81676-4.32012-7.20757-0.60408-.98971-1.33106-1.90577-1.91243-2.90739a8.05418,8.05418,0,0,1-.54075-1.66088,4.71494,4.71494,0,0,1,1.83393-.53123c2.35635,0.38564,4.68732.92709,7.02611,1.41855,0.39131,0.08222.77522,0.19978,1.46284,0.37951,0.0842-1.46048.257-2.78117,0.21859-4.09568-0.13188-4.51583-.20229-9.04-0.554-13.54093C37.6744,35.10213,37.0014,30.767,36.50034,26.41722c-0.423-3.67221-.75356-7.35585-1.22913-11.021-0.343-2.64341-.81513-5.27256-1.30926-7.89306-0.3368-1.78628.03582-2.56479,1.87947-2.78235,2.03165-.23977,4.0906-0.26195,6.13913-0.34158,3.00559-.11686,6.01193-0.22924,9.019-0.28541,1.36307-.02547,2.73141.05117,4.09264,0.148,2.11105,0.15011,4.215.42425,6.32768,0.52234,2.37428,0.11017,4.7559.05323,7.13224,0.13185A1.40112,1.40112,0,0,1,69.97622,6.3667a9.92225,9.92225,0,0,1-.336,3.22594,56.55734,56.55734,0,0,0-2.80757,11.306c-0.59644,4.46476-1.65046,8.86768-2.48064,13.30217-1.01933,5.44485-2.078,10.8837-2.9878,16.34712C60.95466,53.00716,60.86466,55.5196,60.6212,58.098ZM41.45825,13.51669c-0.39712.6142-.75075,1.26271-1.2021,1.834-0.59328.75108-1.30584,1.409-1.88683,2.16833-0.44612.583-.82659,1.26073-0.11063,1.94561L50.91179,7.68593a2.66016,2.66016,0,0,0-2.95171.55984q-1.38412,1.22439-2.82159,2.388c-1.21868.98424-2.4632,1.93645-3.6966,2.90242,0.92073-2.10445,2.8408-3.23721,4.4984-4.62485,0.43628-.36521.87808-0.72382,1.31735-1.08547L47.116,7.39138C45.23772,7.28263,43.3602,7.147,41.4803,7.08879a1.62817,1.62817,0,0,0-1.07733.45235c-1.05764,1.06593-2.0732,2.17563-3.0662,3.30273a1.23263,1.23263,0,0,0,.04846,1.72363c2.17167-1.62963,3.83428-3.74943,6.36529-4.72354a6.72665,6.72665,0,0,1-1.217,1.50055c-1.52818,1.55671-3.0665,3.10375-4.5775,4.677-0.681.709-.75238,1.499,0.00206,2.69152a26.44768,26.44768,0,0,1,1.85536-2.14675A10.08264,10.08264,0,0,1,41.45825,13.51669Zm22.62607,47.7497q-0.65886.43576-1.31772,0.87155c-1.46131,1.1131-2.98,2.15918-4.373,3.35209-3.89053,3.33184-7.72833,6.72522-11.589,10.092a6.3211,6.3211,0,0,1-1.271,1.02079,2.42172,2.42172,0,0,1-1.10514-.08139l-0.07154-.41812q8.60342-7.23328,17.20678-14.46654c-0.72847-.05069-1.51788.40616-1.844,0.18375-1.30527-.89031-2.31613-0.01909-3.42724.31369l-0.05333-.06044a4.0845,4.0845,0,0,1,.48807-0.87818c1.36734-1.46123,1.376-1.45309.32432-3.27223C51.06039,61.92257,45.99347,66.99432,40.451,71.71623c1.50509,2.7153,2.91536,5.25952,4.43653,8.00386,6.26662-5.26052,11.39458-11.27627,17.32216-16.41569l0.34273,0.35841C57.01,69.25478,51.46763,74.84676,45.78,80.58526c0.25326,0.47966.54645,1.035,0.99614,1.88676,2.64228-2.72332,5.03025-5.24653,7.4877-7.70017a61.60727,61.60727,0,0,1,8.24067-6.63753,7.07551,7.07551,0,0,1-1.49439,1.79213c-1.81894,1.6637-3.72074,3.24324-5.46181,4.984-2.42085,2.42038-4.74658,4.93751-7.07012,7.45289-1.13782,1.23182-1.101,1.33229-.22289,2.99858,0.95161-.93211,1.85835-1.82318,2.76841-2.71081,0.88326-.86145,1.73009-1.766,2.66635-2.56569a17.60763,17.60763,0,0,1,3.16819-2.35012,3.66961,3.66961,0,0,1-.31211.69476q-3.40494,3.56764-6.82284,7.12294c-0.4829.50254-1.05452,1.02347-.65911,1.77824,0.57911,1.10534.95223,2.37451,1.99648,3.14078,5.77-10.23647,11.4761-20.3596,17.18222-30.48275l-0.3312-.37951ZM54.75624,13.6799l-0.28385-.31106c1.86141-1.78641,3.72283-3.57284,5.66015-5.43214a5.51246,5.51246,0,0,0-4.87873,1.34706c-3.87457,3.57713-7.824,7.07338-11.68688,10.66292-1.64667,1.53019-3.15153,3.21295-4.76821,4.87506,0.227,2.54836.37755,5.21775,0.72475,7.86128,0.34982,2.66341.14311,5.394,0.77331,8.46122,0.943-.93,1.555-1.5492,2.1837-2.15089,3.11584-2.98187,6.16958-6.03305,9.37444-8.91613A99.757,99.757,0,0,1,60.855,22.60108a10.95573,10.95573,0,0,0,4.64994-8.03252c0.17569-1.29431.36582-2.58664,0.54939-3.87988a7.49832,7.49832,0,0,0-2.65409,1.521q-8.3776,7.27559-16.72356,14.58759c-1.59507,1.39826-3.13631,2.85788-4.70445,4.287-0.63924.58257-1.2861,1.03543-2.12045-.05855,1.54769-1.22493,3.05394-2.38167,4.52-3.58721,1.53458-1.26188,3.03156-2.56956,4.54321-3.85928,1.46-1.24556,2.9295-2.48031,4.37317-3.74456,1.49474-1.309,2.95356-2.65884,4.44645-3.97,1.44089-1.26543,2.99087-2.41945,4.335-3.77862,1.34023-1.3552,3.22224-2.1525,4.38782-3.89093-2.78368-.94914-4.79905.04858-6.6931,1.55232C58.102,11.06718,56.42612,12.36973,54.75624,13.6799Zm-12.605,36.65964a7.75438,7.75438,0,0,1,.83211-1.10185c1.21-1.10828,2.54645-2.09236,3.66691-3.28178A105.97383,105.97383,0,0,1,60.23433,34.40174a3.06344,3.06344,0,0,0,1.31755-1.96016c0.6135-3.07891,1.32483-6.13823,1.9783-9.20938,0.1052-.4943.10528-1.011,0.19528-1.94692C55.40958,28.06738,47.44126,34.60006,40.411,42.64761l0.37652,3.85624c1.37912-1.487,2.31784-2.65183,3.40971-3.6489,3.792-3.46276,7.633-6.872,11.46414-10.29166,1.42961-1.27613,2.86788-2.54376,4.33693-3.77377,0.37129-.31091.83618-0.826,1.48326-0.0579a10.46131,10.46131,0,0,1-.7831.81646c-2.5034,2.1212-5.08466,4.15609-7.50966,6.3629-3.99605,3.63652-8.31989,6.94678-11.59127,11.32545a2.39126,2.39126,0,0,0-.64917,1.18251c0.04142,2.09583.19083,4.18955,0.32482,6.69325,0.83076-.63337,1.35935-1.01167,1.86106-1.42283q5.87377-4.8137,11.74528-9.63018a1.37926,1.37926,0,0,1,1.724-.43422c-1.19861,1.03741-2.24873,2.00075-3.35535,2.89411a130.89428,130.89428,0,0,0-10.64647,9.01259,2.83027,2.83027,0,0,0-1.06251,2.49174c0.16232,1.5856-.65839,2.36227-2.24441,2.42017-1.16794.04265-3.357,1.76016-3.59547,2.88114a1.48744,1.48744,0,0,0,.13874.97685c1.2074,2.0572,2.45409,4.09141,3.772,6.27056,0.56612-.3946,1.01855-0.67215,1.42911-1.00187,5.01418-4.02688,9.97176-8.1268,15.06328-12.05317a5.94853,5.94853,0,0,0,2.49938-4.20462c0.49531-3.65664,1.1334-7.29381,1.67714-10.94426a5.40673,5.40673,0,0,0-.19355-1.39263L57.64713,42.602c0.72581-1.23832,1.986-2.00341,2.57165-3.12174,0.60649-1.15819.55866-2.659,0.85834-4.3573-0.94314.6246-1.5759,1.01383-2.17729,1.44664a85.63439,85.63439,0,0,0-14.505,13.29116A1.50024,1.50024,0,0,1,42.15125,50.33954ZM55.274,8.02364c-2.33813-.32872-2.46526-0.32045-3.60441.53565a91.842,91.842,0,0,0-12.46983,11.881c-0.65258.71616-1.30755,1.62825-.50644,2.72116C44.2359,18.10117,49.71391,13.09986,55.274,8.02364ZM32.00948,58.05387c0.07616,1.71379,1.27178,1.59557,2.18546,1.814,0.07124,0.89177-1.03639,1.9993.717,2.42359,0.658-.6822,1.37558-1.42622,2.19189-2.2726C35.2855,59.31751,33.737,58.72019,32.00948,58.05387ZM36.523,6.81787c0.1638,0.83013.29355,1.48751,0.4401,2.23007,0.87406-.78315,1.53667-1.37686,2.489-2.23007H36.523Z"></path><path d="M64.08431,61.26639a2.63366,2.63366,0,0,1,.36881.504c-0.36243.41452-.76894,0.79049-1.26786,1.278-0.20912-.45482-0.31387-0.6826-0.41864-0.91039Q63.42544,61.70214,64.08431,61.26639Z"></path><path d="M37.4733,65.23419a2.95214,2.95214,0,0,1,.34851-1.09019c0.58707-.66258,1.28027-1.23028,1.921-1.84629A198.53935,198.53935,0,0,1,55.40237,48.78616a35.96642,35.96642,0,0,1,3.211-2.01489l0.32256,0.45266c-2.39189,1.88-4.82189,3.71388-7.16517,5.65262q-3.62487,2.999-7.1081,6.1683c-2.30648,2.0893-4.53334,4.26657-6.79511,6.40525Z"></path><path d="M39.09841,67.58727C40.14936,65.754,53.669,53.985,55.616,53.14286c-1.1078,1.78412-2.741,2.67677-4.018,3.91675-1.27329,1.23644-2.59958,2.419-3.91793,3.60818-1.368,1.2339-2.71026,2.50254-4.14559,3.65392C42.2049,65.38824,41.34508,67.10168,39.09841,67.58727Z"></path><path d="M40.85244,36.4252a25.11357,25.11357,0,0,1,1.70936-2.15674A137.20539,137.20539,0,0,1,53.93709,23.57378c2.97406-2.41322,5.773-5.043,8.635-7.59311,0.60945-.543,1.14427-1.181,2.27574-0.9a3.20592,3.20592,0,0,1-.4768.83013c-5.47942,4.756-11.02548,9.43711-16.43174,14.27452-1.8751,1.67781-3.39567,3.74923-5.10825,5.6132a12.94493,12.94493,0,0,1-1.41765,1.17178Z"></path><path d="M54.75624,13.6799c-1.5022,1.49062-3.00928,2.97635-4.50558,4.47287q-4.49779,4.49858-8.98506,9.00769c-0.80722.81064-.80132,0.81651-1.78713,0.77147,0.55487-1.607,11.18735-11.93373,14.994-14.563Z"></path><path d="M56.29248,62.13425c-2.03378,1.91595-4.0266,3.87792-6.11273,5.73508-2.14371,1.90846-4.375,3.71878-6.57837,5.55967a10.37644,10.37644,0,0,1-1.19027.69227,4.48326,4.48326,0,0,1,.43952-1.33295,18.4114,18.4114,0,0,1,1.795-1.67651c2.88049-2.41028,5.75156-4.83276,8.67584-7.189a29.177,29.177,0,0,1,2.91789-1.8488Z"></path></g></svg>
     </div>
@@ -260,7 +310,7 @@
 
       </div>
 
-      <div class="game-courage tooltip" data-powertip="<span class='highlight'>Courage:</span> spend courage points on items at the market">
+      <div class="game-courage tooltip" data-powertip="<span class='highlight'>Courage Coins:</span> spend these on items at the market">
 
         <div class="icon"></div> <span></span>
 
@@ -276,13 +326,17 @@
 
         <div class="essence-bar aura"><div class="essence-bar-inner"></div><span class="icon"></span><span class="level"></span></div>
 
+        <div class="essence-amount"></div>
+
       </div>
 
-      <div class="game-aggro tooltip" data-powertip="<span class='aggro'>Aggro</span> level multiplies arena monster and guardian attack damage.<br /><br /><span class='crit'>Crit</span> percentage is the chance each attack is a critical hit (increases by 1 for each attack played, resets after a critical hit)">
+      <div class="game-aggro tooltip" data-powertip="<span class='aggro'>Aggro</span> level increases monster blocks in the FROST forest and monster attacks in the FLAME Forest, and also highly increases Arena and Guardian attacks.<br /><br /><span class='crit'>Crit</span> percentage is the chance each attack is a critical hit (increases by 1 for each attack played, resets after a critical hit)">
 
         <div class="aggro-bar"><div class="aggro-bar-inner"><span class="current"></span></div><span class="icon"></span><span class="threshold"></span><span class="level"></span></div>
 
         <div class="crit-bar"><div class="crit-bar-inner"></div><span class="icon"></span><span class="level"></span></div>
+
+        <div class="aggro-amount"></div>
 
       </div>
 
@@ -335,6 +389,7 @@
           <div class="block-amount">
             <div class="block-number"></div>
           </div>
+          <div class="max-health-number"></div>
           <div class="icon-health"></div>
           <div class="combat-log"><div class="health-gained" data-amount="0"></div></div>
         </div>
@@ -367,7 +422,7 @@
         <div class="icon-stance tooltip" data-stance="none" data-powertip="<span class='highlight'>Stance:</span> None"></div>
       </div>
 
-      <div class="chances tooltip" data-powertip="Chances of seeing treasure rooms, candies, and shards after combats, as well as uncommon and rare cards in card rewards and courage screens.">
+      <div class="chances tooltip" data-powertip="Chances of seeing treasure rooms, candies, and shards after combats, as well as uncommon and rare cards in card rewards and markets.">
 
         <div class="treasure-chance">treasure: <span></span>%</div>
 
@@ -723,19 +778,19 @@
 
     <div class="courage-screen game-panel">
 
-      <h2>Courage!</h2>
+      <h2>The Market</h2>
 
       <div class="courage-item-wrapper">
 
-        <div class="message">Spend your courage points wisely.</div>
+        <div class="message">Spend your courage coins wisely.</div>
 
         <div class="panel">
 
           <div class="courage-items"></div>
 
-          <div class="button courage-remove shown" data-amount="2">Remove Card<span class="remove-courage">2</span></div>
+          <div class="button courage-remove shown tooltip" data-amount="2" data-powertip="Permanently remove a card from your deck">Remove Card<span class="remove-courage tooltip" data-powertip="Courage coins">2</span></div>
 
-          <div class="button courage-trade tooltip" data-powertip="Trade in a weapon for a better one" data-amount="1">Trade<span class="trade-courage">1</span></div>
+          <div class="button courage-trade tooltip" data-powertip="Trade in a weapon for a better one" data-amount="1">Trade<span class="trade-courage tooltip" data-powertip="Courage coins">1</span></div>
 
           <div class="button courage-gamble shown tooltip" data-powertip="Add a random card to your deck">Gamble</div>
 
@@ -844,11 +899,11 @@
 
         <div class="incoming-damage">Incoming Damage: <span></span></div>
 
-        <div class="magic-rainbow" data-type="rainbow">
+        <div class="magic-rainbow tooltip" data-type="rainbow" data-powertip="<div class='tooltip-magic'><span class='rainbow'>Rainbow Magic: </span>Does damage to all monsters (Magick: does 2 damage to all enemies).</div><div class='tooltip-magic'><span class='elemental'>Elemental Magic: </span>Does damage to all monsters ignoring block (Magick: gain 3 block).</div><div class='tooltip-magic'><span class='dark'>Dark Magic: </span>Does damage to all monsters ignorning armor (Magick: gain 2 armor).</div><div class='tooltip-magic'><span class='chaos'>Chaos Magic: </span>Does triple damage to a random monster (Magick: does 10 damage to a random monster).</div><div class='tooltip-magic'><span class='muddled'>Muddled Magic: </span>Does damage to a random monster.</div>">
 
           <div class="rainbow-power-amount"><span class="rainbow-power-current"></span>/<span class="rainbow-power-max"></span></div>
 
-          <div class="magic-type"><span class="tooltip" data-type="rainbow" data-powertip="<div class='tooltip-magic'><span class='rainbow'>Rainbow Magic: </span>Does damage to all monsters (Magick: does 2 damage to all enemies).</div><div class='tooltip-magic'><span class='elemental'>Elemental Magic: </span>Does damage to all monsters ignoring block (Magick: gain 3 block).</div><div class='tooltip-magic'><span class='dark'>Dark Magic: </span>Does damage to all monsters ignorning armor (Magick: gain 2 armor).</div><div class='tooltip-magic'><span class='chaos'>Chaos Magic: </span>Does triple damage to a random monster (Magick: does 10 damage to a random monster).</div><div class='tooltip-magic'><span class='muddled'>Muddled Magic: </span>Does damage to a random monster.</div>"></span> Magic</div>
+          <div class="magic-type"><span data-type="rainbow"></span> Magic</div>
 
           <div class="rainbow-power">
             <div class="mask">

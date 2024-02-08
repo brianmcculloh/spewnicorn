@@ -508,6 +508,10 @@ input[type="text"] {
 	overflow:auto;
 	text-align:center;
 }
+#splash .instructions ul {
+	text-align:left;
+	text-transform:none;
+}
 #splash .instructions::-webkit-scrollbar {
 	width: 11px;
 }
@@ -758,13 +762,54 @@ body.game-started #splash .panel .difficulties {
 	gap:7px;
 }
 .essence-bars {
-	left: 517px;
-    top: 11px;
+	left: 492px;
+    top: 0px;
+	padding:12px 20px 12px 20px;
+}
+.essence-bars .essence-amount {
+	position:absolute;
+	top:20px;
+	z-index:99;
+}
+.essence-bars .essence-amount > span {
+	display:block;
+	transition:all 4s;
+	font-size:35px;
+	width:50px;
+	text-align:center;
+}
+.essence-bars .essence-amount .essence-text.sparkle {
+	color: var(--sparkle_color);
+}
+.essence-bars .essence-amount .essence-text.shimmer {
+	color: var(--shimmer_color);
+}
+.essence-bars .essence-amount .essence-text.aura {
+	color: var(--aura_color);
 }
 .game-aggro {
 	gap:14px;
-    top: 13px;
-    left: 693px;
+    top: 0px;
+    left: 653px;
+	padding:15px 35px 15px 20px;
+}
+.game-aggro .aggro-amount {
+	position:absolute;
+	top:20px;
+	z-index:99;
+}
+.game-aggro .aggro-amount > span {
+	display:block;
+	transition:all 4s;
+	font-size:35px;
+	width:50px;
+	text-align:center;
+}
+.game-aggro .aggro-amount .aggro-text {
+	color:var(--aggro_color);
+}
+.game-aggro .aggro-amount .crit-text {
+	color:var(--crit_color);
 }
 .essence-bar, .aggro-bar, .crit-bar {
 	position:relative;
@@ -1240,6 +1285,10 @@ body.game-started #splash .panel .difficulties {
 body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-cards, body.combating .bottom-bar .dead-cards, body.combating .draw-card, body.combating .draw-all, body.combating .end-turn {
 	opacity:1;
 	pointer-events:auto;
+}
+.draw-cards.disabled {
+	opacity:.3 !important;
+	pointer-events:none !important;
 }
 
 .stance {
@@ -1967,6 +2016,9 @@ body.debug .status-toggle {
 .loot-screen .panel {
 	margin-bottom:20px;
 }
+.loot-screen .message .highlight {
+	color:yellow;
+}
 .loot-items {
 	display:flex;
 	align-items:center;
@@ -2135,10 +2187,17 @@ body.arena .monster-panel {
 }
 .creature-health .health-number {
 	position:absolute;
-	right:-14px;
+	right:-13px;
+	width:20px;
+	font-size:15px;
+	top:-18px;
+}
+.creature-health .max-health-number {
+	position:absolute;
+	right:-25px;
 	width:20px;
 	font-size:18px;
-	top:-14px;
+	top:3px;
 }
 .creature-health .armor-amount {
 	display:flex;
@@ -2154,13 +2213,14 @@ body.arena .monster-panel {
 }
 .creature-health .armor-number {
 	position:absolute;
-	right:-14px;
-	bottom:-11px;
+	right:-13px;
+	bottom:-16px;
 	width:20px;
-	font-size:18px;
+	font-size:15px;
 }
 .creature-health .block-amount {
 	position:absolute;
+	z-index:2;
 	top:-3px;
 	right:-36px;
 	width:36px;
@@ -4645,6 +4705,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 .card .name {
 	position: absolute;
+	z-index:9;
     top: 20px;
     padding: 0 55px;
     width: 100%;
@@ -4688,6 +4749,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 .card-mana {
 	position:absolute;
+	z-index:10;
 	display:flex;
 	justify-content:center;
 	top:1px;
@@ -4746,6 +4808,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 .card-age {
 	position:absolute;
+	z-index:11;
 	top:67px;
 	left:21px;
 	font-size:15px;
@@ -4963,7 +5026,8 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 		drop-shadow(0 0 7px black)
 		drop-shadow(0 0 15px black);
 }
-.player-cards .card.selected {
+.player-cards .card.selected,
+.player-cards .card.combine-compatible {
 	filter: 
 		drop-shadow(1px 1px 0 blue) 
 		drop-shadow(1px -1px 0 blue)

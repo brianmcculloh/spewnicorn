@@ -108,7 +108,8 @@ export default class Util {
 
         let mana = util.getCardAttribute(card, 'mana');
         let manaDom = '';
-        manaDom = '<div class="card-mana"><span class="mana amount" data-amount="' + mana + '">' + mana + '</span></div>';
+        let manaTip = "<span class='highlight'>Mana:</span> energy cost to play this card";
+        manaDom = '<div class="card-mana tooltip" data-powertip="' + manaTip + '"><span class="mana amount" data-amount="' + mana + '">' + mana + '</span></div>';
 
         let age = -1;
         age = util.getCardAttribute(card, 'age');
@@ -191,7 +192,7 @@ export default class Util {
         let combinableDom = '';
         let combinableTip = '';
         if(combinable != '') {
-            combinableTip = "<span class='highlight'>Combinable:</span> This card can be combined with other cards of the same type";
+            combinableTip = "<span class='highlight'>Combinable:</span> When in hand, this card can be combined with another identical card to create a new more powerful card.";
             combinableDom += '<div class="combinable tooltip" data-powertip="' + combinableTip + '"><span></span></div>';
         }
 
@@ -284,7 +285,7 @@ export default class Util {
         let tooltipClass = slots != '' ? ' tooltip' : '';
         let tooltip = slots != '' ? card.slotDesc : '';
         pack = card.pack ? ' ' + card.pack + '-pack' : '';
-        $("<div class='card-wrapper drawing'><div class='card " + card.tier + unplayable + combinable + pack + " " + card.type + " " + cssClass + "' id='card-" + card.id + "' data-id='" + card.id + "' data-guid='" + card.guid + "' data-powertip='" + tooltip + "'><div class='card-image'></div><div class='card-frame'></div><div class='card-type'>" + card.type + "</div><div class='card-rarity'></div>" + manaDom + ageDom + "<div class='bubbles-left'>" + useDom + expireDom + lingerDom + "</div><div class='bubbles-right'>" + vanishDom + retainDom + ephemeralDom + breakableDom + combinableDom + auraDom + sparkleDom + shimmerDom + tradeDom + weaponDom + aoeDom + unaddableDom + naturalDom + "</div><div class='bubbles-bottom-left'>" + packDom + "</div><div class='name'>" + card.name + "</div><div class='desc'><div class='desc-inner'>" + card.desc + "</div></div><div class='slots" + tooltipClass + "' data-powertip='" + tooltip + "'>" + slots + "</div><div class='card-courage' data-amount='" + card.courage + "'>" + card.courage + "</div></div></div>")
+        $("<div class='card-wrapper drawing'><div class='card " + card.tier + unplayable + combinable + pack + " " + card.type + " " + cssClass + "' id='card-" + card.id + "' data-id='" + card.id + "' data-guid='" + card.guid + "' data-powertip='" + tooltip + "'><div class='card-image'></div><div class='card-frame'></div><div class='card-type'>" + card.type + "</div><div class='card-rarity'></div>" + manaDom + ageDom + "<div class='bubbles-left'>" + useDom + expireDom + lingerDom + "</div><div class='bubbles-right'>" + vanishDom + retainDom + ephemeralDom + breakableDom + combinableDom + auraDom + sparkleDom + shimmerDom + tradeDom + weaponDom + aoeDom + unaddableDom + naturalDom + "</div><div class='bubbles-bottom-left'>" + packDom + "</div><div class='name'>" + card.name + "</div><div class='desc'><div class='desc-inner'>" + card.desc + "</div></div><div class='slots" + tooltipClass + "' data-powertip='" + tooltip + "'>" + slots + "</div><div class='card-courage tooltip' data-amount='" + card.courage + "' data-powertip='Courage coins'>" + card.courage + "</div></div></div>")
             .appendTo(to)
             .delay(1)
             .queue(function() {
@@ -318,7 +319,7 @@ export default class Util {
             trigger = "<span class='counter'>" + treasure.trigger.counter + "</span>";
         }
         let treasureName = '<span class="highlight">' + treasure.name + ':</span>';
-        $("<div class='treasure tooltip " + treasure.id + "' style='background-position:" + (treasure.x * 1.5) + "px " + (treasure.y * 1.5) + "px;' data-id='" + treasure.id + "' data-powertip='" + treasureName + "<br />" + treasure.desc + "'>" + trigger + "<div class='treasure-courage' data-amount='" + treasure.courage + "'>" + treasure.courage + "</div></div>")
+        $("<div class='treasure tooltip " + treasure.id + "' style='background-position:" + (treasure.x * 1.5) + "px " + (treasure.y * 1.5) + "px;' data-id='" + treasure.id + "' data-powertip='" + treasureName + "<br />" + treasure.desc + "'>" + trigger + "<div class='treasure-courage tooltip' data-amount='" + treasure.courage + "' data-powertip='Courage coins'>" + treasure.courage + "</div></div>")
             .appendTo(to);
             util.setTooltips(to);
     }
@@ -327,7 +328,7 @@ export default class Util {
         if(clickable) css += 'clickable ';
         css += candy.target != '' ? 'targeted ' : '';
         let candyName = '<span class="highlight">' + candy.name + ':</span>';
-        $("<div class='candy tooltip " + css + candy.id + "' style='background-position:" + (candy.x * 1.25) + "px " + (candy.y * 1.25) + "px;' data-id='" + candy.id + "' data-guid='" + candy.guid + "' data-powertip='" + candyName + "<br />" + candy.desc + "'><div class='candy-courage' data-amount='" + candy.courage + "'>" + candy.courage + "</div></div>")
+        $("<div class='candy tooltip " + css + candy.id + "' style='background-position:" + (candy.x * 1.25) + "px " + (candy.y * 1.25) + "px;' data-id='" + candy.id + "' data-guid='" + candy.guid + "' data-powertip='" + candyName + "<br />" + candy.desc + "'><div class='candy-courage tooltip' data-amount='" + candy.courage + "' data-powertip='Courage coins'>" + candy.courage + "</div></div>")
             .appendTo(to);
             util.setTooltips(to);
     }
@@ -387,7 +388,7 @@ export default class Util {
             util.setTooltips(to);
     }
     appendConfirm(card, to) {
-        $('<div class="button play-card" data-guid="' + card.guid + '">Play This Card</div>')
+        $('<div class="button play-card tooltip" data-powertip="Or you can click an identical card to combine them." data-guid="' + card.guid + '">Play This Card</div>')
             .appendTo(to);
             util.setTooltips(to);
     }
@@ -859,7 +860,7 @@ export default class Util {
             intentSensitivity: 100,
             popupClass: 'tooltip-bottom-bar'
         });
-        $('.magic-rainbow').find('.tooltip').powerTip({
+        $('.magic-rainbow').powerTip({
             followMouse: true,
             offset: 5,
             fadeInTime: 50,

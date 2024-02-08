@@ -93,11 +93,73 @@ const ALL_CANDY= [
         id:'rock_candy', 
         name: 'Rock Candy', 
         courage: 3,
-        weight: 3,
+        weight: 7,
         armor: [25],
         combatOnly: false,
         x: -448,
         y: -2464
+    }),
+    new Candy({
+        id:'cherry_taffy', 
+        name: 'Cherry Taffy', 
+        weight: 7,
+        blk: [25],
+        armor: [15],
+        x: -288,
+        y: -4224
+    }),
+    new Candy({
+        id:'caramel_creme', 
+        name: 'Caramel Creme', 
+        weight: 4,
+        dmg: [50],
+        target: 'monster',
+        x: -160,
+        y: -3870
+    }),
+    new Candy({
+        id:'marshmallows', 
+        name: 'Marshmallows', 
+        weight: 4,
+        blk: [60],
+        x: -256,
+        y: -3872
+    }),
+    new Candy({
+        id:'kettle_corn', 
+        name: 'Kettle Corn', 
+        weight: 4,
+        armor: [35],
+        x: -64,
+        y: -1568
+    }),
+    new Candy({
+        id:'caramel_corn', 
+        name: 'Caramel Corn', 
+        weight: 2,
+        courage: 3,
+        dmg: [50],
+        target: 'monster',
+        x: -64,
+        y: -1696
+    }),
+    new Candy({
+        id:'swedish_fish', 
+        name: 'Swedish Fish', 
+        weight: 2,
+        courage: 3,
+        blk: [70],
+        x: -32,
+        y: -1666
+    }),
+    new Candy({
+        id:'trail_mix', 
+        name: 'Trail Mix',
+        weight: 2,
+        courage: 3,
+        armor: [45],
+        x: 0,
+        y: -1760
     }),
 
     // magic
@@ -105,28 +167,28 @@ const ALL_CANDY= [
         id:'blueberry_hard_candy', 
         name: 'Blueberry Hard Candy', 
         weight: 6,
-        magic: [{type: 'rainbow', amount: 20}],
+        magic: [{type: 'rainbow', amount: 40}],
         x: -64,
         y: -14816
     }),
     new Candy({
         id:'grape_hard_candy', 
         name: 'Grape Hard Candy', 
-        magic: [{type: 'dark', amount: 20}],
+        magic: [{type: 'dark', amount: 40}],
         x: -128,
         y: -14816
     }),
     new Candy({
         id:'cherry_hard_candy', 
         name: 'Cherry Hard Candy', 
-        magic: [{type: 'chaos', amount: 20}],
+        magic: [{type: 'chaos', amount: 40}],
         x: -32,
         y: -14816
     }),
     new Candy({
         id:'lime_hard_candy', 
         name: 'Lime Hard Candy', 
-        magic: [{type: 'elemental', amount: 20}],
+        magic: [{type: 'elemental', amount: 40}],
         x: -96,
         y: -14816
     }),
@@ -135,7 +197,7 @@ const ALL_CANDY= [
         name: 'Orange Hard Candy', 
         courage: 3,
         weight: 4,
-        magic: [{type: 'aligned', amount: 20}],
+        magic: [{type: 'aligned', amount: 40}],
         x: -0,
         y: -14816
     }),
@@ -143,31 +205,60 @@ const ALL_CANDY= [
         id:'mystery_hard_candy', 
         name: 'Mystery Hard Candy', 
         weight: 6,
-        magic: [{type: 'random', amount: 30}],
+        magic: [{type: 'random', amount: 60}],
         x: -160,
         y: -14816
     }),
+    new Candy({
+        id:'blueberry_lollipop', 
+        name: 'Blueberry Lollipop', 
+        courage: 3,
+        weight: 2,
+        magic: [{type: 'aligned', amount: 40}],
+        effects: [
+            {effect: 'lightning', amount: 5, turns: -1}
+        ],
+        x: -192,
+        y: -1152
+    }),
+    new Candy({
+        id:'cherry_lollipop', 
+        name: 'Cherry Lollipop', 
+        courage: 3,
+        weight: 2,
+        magic: [{type: 'aligned', amount: 40}],
+        effects: [
+            {effect: 'lightning', amount: 5, turns: -1}
+        ],
+        x: -192,
+        y: -1088
+    }),
+    new Candy({
+        id:'grape_lollipop', 
+        name: 'Grape Lollipop', 
+        courage: 3,
+        weight: 2,
+        magic: [{type: 'aligned', amount: 40}],
+        effects: [
+            {effect: 'lightning', amount: 5, turns: -1}
+        ],
+        x: -192,
+        y: -1216
+    }),
+    new Candy({
+        id:'lime_lollipop', 
+        name: 'Lime Lollipop', 
+        courage: 3,
+        weight: 2,
+        magic: [{type: 'aligned', amount: 40}],
+        effects: [
+            {effect: 'lightning', amount: 5, turns: -1}
+        ],
+        x: -192,
+        y: -1280
+    }),
 
     // actions
-    new Candy({
-        id:'caramel_creme', 
-        name: 'Caramel Creme', 
-        courage: 1,
-        actions: [
-            {action: 'playOldest'},
-        ],
-        x: -160,
-        y: -3870
-    }),
-    new Candy({
-        id:'marshmallows', 
-        name: 'Marshmallows', 
-        actions: [
-            {action: 'transmute', select: 4, from: 'handCards'},
-        ],
-        x: -256,
-        y: -3872
-    }),
     new Candy({
         id:'cherry_cordial', 
         name: 'Cherry Cordial', 
@@ -184,7 +275,7 @@ const ALL_CANDY= [
         courage: 1,
         weight: 3,
         actions: [
-            {action: 'ensharden', type: 'flame', select: -1, from: 'handCards', random: true}
+            {action: 'ensharden', type: 'flame', select: -1, from: 'allCards', random: true}
         ],
         x: -286,
         y: -832
@@ -195,7 +286,7 @@ const ALL_CANDY= [
         courage: 1,
         weight: 3,
         actions: [
-            {action: 'ensharden', type: 'frost', select: -1, from: 'handCards', random: true}
+            {action: 'ensharden', type: 'frost', select: -1, from: 'allCards', random: true}
         ],
         x: -286,
         y: -928
@@ -206,7 +297,7 @@ const ALL_CANDY= [
         courage: 1,
         weight: 4,
         actions: [
-            {action: 'ensharden', type: 'random', select: -1, from: 'handCards', random: true}
+            {action: 'ensharden', type: 'random', select: -1, from: 'allCards', random: true}
         ],
         x: -286,
         y: -992
@@ -243,54 +334,6 @@ const ALL_CANDY= [
         y: -3744
     }),
     new Candy({
-        id:'blueberry_lollipop', 
-        name: 'Blueberry Lollipop', 
-        courage: 3,
-        weight: 2,
-        magic: [{type: 'aligned', amount: 12}],
-        actions: [
-            {action: 'addCard', value: 1, what: 'rainbow_converter', to: 'handCards'}
-        ],
-        x: -192,
-        y: -1152
-    }),
-    new Candy({
-        id:'cherry_lollipop', 
-        name: 'Cherry Lollipop', 
-        courage: 3,
-        weight: 2,
-        magic: [{type: 'aligned', amount: 12}],
-        actions: [
-            {action: 'addCard', value: 1, what: 'chaos_converter', to: 'handCards'}
-        ],
-        x: -192,
-        y: -1088
-    }),
-    new Candy({
-        id:'grape_lollipop', 
-        name: 'Grape Lollipop', 
-        courage: 3,
-        weight: 2,
-        magic: [{type: 'aligned', amount: 12}],
-        actions: [
-            {action: 'addCard', value: 1, what: 'dark_converter', to: 'handCards'}
-        ],
-        x: -192,
-        y: -1216
-    }),
-    new Candy({
-        id:'lime_lollipop', 
-        name: 'Lime Lollipop', 
-        courage: 3,
-        weight: 2,
-        magic: [{type: 'aligned', amount: 12}],
-        actions: [
-            {action: 'addCard', value: 1, what: 'elemental_converter', to: 'handCards'}
-        ],
-        x: -192,
-        y: -1280
-    }),
-    new Candy({
         id:'cotton_candy', 
         name: 'Cotton Candy', 
         weight: 7,
@@ -317,7 +360,7 @@ const ALL_CANDY= [
         id:'grape_gumdrop', 
         name: 'Grape Gumdrop', 
         courage: 3,
-        weight: 4,
+        weight: 3,
         combatOnly: false,
         actions: [
             {action: 'stat', what: 'shimmer', key: 'current', value: 3}
@@ -329,7 +372,7 @@ const ALL_CANDY= [
         id:'blueberry_gumdrop', 
         name: 'Blueberry Gumdrop', 
         courage: 3,
-        weight: 4,
+        weight: 3,
         combatOnly: false,
         actions: [
             {action: 'stat', what: 'sparkle', key: 'current', value: 3}
@@ -341,7 +384,7 @@ const ALL_CANDY= [
         id:'cherry_gumdrop', 
         name: 'Cherry Gumdrop', 
         courage: 3,
-        weight: 4,
+        weight: 3,
         combatOnly: false,
         actions: [
             {action: 'stat', what: 'aura', key: 'current', value: 3}
@@ -356,6 +399,7 @@ const ALL_CANDY= [
     new Candy({
         id:'chocolate_fudge', 
         name: 'Chocolate Fudge', 
+        blk: [10],
         effects: [
             {effect: 'solid', amount: 6, turns: -1}
         ],
@@ -367,6 +411,7 @@ const ALL_CANDY= [
         name: 'White Fudge', 
         weight: 3,
         courage: 3,
+        blk: [20],
         effects: [
             {effect: 'solid', amount: 12, turns: -1}
         ],
@@ -376,6 +421,8 @@ const ALL_CANDY= [
     new Candy({
         id:'chocolate_bar', 
         name: 'Chocolate Bar', 
+        target: 'monster',
+        dmg: [10],
         effects: [
             {effect: 'might', amount: 4, turns: -1}
         ],
@@ -387,6 +434,8 @@ const ALL_CANDY= [
         name: 'White Chocolate Bar', 
         weight: 3,
         courage: 3,
+        target: 'monster',
+        dmg: [20],
         effects: [
             {effect: 'might', amount: 8, turns: -1}
         ],
@@ -396,6 +445,8 @@ const ALL_CANDY= [
     new Candy({
         id:'chocolate_cookie', 
         name: 'Chocolate Cookie', 
+        target: 'monster',
+        dmg: [10],
         effects: [
             {effect: 'punch', amount: .3, turns: -1}
         ],
@@ -407,6 +458,8 @@ const ALL_CANDY= [
         name: 'White Chocolate Cookie', 
         weight: 3,
         courage: 3,
+        target: 'monster',
+        dmg: [20],
         effects: [
             {effect: 'punch', amount: .6, turns: -1}
         ],
@@ -416,6 +469,7 @@ const ALL_CANDY= [
     new Candy({
         id:'dark_truffle', 
         name: 'Dark Truffle', 
+        magic: [{type: 'aligned', amount: 10}],
         effects: [
             {effect: 'conjure', amount: 4, turns: -1}
         ],
@@ -427,6 +481,7 @@ const ALL_CANDY= [
         name: 'White Truffle', 
         weight: 3,
         courage: 3,
+        magic: [{type: 'aligned', amount: 20}],
         effects: [
             {effect: 'conjure', amount: 8, turns: -1}
         ],
@@ -436,6 +491,7 @@ const ALL_CANDY= [
     new Candy({
         id:'chocolate_pudding', 
         name: 'Chocolate Pudding', 
+        magic: [{type: 'aligned', amount: 10}],
         effects: [
             {effect: 'sorcery', amount: .3, turns: -1}
         ],
@@ -447,6 +503,7 @@ const ALL_CANDY= [
         name: 'Vanilla Pudding', 
         weight: 3,
         courage: 3,
+        magic: [{type: 'aligned', amount: 20}],
         effects: [
             {effect: 'sorcery', amount: .6, turns: -1}
         ],
@@ -456,6 +513,7 @@ const ALL_CANDY= [
     new Candy({
         id:'chocolate_clusters', 
         name: 'Chocolate Clusters', 
+        blk: [10],
         effects: [
             {effect: 'stout', amount: 10, turns: -1}
         ],
@@ -467,6 +525,7 @@ const ALL_CANDY= [
         name: 'White Chocolate Clusters', 
         weight: 3,
         courage: 3,
+        blk: [20],
         effects: [
             {effect: 'stout', amount: 20, turns: -1}
         ],
@@ -476,6 +535,7 @@ const ALL_CANDY= [
     new Candy({
         id:'chocolate_chips', 
         name: 'Chocolate Chips', 
+        armor: [5],
         effects: [
             {effect: 'muster', amount: 5, turns: -1}
         ],
@@ -487,6 +547,7 @@ const ALL_CANDY= [
         name: 'White Chocolate Chips', 
         weight: 3,
         courage: 3,
+        armor: [10],
         effects: [
             {effect: 'muster', amount: 10, turns: -1}
         ],
@@ -508,7 +569,7 @@ const ALL_CANDY= [
         courage: 3,
         weight: 4,
         effects: [
-            {effect: 'rowdy', amount: 10, turns: -1}
+            {effect: 'rowdy', amount: 20, turns: -1}
         ],
         x: -96,
         y: -3808
@@ -547,6 +608,7 @@ const ALL_CANDY= [
     new Candy({
         id:'watermelon_gobstopper', 
         name: 'Watermelon Gobstopper', 
+        magic: [{type: 'aligned', amount: 5}],
         effects: [
             {effect: 'lightning', amount: 5, turns: -1}
         ],
@@ -558,6 +620,7 @@ const ALL_CANDY= [
         name: 'Blueberry Gobstopper', 
         weight: 3,
         courage: 3,
+        magic: [{type: 'aligned', amount: 10}],
         effects: [
             {effect: 'lightning', amount: 10, turns: -1}
         ],
@@ -567,6 +630,7 @@ const ALL_CANDY= [
     new Candy({
         id:'grape_gobstopper', 
         name: 'Grape Gobstopper', 
+        magic: [{type: 'aligned', amount: 5}],
         effects: [
             {effect: 'thunder', amount: .3, turns: -1}
         ],
@@ -578,6 +642,7 @@ const ALL_CANDY= [
         name: 'Orange Gobstopper', 
         weight: 3,
         courage: 3,
+        magic: [{type: 'aligned', amount: 10}],
         effects: [
             {effect: 'thunder', amount: .6, turns: -1}
         ],
@@ -588,7 +653,7 @@ const ALL_CANDY= [
         id:'pixie_sugar', 
         name: 'Pixie Sugar', 
         effects: [
-            {effect: 'mystery', amount: 2, turns: -1}
+            {effect: 'mystery', amount: 4, turns: -1}
         ],
         x: -416,
         y: -800
@@ -623,6 +688,7 @@ const ALL_CANDY= [
     new Candy({
         id:'strawberry_pastry', 
         name: 'Strawberry Pastry', 
+        magic: [{type: 'aligned', amount: 5}],
         effects: [
             {effect: 'summon', amount: 8, turns: -1}
         ],
@@ -634,6 +700,7 @@ const ALL_CANDY= [
         name: 'Peanut Butter Pastry', 
         weight: 3,
         courage: 3,
+        magic: [{type: 'aligned', amount: 10}],
         effects: [
             {effect: 'summon', amount: 16, turns: -1}
         ],
@@ -664,57 +731,6 @@ const ALL_CANDY= [
         ],
         x: -256,
         y: -736
-    }),
-    new Candy({
-        id:'kettle_corn', 
-        name: 'Kettle Corn', 
-        weight: 3,
-        courage: 3,
-        abilities: [
-            {ability: 'protection', turns: -1, enabled: true}
-        ],
-        x: -64,
-        y: -1568
-    }),
-    new Candy({
-        id:'caramel_corn', 
-        name: 'Caramel Corn', 
-        weight: 3,
-        courage: 3,
-        abilities: [
-            {ability: 'tank', turns: -1, enabled: true}
-        ],
-        x: -64,
-        y: -1696
-    }),
-    new Candy({
-        id:'swedish_fish', 
-        name: 'Swedish Fish', 
-        weight: 3,
-        courage: 3,
-        abilities: [
-            {ability: 'stockpile', turns: -1, enabled: true}
-        ],
-        x: -32,
-        y: -1666
-    }),
-    new Candy({
-        id:'trail_mix', 
-        name: 'Trail Mix', 
-        abilities: [
-            {ability: 'sift', turns: -1, enabled: true}
-        ],
-        x: 0,
-        y: -1760
-    }),
-    new Candy({
-        id:'cherry_taffy', 
-        name: 'Cherry Taffy', 
-        abilities: [
-            {ability: 'expirex', turns: -1, enabled: true}
-        ],
-        x: -288,
-        y: -4224
     }),
     
 ];
@@ -1272,8 +1288,8 @@ const ALL_TREASURES = [
         y: -5472
     }),
     new Treasure({
-        id:'guild_payment', 
-        name: 'Guild Payment', 
+        id:'pile_o_coins', 
+        name: "Pile O' Coins", 
         courage: 10,
         permanent: true,
         abilities: [

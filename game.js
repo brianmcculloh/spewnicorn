@@ -2,7 +2,7 @@ import Util from './utils.js';
 const util = new Util();
 
 const ALL_STARTING_OPTIONS = [
-    {att: 'courage', name: '+8 Courage', amount: 8},
+    {att: 'courage', name: '+8 Courage Coins', amount: 8},
     {att: 'armor', name: '+40 Armor', amount: 40},
     {att: 'health', key: 'max', name: '+20 Max Health', amount: 20},
     {att: 'aura', key: 'current', name: '+5 Aura', amount: 5},
@@ -64,7 +64,7 @@ const ALL_EFFECTS = [
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'might', amount: 5, turns: -1}
     // hex      {effect: 'might', amount: -8, hex: true}
-    {id: 'might', name: 'Might', desc: 'Your attacks do x extra damage', x: -288, y: -4960, sound: 'effect30', hex: false},
+    {id: 'might', name: 'Might', desc: 'Attack damage modifier', x: -288, y: -4960, sound: 'effect30', hex: false},
 
     // Usage:
     // creature {base: 1.1, current: 0, temp: 0, turns: -1, persist: false}, // value should range from 0 (0%) to 2 (200%) - haven't tested higher
@@ -282,7 +282,7 @@ const ALL_EFFECTS = [
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'cmobiner', amount: 5, turns: -1}
     // hex      {effect: 'combiner', amount: -8, hex: true}
-    {id: 'combiner', name: 'Combiner', desc: 'Draw x cards every time you combine a card', x: -416, y: -385, hex: false},
+    {id: 'combiner', name: 'Combiner', desc: 'Draw x cards every time you combine a card', x: -162, y: -4672, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
@@ -404,7 +404,7 @@ const ALL_ABILITIES = [
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'sift', turns: -1, enabled: true}
-    {id: 'sift', name: 'Sift', desc: 'Clutter cards always vanish', context: 'turn', x: -96, y: -1632, sound: 'effect18'},
+    {id: 'sift', name: 'Sift', desc: 'Clutter cards become ephemeral', context: 'turn', x: -96, y: -1632, sound: 'effect18'},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
@@ -557,7 +557,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.47 Alpha';
+    let version = '0.49 Alpha';
     let seed = false;
     let difficulty = 'medium';
     let floor = 0; // TODO: set to 0
@@ -587,6 +587,7 @@ export default function Game() {
     let destroyOptional = false;
     let toPick = 0;
     let toResurrect = 0;
+    let combinedAge = 0;
     let toExclude = [];
     let toShow = [];
     let toTransmute = [];
@@ -610,6 +611,7 @@ export default function Game() {
     let currentMonsters = [];
     let targetedMonster = {};
     let previousMonsters = [];
+    let previousArena = [];
     let monsterGroup = 1;
     let animationGap = 100;
     let animationDelay = 500;
@@ -778,6 +780,7 @@ export default function Game() {
         destroyOptional,
         toPick,
         toResurrect,
+        combinedAge,
         toPile,
         toExclude,
         toShow,
@@ -801,6 +804,7 @@ export default function Game() {
         currentMonsters,
         targetedMonster,
         previousMonsters,
+        previousArena,
         monsterGroup,
         animationGap,
         animationDelay,

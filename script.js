@@ -109,6 +109,7 @@
  * 
  * PHASE V:
  * 
+ * 
  * TODO: test out the new flame guardian moveset for balancing
  * TODO: test the singularity fight for balancing
  * TODO: implement mechanics first and then add some more cards after that
@@ -131,6 +132,7 @@
  * Question: cutting ring and bottled attack (cards that do damage when drawn) increase crit percentage for each monster each draw - is this wanted?
  * When playing a card that draws and discards (upgraded recoil) and the drawn card adds a card to hand (surprise attack), added card cannot be discarded
  * Speech: add speech bubble system to monsters - make it random chance with a set of possible texts
+ * When retaining cards, retain cards shouldn't be selectable
  * 
  * 
  * NEW CARDS & TREASURES:
@@ -630,11 +632,13 @@ jQuery(document).ready(function($) {
 
 		$('.tile.arena.visited').removeClass('clickable');
 		if(game.arenasComplete < game.arenasRequired) {
-			$('.tile.ice-gate').removeClass('clickable').data('powertip', 'Ice Gate: <span class="highlight">LOCKED</span>').attr('data-powertip', 'Ice Gate: <span class="highlight">LOCKED</span>');
-			$('.tile.fire-gate').removeClass('clickable').data('powertip', 'Fire Gate: <span class="highlight">LOCKED</span>').attr('data-powertip', 'Fire Gate: <span class="highlight">LOCKED</span>');
+			let arenasRequired = game.arenasRequired - game.arenasComplete;
+			let plural = arenasRequired === 1 ? '' : 's';
+			$('.tile.ice-gate').removeClass('clickable').data('powertip', 'Ice Gate: LOCKED (<span class="highlight">' + arenasRequired + '</span> arena' + plural + ' required)').attr('data-powertip', 'Ice Gate: LOCKED (<span class="highlight">' + arenasRequired + '</span> arena' + plural + ' required)');
+			$('.tile.fire-gate').removeClass('clickable').data('powertip', 'Fire Gate: LOCKED (<span class="highlight">' + arenasRequired + '</span> arena' + plural + ' required)').attr('data-powertip', 'Fire Gate: LOCKED (<span class="highlight">' + arenasRequired + '</span> arena' + plural + ' required)');
 		} else {
-			$('.tile.ice-gate').addClass('clickable').data('powertip', 'Ice Gate').attr('data-powertip', 'Ice Gate');
-			$('.tile.fire-gate').addClass('clickable').data('powertip', 'Fire Gate').attr('data-powertip', 'Fire Gate');
+			$('.tile.ice-gate').addClass('clickable').data('powertip', 'Ice Gate: <span class="highlight">UNLOCKED</span>').attr('data-powertip', 'Ice Gate: <span class="highlight">UNLOCKED</span>');
+			$('.tile.fire-gate').addClass('clickable').data('powertip', 'Fire Gate: <span class="highlight">UNLOCKED</span>').attr('data-powertip', 'Fire Gate: <span class="highlight">UNLOCKED</span>');
 		}
 
 		if(game.debug) $('.map-inner div').addClass('clickable');
@@ -845,7 +849,7 @@ jQuery(document).ready(function($) {
 		if(combinable) {
 			let id = $(this).data('id');
 			let otherCombinableExists = false;
-			let otherCombinables = $('.card.combinable[data-id="' + id + '"].selected');
+			let otherCombinables = $('.card.combinable[data-id="' + id + '"].selected'); // future wild combinable addition would add to here
 			$(otherCombinables).each(function() {
 				if(!$(this).parent().hasClass('destroying')) {
 					otherCombinableExists = true;
@@ -855,6 +859,7 @@ jQuery(document).ready(function($) {
 				$(this).addClass('selected');
 				combineCards($(this));
 			} else {
+				$('.card.combinable[data-id="' + id + '"]').addClass('combine-compatible');
 				selectCard($(this));
 			}
 		} else if(playable) {
@@ -960,6 +965,7 @@ jQuery(document).ready(function($) {
 		$('.draw-cards-panel').removeClass('shown');
 		$('.draw-cards-panel .card').removeClass('pickable');
 		$('.draw-cards-panel .message').html('');
+		$('.draw-cards').removeClass('disabled');
 
 	});
 
@@ -1054,6 +1060,7 @@ jQuery(document).ready(function($) {
 			$('.draw-cards-panel').removeClass('shown');
 			$('.draw-cards-panel .card').removeClass('pickable');
 			$('.draw-cards-panel .message').html('');
+			$('.draw-cards').removeClass('disabled');
 		}
 
 	});
@@ -1408,8 +1415,8 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('glowing_sludge'); // use this to manually add treasures
-	//addCandy('peppermint_candy_stick'); // use this to manually add candies
+	//addTreasure('signet_ring'); // use this to manually add treasures
+	//addCandy('peanut_butter_pastry'); // use this to manually add candies
 
 	if(game.debug) $('body').addClass('debug');
 	if(game.tutorial) {
@@ -1492,8 +1499,8 @@ function init_map_2() {
 	map.buildMap();
 
 	game.arenasComplete = 0;
-	$('.tile.ice-gate').removeClass('clickable').data('powertip', 'Ice Gate: <span class="highlight">LOCKED</span>').attr('data-powertip', 'Ice Gate: <span class="highlight">LOCKED</span>');
-	$('.tile.fire-gate').removeClass('clickable').data('powertip', 'Fire Gate: <span class="highlight">LOCKED</span>').attr('data-powertip', 'Fire Gate: <span class="highlight">LOCKED</span>');
+	$('.tile.ice-gate').removeClass('clickable').data('powertip', 'Ice Gate: LOCKED (<span class="highlight">' + game.arenasRequired + '</span> arenas required)').attr('data-powertip', 'Ice Gate: LOCKED (<span class="highlight">' + game.arenasRequired + '</span> arenas required)');
+	$('.tile.fire-gate').removeClass('clickable').data('powertip', 'Fire Gate: LOCKED (<span class="highlight">' + game.arenasRequired + '</span> arenas required)').attr('data-powertip', 'Fire Gate: LOCKED (<span class="highlight">' + game.arenasRequired + '</span> arenas required)');
 
 	if(game.debug) $('.map-inner div').addClass('clickable');
 
@@ -1515,7 +1522,7 @@ function setDifficulty() {
 		game.arenasRequired = 1;
 		if(!game.debug) {
 			player.health.base = 100;
-			player.health.current =100;
+			player.health.current = 100;
 			player.health.max = 100;
 		}
 	} else if(game.difficulty=='medium') {
@@ -1530,29 +1537,32 @@ function setDifficulty() {
 	} else if(game.difficulty=='hard') {
 		game.questChance = 1.8;
 		game.fountainChance = 1.6;
-		game.arenasRequired = 3;
+		game.arenasRequired = 2;
 		if(!game.debug) {
 			player.health.base = 65;
 			player.health.current = 65;
 			player.health.max = 65;
 		}
 	} else if(game.difficulty=='expert') {
-		game.questChance = 1.6;
-		game.fountainChance = 1.4;
+		game.questChance = 1.8;
+		game.fountainChance = 1.6;
 		game.arenasRequired = 3;
 		if(!game.debug) {
-			player.health.base = 65;
+			player.health.base = 55;
 			player.health.current = 55;
-			player.health.max = 65;
+			player.health.max = 55;
 		}
 	} else if(game.difficulty=='nightmare') {
-		game.questChance = 1.4;
-		game.fountainChance = 1.2;
+		game.questChance = 1.5;
+		game.fountainChance = 1.3;
 		game.arenasRequired = 3;
+		game.essenceThresholds = [12, 23, 33, 44];
+    	game.aggroThresholds = [9, 14, 17, 20, 23, 26, 29, 31, 34, 37];
+    	game.aggroThresholds2 = [5, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37];
 		if(!game.debug) {
-			player.health.base = 60;
-			player.health.current = 50;
-			player.health.max = 60;
+			player.health.base = 55;
+			player.health.current = 55;
+			player.health.max = 55;
 		}
 	}
 }
@@ -2188,6 +2198,7 @@ function setStatus(updateCards = true) {
 	$('.player-health .health-amount').css('width', healthLeft + '%');
 	$('.player-health .armor-amount').css('width', armorLeft + '%');
 	$('.player-health .health-number').html(player.health.current);
+	$('.player-health .max-health-number').html(player.health.max);
 	$('.player-health .armor-number').html(player.armor);
 	$('.player-health .block-number').html(player.block);
 	$('.crit-bar .crit-bar-inner').css('width', game.critChance + '%');
@@ -2351,7 +2362,7 @@ function updateCardDescription(elem, cards) {
 		if(magic==originalMagic) css = '';
 		$(this).addClass(css);
 	});
-	elem.find('.health-amount').each(function(e) {
+	elem.find('.current-health-amount').each(function(e) {
 		let originalHealth = $(this).data('amount');
 		let adjustedHealth = originalHealth + player.mend.current;
 		if(card.age > 0) {
@@ -2584,7 +2595,7 @@ async function startCombat(tile = false) {
 	$('.combat-text, .combat-text h2.begin-combat').addClass('shown');
 
 	// sometimes a rare bug causes .courage-amount not to clear
-	$('.courage-amount').empty();
+	$('.courage-amount, .aggro-amount').empty();
 
 	if(tile) {
 		if(tile.hasClass('arena')) {
@@ -2798,7 +2809,7 @@ function visitFountain(visited) {
 	stopMusic();
 	if(!musicFountain.playing() && game.playmusic) musicFountain.play();
 
-	if(game.difficulty=='hard' || game.difficulty=='expert' || game.difficulty=='nightmare') {
+	if(game.difficulty=='expert' || game.difficulty=='nightmare') {
 		game.floor += 1;
 		updateAggro(1);
 	}
@@ -2827,7 +2838,7 @@ function visitQuest(visited = false) {
 	game.mapType = 'quest';
 	$('.quest-screen').addClass('shown');
 
-	if(game.difficulty=='hard' || game.difficulty=='expert' || game.difficulty=='nightmare') {
+	if(game.difficulty=='expert' || game.difficulty=='nightmare') {
 		game.floor += 1;
 		updateAggro(1);
 	}
@@ -2888,6 +2899,8 @@ async function updateEssenceLevels(essence, amount) {
 		}
 	} else if(essence != undefined) {
 		amount = parseFloat(amount);
+		let amountText = amount > 0 ? '+' + amount : amount;
+		if(amountText) game.statusAnimations({data: '<span class="essence-text ' + essence + '">' + amountText + '</span>', to: '.essence-amount', hex: false});
 		if(amount < 0) {
 			player[essence].current += amount;
 			await util.updateEssencePercentage(essence);
@@ -2947,6 +2960,7 @@ async function beginTurn() {
 	} else {
 		player.block = player.stout.current;
 	}
+	if(player.block < 0) player.block = 0;
 	
 	player.mana.current = player.mana.base;
 
@@ -4154,6 +4168,10 @@ async function updateAggro(amount) {
 
 		amount = parseFloat(amount);
 
+		let amountText = amount > 0 ? '+' + amount : amount;
+
+		game.statusAnimations({data: '<span class="aggro-text">' + amountText + '</span>', to: '.aggro-amount', hex: false});
+
 		// are we reducing aggro or increasing it?
 		if(amount < 0) {
 			for(let i = 0; i > amount; i--) {
@@ -4231,7 +4249,7 @@ function loot(type, tier = 3) {
 					util.appendTreasure(treasure, '.loot-items');
 				}
 			}
-			$('.loot-screen .message').html('Choose ONE of these powerful treasures.');
+			$('.loot-screen .message').html('Choose <span class="highlight">ONE</span> of these powerful treasures.');
 		break;
 		case 'gate':
 			// for gate screens, only tier 4
@@ -4393,6 +4411,9 @@ function courageScreen() {
 
 		util.setTooltip('.courage-gamble');
 		util.setTooltip('.courage-trade');
+		util.setTooltip('.courage-remove');
+		util.setTooltip('.remove-courage');
+		util.setTooltip('.trade-courage');
 		game.tradeExpired = false;
 
 		stopMusic();
@@ -4701,6 +4722,7 @@ function selectCard(elem) {
 
 	if(elem.hasClass('selected')) {
 		deselectCard(elem);
+		$('.card.combinable').removeClass('combine-compatible');
 		combatDeck.updateCardPlayability(player, combatDeck);
 		elem.find('.button.play-card').remove();
 	} else {
@@ -4993,11 +5015,14 @@ function deselectCard(elem) {
 
 }
 
-function updateCritChance() {
+function updateCritChance(amount = 0) {
 
 	let crit = game.attackCardsPlayed + player.rowdy.current;
 	if(crit > 100) crit = 100;
 	game.critChance = crit;
+
+	let amountText = amount > 0 ? '+' + amount : false;
+	if(amountText) game.statusAnimations({data: '<span class="crit-text">' + amountText + '</span>', to: '.aggro-amount', hex: false});
 
 	//game.critChance = 100; // dev purposes only
 
@@ -5005,24 +5030,37 @@ function updateCritChance() {
 
 function combineCards(elem) {
 
-	playCard(elem, undefined, 'combine', false);
-
-	if(player.fend.current > 0) {
-		applyBlock(player.fend.current, player);
-	}
+	game.combinedAge = 0;
 
 	$('.card.combinable.selected').each(function() {
 
 		let card = util.getCardByGuid($(this).data('guid'), combatDeck.handCards);
-		let skipDead = true;
-		combatDeck.destroyCard(card, combatDeck, skipDead);
-		processCard(card, false, 'vanishes');
-
-		if(game.playsounds) sounds.play('combineCards');
+		game.combinedAge += card.age;
 		
 	}).promise().done(function() {
 
-		setStatus();
+		playCard(elem, undefined, 'combine', false);
+
+		if(player.fend.current > 0) {
+			applyBlock(player.fend.current, player);
+		}
+
+		$('.card.combinable.selected').each(function() {
+
+			let card = util.getCardByGuid($(this).data('guid'), combatDeck.handCards);
+			let skipDead = true;
+			combatDeck.destroyCard(card, combatDeck, skipDead);
+			processCard(card, false, 'vanishes');
+
+			if(game.playsounds) sounds.play('combineCards');
+			
+		}).promise().done(function() {
+
+			$('.card.combinable').removeClass('combine-compatible');
+
+			setStatus();
+			
+		});
 		
 	});
 
@@ -5201,7 +5239,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	if(card.type == 'magic') updateTreasureTriggers('magicCardsPlayed');
 	updateTreasureTriggers('cardsPlayed');
 	setStatus();
-	updateCritChance();
+	if(card.type == 'attack') updateCritChance(1);
 	monsterIntent();
 
 }
@@ -5561,6 +5599,9 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 									}
 								}
 							} else {
+								// if we combined cards, aggregate ages
+								modifiers.age = game.combinedAge;
+
 								// we need to pass the guid in case the card is added during combat before the decks
 								// have a chance to sync. this is the only time currently that we're actually passing a guid in
 								let guid = util.randString();
@@ -5779,6 +5820,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								viewDrawCards();
 								$('.draw-cards-panel .card').addClass('pickable');
 								$('.draw-cards-panel .message').html('Add cards to your hand');
+								$('.draw-cards').addClass('disabled');
 							}
 						}
 						break;
@@ -5854,7 +5896,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						}
 
 						// if a card was played, check for age multiply effects only for certain stats
-						if(playedCard && what == 'health') {
+						if(playedCard && what == 'health' && key == 'current') {
 							if(playedCard.age > 0) {
 								if(player.wisdom.current != 1) {
 									value += Math.round(playedCard.age * player.wisdom.current);
@@ -5908,6 +5950,10 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 										player[what][key] += value;
 									} else {
 										player[what][key] = value;
+									}
+									// we don't ever want mana to go below 0
+									if(what == 'mana' && player.mana.current < 0) {
+										player.mana.current = 0;
 									}
 									// it's possible rainbow gets reduced below base value - don't let this happen
 									// we actually removed this because it didn't make sense
@@ -6779,6 +6825,8 @@ function applyBlock(blk, to, ignoreEffects = false) {
 			}, 300);
 			to.block += blkActual;
 			if(to.block > 999) to.block = 999;
+		} else {
+			to.block = 0;
 		}
 		game.message(to.name + ' (' + to.guid + ') gains ' + blkActual + ' block');
 	}
@@ -6996,7 +7044,7 @@ function applyArmor(arm, to) {
 		if(game.playsounds && armor > 0) sounds.play('gainArmor');
 		if(extraArmor > 0) {
 			to.armor = to.health.current;
-			to.block += Math.round(extraArmor * to.cunning.current);
+			applyBlock(Math.round(extraArmor * to.cunning.current), to);
 			to.health.current += Math.round(extraArmor * to.vigor.current);
 			if(to.health.current > to.health.max) to.health.current = to.health.max;
 		} else {
@@ -7223,7 +7271,7 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 
 				// check for hardened
 				if(thisTo.hardened.current > 0) {
-					thisTo.block += thisTo.hardened.current;
+					applyBlock(thisTo.hardened.current, thisTo);
 				}
 
 				setStatus(false);
@@ -7243,6 +7291,10 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 					endCombat();
 					return;
 				}
+			}
+			// player may have died from spikes/retaliate
+			if(Player().dead(player)) {
+				endGame('loss');
 			}
 
 		}

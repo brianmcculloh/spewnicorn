@@ -1249,6 +1249,7 @@ const ALL_CARDS = [
             {action: 'stat', what: 'sparkle', key: 'current', value: 1},
             {action: 'stat', what: 'aura', key: 'current', value: 1},
             {action: 'stat', what: 'health', key: 'max', value: 1},
+            {action: 'stat', what: 'health', key: 'current', value: 1},
         ],
         slots: 2,
         iceShardUpgrades: {
@@ -1668,14 +1669,10 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'spewnicorn_spray', name: 'Spewnicorn Spray', target: 'monster', type: 'tool', mana: 0, breakable: true, use: 3, tier: 'legendary', addable: false, 
+        id: 'spewnicorn_spray', name: 'Spewnicorn Spray', type: 'tool', mana: 0, breakable: true, use: 3, tier: 'legendary', addable: false, 
         descOverride: 'Deus Ex Machina.',
         blk: [50],
         effects: [
-            {effect: 'solid', amount: -5, turns: 1, hex: true},
-            {effect: 'might', amount: -5, turns: 1, hex: true},
-            {effect: 'punch', amount: -1, turns: 1, hex: true},
-
             {effect: 'speed', amount: 2, turns: -1},
             {effect: 'solid', amount: 5, turns: -1},
             {effect: 'might', amount: 5, turns: -1},
@@ -3809,19 +3806,19 @@ const ALL_CARDS = [
             {effect: 'momentum', amount: 2, turns: 2}
         ],
         actions: [
-            {action: 'addCard', value: 4, what: 'fleeting_slash', to: 'handCards'},
-            {action: 'addCard', value: 2, what: 'slash', to: 'handCards'},
-            {action: 'addCard', value: 2, what: 'lingering_slash', to: 'handCards'},
-            {action: 'addCard', value: 2, what: 'momentous_slash', to: 'handCards'},
+            {action: 'addCard', value: 1, what: 'fleeting_slash', to: 'handCards'},
+            {action: 'addCard', value: 1, what: 'slash', to: 'handCards'},
+            {action: 'addCard', value: 1, what: 'lingering_slash', to: 'handCards'},
+            {action: 'addCard', value: 1, what: 'momentous_slash', to: 'handCards'},
         ],
         slots: 1,
         shardUpgrades: {
             dmg: [20],
             actions: [
-                {action: 'addCard', value: 4, what: 'momentous_slash', to: 'handCards'},
-                {action: 'addCard', value: 3, what: 'lingering_slash', to: 'handCards'},
+                {action: 'addCard', value: 2, what: 'fleeting_slash', to: 'handCards'},
                 {action: 'addCard', value: 2, what: 'slash', to: 'handCards'},
-                {action: 'addCard', value: 1, what: 'fleeting_slash', to: 'handCards'},
+                {action: 'addCard', value: 2, what: 'lingering_slash', to: 'handCards'},
+                {action: 'addCard', value: 2, what: 'momentous_slash', to: 'handCards'},
             ],
         },
     }),
@@ -4352,20 +4349,15 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'scavenge', name: 'Scavenge', type: 'tool', mana: 1, tier: 'uncommon', weight: 8, 
+        id: 'scavenge', name: 'Scavenge', type: 'tool', mana: 0, tier: 'uncommon', 
         sound: 'tool11',
         actions: [
             {action: 'addCard', select: 1, value: 3, type: 'any', to: 'handCards'}
         ],
         slots: 1,
-        fireShardUpgrades: {
+        shardUpgrades: {
             actions: [
-                {action: 'addCard', select: 1, value: 5, type: 'any', to: 'handCards'}
-            ],
-        },
-        iceShardUpgrades: {
-            actions: [
-                {action: 'addCard', select: 2, value: 3, type: 'any', to: 'handCards'}
+                {action: 'addCard', select: 2, value: 5, type: 'any', to: 'handCards'}
             ],
         },
     }),
@@ -4385,23 +4377,6 @@ const ALL_CARDS = [
                 {action: 'addCard', value: 5, type: 'tool', to: 'drawCards'},
                 {action: 'draw', value: 2}
             ],
-        },
-    }),
-    new Cards({
-        id: 'seeing_ring', name: 'Seeing Ring', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, weight: 7, 
-        sound: 'tool3',
-        actions: [
-            {action: 'findDrawCard', value: 1}
-        ],
-        slots: 1,
-        fireShardUpgrades: {
-            actions: [
-                {action: 'findDrawCard', value: 2}
-            ],
-        },
-        iceShardUpgrades: {
-            vanish: false,
-            use: 1,
         },
     }),
     new Cards({
@@ -5294,6 +5269,23 @@ const ALL_CARDS = [
             ],
         }
     }),
+    new Cards({
+        id: 'seeing_ring', name: 'Seeing Ring', type: 'tool', mana: 1, tier: 'rare', vanish: true, ephemeral: true,
+        sound: 'tool3',
+        actions: [
+            {action: 'findDrawCard', value: 1}
+        ],
+        slots: 2,
+        shardUpgrades: {
+            actions: [
+                {action: 'findDrawCard', value: 2}
+            ],
+        },
+        bothShardUpgrades: {
+            natural: true,
+            ephemeral: false
+        },
+    }),
 
 
 
@@ -5323,14 +5315,13 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'everarmor', name: 'Everarmor', type: 'tool', mana: 2, tier: 'legendary', courage: 8, use: 1, linger: 1,
+        id: 'everarmor', name: 'Everarmor', type: 'tool', mana: 2, tier: 'legendary', courage: 8, vanish: true,
         sound: 'tool26',
-        armor: [999],
+        armor: [99],
         slots: 1,
         shardUpgrades: {
-            use: 2,
-            linger: 1,
-            retain: true
+            use: 1,
+            vanish: false,
         },
     }),
     new Cards({
@@ -7205,7 +7196,7 @@ export function Deck() {
     let player = window.player;
 
     function buildDeck() {
-        /*addCard('jab');
+        addCard('jab');
         addCard('jab');
         addCard('jab');
         addCard('rainbow_orb');
@@ -7216,11 +7207,7 @@ export function Deck() {
         addCard('stun');
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
-        }*/
-
-        addCard('blitzkrieg');
-        addCard('sudden_barrage');
-
+        }
 
         // this is how to add a shard on init - DEV MODE ONLY
         //attachShard(util.getCardById('blitzkrieg', this.cards), 'flame');
@@ -7708,7 +7695,7 @@ export function Deck() {
                         effectText = Math.round((effectText + Number.EPSILON) * 100);
                         effectText += '%';
                     }
-                    effectsDesc += ' <span class="amount ' + effects[e].effect + '" data-amount="' + effectAmount + '">' + effectText + '</span> ' + '<span class="effect-text">' + effects[e].effect + '</span>' + desc + turns + '</div>';
+                    effectsDesc += ' <span class="amount ' + effects[e].effect + '" data-amount="' + effectAmount + '">' + effectText + '</span> ' + '<span class="effect-text">' + effects[e].effect + '</span>' + turns + desc + '</div>';
                 }
             }
         }
@@ -7736,7 +7723,7 @@ export function Deck() {
                     if(thisCard.abilities.length > 0) {
                         desc = ' <span class="ability-description">(' + gameAbility.desc + ')</span>';
                     }
-                    abilitiesDesc += amount + '<span class="ability-text">' + gameAbility.name + '</span>' + desc + turns + '</div>';
+                    abilitiesDesc += amount + '<span class="ability-text">' + gameAbility.name + '</span>' + turns + desc + '</div>';
                 }
             }
         }
@@ -7773,7 +7760,8 @@ export function Deck() {
                         name = key != undefined ? key.toUpperCase() + ' ' + name : name;
                         let symbol = (typeof value === 'number' && value > 0) ? '+' : '';
                         name = value == 'double' ? 'Double ' + name : name;
-                        value = value != undefined && value != 'double' ? ' ' + symbol + '<span class="amount ' + what + '-amount" data-amount="' + value + '">' + value + '</span>': '';
+                        key = key != undefined ? key : 'stat';
+                        value = value != undefined && value != 'double' ? ' ' + symbol + '<span class="amount ' + key + '-' + what + '-amount" data-amount="' + value + '">' + value + '</span>': '';
                         // this would be redundant to display
                         what = '';
                     } else {
@@ -7836,11 +7824,20 @@ export function Deck() {
                         } else {
                             type = type != '' ? ' with' + type : '';
                         }
+                        
+                        // one-offs
                         if(name == 'Ensharden') {
                             what = from;
                             from = '';
                             type = type == ' with random' ? ' with random shards' : type;
+                        } else if(name == 'Destroy' || name == 'Discard' || name == 'Draw') {
+                            what = value == 1 || value == ' up to 1' ? ' card' : ' cards';
+                        } else if(name == 'TYPE RAINBOW') {
+                            name = 'Change magic type to';
+                        } else if(name == 'COURAGE') {
+                            name = 'Courage Coin';
                         }
+
                         actionsDesc += 
                         '<div class="desc-item">' 
                             + '<span class="desc-item-name">' + name + '</span>'

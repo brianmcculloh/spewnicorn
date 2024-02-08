@@ -106,14 +106,16 @@ export default function Map() {
         }
         $('.tile div').each(function(e) { i++;
             // gates
+            let arenasRequired = game.arenasRequired - game.arenasComplete;
+			let plural = arenasRequired === 1 ? '' : 's';
             if (i == iceGateTiles[iceGateTile]) {
                 $(this).html('<span class="icon"></span>');
                 $(this).parent().addClass('gate ice-gate');
-                $(this).parent().attr('data-powertip', 'Ice Gate: <span class="highlight">LOCKED</span>').data('powertip', 'Ice Gate: <span class="highlight">LOCKED</span>');
+                $(this).parent().attr('data-powertip', 'Ice Gate: LOCKED (<span class="highlight">' + arenasRequired + '</span> arena' + plural + ' required)').data('powertip', 'Ice Gate: LOCKED (<span class="highlight">' + arenasRequired + '</span> arena' + plural + ' required)');
             } else if(i == fireGateTiles[fireGateTile]) {
                 $(this).html('<span class="icon"></span>');
                 $(this).parent().addClass('gate fire-gate');
-                $(this).parent().attr('data-powertip', 'Fire Gate: <span class="highlight">LOCKED</span>').data('powertip', 'Fire Gate: <span class="highlight">LOCKED</span>');
+                $(this).parent().attr('data-powertip', 'Fire Gate: LOCKED (<span class="highlight">' + arenasRequired + '</span> arena' + plural + ' required)').data('powertip', 'Fire Gate: LOCKED (<span class="highlight">' + arenasRequired + '</span> arena' + plural + ' required)');
             } else {
                 // arenas
                 if (i == j | i == k || i == l || i == m || i == n) {

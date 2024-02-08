@@ -2000,7 +2000,7 @@ const ALL_MONSTERS = [
                 {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {actions: [
-                {action: 'summonMonster', what: 'seer', value: 3},
+                {action: 'summonMonster', what: 'seer', value: 2},
                 {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
                 {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ], effects: [
@@ -2165,7 +2165,7 @@ const ALL_MONSTERS = [
                 {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {actions: [
-                {action: 'summonMonster', what: 'seer', value: 3},
+                {action: 'summonMonster', what: 'seer', value: 2},
                 {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
                 {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ], effects: [
@@ -2331,7 +2331,7 @@ const ALL_MONSTERS = [
                 {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {actions: [
-                {action: 'summonMonster', what: 'seer', value: 3},
+                {action: 'summonMonster', what: 'seer', value: 2},
                 {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
                 {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ], effects: [
@@ -2839,12 +2839,12 @@ const ALL_MONSTERS = [
         moveSet: [
             {actions: [
                 {action: 'addCard', value: 1, what: 'mired', to: 'discardCards', hex: true}
-            ], p: .3},
-            {blk: [10], p: .4},
+            ], p: .25},
+            {blk: [10], p: .25},
             {actions: [
                 {action: 'addCard', value: 1, what: 'mired', to: 'discardCards', hex: true},
                 {action: 'kill', to: 'self'}
-            ], p: .3},
+            ], p: .5},
         ],
     }),
     new Creatures({
@@ -3116,15 +3116,17 @@ export function Monster() {
 
             if(game.map==1) {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(5, i, 'boss', excluded);
+                    let thisMonster = createMonster(5, i, 'boss', game.previousArena);
                     currentMonsters.push(thisMonster);
                 }
             } else {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(5, i, 'boss', excluded, context);
+                    let thisMonster = createMonster(5, i, 'boss', excluded, game.previousArena);
                     currentMonsters.push(thisMonster);
                 }
             }
+
+            game.previousArena = [];
 
         } else if(game.mapType == 'fire_gate') {
 
@@ -3729,6 +3731,9 @@ export function Monster() {
         if(monster == undefined) return;
 
         game.previousMonsters.push(monster);
+        if(category == 'boss') {
+            game.previousArena.push(monster);
+        }
 
         monster.health.current = monster.health.base;
         monster.guid = util.randString();

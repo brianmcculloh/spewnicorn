@@ -61,7 +61,7 @@ const ALL_QUESTS = [
         desc: 'There is a strange scent in the air. It is warm and fragrant.',
         weight: 5,
         options: [
-            {id: 'transform', name: 'Transform', desc: 'Transform 3 cards'},
+            {id: 'transform', name: 'Transmute', desc: 'Transform 3 cards'},
             {id: 'leave', name: 'Leave'}
         ]
     }),
@@ -91,11 +91,11 @@ const ALL_QUESTS = [
         desc: 'You hear a distant call to pick up arms and challenge an unseen opponent. Who will win?',
         weight: 7,
         options: [
-            {id: 'meet_challenge', name: 'Meet Challenge', desc: '75% chance to gain 3 courage, 25% chance to lose 3 health',
+            {id: 'meet_challenge', name: 'Meet Challenge', desc: '75% chance to gain 3 courage coins, 25% chance to lose 3 health',
                 options: [
-                    {id: 'rematch', name: 'Rematch!', desc: '50% chance to gain 5 courage, 50% chance to lose 5 health',
+                    {id: 'rematch', name: 'Rematch!', desc: '50% chance to gain 5 courage coins, 50% chance to lose 5 health',
                         options: [
-                            {id: 'final_battle', name: 'Final Battle', desc: '25% chance to gain 10 courage, 75% chance to lose 10 health'},
+                            {id: 'final_battle', name: 'Final Battle', desc: '25% chance to gain 10 courage coins, 75% chance to lose 10 health'},
                             {id: 'leave', name: 'Leave'}
                         ]
                     },
@@ -161,7 +161,7 @@ const ALL_QUESTS = [
         desc: 'A consecrated space where you can improve yourself - at a cost.',
         weight: 5,
         options: [
-            {id: 'pray', name: 'Pray', desc: 'Lose 15 health and gain 5 courage.'},
+            {id: 'pray', name: 'Pray', desc: 'Lose 15 health and gain 5 courage coins.'},
             {id: 'meditate', name: 'Meditate', desc: 'Lose 15 health and gain 3 shimmer.'},
             {id: 'fast', name: 'Fast', desc: 'Lose 15 health and gain 3 sparkle.'},
             {id: 'hold_vigil', name: 'Hold Vigil', desc: 'Lose 15 health and gain 3 aura.'},
@@ -177,7 +177,7 @@ const ALL_QUESTS = [
         options: [
             {id: 'physical_blow', name: 'Physical Blow', desc: 'Lose 12 health and reduce aggro by 4.'},
             {id: 'mental_blow', name: 'Mental Blow', desc: 'Lose 5 max health and reduce aggro by 4.'},
-            {id: 'spiritual_blow', name: 'Spiritual Blow', desc: 'Lose 4 courage and reduce aggro by 4.'},
+            {id: 'spiritual_blow', name: 'Spiritual Blow', desc: 'Lose 4 courage coins and reduce aggro by 4.'},
             {id: 'leave', name: 'Leave'}
         ]
     }),
@@ -188,8 +188,8 @@ const ALL_QUESTS = [
         weight: 6,
         options: [
             {id: 'buy_1_candy', name: 'Get 1 Candy', desc: 'For free'},
-            {id: 'buy_2_candies', name: 'Buy 2 Candies', desc: 'For 1 courage'},
-            {id: 'buy_3_candies', name: 'Buy 3 Candies', desc: 'For 2 courage'},
+            {id: 'buy_2_candies', name: 'Buy 2 Candies', desc: 'For 1 courage coin'},
+            {id: 'buy_3_candies', name: 'Buy 3 Candies', desc: 'For 2 courage coins'},
             {id: 'leave', name: 'Leave'}
         ]
     }),
@@ -216,9 +216,9 @@ const ALL_QUESTS = [
         desc: 'You come upon three interesting tree trunks. They look dead. And yet, they feel alive.',
         weight: 2,
         options: [
-            {id: 'small_trunk', name: 'Small Trunk', desc: '100% to gain 1 couarge'},
-            {id: 'medium_trunk', name: 'Medium Trunk', desc: '66% to gain 4 courage'},
-            {id: 'large_trunk', name: 'Large Trunk', desc: '33% to gain 9 courage'},
+            {id: 'small_trunk', name: 'Small Trunk', desc: '100% to gain 1 courage coin'},
+            {id: 'medium_trunk', name: 'Medium Trunk', desc: '66% to gain 4 courage coins'},
+            {id: 'large_trunk', name: 'Large Trunk', desc: '33% to gain 9 courage coins'},
             {id: 'leave', name: 'Leave'}
         ]
     }),
@@ -1179,7 +1179,7 @@ const ALL_QUESTS = [
         desc: 'The walls close in and there is nowhere to go. But a mysterious figure offers a hand, for a price.',
         weight: 6,
         options: [
-            {id: 'buy_your_way_out', name: 'Buy your way out', desc: 'Pay 1 courage'},
+            {id: 'buy_your_way_out', name: 'Buy your way out', desc: 'Pay 1 courage coin'},
         ]
     }),
     new Quests({
