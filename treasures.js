@@ -345,6 +345,17 @@ const ALL_CANDY= [
         y: -2080
     }),
     new Candy({
+        id:'salted_caramel', 
+        name: 'Salted Caramel', 
+        courage: 3,
+        weight: 4,
+        actions: [
+            {action: 'stat', what: 'health', key: 'max', value: 15}
+        ],
+        x: -96,
+        y: -3808
+    }),
+    new Candy({
         id:'lemon_gumdrop', 
         name: 'Lemon Gumdrop', 
         courage: 1,
@@ -443,6 +454,18 @@ const ALL_CANDY= [
         y: -962
     }),
     new Candy({
+        id:'white_chocolate_clusters', 
+        name: 'White Chocolate Clusters', 
+        weight: 1,
+        courage: 3,
+        dmg: [30], 
+        effects: [
+            {effect: 'might', amount: 12, turns: -1}
+        ],
+        x: 0,
+        y: -962
+    }),
+    new Candy({
         id:'chocolate_cookie', 
         name: 'Chocolate Cookie', 
         target: 'monster',
@@ -465,6 +488,18 @@ const ALL_CANDY= [
         ],
         x: -416,
         y: -3904
+    }),
+    new Candy({
+        id:'chocolate_clusters', 
+        name: 'Chocolate Clusters',
+        dmg: [30], 
+        weight: 1,
+        courage: 3,
+        effects: [
+            {effect: 'punch', amount: .8, turns: -1}
+        ],
+        x: 0,
+        y: -832
     }),
     new Candy({
         id:'dark_truffle', 
@@ -511,50 +546,6 @@ const ALL_CANDY= [
         y: -3650
     }),
     new Candy({
-        id:'chocolate_clusters', 
-        name: 'Chocolate Clusters', 
-        blk: [10],
-        effects: [
-            {effect: 'stout', amount: 10, turns: -1}
-        ],
-        x: 0,
-        y: -832
-    }),
-    new Candy({
-        id:'white_chocolate_clusters', 
-        name: 'White Chocolate Clusters', 
-        weight: 3,
-        courage: 3,
-        blk: [20],
-        effects: [
-            {effect: 'stout', amount: 20, turns: -1}
-        ],
-        x: 0,
-        y: -962
-    }),
-    new Candy({
-        id:'chocolate_chips', 
-        name: 'Chocolate Chips', 
-        armor: [5],
-        effects: [
-            {effect: 'muster', amount: 5, turns: -1}
-        ],
-        x: -256,
-        y: -3456
-    }),
-    new Candy({
-        id:'white_chocolate_chips', 
-        name: 'White Chocolate Chips', 
-        weight: 3,
-        courage: 3,
-        armor: [10],
-        effects: [
-            {effect: 'muster', amount: 10, turns: -1}
-        ],
-        x: -288,
-        y: -3584
-    }),
-    new Candy({
         id:'gumball', 
         name: 'Gumball', 
         effects: [
@@ -562,17 +553,6 @@ const ALL_CANDY= [
         ],
         x: 0,
         y: -3360
-    }),
-    new Candy({
-        id:'salted_caramel', 
-        name: 'Salted Caramel', 
-        courage: 3,
-        weight: 4,
-        effects: [
-            {effect: 'rowdy', amount: 20, turns: -1}
-        ],
-        x: -96,
-        y: -3808
     }),
     new Candy({
         id:'sour_bears', 
@@ -707,6 +687,7 @@ const ALL_CANDY= [
         x: -160,
         y: -4224
     }),
+    
 
 
 
@@ -725,12 +706,35 @@ const ALL_CANDY= [
     new Candy({
         id:'cinnamon_drop', 
         name: 'Cinnamon Drop', 
+        courage: 3,
         weight: 2,
         abilities: [
             {ability: 'hypnotize', turns: 1, enabled: true}
         ],
         x: -256,
         y: -736
+    }),
+    new Candy({
+        id:'chocolate_chips', 
+        name: 'Chocolate Chips',
+        courage: 3, 
+        weight: 2,
+        abilities: [
+            {ability: 'explode', turns: 1, enabled: true}
+        ],
+        x: -256,
+        y: -3456
+    }),
+    new Candy({
+        id:'white_chocolate_chips', 
+        name: 'White Chocolate Chips', 
+        courage: 3,
+        weight: 1,
+        abilities: [
+            {ability: 'explode', turns: 2, enabled: true}
+        ],
+        x: -288,
+        y: -3584
     }),
     
 ];
@@ -887,7 +891,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         effects: [
-            {effect: 'summon', base: 6}
+            {effect: 'summon', base: 4}
         ],
         x: -416,
         y: -3008
@@ -936,7 +940,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         actions: [
-            {action: 'stat', what: 'rainbow', key: 'base', value: 8},
+            {action: 'stat', what: 'rainbow', key: 'base', value: 12},
         ],
         x: -416,
         y: -2944
@@ -1289,7 +1293,7 @@ const ALL_TREASURES = [
     }),
     new Treasure({
         id:'pile_o_coins', 
-        name: "Pile O' Coins", 
+        name: "Pile o Coins", 
         courage: 10,
         permanent: true,
         abilities: [
@@ -1417,7 +1421,7 @@ const ALL_TREASURES = [
         weight: 4,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'rainbow', key: 'base', value: 8},
+            {action: 'stat', what: 'rainbow', key: 'base', value: 12},
         ],
         x: -64,
         y: -10048
@@ -1654,7 +1658,7 @@ const ALL_TREASURES = [
         id:'red_envelope', 
         name: 'Red Envelope', 
         courage: 13,
-        weight: 2,
+        weight: 1,
         permanent: true,
         effects: [
             {effect: 'retain', base: 1}

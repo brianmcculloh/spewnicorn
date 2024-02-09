@@ -2094,9 +2094,9 @@ const ALL_MONSTERS = [
                 {effect: 'rainbow', amount: -2, turns: 1, hex: true},
                 {effect: 'sorcery', amount: -.2, turns: 1, hex: true},
             ], dmg: [3, 3, 3, 3, 3, 3, 3, 3], actions: [
-                {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
                 {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
                 {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
             ]},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 1, hex: true},
@@ -2124,9 +2124,9 @@ const ALL_MONSTERS = [
                 {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {actions: [
-                {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
                 {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
                 {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
             ]},
             {dmg: [5, 5, 5, 5, 5, 5, 5, 5], actions: [
                 {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
@@ -2261,9 +2261,9 @@ const ALL_MONSTERS = [
                 {effect: 'rainbow', amount: -2, turns: 1, hex: true},
                 {effect: 'sorcery', amount: -.2, turns: 1, hex: true},
             ], dmg: [3, 3, 3, 3, 3, 3, 3, 3], actions: [
-                {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
                 {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
                 {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
             ]},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 1, hex: true},
@@ -2291,9 +2291,9 @@ const ALL_MONSTERS = [
                 {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {actions: [
-                {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
                 {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
                 {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
             ]},
             {dmg: [5, 5, 5, 5, 5, 5, 5, 5], actions: [
                 {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
@@ -2427,9 +2427,9 @@ const ALL_MONSTERS = [
                 {effect: 'rainbow', amount: -2, turns: 1, hex: true},
                 {effect: 'sorcery', amount: -.2, turns: 1, hex: true},
             ], dmg: [3, 3, 3, 3, 3, 3, 3, 3], actions: [
-                {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
                 {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
                 {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
             ]},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 1, hex: true},
@@ -2457,9 +2457,9 @@ const ALL_MONSTERS = [
                 {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {actions: [
-                {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
                 {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
                 {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
             ]},
             {dmg: [5, 5, 5, 5, 5, 5, 5, 5], actions: [
                 {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},

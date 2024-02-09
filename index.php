@@ -54,8 +54,8 @@
           <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="1 arena required per map, start with a <span class='highlight'>Spewnicorn Spray</span> card, reduced aggro, heal to full after gates, extra magic fountains and quests, and start with 100 max health.">Easy</span></div>
           <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="2 arenas required per map, do not start with a <span class='highlight'>Spewnicorn Spray</span> card, standard amount of magic fountains and quests, and start with 75 max health.">Medium</span></div>
           <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="No healing after gates, and start with 65 max health.">Hard</span></div>
-          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="3 arenas required per map, visiting magic fountains and quests increases aggro, and start with 55 max health.">Expert</span></div>
-          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="Reduced number of magic fountains and quests, harder to gain essence levels, and increased aggro.">Nightmare</span></div>
+          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="3 arenas required per map, visiting magic fountains and quests increases aggro, +2 might to all enemies, and start with 55 max health.">Expert</span></div>
+          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="Reduced number of magic fountains and quests, harder to gain essence levels, shards and candies are rarer, +20% punch to all enemies, and aggro levels up faster.">Nightmare</span></div>
         </div>
 
         <input id="custom-seed" class="tooltip" data-powertip="You can enter a custom seed or keep this blank to generate a random game." type="text" placeholder="Custom Seed..." />
@@ -130,6 +130,22 @@
 
 
           <h2>RELEASE NOTES</h2>
+
+          <p>0.50 Alpha (2/x/2024)</p>
+
+          <ul>
+            <li>Nightmare difficulty increased</li>
+            <li>Red Envelope is rarer</li>
+            <li>Buffed upgrades to some stance cards</li>
+            <li>Gift of Summoning nerfed</li>
+            <li>Gift of Magic buffed</li>
+            <li>Fixed shard tooltips on cards</li>
+            <li>Tweaked starting bonuses (-6 aggro -> -5 aggro, +8 rainbow -> +12 rainbow)</li>
+            <li>Fixed some broken candies</li>
+            <li>Sage card upgrade was broken</li>
+            <li>Fixed a glitch with combined age of cards</li>
+            <li>Retaliate/Spikes is no longer triggered by Marked</li>
+          </ul>
 
           <p>0.49 Alpha (2/8/2024)</p>
 

@@ -198,6 +198,7 @@
  * Card: percentage changes of doing different things
  * Card: do damage equal to total armor
  * Card: deal x damage to enemy for each enemy in combat. sharded could either add more damage or turn into aoe
+ * Card: "fodder": when destroyed, do something like dmg/blk and add a copy to your draw pile
  * Treasure: 3 magic cards per turn adds lightning/thunder
  * Treasure: 3 attack cards per turn adds punch
  * Treasure: 3 tool cards per turn adds stout
@@ -212,6 +213,7 @@
  * Treasure: +1 mana per turn but add mired and lethargy to draw pile at the beginning of each combat
  * Treasure: +5 irradiate
  * Treasure: +20 irradiate on turn 1
+ * Treasure: add Spewnicorn Spray on turn 20 with modifier vanish
  * Candy: add cards to hand
  * Candy: increase max health
  * 
@@ -1416,7 +1418,7 @@ function init() {
 	console.clear();
 
 	//addTreasure('signet_ring'); // use this to manually add treasures
-	//addCandy('peanut_butter_pastry'); // use this to manually add candies
+	addCandy('cherry_taffy'); // use this to manually add candies
 
 	if(game.debug) $('body').addClass('debug');
 	if(game.tutorial) {
@@ -1559,6 +1561,7 @@ function setDifficulty() {
 		game.essenceThresholds = [12, 23, 33, 44];
     	game.aggroThresholds = [9, 14, 17, 20, 23, 26, 29, 31, 34, 37];
     	game.aggroThresholds2 = [5, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37];
+		game.candyChance = 0;
 		if(!game.debug) {
 			player.health.base = 55;
 			player.health.current = 55;
@@ -4098,8 +4101,13 @@ function endCombat() {
 		gainCourage(1);
 		updateAggro(aggroAmount);
 		
-		game.candyChance += 10;
-		game.shardChance += 5;
+		if(game.difficulty == 'nightmare') {
+			game.candyChance += 8;
+			game.shardChance += 3;
+		} else {
+			game.candyChance += 10;
+			game.shardChance += 5;
+		}
 		player.block = 0;
 		clearCombatEffects();
 		clearCombatAbilities();
@@ -5030,12 +5038,10 @@ function updateCritChance(amount = 0) {
 
 function combineCards(elem) {
 
-	game.combinedAge = 0;
-
 	$('.card.combinable.selected').each(function() {
 
 		let card = util.getCardByGuid($(this).data('guid'), combatDeck.handCards);
-		game.combinedAge += card.age;
+		game.combinedAge += Number(card.age);
 		
 	}).promise().done(function() {
 
@@ -5057,6 +5063,8 @@ function combineCards(elem) {
 		}).promise().done(function() {
 
 			$('.card.combinable').removeClass('combine-compatible');
+
+			game.combinedAge = 0;
 
 			setStatus();
 			
@@ -5133,12 +5141,13 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	if(player.antimomentumAmount > 0) {
 		await doDamage(player.antimomentumAmount, monster, [player]);
 	}
+	// for marked we have to pass all this in because we want cardWasPlayed to be false so that marked doesn't trigger retaliate/spikes
 	if(player.marked.current > 0) {
-		await doDamage(player.marked.current, monster, [player]);
+		await doDamage(player.marked.current, monster, [player], ignoreBlock = false, ignoreArmor = false, fatalityHit = false, hypnotizeHit = false, criticalHit = false, cardWasPlayed = false);
 	}
 	for(let i = 0; i < game.currentMonsters.length; i++) {
 		if(game.currentMonsters[i].marked.current > 0) {
-			await doDamage(game.currentMonsters[i].marked.current, player, [game.currentMonsters[i]]);
+			await doDamage(game.currentMonsters[i].marked.current, player, [game.currentMonsters[i]], ignoreBlock = false, ignoreArmor = false, fatalityHit = false, hypnotizeHit = false, criticalHit = false, cardWasPlayed = false);
 		}
 		monsters.updateMonsterStats(game.currentMonsters[i]);
 	}
@@ -7061,6 +7070,12 @@ async function attackPlayer(monster, dmg) {
 	if(monster) {
 		dmg += monster.might.current;
 		dmg = dmg * monster.punch.current;
+	}
+	if(game.difficulty=='expert') {
+		dmg += 2;
+	}
+	if(game.difficulty=='nightmare') {
+		dmg *= .2;
 	}
 
 	dmg = Math.round(dmg);

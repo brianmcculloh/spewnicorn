@@ -8,8 +8,8 @@ const ALL_STARTING_OPTIONS = [
     {att: 'aura', key: 'current', name: '+5 Aura', amount: 5},
     {att: 'sparkle', key: 'current', name: '+5 Sparkle', amount: 5},
     {att: 'shimmer', key: 'current', name: '+5 Shimmer', amount: 5},
-    {att: 'rainbow', key: 'base', name: '+8 Rainbow Charge', amount: 8},
-    {att: 'aggro', key: 'current', name: '-6 Aggro', entity: 'game', amount: -6},
+    {att: 'rainbow', key: 'base', name: '+12 Rainbow Charge', amount: 12},
+    {att: 'aggro', key: 'current', name: '-5 Aggro', entity: 'game', amount: -5},
     {action: 'addRare', name: 'Add a random rare card, lose 12 health'},
     {action: 'addCommonTreasure', name: 'Add a random common treasure'},
     {action: 'addUncommonTreasure', name: 'Add a random uncommon treasure, lose 20 health'},
@@ -557,7 +557,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.49 Alpha';
+    let version = '0.50 Alpha';
     let seed = false;
     let difficulty = 'medium';
     let floor = 0; // TODO: set to 0

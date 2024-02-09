@@ -1670,7 +1670,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'spewnicorn_spray', name: 'Spewnicorn Spray', type: 'tool', mana: 0, breakable: true, use: 3, tier: 'legendary', addable: false, 
-        descOverride: 'Deus Ex Machina.',
+        descOverride: 'Deus Ex Machina. Gain all power-ups possible.',
         blk: [50],
         effects: [
             {effect: 'speed', amount: 2, turns: -1},
@@ -1711,6 +1711,13 @@ const ALL_CARDS = [
             {effect: 'irradiate', amount: 5, turns: -1},
             {effect: 'replenish', amount: 1, turns: -1},
             {effect: 'combiner', amount: 1, turns: -1},
+            {effect: 'angered', amount: 4, turns: 2},
+            {effect: 'hardened', amount: 8, turns: 2},
+            {effect: 'shapeshifter', amount: 25, turns: 2},
+            {effect: 'fend', amount: 18, turns: 2},
+            {effect: 'ward', amount: 18, turns: 2},
+            {effect: 'cover', amount: 18, turns: 2},
+            {effect: 'preserve', amount: 18, turns: 2},
         ],
         abilities: [
             {ability: 'protection', turns: 2, enabled: true},
@@ -1728,6 +1735,7 @@ const ALL_CARDS = [
             {ability: 'expirex', turns: -1, enabled: true},
             {ability: 'amplify', turns: -1, enabled: true},
             {ability: 'explode', turns: 2, enabled: true},
+            {ability: 'supernatural', turns: -1, enabled: true},
         ],
         magic: [{type: 'aligned', amount: 5}], 
     }),
@@ -2243,7 +2251,7 @@ const ALL_CARDS = [
         additionalDesc: 'Level III Weapon',
         slots: 1,
         shardUpgrades: {
-            dmg: [75]
+            dmg: [80]
         },
     }),
     new Cards({
@@ -2252,16 +2260,16 @@ const ALL_CARDS = [
         additionalDesc: 'Level III Weapon',
         slots: 1,
         shardUpgrades: {
-            dmg: [45]
+            dmg: [55]
         },
     }),
     new Cards({
         id: 'double_headed_lance', name: "Double-Headed Lance", type: 'attack', mana: 0, target: 'monster', tier: 'uncommon', weight: .5, weapon: true, ephemeral: true, addable: false, 
-        dmg: [20],
+        dmg: [15],
         additionalDesc: 'Level III Weapon',
         slots: 1,
         shardUpgrades: {
-            dmg: [32]
+            dmg: [30]
         },
     }),
     new Cards({
@@ -6093,7 +6101,7 @@ const ALL_CARDS = [
         bothShardUpgrades: {
             effects: [
                 {effect: 'wisdom', amount: 8, turns: -1},
-                {effect: 'stifled', amount: 2, turns: -1}
+                {effect: 'stifled', amount: 1, turns: -1}
             ],
         }
     }),
@@ -6348,7 +6356,7 @@ const ALL_CARDS = [
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'elemental', amount: 10}], 
+            magic: [{type: 'elemental', amount: 12}], 
         },
         sparkle: {
             magic: [{type: 'elemental', amount: 10}], 
@@ -6360,7 +6368,7 @@ const ALL_CARDS = [
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'dark', amount: 10}], 
+            magic: [{type: 'dark', amount: 12}], 
         },
         shimmer: {
             magic: [{type: 'dark', amount: 10}], 
@@ -6372,7 +6380,7 @@ const ALL_CARDS = [
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'chaos', amount: 10}], 
+            magic: [{type: 'chaos', amount: 12}], 
         },
         aura: {
             magic: [{type: 'chaos', amount: 10}], 
@@ -6384,7 +6392,7 @@ const ALL_CARDS = [
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'rainbow', amount: 12}], 
+            magic: [{type: 'rainbow', amount: 14}], 
         },
         sparkle: {
             magic: [{type: 'rainbow', amount: 12}], 
@@ -6396,7 +6404,7 @@ const ALL_CARDS = [
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'rainbow', amount: 12}], 
+            magic: [{type: 'rainbow', amount: 14}], 
         },
         shimmer: {
             magic: [{type: 'rainbow', amount: 12}], 
@@ -6408,7 +6416,7 @@ const ALL_CARDS = [
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'rainbow', amount: 12}], 
+            magic: [{type: 'rainbow', amount: 14}], 
         },
         aura: {
             magic: [{type: 'rainbow', amount: 12}], 
