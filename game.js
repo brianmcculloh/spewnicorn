@@ -619,8 +619,8 @@ export default function Game() {
     let playsounds = true;
     let playmusic = true;
     let tutorial = false; // TODO: set to false
-    let debug = true;
-    let dev = true;
+    let debug = false;
+    let dev = false;
     let scenario = 'normal'; // normal, frost, flame, or singularity - set to normal for regular gameplay
     let scenarioWhich = 'normal'; // set to normal to not load a scenario
     let libraryBuilt = false;

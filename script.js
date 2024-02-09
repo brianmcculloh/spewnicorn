@@ -1418,7 +1418,7 @@ function init() {
 	console.clear();
 
 	//addTreasure('signet_ring'); // use this to manually add treasures
-	addCandy('cherry_taffy'); // use this to manually add candies
+	//addCandy('cherry_taffy'); // use this to manually add candies
 
 	if(game.debug) $('body').addClass('debug');
 	if(game.tutorial) {

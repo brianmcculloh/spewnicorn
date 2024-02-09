@@ -131,7 +131,7 @@
 
           <h2>RELEASE NOTES</h2>
 
-          <p>0.50 Alpha (2/x/2024)</p>
+          <p>0.50 Alpha (2/9/2024)</p>
 
           <ul>
             <li>Nightmare difficulty increased</li>
