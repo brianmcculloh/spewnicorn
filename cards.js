@@ -3069,7 +3069,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'unstable_attack', name: 'Unstable Attack', type: 'attack', mana: 1, target: 'monster', breakable: true, use: 1,
+        id: 'unstable_attack', name: 'Unstable Attack', type: 'attack', mana: 0, target: 'monster', breakable: true, use: 1, retain: true,
         dmg: [30],
         slots: 1,
         shardUpgrades: {

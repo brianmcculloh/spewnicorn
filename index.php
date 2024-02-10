@@ -54,8 +54,8 @@
           <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="1 arena required per map, start with a <span class='highlight'>Spewnicorn Spray</span> card, reduced aggro, heal to full after gates, extra magic fountains and quests, and start with 100 max health.">Easy</span></div>
           <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="2 arenas required per map, do not start with a <span class='highlight'>Spewnicorn Spray</span> card, standard amount of magic fountains and quests, and start with 75 max health.">Medium</span></div>
           <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="No healing after gates, and start with 65 max health.">Hard</span></div>
-          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="3 arenas required per map, visiting magic fountains and quests increases aggro, +2 might to all enemies, and start with 55 max health.">Expert</span></div>
-          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="Reduced number of magic fountains and quests, harder to gain essence levels, shards and candies are rarer, +20% punch to all enemies, and aggro levels up faster.">Nightmare</span></div>
+          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="Visiting magic fountains and quests increases aggro, +2 damage to all enemy attacks, and start with 55 max health.">Expert</span></div>
+          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="3 arenas required per map, reduced number of magic fountains and quests, shards and candies are rarer, +10% damage to all enemy attacks, and +5 to all enemy block.">Nightmare</span></div>
         </div>
 
         <input id="custom-seed" class="tooltip" data-powertip="You can enter a custom seed or keep this blank to generate a random game." type="text" placeholder="Custom Seed..." />
@@ -130,6 +130,14 @@
 
 
           <h2>RELEASE NOTES</h2>
+
+          <p>0.51 Alpha (2/10/2024)</p>
+
+          <ul>
+            <li>Fixed bug where max armor conflicts with gaining block</li>
+            <li>Unstable attack card is now 0 mana and retain</li>
+            <li>Tweaks to difficulty settings</li>
+          </ul>
 
           <p>0.50 Alpha (2/9/2024)</p>
 

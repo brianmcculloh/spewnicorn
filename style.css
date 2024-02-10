@@ -556,6 +556,8 @@ input[type="text"] {
 body.game-started #splash .panel .tutorial,
 body.game-started #splash .panel .difficulties {
 	pointer-events:none;
+}
+body.game-started #splash .panel .tutorial {
 	filter:grayscale(1);
 }
 #game-loading.hidden {

@@ -1548,7 +1548,6 @@ function setDifficulty() {
 	} else if(game.difficulty=='expert') {
 		game.questChance = 1.8;
 		game.fountainChance = 1.6;
-		game.arenasRequired = 3;
 		if(!game.debug) {
 			player.health.base = 55;
 			player.health.current = 55;
@@ -1558,9 +1557,9 @@ function setDifficulty() {
 		game.questChance = 1.5;
 		game.fountainChance = 1.3;
 		game.arenasRequired = 3;
-		game.essenceThresholds = [12, 23, 33, 44];
-    	game.aggroThresholds = [9, 14, 17, 20, 23, 26, 29, 31, 34, 37];
-    	game.aggroThresholds2 = [5, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37];
+		//game.essenceThresholds = [12, 23, 33, 44];
+    	//game.aggroThresholds = [9, 14, 17, 20, 23, 26, 29, 31, 34, 37];
+    	//game.aggroThresholds2 = [5, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37];
 		game.candyChance = 0;
 		if(!game.debug) {
 			player.health.base = 55;
@@ -3323,6 +3322,13 @@ async function monsterAction(action = 'perform') {
 
 				let attackAmount = attack[key];
 
+				if(game.difficulty=='expert') {
+					attackAmount += 2;
+				}
+				if(game.difficulty=='nightmare') {
+					attackAmount *= .2;
+				}
+
 				// for flame context increase damage based on aggro level
 				if(thisMonster.context == 'flame') {
 					attackAmount += ((player.aggro.level / 4) + .5) * attackAmount;
@@ -3360,6 +3366,10 @@ async function monsterAction(action = 'perform') {
 		for (var key in defend) {
 			if (defend.hasOwnProperty(key)) {
 				let a = defend[key];
+
+				if(game.difficulty=='nightmare') {
+					a += 5;
+				}
 
 				// for frost context increase block based on aggro level
 				if(thisMonster.context == 'frost') {
@@ -6537,17 +6547,17 @@ async function processQuest(elem) {
 		break;
 		case 'stained_glass_mirror':
 			if(option == 'see_color') {
-				let actions = [{action: 'stat', what: 'rainbow', key: 'base', value: 5}];
+				let actions = [{action: 'stat', what: 'rainbow', key: 'base', value: 10}];
 				await processActions(actions);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			} else if(option == 'see_depth') {
-				let actions = [{action: 'stat', what: 'rainbow', key: 'base', value: 2}, {action: 'stat', what: 'rainbow', key: 'max', value: 5}];
+				let actions = [{action: 'stat', what: 'rainbow', key: 'base', value: 5}, {action: 'stat', what: 'rainbow', key: 'max', value: 5}];
 				await processActions(actions);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
 			} else if(option == 'see_clarity') {
-				let actions = [{action: 'stat', what: 'rainbow', key: 'base', value: 2}, {action: 'stat', what: 'rainbow', key: 'max', value: -5}];
+				let actions = [{action: 'stat', what: 'rainbow', key: 'base', value: 5}, {action: 'stat', what: 'rainbow', key: 'max', value: -5}];
 				await processActions(actions);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
@@ -6834,8 +6844,6 @@ function applyBlock(blk, to, ignoreEffects = false) {
 			}, 300);
 			to.block += blkActual;
 			if(to.block > 999) to.block = 999;
-		} else {
-			to.block = 0;
 		}
 		game.message(to.name + ' (' + to.guid + ') gains ' + blkActual + ' block');
 	}
@@ -7070,12 +7078,6 @@ async function attackPlayer(monster, dmg) {
 	if(monster) {
 		dmg += monster.might.current;
 		dmg = dmg * monster.punch.current;
-	}
-	if(game.difficulty=='expert') {
-		dmg += 2;
-	}
-	if(game.difficulty=='nightmare') {
-		dmg *= .2;
 	}
 
 	dmg = Math.round(dmg);
