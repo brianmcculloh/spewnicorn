@@ -110,6 +110,7 @@
  * PHASE V:
  * 
  * 
+ * 
  * TODO: test out the new flame guardian moveset for balancing
  * TODO: test the singularity fight for balancing
  * TODO: implement mechanics first and then add some more cards after that
@@ -3410,7 +3411,7 @@ async function monsterAction(action = 'perform') {
 					to = player;
 					prefix = 'Hex ';
 				}
-				if(effect == 'punch' || effect == 'sorcery' || effect == 'resistance' || effect == 'thunder') {
+				if(effect == 'punch' || effect == 'sorcery' || effect == 'resistance' || effect == 'thunder' || effect == 'veil') {
 					amount = Math.round((amount + Number.EPSILON) * 100);
                     amount += '%';
 				}
@@ -3852,7 +3853,7 @@ function removeBuffs(to) {
 	}
 }
 
-function applyEffect(effect, to, turns = -1) {
+async function applyEffect(effect, to, turns = -1) {
 	let gameEffect = game.effects.find(({ id }) => id === effect.effect);
 	let isHex = false;
 	if(gameEffect!==undefined) {
@@ -3876,7 +3877,7 @@ function applyEffect(effect, to, turns = -1) {
 			let amt = Math.round(((to[effect.effect].current + effect.amount) + Number.EPSILON) * 100) / 100;
 			let amtShow = effect.amount;
 			// punch, speed, and thunder should never go below 0
-			if(effect.effect == 'punch' || effect.effect == 'speed' || effect.effect == 'thunder' || effect.effect == 'sorcery' || effect.effect == 'resistance') {
+			if(effect.effect == 'punch' || effect.effect == 'speed' || effect.effect == 'thunder' || effect.effect == 'sorcery' || effect.effect == 'resistance' || effect.effect == 'veil') {
 				if(amt < 0) {
 					amt = 0;
 				}
@@ -3928,7 +3929,7 @@ function applyEffect(effect, to, turns = -1) {
 				to[effect.effect].turns = turns;
 			}
 			if(effect.persist) to[effect.effect].persist = effect.persist;
-			if(effect.effect == 'punch' || effect.effect == 'sorcery' || effect.effect == 'resistance' || effect.effect == 'thunder') {
+			if(effect.effect == 'punch' || effect.effect == 'sorcery' || effect.effect == 'resistance' || effect.effect == 'thunder' || effect.effect == 'veil') {
 				amtShow = Math.round((amtShow + Number.EPSILON) * 100);
 				amtShow += '%';
 			}
@@ -3958,7 +3959,7 @@ function applyEffect(effect, to, turns = -1) {
 			let sound = gameEffect.sound ? gameEffect.sound : 'applyEffect';
 			if(game.playsounds) sounds.play(sound);
 			let amtShow = effect.base;
-			if(effect.effect == 'punch' || effect.effect == 'sorcery' || effect.effect == 'resistance' || effect.effect == 'thunder') {
+			if(effect.effect == 'punch' || effect.effect == 'sorcery' || effect.effect == 'resistance' || effect.effect == 'thunder' || effect.effect == 'veil') {
 				amtShow = Math.round((amtShow + Number.EPSILON) * 100);
 				amtShow += '%';
 			}
@@ -4267,7 +4268,7 @@ function loot(type, tier = 3) {
 					util.appendTreasure(treasure, '.loot-items');
 				}
 			}
-			$('.loot-screen .message').html('Choose <span class="highlight">ONE</span> of these powerful treasures.');
+			$('.loot-screen .message').html('Choose&nbsp;<span class="highlight">ONE</span>&nbsp;of these powerful treasures.');
 		break;
 		case 'gate':
 			// for gate screens, only tier 4
@@ -4280,7 +4281,7 @@ function loot(type, tier = 3) {
 					util.appendTreasure(treasure, '.loot-items');
 				}
 			}
-			$('.loot-screen .message').html('Choose a legendary treasure.');
+			$('.loot-screen .message').html('Choose&nbsp;<span class="highlight">ONE</div>&nbsp;legendary treasure.');
 		break;
 		case 'treasure':
 			if(possibleTreasures.length > 0) {
@@ -5153,11 +5154,11 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	}
 	// for marked we have to pass all this in because we want cardWasPlayed to be false so that marked doesn't trigger retaliate/spikes
 	if(player.marked.current > 0) {
-		await doDamage(player.marked.current, monster, [player], ignoreBlock = false, ignoreArmor = false, fatalityHit = false, hypnotizeHit = false, criticalHit = false, cardWasPlayed = false);
+		await doDamage(player.marked.current, monster, [player], false, false, false, false, false, false);
 	}
 	for(let i = 0; i < game.currentMonsters.length; i++) {
 		if(game.currentMonsters[i].marked.current > 0) {
-			await doDamage(game.currentMonsters[i].marked.current, player, [game.currentMonsters[i]], ignoreBlock = false, ignoreArmor = false, fatalityHit = false, hypnotizeHit = false, criticalHit = false, cardWasPlayed = false);
+			await doDamage(game.currentMonsters[i].marked.current, player, [game.currentMonsters[i]], false, false, false, false, false, false);
 		}
 		monsters.updateMonsterStats(game.currentMonsters[i]);
 	}
@@ -7013,9 +7014,6 @@ async function activateRainbow(type, to) {
 
 	let whichMonster = to.rainbow.type == 'muddled' || to.rainbow.type == 'chaos' ? [util.randFromArray(currentMonsters)] : currentMonsters;
 
-	// check for magic resistance
-	dmg = Math.round(dmg - (dmg * whichMonster[0].resistance.current));
-
 	await doDamage(dmg, undefined, whichMonster, ignoreBlock, ignoreArmor);
 
 	// update rainbow magic to overflow type
@@ -7061,7 +7059,9 @@ function applyArmor(arm, to) {
 		if(game.playsounds && armor > 0) sounds.play('gainArmor');
 		if(extraArmor > 0) {
 			to.armor = to.health.current;
-			applyBlock(Math.round(extraArmor * to.cunning.current), to);
+			if(to.cunning.current > 0) {
+				applyBlock(Math.round(extraArmor * to.cunning.current), to);
+			}
 			to.health.current += Math.round(extraArmor * to.vigor.current);
 			if(to.health.current > to.health.max) to.health.current = to.health.max;
 		} else {
@@ -7132,6 +7132,15 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 				}
 			}
 
+			// check for magic resistance
+			dmg = Math.round(dmg - (dmg * to[i].resistance.current));
+
+			// check for veil
+			if(to[i].veil.current > 0) {
+				let resistanceEffect = {effect: 'resistance', amount: to[i].veil.current, turns: 1};
+				await applyEffect(resistanceEffect, to[i], 1);
+			}
+
 			let thisTo = to[i] == false || to[i] == undefined ? player : to[i];
 
 			let thisDmg = dmg;
@@ -7174,13 +7183,15 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 				}
 				// armor reduces damage by 50%
 				let armoredDmg = unblockedDmg;
+				let originalDmg = unblockedDmg;
 				// odd damage amounts should affect armor +1 more than health (unless no armor)
 				let odd = (armoredDmg % 2 == 0) || (thisTo.armor == 0) ? 0 : 1;
 				if(!ignoreArmor) {
 					armoredDmg = Math.floor(unblockedDmg / 2);
+					originalDmg = Math.ceil(originalDmg / 2);
 				}
 				// if we have enough armor, reduce armor and health by 50% of damage
-				if(!ignoreArmor && armoredDmg <= thisTo.armor && thisTo.armor > 0) {
+				if(!ignoreArmor && originalDmg <= thisTo.armor && thisTo.armor > 0) {
 					armorLost += (armoredDmg + odd);
 					dmgTaken += armorLost;
 					thisTo.armor -= (armoredDmg + odd);

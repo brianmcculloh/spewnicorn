@@ -61,7 +61,7 @@ const ALL_QUESTS = [
         desc: 'There is a strange scent in the air. It is warm and fragrant.',
         weight: 5,
         options: [
-            {id: 'transform', name: 'Transmute', desc: 'Transform 3 cards'},
+            {id: 'transform', name: 'Transmute', desc: 'Transform up to 3 cards'},
             {id: 'leave', name: 'Leave'}
         ]
     }),

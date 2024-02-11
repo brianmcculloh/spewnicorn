@@ -8,7 +8,7 @@ const ALL_STARTING_OPTIONS = [
     {att: 'aura', key: 'current', name: '+5 Aura', amount: 5},
     {att: 'sparkle', key: 'current', name: '+5 Sparkle', amount: 5},
     {att: 'shimmer', key: 'current', name: '+5 Shimmer', amount: 5},
-    {att: 'rainbow', key: 'base', name: '+12 Rainbow Charge', amount: 12},
+    {att: 'rainbow', key: 'base', name: '+12 Rainbow Base', amount: 12},
     {att: 'aggro', key: 'current', name: '-5 Aggro', entity: 'game', amount: -5},
     {action: 'addRare', name: 'Add a random rare card, lose 12 health'},
     {action: 'addCommonTreasure', name: 'Add a random common treasure'},
@@ -341,6 +341,12 @@ const ALL_EFFECTS = [
     // hex      {effect: 'preserve', amount: 1, hex: true}
     {id: 'preserve', name: 'Preserve', desc: 'Gain x block each time you discard a card', x: -96, y: -7712, hex: false},
 
+    // Usage:
+    // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
+    // buff     {effect: 'veil', amount: .5, turns: -1}
+    // hex      {effect: 'veil', amount: -.5, hex: true}
+    {id: 'veil', name: 'Veil', desc: 'Gain x resistance each time you receive magic damage', x: -384, y: -6240, hex: false},
+
 ];
 /*********************************************
  * 
@@ -557,7 +563,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.51 Alpha';
+    let version = '0.52 Alpha';
     let seed = false;
     let difficulty = 'medium';
     let floor = 0; // TODO: set to 0

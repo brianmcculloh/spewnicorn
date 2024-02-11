@@ -62,6 +62,7 @@ class Creatures {
         ward = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         cover = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         preserve = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        veil = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
 
         // abilities
         protection = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
@@ -161,6 +162,7 @@ class Creatures {
         this.ward = ward;
         this.cover = cover;
         this.preserve = preserve;
+        this.veil = veil;
         this.effectsDom = '';
 
         // abilities
@@ -2796,6 +2798,7 @@ const ALL_MONSTERS = [
         resurrect: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
         eternal: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
         vex: {base: 2, current: 0, temp: [], turns: -1},
+        veil: {base: .5, current: 0, temp: [], turns: -1},
     }),
 
 
@@ -3121,7 +3124,7 @@ export function Monster() {
                 }
             } else {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(5, i, 'boss', excluded, game.previousArena);
+                    let thisMonster = createMonster(5, i, 'boss', game.previousArena);
                     currentMonsters.push(thisMonster);
                 }
             }

@@ -131,12 +131,24 @@
 
           <h2>RELEASE NOTES</h2>
 
+          <p>0.52 Alpha (2/11/2024)</p>
+
+          <ul>
+            <li>Fixed an armor calculation bug</li>
+            <li>Fixed a bug that caused arenas in map 2 to break</li>
+            <li>The Singularity has a new effect called "Veil" which mitigates elemental magic exploits</li>
+            <li>Fixed a bug where the first enemy's resistance applied to all enemies</li>
+          </ul>
+
           <p>0.51 Alpha (2/10/2024)</p>
 
           <ul>
             <li>Fixed bug where max armor conflicts with gaining block</li>
             <li>Unstable attack card is now 0 mana and retain</li>
             <li>Tweaks to difficulty settings</li>
+            <li>Buffed the Quick Stab card</li>
+            <li>Fixed a Marked bug</li>
+            <li>Tweaked the Garrison card</li>
           </ul>
 
           <p>0.50 Alpha (2/9/2024)</p>

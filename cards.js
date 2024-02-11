@@ -2994,7 +2994,12 @@ const ALL_CARDS = [
         },
         slots: 1,
         shardUpgrades: {
-            dmg: [12]
+            dmg: [10],
+            draw: {
+                actions: [
+                    {action: 'draw', value: 2}
+                ]
+            },
         },
     }),
     new Cards({
@@ -4790,7 +4795,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'garrison', name: 'Garrison', type: 'tool', mana: 1, tier: 'uncommon', natural: true, vanish: true, 
-        blk: [18],
+        blk: [15],
         actions: [
             {action: 'addCard', value: 1, what: 'garrison', to: 'drawCards'},
         ],
@@ -4807,9 +4812,6 @@ const ALL_CARDS = [
                 {action: 'addCard', value: 1, what: 'garrison', to: 'drawCards', with: ['frost', 'frost']},
             ],
         },
-        bothShardUpgrades: {
-            blk: [30]
-        }
     }),
     new Cards({
         id: 'elude', name: 'Elude', type: 'tool', tier: 'uncommon', mana: 1, retain: true, pack: 'combine', vanish: true,
@@ -6500,7 +6502,7 @@ const ALL_CARDS = [
         ],
         slots: 1,
         fireShardUpgrades: {
-            magic: [{type: 'aligned', amount: 15}],
+            magic: [{type: 'aligned', amount: 16}],
         },
         iceShardUpgrades: {
             effects: [
@@ -6613,21 +6615,21 @@ const ALL_CARDS = [
         sound: 'magic14',
         magic: [{type: 'aligned', amount: 2}],
         actions: [
-            {action: 'destroy', value: 1}
+            {action: 'destroy', value: 1, optional: true}
         ],
         slots: 1,
         shardUpgrades: {
             magic: [{type: 'aligned', amount: 3}],
             actions: [
                 {action: 'draw', value: 1},
-                {action: 'destroy', value: 1},
+                {action: 'destroy', value: 1, optional: true},
             ],
         },
         fireShardUpgrades: {
             magic: [{type: 'aligned', amount: 5}],
             actions: [
                 {action: 'draw', value: 2},
-                {action: 'destroy', value: 2},
+                {action: 'destroy', value: 2, optional: true},
             ],
         },
     }),
