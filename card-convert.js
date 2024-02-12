@@ -9,9 +9,10 @@ let importExports = {};
 
 async function processLine(line, fileLines, index) {
     // Check for directory switch comment
-    const dirMatch = line.match(/\/\*\s*(\w+)\s*\*\//);
+    const dirMatch = line.match(/\/\*\s*([A-Z_\-\ ]+)\s*\*\//);
+
     if (dirMatch) {
-        currentDir = dirMatch[1].toLowerCase();
+        currentDir = dirMatch[1].toLowerCase().trim().replace(/ /g, '_');
         ensureDirectoryExists(path.join(baseDir, currentDir));
         return;
     }
