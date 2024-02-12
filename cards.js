@@ -9,19 +9,29 @@ import {
     aura_stance,
     aura,
     auxiliary,
+    battle_combo,
+    battle_finisher,
+    battle_move,
+    battle_sequence,
     boost,
     courage,
     energize,
     familiar_agony,
     fleeting_slash,
+    impresa,
     lingering_slash,
+    ouroboros,
     momentous_slash,
     safety,
+    self_advance,
+    self_enhance,
+    self_fulfill,
     shimmer_stance,
     shimmer,
     slash,
     sparkle_stance,
-    sparkle
+    sparkle,
+    tesseract
  } from './scripts/cards/non-addable/index.js';
 
 const util = new Util();
@@ -55,251 +65,16 @@ const ALL_CARDS = [
     new Cards(energize),
     new Cards(boost),
     new Cards(auxiliary),
-    new Cards({
-        id: 'impresa', name: 'Impresa', type: 'magic', mana: 1, tier: 'uncommon', addable: false, retain: true, vanish: true,
-        magic: [{type: 'aligned', amount: 5}],
-        slots: 1,
-        combine: {
-            magic: [{type: 'aligned', amount: 10}],
-            actions: [
-                {action: 'addCard', value: 1, what: 'ouroboros', to: 'handCards'},
-            ]
-        },
-        draw: {
-            magic: [{type: 'aligned', amount: 1}],
-        },
-        shardUpgrades: {
-            magic: [{type: 'aligned', amount: 10}],
-        },
-    }),
-    new Cards({
-        id: 'ouroboros', name: 'Ouroboros', type: 'magic', mana: 0, tier: 'rare', addable: false, retain: true, vanish: true,
-        dmg: [4],
-        blk: [6],
-        magic: [{type: 'aligned', amount: 10}],
-        slots: 1,
-        actions: [
-            {action: 'addCard', select: 1, value: 4, type: 'converter', to: 'handCards'},
-        ],
-        combine: {
-            actions: [
-                {action: 'addCard', value: 1, what: 'tesseract', to: 'handCards'},
-                {action: 'addCard', select: 1, value: 4, type: 'converter', to: 'handCards'},
-            ]
-        },
-        shardUpgrades: {
-            dmg: [8],
-            blk: [12],
-            magic: [{type: 'aligned', amount: 15}],
-        },
-    }),
-    new Cards({
-        id: 'tesseract', name: 'Tesseract', type: 'magic', target: 'monster', mana: 3, addable: false, retain: true, vanish: true, tier: 'legendary',
-        dmg: [10],
-        blk: [15],
-        magic: [{type: 'aligned', amount: 40}],
-        additionalDesc: 'Absolute power',
-        sound: 'magic1',
-        actions: [
-            {action: 'addCard', value: 4, what: 'impresa', to: 'discardCards'},
-        ],
-        slots: 2,
-        iceShardUpgrades: {
-            blk: [25],
-            blk_2: [35],
-            additionalDesc: 'Frozen to the core',
-            magic: [{type: 'aligned', amount: 50}],
-            magic_2: [{type: 'aligned', amount: 60}],
-        },
-        fireShardUpgrades: {
-            dmg: [20],
-            dmg_2: [30],
-            magic: [{type: 'aligned', amount: 50}],
-            magic_2: [{type: 'aligned', amount: 60}],
-            additionalDesc: 'Hot to the touch',
-        },
-        bothShardUpgrades: {
-            dmg: [20],
-            blk: [25],
-            magic: [{type: 'aligned', amount: 60}],
-        },
-    }),
-    new Cards({
-        id: 'battle_move', name: 'Battle Move', type: 'attack', mana: 1, tier: 'uncommon', target: 'monster', addable: false, retain: true, vanish: true,
-        dmg: [9],
-        //sound: 'attack17',
-        slots: 1,
-        combine: {
-            actions: [
-                {action: 'addCard', value: 1, what: 'battle_combo', to: 'handCards'},
-            ]
-        },
-        draw: {
-            blk: [3]
-        },
-        shardUpgrades: {
-            dmg: [15],
-        },
-    }),
-    new Cards({
-        id: 'battle_combo', name: 'Battle Combo', type: 'tool', mana: 0, tier: 'rare', addable: false, retain: true, vanish: true,
-        blk: [9],
-        slots: 1,
-        effects: [
-            {effect: 'fierce', amount: 10, turns: 1},
-            {effect: 'mastery', amount: 1.5, turns: 1},
-            {effect: 'rowdy', amount: 15, turns: 1}
-        ],
-        combine: {
-            actions: [
-                {action: 'addCard', value: 1, what: 'battle_sequence', to: 'handCards'},
-            ]
-        },
-        shardUpgrades: {
-            blk: [15],
-            effects: [
-                {effect: 'fierce', amount: 15, turns: 1},
-                {effect: 'mastery', amount: 2, turns: 1},
-                {effect: 'rowdy', amount: 20, turns: 1}
-            ],
-        },
-    }),
-    new Cards({
-        id: 'battle_sequence', name: 'Battle Sequence', type: 'tool', mana: 3, retain: true, addable: false, vanish: true, tier: 'legendary',
-        effects: [
-            {effect: 'fierce', amount: 15, turns: 1},
-            {effect: 'mastery', amount: 3, turns: 1},
-            {effect: 'rowdy', amount: 30, turns: 1}
-        ],
-        actions: [
-            {action: 'addCard', value: 1, what: 'battle_finisher', to: 'handCards'},
-        ],
-        slots: 2,
-        shardUpgrades: {
-            effects: [
-                {effect: 'fierce', amount: 20, turns: 1},
-                {effect: 'mastery', amount: 4, turns: 1},
-                {effect: 'rowdy', amount: 40, turns: 1}
-            ],
-        },
-        bothShardUpgrades: {
-            effects: [
-                {effect: 'fierce', amount: 25, turns: 1},
-                {effect: 'mastery', amount: 5, turns: 1},
-                {effect: 'rowdy', amount: 50, turns: 1}
-            ],
-        }
-    }),
-    new Cards({
-        id: 'battle_finisher', name: 'Battle Finisher', type: 'attack', target: 'monster', mana: 0, tier: 'rare', ephemeral: true, vanish: true, addable: false,
-        dmg: [10, 10, 10, 10],
-        sound: 'attack16',
-        additionalDesc: 'Finish Him!',
-        actions: [
-            {action: 'addCard', value: 4, what: 'battle_move', to: 'discardCards'},
-        ],
-        slots: 2,
-        fireShardUpgrades: {
-            dmg: [48],
-            dmg_2: [60]
-        },
-        iceShardUpgrades: {
-            dmg: [12, 12, 12, 12],
-            dmg_2: [15, 15, 15, 15],
-        },
-        bothShardUpgrades: {
-            dmg: [14, 14, 14, 14],
-        }
-    }),
-    new Cards({
-        id: 'self_enhance', name: 'Self-Enhance', type: 'tool', mana: 1, addable: false, tier: 'uncommon', retain: true, vanish: true,
-        blk: [16],
-        slots: 1,
-        combine: {
-            actions: [
-                {action: 'addCard', value: 1, what: 'self_advance', to: 'handCards'},
-            ]
-        },
-        draw: {
-            blk: [6]
-        },
-        shardUpgrades: {
-            blk: [24]
-        },
-    }),
-    new Cards({
-        id: 'self_advance', name: 'Self-Advance', type: 'tool', tier: 'rare', mana: 0, addable: false, retain: true, vanish: true,
-        blk: [5],
-        armor: [3],
-        slots: 1,
-        actions: [
-            {action: 'stat', what: 'health', key: 'current', value: 6},
-        ],
-        combine: {
-            actions: [
-                {action: 'addCard', value: 1, what: 'self_fulfill', to: 'handCards'},
-            ]
-        },
-        shardUpgrades: {
-            blk: [10],
-            armor: [6],
-            actions: [
-                {action: 'stat', what: 'health', key: 'current', value: 10},
-            ],
-        },
-    }),
-    new Cards({
-        id: 'self_fulfill', name: 'Self-Fulfill', type: 'tool', mana: 3, retain: true, addable: false, vanish: true, tier: 'legendary',
-        additionalDesc: 'Achievement unlocked',
-        actions: [
-            {action: 'addCard', value: 4, what: 'self_enhance', to: 'discardCards'},
-            {action: 'stat', what: 'shimmer', key: 'current', value: 1},
-            {action: 'stat', what: 'sparkle', key: 'current', value: 1},
-            {action: 'stat', what: 'aura', key: 'current', value: 1},
-            {action: 'stat', what: 'health', key: 'max', value: 1},
-            {action: 'stat', what: 'health', key: 'current', value: 1},
-        ],
-        slots: 2,
-        iceShardUpgrades: {
-            actions: [
-                {action: 'addCard', value: 4, what: 'self_enhance', to: 'discardCards'},
-                {action: 'stat', what: 'shimmer', key: 'current', value: 1},
-                {action: 'stat', what: 'sparkle', key: 'current', value: 1},
-                {action: 'stat', what: 'aura', key: 'current', value: 1},
-                {action: 'stat', what: 'health', key: 'max', value: 1},
-                {action: 'stat', what: 'aggro', key: 'current', value: -1},
-            ],
-            actions_2: [
-                {action: 'addCard', value: 4, what: 'self_enhance', to: 'discardCards'},
-                {action: 'stat', what: 'shimmer', key: 'current', value: 1},
-                {action: 'stat', what: 'sparkle', key: 'current', value: 1},
-                {action: 'stat', what: 'aura', key: 'current', value: 1},
-                {action: 'stat', what: 'health', key: 'max', value: 2},
-                {action: 'stat', what: 'aggro', key: 'current', value: -3},
-            ],
-        },
-        fireShardUpgrades: {
-            actions: [
-                {action: 'addCard', value: 4, what: 'self_enhance', to: 'discardCards'},
-                {action: 'stat', what: 'courage', value: 3},
-                {action: 'stat', what: 'health', key: 'max', value: 1},
-                {action: 'stat', what: 'aggro', key: 'current', value: -1},
-            ],
-            actions_2: [
-                {action: 'addCard', value: 4, what: 'self_enhance', to: 'discardCards'},
-                {action: 'stat', what: 'courage', value: 3},
-                {action: 'stat', what: 'health', key: 'max', value: 2},
-                {action: 'stat', what: 'aggro', key: 'current', value: -3},
-            ],
-        },
-        bothShardUpgrades: {
-            actions: [
-                {action: 'addCard', value: 4, what: 'self_enhance', to: 'discardCards'},
-                {action: 'stat', what: 'health', key: 'max', value: 2},
-                {action: 'stat', what: 'aggro', key: 'current', value: -6},
-            ],
-        },
-    }),
+    new Cards(impresa),
+    new Cards(ouroboros),
+    new Cards(tesseract),
+    new Cards(battle_move),
+    new Cards(battle_combo),
+    new Cards(battle_sequence),
+    new Cards(battle_finisher),
+    new Cards(self_enhance),
+    new Cards(self_advance),
+    new Cards(self_fulfill),
     new Cards({
         id: 'rainbow_converter', name: 'Rainbow Converter', type: 'converter', mana: 0, tier: 'uncommon', addable: false, vanish: true,
         sound: 'magic4',
