@@ -5,31 +5,31 @@ class Creatures {
     constructor({
         guid,
         type = 'monster',
-        block = 0, 
-        armor = 0, 
-        health, 
+        block = 0,
+        armor = 0,
+        health,
         actions = [],
 
         // effects
         solid = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         speed = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
-        might = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
+        might = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         punch = {base: 1, current: 1, temp: [], turns: 0, persist: false, hexed: false},
-        mend = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
-        craft = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
-        cunning = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
-        vigor = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},   
-        stout = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
-        muster = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
-        rowdy = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
-        fierce = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
-        mastery = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
-        heal = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
-        conjure = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
-        sorcery = {base: 1, current: 1, temp: [], turns: 0, persist: false, hexed: false}, 
+        mend = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        craft = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        cunning = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        vigor = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        stout = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        muster = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        rowdy = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        fierce = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        mastery = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        heal = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        conjure = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        sorcery = {base: 1, current: 1, temp: [], turns: 0, persist: false, hexed: false},
         rainbow = {base: 0, current: 0, temp: [], turns: 0, max: 0, type: 'rainbow'},
-        momentum = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
-        wield = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false}, 
+        momentum = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        wield = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         resistance = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         lemonade = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         spikes = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
@@ -43,7 +43,7 @@ class Creatures {
         mystery = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         regen = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         wisdom = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
-        lightning = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},  
+        lightning = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         thunder = {base: 1, current: 1, temp: [], turns: 0, persist: false, hexed: false},
         retain = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         antimomentum = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
@@ -84,14 +84,14 @@ class Creatures {
         supernatural = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         eternal = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         frozen = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
-        
+
         // monster specific
-        id, 
+        id,
         breed,
-        name, 
+        name,
         pattern = 'fixed',
         moveSet = [],
-        tier = 1, 
+        tier = 1,
         context = 'forest', // forest, frost, or flame - this is matched with the game.overworld value to query for creatures
         category = 'normal', // normal, boss, ice_guardian, or fire_guardian
 
@@ -222,9 +222,9 @@ const ALL_MONSTERS = [
     /* MONSTER EXAMPLE
     new Creatures({
         type: 'monster',
-        id: 'monster_name', 
-        name: 'Monster Name', 
-        armor: 0, 
+        id: 'monster_name',
+        name: 'Monster Name',
+        armor: 0,
         health: {base: 20, current: 0, max: 20},
         tier: 2, // default is tier 1
 
@@ -286,7 +286,7 @@ const ALL_MONSTERS = [
         panic: {enabled: true, baseTurns: 0, turns: 4, persist: true},
     }),
 
-    
+
 
     MONSTER LIST
 
@@ -346,14 +346,14 @@ const ALL_MONSTERS = [
 
 
     */
-    
+
     // TIER 1
     // NORMAL
     new Creatures({
         type: 'monster',
-        id: 'pixie', 
+        id: 'pixie',
         breed: 'pixie',
-        name: 'Pixie', 
+        name: 'Pixie',
         health: {base: 32, current: 0, max: 32},
         pattern: 'fixed',
         moveSet: [
@@ -379,9 +379,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'mummy', 
+        id: 'mummy',
         breed: 'mummy',
-        name: 'Mummy', 
+        name: 'Mummy',
         health: {base: 45, current: 0, max: 45},
         pattern: 'fixed',
         moveSet: [
@@ -399,9 +399,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'stone_walker', 
+        id: 'stone_walker',
         breed: 'stone_walker',
-        name: 'Stone Walker', 
+        name: 'Stone Walker',
         health: {base: 34, current: 0, max: 34},
         armor: 10,
         pattern: 'random',
@@ -417,9 +417,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'sludge', 
+        id: 'sludge',
         breed: 'sludge',
-        name: 'Sludge', 
+        name: 'Sludge',
         health: {base: 26, current: 0, max: 26},
         block: 20,
         pattern: 'fixed',
@@ -453,9 +453,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'imp', 
+        id: 'imp',
         breed: 'imp',
-        name: 'Imp', 
+        name: 'Imp',
         health: {base: 40, current: 0, max: 40},
         pattern: 'random',
         moveSet: [
@@ -475,9 +475,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_pixie', 
+        id: 'frost_pixie',
         breed: 'pixie',
-        name: 'Frost Pixie', 
+        name: 'Frost Pixie',
         health: {base: 64, current: 0, max: 64},
         pattern: 'fixed',
         moveSet: [
@@ -505,8 +505,8 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_mummy',
-        breed: 'mummy', 
-        name: 'Frost Mummy', 
+        breed: 'mummy',
+        name: 'Frost Mummy',
         health: {base: 90, current: 0, max: 90},
         pattern: 'fixed',
         moveSet: [
@@ -525,9 +525,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_stone_walker', 
+        id: 'frost_stone_walker',
         breed: 'stone_walker',
-        name: 'Frost Stone Walker', 
+        name: 'Frost Stone Walker',
         health: {base: 68, current: 0, max: 68},
         armor: 20,
         pattern: 'random',
@@ -545,8 +545,8 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_sludge',
-        breed: 'sludge', 
-        name: 'Frost Sludge', 
+        breed: 'sludge',
+        name: 'Frost Sludge',
         health: {base: 52, current: 0, max: 52},
         block: 40,
         pattern: 'fixed',
@@ -581,9 +581,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_imp', 
+        id: 'frost_imp',
         breed: 'imp',
-        name: 'Frost Imp', 
+        name: 'Frost Imp',
         health: {base: 80, current: 0, max: 80},
         pattern: 'random',
         moveSet: [
@@ -598,14 +598,14 @@ const ALL_MONSTERS = [
             ], dmg: [15], p: .3}
         ],
     }),
-    
+
     // FLAME
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_pixie', 
+        id: 'flame_pixie',
         breed: 'pixie',
-        name: 'Flame Pixie', 
+        name: 'Flame Pixie',
         health: {base: 32, current: 0, max: 32},
         pattern: 'fixed',
         moveSet: [
@@ -632,9 +632,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_mummy', 
+        id: 'flame_mummy',
         breed: 'mummy',
-        name: 'Flame Mummy', 
+        name: 'Flame Mummy',
         health: {base: 45, current: 0, max: 45},
         pattern: 'fixed',
         moveSet: [
@@ -653,9 +653,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_stone_walker', 
+        id: 'flame_stone_walker',
         breed: 'stone_walker',
-        name: 'Flame Stone Walker', 
+        name: 'Flame Stone Walker',
         health: {base: 34, current: 0, max: 34},
         armor: 10,
         pattern: 'random',
@@ -672,9 +672,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_sludge', 
+        id: 'flame_sludge',
         breed: 'sludge',
-        name: 'Flame Sludge', 
+        name: 'Flame Sludge',
         health: {base: 26, current: 0, max: 26},
         block: 20,
         pattern: 'fixed',
@@ -709,9 +709,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_imp', 
+        id: 'flame_imp',
         breed: 'imp',
-        name: 'Flame Imp', 
+        name: 'Flame Imp',
         health: {base: 40, current: 0, max: 40},
         pattern: 'random',
         moveSet: [
@@ -728,13 +728,13 @@ const ALL_MONSTERS = [
     }),
 
 
-    // TIER 2 
+    // TIER 2
     // NORMAL
     new Creatures({
         type: 'monster',
-        id: 'shatter', 
+        id: 'shatter',
         breed: 'shatter',
-        name: 'Shatter', 
+        name: 'Shatter',
         health: {base: 50, current: 0, max: 50},
         tier: 2,
         pattern: 'fixed',
@@ -753,9 +753,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'void_fairy', 
+        id: 'void_fairy',
         breed: 'void_fairy',
-        name: 'Void Fairy', 
+        name: 'Void Fairy',
         health: {base: 65, current: 0, max: 65},
         tier: 2,
         pattern: 'fixed',
@@ -785,9 +785,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'enchantress', 
+        id: 'enchantress',
         breed: 'enchantress',
-        name: 'Enchantress', 
+        name: 'Enchantress',
         health: {base: 48, current: 0, max: 48},
         tier: 2,
         armor: 5,
@@ -828,9 +828,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'power_liche', 
+        id: 'power_liche',
         breed: 'power_liche',
-        name: 'Power Liche', 
+        name: 'Power Liche',
         health: {base: 70, current: 0, max: 70},
         tier: 2,
         pattern: 'fixed',
@@ -845,9 +845,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'iron_walker', 
+        id: 'iron_walker',
         breed: 'iron_walker',
-        name: 'Iron Walker', 
+        name: 'Iron Walker',
         health: {base: 92, current: 0, max: 92},
         tier: 2,
         pattern: 'fixed',
@@ -864,9 +864,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_shatter', 
+        id: 'frost_shatter',
         breed: 'shatter',
-        name: 'Frost Shatter', 
+        name: 'Frost Shatter',
         health: {base: 100, current: 0, max: 100},
         tier: 2,
         pattern: 'fixed',
@@ -887,8 +887,8 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_void_fairy',
-        breed: 'void_fairy', 
-        name: 'Frost Void Fairy', 
+        breed: 'void_fairy',
+        name: 'Frost Void Fairy',
         health: {base: 130, current: 0, max: 130},
         tier: 2,
         pattern: 'fixed',
@@ -919,9 +919,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_enchantress', 
+        id: 'frost_enchantress',
         breed: 'enchantress',
-        name: 'Frost Enchantress', 
+        name: 'Frost Enchantress',
         health: {base: 96, current: 0, max: 96},
         tier: 2,
         armor: 10,
@@ -963,9 +963,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_power_liche', 
+        id: 'frost_power_liche',
         breed: 'power_liche',
-        name: 'Frost Power Liche', 
+        name: 'Frost Power Liche',
         health: {base: 140, current: 0, max: 140},
         tier: 2,
         pattern: 'fixed',
@@ -981,9 +981,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_iron_walker', 
+        id: 'frost_iron_walker',
         breed: 'iron_walker',
-        name: 'Frost Iron Walker', 
+        name: 'Frost Iron Walker',
         health: {base: 184, current: 0, max: 184},
         tier: 2,
         pattern: 'fixed',
@@ -1000,9 +1000,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_shatter', 
+        id: 'flame_shatter',
         breed: 'shatter',
-        name: 'Flame Shatter', 
+        name: 'Flame Shatter',
         health: {base: 50, current: 0, max: 50},
         tier: 2,
         pattern: 'fixed',
@@ -1022,9 +1022,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_void_fairy', 
+        id: 'flame_void_fairy',
         breed: 'void_fairy',
-        name: 'Flame Void Fairy', 
+        name: 'Flame Void Fairy',
         health: {base: 65, current: 0, max: 65},
         tier: 2,
         pattern: 'fixed',
@@ -1056,8 +1056,8 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_enchantress',
-        breed: 'enchantress', 
-        name: 'Flame Enchantress', 
+        breed: 'enchantress',
+        name: 'Flame Enchantress',
         health: {base: 48, current: 0, max: 48},
         tier: 2,
         armor: 5,
@@ -1099,9 +1099,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_power_liche', 
+        id: 'flame_power_liche',
         breed: 'power_liche',
-        name: 'Flame Power Liche', 
+        name: 'Flame Power Liche',
         health: {base: 70, current: 0, max: 70},
         tier: 2,
         pattern: 'fixed',
@@ -1117,9 +1117,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_iron_walker', 
+        id: 'flame_iron_walker',
         breed: 'iron_walker',
-        name: 'Flame Iron Walker', 
+        name: 'Flame Iron Walker',
         health: {base: 92, current: 0, max: 92},
         tier: 2,
         pattern: 'fixed',
@@ -1131,16 +1131,16 @@ const ALL_MONSTERS = [
             {dmg: [28]},
         ],
     }),
-    
 
 
-    // TIER 3 
+
+    // TIER 3
     // NORMAL
     new Creatures({
         type: 'monster',
-        id: 'swarm', 
+        id: 'swarm',
         breed: 'swarm',
-        name: 'Swarm', 
+        name: 'Swarm',
         health: {base: 25, current: 0, max: 25},
         tier: 3,
         armor: 25,
@@ -1163,9 +1163,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'sorcerer', 
+        id: 'sorcerer',
         breed: 'sorcerer',
-        name: 'Sorcerer', 
+        name: 'Sorcerer',
         health: {base: 95, current: 0, max: 95},
         tier: 3,
         pattern: 'fixed',
@@ -1188,8 +1188,8 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         id: 'fel_dragon',
-        breed: 'fel_dragon', 
-        name: 'Fel Dragon', 
+        breed: 'fel_dragon',
+        name: 'Fel Dragon',
         health: {base: 125, current: 0, max: 125},
         tier: 3,
         pattern: 'random',
@@ -1204,7 +1204,7 @@ const ALL_MONSTERS = [
             ], armor: [20], p: .1},
             {dmg: [22], effects: [
                 {effect: 'might', amount: 2, turns: -1}
-            ], 
+            ],
             abilities: [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
@@ -1219,9 +1219,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'cunning_dragon', 
+        id: 'cunning_dragon',
         breed: 'cunning_dragon',
-        name: 'Cunning Dragon', 
+        name: 'Cunning Dragon',
         health: {base: 125, current: 0, max: 125},
         tier: 3,
         pattern: 'random',
@@ -1237,7 +1237,7 @@ const ALL_MONSTERS = [
             ], armor: [20], p: .1},
             {dmg: [22], effects: [
                 {effect: 'might', amount: 1, turns: -1}
-            ], 
+            ],
             abilities: [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
@@ -1252,9 +1252,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'cyberskull', 
+        id: 'cyberskull',
         breed: 'cyberskull',
-        name: 'Cyberskull', 
+        name: 'Cyberskull',
         health: {base: 110, current: 0, max: 110},
         pattern: 'fixed',
         tier: 3,
@@ -1271,7 +1271,7 @@ const ALL_MONSTERS = [
         context: 'frost',
         id: 'frost_swarm',
         breed: 'swarm',
-        name: 'Frost Swarm', 
+        name: 'Frost Swarm',
         health: {base: 50, current: 0, max: 50},
         tier: 3,
         armor: 50,
@@ -1296,8 +1296,8 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'frost',
         id: 'frost_sorcerer',
-        breed: 'sorcerer', 
-        name: 'Frost Sorcerer', 
+        breed: 'sorcerer',
+        name: 'Frost Sorcerer',
         health: {base: 190, current: 0, max: 190},
         tier: 3,
         pattern: 'fixed',
@@ -1320,9 +1320,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_fel_dragon', 
+        id: 'frost_fel_dragon',
         breed: 'fel_dragon',
-        name: 'Frost Fel Dragon', 
+        name: 'Frost Fel Dragon',
         health: {base: 250, current: 0, max: 250},
         tier: 3,
         pattern: 'random',
@@ -1337,7 +1337,7 @@ const ALL_MONSTERS = [
             ], armor: [20], p: .1},
             {dmg: [22], effects: [
                 {effect: 'might', amount: 2, turns: -1}
-            ], 
+            ],
             abilities: [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
@@ -1353,9 +1353,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_cunning_dragon', 
+        id: 'frost_cunning_dragon',
         breed: 'cunning_dragon',
-        name: 'Frost Cunning Dragon', 
+        name: 'Frost Cunning Dragon',
         health: {base: 250, current: 0, max: 250},
         tier: 3,
         pattern: 'random',
@@ -1371,7 +1371,7 @@ const ALL_MONSTERS = [
             ], armor: [20], p: .1},
             {dmg: [22], effects: [
                 {effect: 'might', amount: 1, turns: -1}
-            ], 
+            ],
             abilities: [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
@@ -1387,9 +1387,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_cyberskull', 
+        id: 'frost_cyberskull',
         breed: 'cyberskull',
-        name: 'Frost Cyberskull', 
+        name: 'Frost Cyberskull',
         health: {base: 220, current: 0, max: 220},
         pattern: 'fixed',
         tier: 3,
@@ -1405,8 +1405,8 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_swarm',
-        breed: 'swarm', 
-        name: 'Flame Swarm', 
+        breed: 'swarm',
+        name: 'Flame Swarm',
         health: {base: 25, current: 0, max: 25},
         tier: 3,
         armor: 25,
@@ -1430,9 +1430,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_sorcerer', 
+        id: 'flame_sorcerer',
         breed: 'sorcerer',
-        name: 'Flame Sorcerer', 
+        name: 'Flame Sorcerer',
         health: {base: 95, current: 0, max: 95},
         tier: 3,
         pattern: 'fixed',
@@ -1455,9 +1455,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_fel_dragon', 
+        id: 'flame_fel_dragon',
         breed: 'fel_dragon',
-        name: 'Flame Fel Dragon', 
+        name: 'Flame Fel Dragon',
         health: {base: 125, current: 0, max: 125},
         tier: 3,
         pattern: 'random',
@@ -1472,7 +1472,7 @@ const ALL_MONSTERS = [
             ], armor: [20], p: .1},
             {dmg: [22], effects: [
                 {effect: 'might', amount: 2, turns: -1}
-            ], 
+            ],
             abilities: [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
@@ -1488,9 +1488,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_cunning_dragon', 
+        id: 'flame_cunning_dragon',
         breed: 'cunning_dragon',
-        name: 'Flame Cunning Dragon', 
+        name: 'Flame Cunning Dragon',
         health: {base: 125, current: 0, max: 125},
         tier: 3,
         pattern: 'random',
@@ -1506,7 +1506,7 @@ const ALL_MONSTERS = [
             ], armor: [20], p: .1},
             {dmg: [22], effects: [
                 {effect: 'might', amount: 1, turns: -1}
-            ], 
+            ],
             abilities: [
                 {ability: 'stockpile', turns: -1, enabled: true},
             ], p: .1},
@@ -1522,9 +1522,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_cyberskull', 
+        id: 'flame_cyberskull',
         breed: 'cyberskull',
-        name: 'Flame Cyberskull', 
+        name: 'Flame Cyberskull',
         health: {base: 110, current: 0, max: 110},
         pattern: 'fixed',
         tier: 3,
@@ -1542,9 +1542,9 @@ const ALL_MONSTERS = [
     // NORMAL
     new Creatures({
         type: 'monster',
-        id: 'transfigurer', 
+        id: 'transfigurer',
         breed: 'transfigurer',
-        name: 'Transfigurer', 
+        name: 'Transfigurer',
         health: {base: 175, current: 0, max: 175},
         pattern: 'fixed',
         tier: 4,
@@ -1598,9 +1598,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'writhing_dragon', 
+        id: 'writhing_dragon',
         breed: 'writhing_dragon',
-        name: 'Writhing Dragon', 
+        name: 'Writhing Dragon',
         health: {base: 220, current: 0, max: 220},
         armor: 30,
         tier: 4,
@@ -1620,9 +1620,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'darkness_dragon', 
+        id: 'darkness_dragon',
         breed: 'darkness_dragon',
-        name: 'Darkness Dragon', 
+        name: 'Darkness Dragon',
         health: {base: 165, current: 0, max: 165},
         armor: 68,
         tier: 4,
@@ -1639,9 +1639,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'obsidian_walker', 
+        id: 'obsidian_walker',
         breed: 'obsidian_walker',
-        name: 'Obsidian Walker', 
+        name: 'Obsidian Walker',
         health: {base: 250, current: 0, max: 250},
         tier: 4,
         pattern: 'fixed',
@@ -1659,9 +1659,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'seething_entity', 
+        id: 'seething_entity',
         breed: 'seething_entity',
-        name: 'Seething Entity', 
+        name: 'Seething Entity',
         health: {base: 150, current: 0, max: 150},
         tier: 4,
         armor: 20,
@@ -1686,9 +1686,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_transfigurer', 
+        id: 'frost_transfigurer',
         breed: 'transfigurer',
-        name: 'Frost Transfigurer', 
+        name: 'Frost Transfigurer',
         health: {base: 350, current: 0, max: 350},
         pattern: 'fixed',
         tier: 4,
@@ -1743,9 +1743,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_writhing_dragon', 
+        id: 'frost_writhing_dragon',
         breed: 'writhing_dragon',
-        name: 'Frost Writhing Dragon', 
+        name: 'Frost Writhing Dragon',
         health: {base: 440, current: 0, max: 440},
         armor: 60,
         tier: 4,
@@ -1766,9 +1766,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_darkness_dragon', 
+        id: 'frost_darkness_dragon',
         breed: 'darkness_dragon',
-        name: 'Frost Darkness Dragon', 
+        name: 'Frost Darkness Dragon',
         health: {base: 330, current: 0, max: 330},
         armor: 136,
         tier: 4,
@@ -1786,9 +1786,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_obsidian_walker', 
+        id: 'frost_obsidian_walker',
         breed: 'obsidian_walker',
-        name: 'Frost Obsidian Walker', 
+        name: 'Frost Obsidian Walker',
         health: {base: 500, current: 0, max: 500},
         tier: 4,
         pattern: 'fixed',
@@ -1807,9 +1807,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_seething_entity', 
+        id: 'frost_seething_entity',
         breed: 'seething_entity',
-        name: 'Frost Seething Entity', 
+        name: 'Frost Seething Entity',
         health: {base: 300, current: 0, max: 300},
         tier: 4,
         armor: 40,
@@ -1834,9 +1834,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_transfigurer', 
+        id: 'flame_transfigurer',
         breed: 'transfigurer',
-        name: 'Flame Transfigurer', 
+        name: 'Flame Transfigurer',
         health: {base: 175, current: 0, max: 175},
         pattern: 'fixed',
         tier: 4,
@@ -1891,9 +1891,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_writhing_dragon', 
+        id: 'flame_writhing_dragon',
         breed: 'writhing_dragon',
-        name: 'Flame Writhing Dragon', 
+        name: 'Flame Writhing Dragon',
         health: {base: 220, current: 0, max: 220},
         armor: 30,
         tier: 4,
@@ -1914,9 +1914,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_darkness_dragon', 
+        id: 'flame_darkness_dragon',
         breed: 'darkness_dragon',
-        name: 'Flame Darkness Dragon', 
+        name: 'Flame Darkness Dragon',
         health: {base: 165, current: 0, max: 165},
         armor: 68,
         tier: 4,
@@ -1935,8 +1935,8 @@ const ALL_MONSTERS = [
         type: 'monster',
         context: 'flame',
         id: 'flame_obsidian_walker',
-        breed: 'obsidian_walker', 
-        name: 'Flame Obsidian Walker', 
+        breed: 'obsidian_walker',
+        name: 'Flame Obsidian Walker',
         health: {base: 250, current: 0, max: 250},
         tier: 4,
         pattern: 'fixed',
@@ -1955,9 +1955,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_seething_entity', 
+        id: 'flame_seething_entity',
         breed: 'seething_entity',
-        name: 'Flame Seething Entity', 
+        name: 'Flame Seething Entity',
         health: {base: 150, current: 0, max: 150},
         tier: 4,
         armor: 20,
@@ -1977,7 +1977,7 @@ const ALL_MONSTERS = [
         heal: {base: 8, current: 0, temp: [], turns: -1},
         regen: {base: 5, current: 0, temp: [], turns: -1}
     }),
-    
+
 
 
 
@@ -1985,9 +1985,9 @@ const ALL_MONSTERS = [
     // NORMAL
     new Creatures({
         type: 'monster',
-        id: 'ultraumaton', 
+        id: 'ultraumaton',
         breed: 'ultraumaton',
-        name: 'Ultraumaton', 
+        name: 'Ultraumaton',
         health: {base: 310, current: 0, max: 310},
         tier: 5,
         category: 'boss',
@@ -2035,9 +2035,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'unmaker', 
+        id: 'unmaker',
         breed: 'unmaker',
-        name: 'Unmaker', 
+        name: 'Unmaker',
         health: {base: 350, current: 0, max: 350},
         tier: 5,
         category: 'boss',
@@ -2084,9 +2084,9 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'arch_summoner', 
+        id: 'arch_summoner',
         breed: 'arch_summoner',
-        name: 'Arch Summoner', 
+        name: 'Arch Summoner',
         health: {base: 300, current: 0, max: 300},
         tier: 5,
         category: 'boss',
@@ -2150,9 +2150,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_ultraumaton', 
+        id: 'frost_ultraumaton',
         breed: 'ultraumaton',
-        name: 'Frost Ultraumaton', 
+        name: 'Frost Ultraumaton',
         health: {base: 620, current: 0, max: 620},
         tier: 5,
         category: 'boss',
@@ -2201,9 +2201,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_unmaker', 
+        id: 'frost_unmaker',
         breed: 'unmaker',
-        name: 'Frost Unmaker', 
+        name: 'Frost Unmaker',
         health: {base: 700, current: 0, max: 700},
         tier: 5,
         category: 'boss',
@@ -2251,9 +2251,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'frost_arch_summoner', 
+        id: 'frost_arch_summoner',
         breed: 'arch_summoner',
-        name: 'Frost Arch Summoner', 
+        name: 'Frost Arch Summoner',
         health: {base: 600, current: 0, max: 600},
         tier: 5,
         category: 'boss',
@@ -2316,9 +2316,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_ultraumaton', 
+        id: 'flame_ultraumaton',
         breed: 'ultraumaton',
-        name: 'Flame Ultraumaton', 
+        name: 'Flame Ultraumaton',
         health: {base: 310, current: 0, max: 310},
         tier: 5,
         category: 'boss',
@@ -2367,9 +2367,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_unmaker', 
+        id: 'flame_unmaker',
         breed: 'unmaker',
-        name: 'Flame Unmaker', 
+        name: 'Flame Unmaker',
         health: {base: 350, current: 0, max: 350},
         tier: 5,
         category: 'boss',
@@ -2417,9 +2417,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'flame_arch_summoner', 
+        id: 'flame_arch_summoner',
         breed: 'arch_summoner',
-        name: 'Flame Arch Summoner', 
+        name: 'Flame Arch Summoner',
         health: {base: 300, current: 0, max: 300},
         tier: 5,
         category: 'boss',
@@ -2477,7 +2477,7 @@ const ALL_MONSTERS = [
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
     }),
-    
+
 
 
 
@@ -2485,9 +2485,9 @@ const ALL_MONSTERS = [
     // NORMAL
     new Creatures({
         type: 'monster',
-        id: 'flame_guardian', 
+        id: 'flame_guardian',
         breed: 'flame_guardian',
-        name: 'Flame Guardian', 
+        name: 'Flame Guardian',
         health: {base: 350, current: 0, max: 350},
         tier: 6,
         category: 'fire_guardian',
@@ -2527,9 +2527,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'super_frozen_flame_guardian', 
+        id: 'super_frozen_flame_guardian',
         breed: 'flame_guardian',
-        name: 'Super Frozen Flame Guardian', 
+        name: 'Super Frozen Flame Guardian',
         health: {base: 700, current: 0, max: 700},
         tier: 6,
         category: 'fire_guardian',
@@ -2569,9 +2569,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'super_burning_flame_guardian', 
+        id: 'super_burning_flame_guardian',
         breed: 'flame_guardian',
-        name: 'Super Burning Flame Guardian', 
+        name: 'Super Burning Flame Guardian',
         health: {base: 350, current: 0, max: 350},
         tier: 6,
         category: 'fire_guardian',
@@ -2614,9 +2614,9 @@ const ALL_MONSTERS = [
     // NORMAL
     new Creatures({
         type: 'monster',
-        id: 'frost_guardian', 
+        id: 'frost_guardian',
         breed: 'frost_guardian',
-        name: 'Frost Guardian', 
+        name: 'Frost Guardian',
         health: {base: 500, current: 0, max: 500},
         tier: 6,
         category: 'ice_guardian',
@@ -2665,9 +2665,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'frost',
-        id: 'super_frozen_frost_guardian', 
+        id: 'super_frozen_frost_guardian',
         breed: 'frost_guardian',
-        name: 'Super Frozen Frost Guardian', 
+        name: 'Super Frozen Frost Guardian',
         health: {base: 1000, current: 0, max: 1000},
         tier: 6,
         category: 'ice_guardian',
@@ -2716,9 +2716,9 @@ const ALL_MONSTERS = [
     new Creatures({
         type: 'monster',
         context: 'flame',
-        id: 'super_burning_frost_guardian', 
+        id: 'super_burning_frost_guardian',
         breed: 'frost_guardian',
-        name: 'Super Burning Frost Guardian', 
+        name: 'Super Burning Frost Guardian',
         health: {base: 500, current: 0, max: 500},
         tier: 6,
         category: 'ice_guardian',
@@ -2766,9 +2766,9 @@ const ALL_MONSTERS = [
     // THE SINGULARITY
     new Creatures({
         type: 'monster',
-        id: 'singularity', 
+        id: 'singularity',
         breed: 'singularity',
-        name: 'Singularity', 
+        name: 'Singularity',
         health: {base: 15, current: 0, max: 15},
         tier: 7,
         category: 'singularity',
@@ -2805,10 +2805,10 @@ const ALL_MONSTERS = [
 
     new Creatures({
         type: 'monster',
-        id: 'cave_spider', 
+        id: 'cave_spider',
         tier: 0,
         breed: 'ghost',
-        name: 'Cave Spider', 
+        name: 'Cave Spider',
         health: {base: 15, current: 0, max: 15},
         pattern: 'random',
         moveSet: [
@@ -2821,10 +2821,10 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'stinger', 
+        id: 'stinger',
         tier: 0,
         breed: 'ghost',
-        name: 'Stinger', 
+        name: 'Stinger',
         health: {base: 15, current: 0, max: 15},
         pattern: 'fixed',
         moveSet: [
@@ -2833,10 +2833,10 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'seer', 
+        id: 'seer',
         tier: 0,
         breed: 'ghost',
-        name: 'Seer', 
+        name: 'Seer',
         health: {base: 20, current: 0, max: 20},
         pattern: 'random',
         moveSet: [
@@ -2852,10 +2852,10 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'flamehead', 
+        id: 'flamehead',
         tier: 0,
         breed: 'ghost',
-        name: 'Flamehead', 
+        name: 'Flamehead',
         health: {base: 15, current: 0, max: 15},
         pattern: 'fixed',
         moveSet: [
@@ -2866,10 +2866,10 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'daggerhawk', 
+        id: 'daggerhawk',
         tier: 0,
         breed: 'ghost',
-        name: 'Daggerhawk', 
+        name: 'Daggerhawk',
         health: {base: 18, current: 0, max: 18},
         pattern: 'fixed',
         moveSet: [
@@ -2885,10 +2885,10 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'crystalice', 
+        id: 'crystalice',
         tier: 0,
         breed: 'ghost',
-        name: 'Crystalice', 
+        name: 'Crystalice',
         health: {base: 35, current: 0, max: 35},
         pattern: 'fixed',
         moveSet: [
@@ -2905,10 +2905,10 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'blob', 
+        id: 'blob',
         tier: 0,
         breed: 'ghost',
-        name: 'Blob', 
+        name: 'Blob',
         health: {base: 25, current: 0, max: 25},
         pattern: 'random',
         moveSet: [
@@ -2922,10 +2922,10 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'cherubim', 
+        id: 'cherubim',
         tier: 0,
         breed: 'ghost',
-        name: 'Cherubim', 
+        name: 'Cherubim',
         health: {base: 15, current: 0, max: 15},
         pattern: 'fixed',
         moveSet: [
@@ -2936,10 +2936,10 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'red_skeleton', 
+        id: 'red_skeleton',
         tier: 0,
         breed: 'ghost',
-        name: 'Red Skeleton', 
+        name: 'Red Skeleton',
         health: {base: 30, current: 0, max: 30},
         pattern: 'fixed',
         moveSet: [
@@ -2948,10 +2948,10 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'blue_skeleton', 
+        id: 'blue_skeleton',
         tier: 0,
         breed: 'ghost',
-        name: 'Blue Skeleton', 
+        name: 'Blue Skeleton',
         health: {base: 18, current: 0, max: 18},
         pattern: 'fixed',
         moveSet: [
@@ -2960,10 +2960,10 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'seraphim', 
+        id: 'seraphim',
         tier: 0,
         breed: 'ghost',
-        name: 'Seraphim', 
+        name: 'Seraphim',
         health: {base: 20, current: 0, max: 20},
         pattern: 'fixed',
         moveSet: [
@@ -2981,10 +2981,10 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'striker', 
+        id: 'striker',
         tier: 0,
         breed: 'ghost',
-        name: 'Striker', 
+        name: 'Striker',
         health: {base: 15, current: 0, max: 15},
         pattern: 'fixed',
         moveSet: [
@@ -2995,10 +2995,10 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'swirler', 
+        id: 'swirler',
         tier: 0,
         breed: 'ghost',
-        name: 'Swirler', 
+        name: 'Swirler',
         health: {base: 15, current: 0, max: 15},
         pattern: 'fixed',
         moveSet: [
@@ -3009,10 +3009,10 @@ const ALL_MONSTERS = [
     }),
     new Creatures({
         type: 'monster',
-        id: 'ghost_spider', 
+        id: 'ghost_spider',
         tier: 0,
         breed: 'ghost',
-        name: 'Ghost Spider', 
+        name: 'Ghost Spider',
         health: {base: 45, current: 0, max: 45},
         pattern: 'fixed',
         moveSet: [
@@ -3029,7 +3029,7 @@ const ALL_MONSTERS = [
             ]},
         ],
     }),
-    
+
 ];
 
 export function Monster() {
@@ -3106,13 +3106,13 @@ export function Monster() {
     }
 
     function loadMonsters() {
-    
+
         let currentMonsters = [];
 
         let excluded = game.previousMonsters;
 
         let context = game.overworld;
-        
+
         game.previousMonsters = [];
 
         if(game.mapType == 'arena') {
@@ -3709,7 +3709,7 @@ export function Monster() {
 
         game.currentMonsters = currentMonsters;
         updateStatusBar();
-    
+
     }
 
     function createMonster(tier, i = 0, category = 'normal', excluded = [], context = 'forest', breed = false, id = false, form = false) {
@@ -3722,7 +3722,7 @@ export function Monster() {
         } else {
             possibleMonsters = monsters.filter(i => i.tier == tier && i.category == category && i.context == context);
             possibleMonsters = possibleMonsters.filter( x => !excluded.filter( y => y.id === x.id).length);
-            
+
             if(breed) { // we're calling a direct breed of monster
                 possibleMonsters = monsters.filter(i => i.breed == breed && i.context == context);
             }
@@ -3765,7 +3765,7 @@ export function Monster() {
             // otherwise, set all current effects to their base values
             if(((game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery' || game.effects[i].id == 'thunder') && (to[game.effects[i].id].current == 1)) ||
                 ((game.effects[i].id != 'punch' && game.effects[i].id != 'sorcery' && game.effects[i].id != 'thunder') && (to[game.effects[i].id].current == 0))) {
-                to[game.effects[i].id].current = to[game.effects[i].id].base;	
+                to[game.effects[i].id].current = to[game.effects[i].id].base;
             }
             // effect will not persist to the next combat unless re-persisted again this combat
             to[game.effects[i].id].persist = false;
@@ -3824,9 +3824,9 @@ export function Monster() {
         }
 
         for(let i = 0; i < game.effects.length; i++) {
-            
+
             if(game.effects[i].id != 'speed' && game.effects[i].id != 'mana' && game.effects[i].id != 'rainbow') {
-                
+
                 if(((game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery' || game.effects[i].id == 'thunder') && (to[game.effects[i].id].current == 1)) ||
                 ((game.effects[i].id != 'punch' && game.effects[i].id != 'sorcery' && game.effects[i].id != 'thunder') && (to[game.effects[i].id].current == 0))) {
 
@@ -3859,11 +3859,11 @@ export function Monster() {
                     let y = game.effects[i].y != undefined ? game.effects[i].y : '';
                     let desc = '<span class="amount ' + game.effects[i].id + '" data-amount="' + to[game.effects[i].id].current + '">' + effectText + '</span> <span class="highlight">' + game.effects[i].name + ':</span> ' + game.effects[i].desc;
                     dom += "<div class='single-status status-effect tooltip' style='background-position:" + x + "px " + y + "px;' data-id='" + game.effects[i].id + "' data-powertip='" + desc + "'>" + turns + amount + counter + "</div>";
-                
+
                 }
 
             }
-            
+
         }
         return dom;
     }
@@ -3996,7 +3996,7 @@ export function Player() {
             util.appendCandy(candy, slot, clickable);
         }
     }
-    
+
     return {
         player,
         dead,
