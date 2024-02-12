@@ -1,6 +1,22 @@
 import { Cards, Util } from './scripts/index.js';
 
-import { jab, leather_armor, rainbow_orb, shield, stun } from './scripts/cards/non-addable/index.js';
+import {     jab,
+    leather_armor,
+    rainbow_orb,
+    shield,
+    stun,
+    aura_stance,
+    aura,
+    courage,
+    familiar_agony,
+    fleeting_slash,
+    lingering_slash,
+    momentous_slash,
+    shimmer_stance,
+    shimmer,
+    slash,
+    sparkle_stance,
+    sparkle, } from './scripts/cards/non-addable/index.js';
 
 const util = new Util();
 
@@ -17,178 +33,18 @@ const ALL_CARDS = [
 
 
     /* Cards Added By Other Cards/Events: */
-    new Cards({
-        id: 'aura_stance', name: 'Aura Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, ephemeral: true,
-        sound: 'auraAmount',
-        slots: 2,
-        actions: [
-            {action: 'stat', what: 'mana', key: 'current', value: 1},
-            {action: 'stat', what: 'stance', value: 'aura'},
-        ],
-        draw: {
-            actions: [
-                {action: 'draw', value: 1}
-            ]
-        },
-        shardUpgrades: {
-            actions: [
-                {action: 'stat', what: 'mana', key: 'current', value: 2}
-            ],
-        },
-        bothShardUpgrades: {
-            vanish: false,
-            ephemeral: false
-        }
-    }),
-    new Cards({
-        id: 'sparkle_stance', name: 'Sparkle Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, ephemeral: true,
-        sound: 'sparkleAmount',
-        slots: 2,
-        actions: [
-            {action: 'stat', what: 'stance', value: 'sparkle'},
-        ],
-        effects: [
-            {effect: 'might', amount: 3, turns: 1},
-        ],
-        draw: {
-            actions: [
-                {action: 'draw', value: 1}
-            ]
-        },
-        shardUpgrades: {
-            effects: [
-                {effect: 'might', amount: 6, turns: 1},
-            ],
-        },
-        bothShardUpgrades: {
-            vanish: false,
-            ephemeral: false
-        }
-    }),
-    new Cards({
-        id: 'shimmer_stance', name: 'Shimmer Stance', type: 'tool', tier: 'uncommon', mana: 0, vanish: true, addable: false, ephemeral: true,
-        sound: 'shimmerAmount',
-        blk: [10],
-        armor: [1],
-        slots: 2,
-        actions: [
-            {action: 'stat', what: 'stance', value: 'shimmer'},
-        ],
-        draw: {
-            actions: [
-                {action: 'draw', value: 1}
-            ]
-        },
-        shardUpgrades: {
-            blk: [20],
-            armor: [2],
-        },
-        bothShardUpgrades: {
-            vanish: false,
-            ephemeral: false
-        }
-    }),
-    new Cards({
-        id: 'shimmer', name: 'Shimmer', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true, pack: 'combine',
-        sound: 'shimmerAmount',
-        descOverride: '<span class="desc-item-value">+<span class="amount shimmer-amount" data-amount="1">1</span> Shimmer (+<span class="amount speed-amount" data-amount="2">2</span> Speed at max level)</span>',
-        slots: 1,
-        actions: [
-            {action: 'stat', what: 'shimmer', key: 'current', value: 1},
-        ],
-        shardUpgrades: {
-            descOverride: '<span class="desc-item-value">+<span class="amount shimmer-amount" data-amount="2">2</span> Shimmer (+<span class="amount speed-amount" data-amount="2">2</span> Speed at max level)</span>',
-            actions: [
-                {action: 'stat', what: 'shimmer', key: 'current', value: 2},
-            ],
-        },
-    }),
-    new Cards({
-        id: 'sparkle', name: 'Sparkle', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true, pack: 'combine',
-        sound: 'sparkleAmount',
-        descOverride: '<span class="desc-item-value">+<span class="amount sparkle-amount" data-amount="1">1</span> Sparkle (+<span class="amount health-amount" data-amount="5">5</span> Health at max level)</span>',
-        slots: 1,
-        actions: [
-            {action: 'stat', what: 'sparkle', key: 'current', value: 1},
-        ],
-        shardUpgrades: {
-            descOverride: '<span class="desc-item-value">+<span class="amount sparkle-amount" data-amount="2">2</span> Sparkle (+<span class="amount health-amount" data-amount="5">5</span> Health at max level)</span>',
-            actions: [
-                {action: 'stat', what: 'sparkle', key: 'current', value: 2},
-            ],
-        },
-    }),
-    new Cards({
-        id: 'aura', name: 'Aura', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true, pack: 'combine',
-        sound: 'auraAmount',
-        descOverride: '<span class="desc-item-value">+<span class="amount aura-amount" data-amount="1">1</span> Aura (+<span class="amount mana-amount" data-amount="1">1</span> Mana at max level)</span>',
-        slots: 1,
-        actions: [
-            {action: 'stat', what: 'aura', key: 'current', value: 1},
-        ],
-        shardUpgrades: {
-            descOverride: '<span class="desc-item-value">+<span class="amount aura-amount" data-amount="2">2</span> Aura (+<span class="amount mana-amount" data-amount="1">1</span> Mana at max level)</span>',
-            actions: [
-                {action: 'stat', what: 'aura', key: 'current', value: 2},
-            ],
-        },
-    }),
-    new Cards({
-        id: 'courage', name: 'Courage', type: 'tool', mana: 0, tier: 'uncommon', addable: false, vanish: true, pack: 'combine',
-        slots: 1,
-        actions: [
-            {action: 'stat', what: 'courage', value: 1},
-        ],
-        shardUpgrades: {
-            actions: [
-                {action: 'stat', what: 'courage', value: 2},
-            ],
-        },
-    }),
-    new Cards({
-        id: 'familiar_agony', name: 'Familiar Agony', type: 'attack', mana: 0, tier: 'uncommon', addable: false, target: 'monster', retain: true, use: 2,
-        dmg: [10],
-        linger: 1,
-        slots: 1,
-        shardUpgrades: {
-            dmg: [14]
-        },
-    }),
-    new Cards({
-        id: 'slash', name: 'Slash', type: 'attack', mana: 0, addable: false, target: 'monster', vanish: true,
-        dmg: [2],
-        slots: 1,
-        shardUpgrades: {
-            dmg: [4],
-        },
-    }),
-    new Cards({
-        id: 'fleeting_slash', name: 'Fleeting Slash', type: 'attack', mana: 0, addable: false, target: 'monster', vanish: true, expire: 0,
-        dmg: [2],
-        slots: 1,
-        shardUpgrades: {
-            dmg: [4],
-        },
-    }),
-    new Cards({
-        id: 'lingering_slash', name: 'Lingering Slash', type: 'attack', mana: 0, addable: false, target: 'monster', linger: 1, use: 1,
-        dmg: [2],
-        slots: 1,
-        shardUpgrades: {
-            dmg: [4],
-        },
-    }),
-    new Cards({
-        id: 'momentous_slash', name: 'Momentous Slash', type: 'attack', mana: 0, addable: false, target: 'monster', vanish: true,
-        dmg: [2],
-        effects: [
-            {effect: 'momentum', amount: 1}
-        ],
-        slots: 1,
-        shardUpgrades: {
-            dmg: [4],
-        },
-    }),
+    new Cards(aura_stance),
+    new Cards(sparkle_stance),
+    new Cards(shimmer_stance),
+    new Cards(shimmer),
+    new Cards(sparkle),
+    new Cards(aura),
+    new Cards(courage),
+    new Cards(familiar_agony),
+    new Cards(slash),
+    new Cards(fleeting_slash),
+    new Cards(lingering_slash),
+    new Cards(momentous_slash),
     new Cards({
         id: 'safety', name: 'Safety', type: 'tool', mana: 1, addable: false, retain: true,
         blk: [22],
