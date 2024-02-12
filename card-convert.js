@@ -1,18 +1,17 @@
 const fs = require('fs');
 const path = require('path');
+const prettier = require('prettier');
 
 const cardsFilePath = './cards.js';
 const baseDir = './scripts/cards/';
 let currentDir = 'non-addable';
 let importExports = {};
 
-function processLine(line, fileLines) {
+async function processLine(line, fileLines, index) {
     // Check for directory switch comment
     const dirMatch = line.match(/\/\*\s*(\w+)\s*\*\//);
     if (dirMatch) {
         currentDir = dirMatch[1].toLowerCase();
-
-        // Create directory if it doesn't exist
         ensureDirectoryExists(path.join(baseDir, currentDir));
         return;
     }
@@ -20,10 +19,11 @@ function processLine(line, fileLines) {
     // Check for a card object
     const cardMatch = line.match(/new Cards\(\{/);
     if (cardMatch) {
-        const { cardContent, cardName } = extractCardContent(fileLines);
+        const { cardContent, cardName } = extractCardContent(fileLines, index);
 
-        // Write to individual file
-        fs.writeFileSync(path.join(baseDir, currentDir, `${cardName}.js`), `export default {${cardContent}};\n`);
+        // Prettify and write to individual file
+        const prettifiedContents = await prettier.format(`export default {${cardContent}};\n`, { parser: 'babel' });
+        fs.writeFileSync(path.join(baseDir, currentDir, `${cardName}.js`), prettifiedContents);
 
         // Update import/exports
         if (!importExports[currentDir]) {
@@ -33,28 +33,37 @@ function processLine(line, fileLines) {
     }
 }
 
-function extractCardContent(fileLines) {
+function extractCardContent(fileLines, startIndex) {
     let isCapturing = false;
     let cardContent = '';
     let cardName = '';
-    let braceCount = 1;
+    let braceCount = 0;
 
-    for (const line of fileLines) {
-        if (line.includes(`id:`)) {
+    for (let i = startIndex; i < fileLines.length; i++) {
+        const line = fileLines[i];
+
+        if (line.includes('new Cards({')) {
             isCapturing = true;
+            // Start capturing from the next line to exclude 'new Cards({'
+            continue;
+        }
+
+        if (!cardName && line.includes(`id:`)) {
             cardName = line.match(/id: '(\w+)'/)[1];
         }
 
         if (isCapturing) {
-            if (line.includes('new Cards({')) {
+            if (line.includes('}),')) {
+                // End capturing when we reach '}),'
                 break;
             }
 
-            // Count the braces to find the end of the card object
             braceCount += (line.match(/{/g) || []).length;
             braceCount -= (line.match(/}/g) || []).length;
 
-            if (braceCount === 0 && line.includes('}),')) {
+            if (braceCount === 0) {
+                // Capture the line that closes the card object
+                cardContent += line;
                 break;
             }
 
@@ -63,31 +72,41 @@ function extractCardContent(fileLines) {
         }
     }
 
-    return { cardName, cardContent: cardContent.trim()};
+    return { cardName, cardContent: cardContent.trim() };
 }
+
 
 function ensureDirectoryExists(directory) {
     if (!fs.existsSync(directory)) {
         fs.mkdirSync(directory, { recursive: true });
-
-        // Create an empty index file for the new directory
         fs.writeFileSync(path.join(directory, 'index.js'), '');
     }
 }
 
-function updateIndexFiles() {
-    Object.keys(importExports).forEach(dir => {
+async function updateIndexFiles() {
+    for (const dir of Object.keys(importExports)) {
         const imports = importExports[dir].map(name => `import ${name} from './${name}.js';`).join('\n');
         const exports = `export {\n    ${importExports[dir].join(',\n    ')}\n};`;
 
-        fs.writeFileSync(path.join(baseDir, dir, 'index.js'), `${imports}\n\n${exports}\n`);
-    });
+        try {
+            const prettifiedIndex = await prettier.format(`${imports}\n\n${exports}\n`, { parser: 'babel' });
+            fs.writeFileSync(path.join(baseDir, dir, 'index.js'), prettifiedIndex);
+        } catch (error) {
+            console.error('Error formatting index file:', error);
+        }
+    }
 }
 
-function main() {
+
+async function main() {
     const fileContent = fs.readFileSync(cardsFilePath, 'utf8');
     const fileLines = fileContent.split('\n');
-    fileLines.forEach((line, i) => processLine(line, fileLines.slice(i)));
+
+    for (let index = 0; index < fileLines.length; index++) {
+        await processLine(fileLines[index], fileLines, index);
+    }
+
+    updateIndexFiles();
 }
 
-main();
+main().catch(e => console.error(e));
