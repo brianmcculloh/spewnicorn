@@ -15,13 +15,13 @@ class Shard {
 
 const ALL_SHARDS = [
     new Shard({
-        id:'frost', 
-        name: 'Frost', 
+        id:'frost',
+        name: 'Frost',
         type: 'ice'
     }),
     new Shard({
-        id:'flame', 
-        name: 'Flame', 
+        id:'flame',
+        name: 'Flame',
         type: 'fire'
     })
 ];
@@ -68,13 +68,13 @@ class Candy {
 }
 
 const ALL_CANDY= [
-    
+
     /* Candies work just like cards as far as effects/abilities/actions/dmg/blk/armor/magic */
 
     // basic
     new Candy({
-        id:'nut_clusters', 
-        name: 'Nut Clusters', 
+        id:'nut_clusters',
+        name: 'Nut Clusters',
         dmg: [40],
         weight: 7,
         target: 'monster',
@@ -82,16 +82,16 @@ const ALL_CANDY= [
         y: -3456
     }),
     new Candy({
-        id:'circus_peanuts', 
-        name: 'Circus Peanuts', 
+        id:'circus_peanuts',
+        name: 'Circus Peanuts',
         weight: 7,
         blk: [50],
         x: -480,
         y: -3456
     }),
     new Candy({
-        id:'rock_candy', 
-        name: 'Rock Candy', 
+        id:'rock_candy',
+        name: 'Rock Candy',
         courage: 3,
         weight: 7,
         armor: [25],
@@ -100,8 +100,8 @@ const ALL_CANDY= [
         y: -2464
     }),
     new Candy({
-        id:'cherry_taffy', 
-        name: 'Cherry Taffy', 
+        id:'cherry_taffy',
+        name: 'Cherry Taffy',
         weight: 7,
         blk: [25],
         armor: [15],
@@ -109,8 +109,8 @@ const ALL_CANDY= [
         y: -4224
     }),
     new Candy({
-        id:'caramel_creme', 
-        name: 'Caramel Creme', 
+        id:'caramel_creme',
+        name: 'Caramel Creme',
         weight: 4,
         dmg: [50],
         target: 'monster',
@@ -118,24 +118,24 @@ const ALL_CANDY= [
         y: -3870
     }),
     new Candy({
-        id:'marshmallows', 
-        name: 'Marshmallows', 
+        id:'marshmallows',
+        name: 'Marshmallows',
         weight: 4,
         blk: [60],
         x: -256,
         y: -3872
     }),
     new Candy({
-        id:'kettle_corn', 
-        name: 'Kettle Corn', 
+        id:'kettle_corn',
+        name: 'Kettle Corn',
         weight: 4,
         armor: [35],
         x: -64,
         y: -1568
     }),
     new Candy({
-        id:'caramel_corn', 
-        name: 'Caramel Corn', 
+        id:'caramel_corn',
+        name: 'Caramel Corn',
         weight: 2,
         courage: 3,
         dmg: [50],
@@ -144,8 +144,8 @@ const ALL_CANDY= [
         y: -1696
     }),
     new Candy({
-        id:'swedish_fish', 
-        name: 'Swedish Fish', 
+        id:'swedish_fish',
+        name: 'Swedish Fish',
         weight: 2,
         courage: 3,
         blk: [70],
@@ -153,7 +153,7 @@ const ALL_CANDY= [
         y: -1666
     }),
     new Candy({
-        id:'trail_mix', 
+        id:'trail_mix',
         name: 'Trail Mix',
         weight: 2,
         courage: 3,
@@ -164,37 +164,37 @@ const ALL_CANDY= [
 
     // magic
     new Candy({
-        id:'blueberry_hard_candy', 
-        name: 'Blueberry Hard Candy', 
+        id:'blueberry_hard_candy',
+        name: 'Blueberry Hard Candy',
         weight: 6,
         magic: [{type: 'rainbow', amount: 40}],
         x: -64,
         y: -14816
     }),
     new Candy({
-        id:'grape_hard_candy', 
-        name: 'Grape Hard Candy', 
+        id:'grape_hard_candy',
+        name: 'Grape Hard Candy',
         magic: [{type: 'dark', amount: 40}],
         x: -128,
         y: -14816
     }),
     new Candy({
-        id:'cherry_hard_candy', 
-        name: 'Cherry Hard Candy', 
+        id:'cherry_hard_candy',
+        name: 'Cherry Hard Candy',
         magic: [{type: 'chaos', amount: 40}],
         x: -32,
         y: -14816
     }),
     new Candy({
-        id:'lime_hard_candy', 
-        name: 'Lime Hard Candy', 
+        id:'lime_hard_candy',
+        name: 'Lime Hard Candy',
         magic: [{type: 'elemental', amount: 40}],
         x: -96,
         y: -14816
     }),
     new Candy({
-        id:'orange_hard_candy', 
-        name: 'Orange Hard Candy', 
+        id:'orange_hard_candy',
+        name: 'Orange Hard Candy',
         courage: 3,
         weight: 4,
         magic: [{type: 'aligned', amount: 40}],
@@ -202,16 +202,16 @@ const ALL_CANDY= [
         y: -14816
     }),
     new Candy({
-        id:'mystery_hard_candy', 
-        name: 'Mystery Hard Candy', 
+        id:'mystery_hard_candy',
+        name: 'Mystery Hard Candy',
         weight: 6,
         magic: [{type: 'random', amount: 60}],
         x: -160,
         y: -14816
     }),
     new Candy({
-        id:'blueberry_lollipop', 
-        name: 'Blueberry Lollipop', 
+        id:'blueberry_lollipop',
+        name: 'Blueberry Lollipop',
         courage: 3,
         weight: 2,
         magic: [{type: 'aligned', amount: 40}],
@@ -222,8 +222,8 @@ const ALL_CANDY= [
         y: -1152
     }),
     new Candy({
-        id:'cherry_lollipop', 
-        name: 'Cherry Lollipop', 
+        id:'cherry_lollipop',
+        name: 'Cherry Lollipop',
         courage: 3,
         weight: 2,
         magic: [{type: 'aligned', amount: 40}],
@@ -234,8 +234,8 @@ const ALL_CANDY= [
         y: -1088
     }),
     new Candy({
-        id:'grape_lollipop', 
-        name: 'Grape Lollipop', 
+        id:'grape_lollipop',
+        name: 'Grape Lollipop',
         courage: 3,
         weight: 2,
         magic: [{type: 'aligned', amount: 40}],
@@ -246,8 +246,8 @@ const ALL_CANDY= [
         y: -1216
     }),
     new Candy({
-        id:'lime_lollipop', 
-        name: 'Lime Lollipop', 
+        id:'lime_lollipop',
+        name: 'Lime Lollipop',
         courage: 3,
         weight: 2,
         magic: [{type: 'aligned', amount: 40}],
@@ -260,8 +260,8 @@ const ALL_CANDY= [
 
     // actions
     new Candy({
-        id:'cherry_cordial', 
-        name: 'Cherry Cordial', 
+        id:'cherry_cordial',
+        name: 'Cherry Cordial',
         weight: 4,
         actions: [
             {action: 'draw', value: 4},
@@ -270,8 +270,8 @@ const ALL_CANDY= [
         y: -3808
     }),
     new Candy({
-        id:'cinnamon_candy_stick', 
-        name: 'Cinnamon Candy Stick', 
+        id:'cinnamon_candy_stick',
+        name: 'Cinnamon Candy Stick',
         courage: 1,
         weight: 3,
         actions: [
@@ -281,8 +281,8 @@ const ALL_CANDY= [
         y: -832
     }),
     new Candy({
-        id:'spearmint_candy_stick', 
-        name: 'Spearmint Candy Stick', 
+        id:'spearmint_candy_stick',
+        name: 'Spearmint Candy Stick',
         courage: 1,
         weight: 3,
         actions: [
@@ -292,8 +292,8 @@ const ALL_CANDY= [
         y: -928
     }),
     new Candy({
-        id:'peppermint_candy_stick', 
-        name: 'Peppermint Candy Stick', 
+        id:'peppermint_candy_stick',
+        name: 'Peppermint Candy Stick',
         courage: 1,
         weight: 4,
         actions: [
@@ -303,8 +303,8 @@ const ALL_CANDY= [
         y: -992
     }),
     new Candy({
-        id:'jawbreaker', 
-        name: 'Jawbreaker', 
+        id:'jawbreaker',
+        name: 'Jawbreaker',
         courage: 3,
         weight: 2,
         actions: [
@@ -314,8 +314,8 @@ const ALL_CANDY= [
         y: -3360
     }),
     new Candy({
-        id:'candy_corn', 
-        name: 'Candy Corn', 
+        id:'candy_corn',
+        name: 'Candy Corn',
         weight: 4,
         actions: [
             {action: 'addCard', value: 3, what: 'energize', to: 'handCards'}
@@ -324,8 +324,8 @@ const ALL_CANDY= [
         y: -3584
     }),
     new Candy({
-        id:'peanut_butter_cup', 
-        name: 'Peanut Butter Cup', 
+        id:'peanut_butter_cup',
+        name: 'Peanut Butter Cup',
         weight: 4,
         actions: [
             {action: 'addCard', value: 3, what: 'boost', to: 'handCards'}
@@ -334,8 +334,8 @@ const ALL_CANDY= [
         y: -3744
     }),
     new Candy({
-        id:'cotton_candy', 
-        name: 'Cotton Candy', 
+        id:'cotton_candy',
+        name: 'Cotton Candy',
         weight: 7,
         combatOnly: false,
         actions: [
@@ -345,8 +345,8 @@ const ALL_CANDY= [
         y: -2080
     }),
     new Candy({
-        id:'salted_caramel', 
-        name: 'Salted Caramel', 
+        id:'salted_caramel',
+        name: 'Salted Caramel',
         courage: 3,
         weight: 4,
         actions: [
@@ -356,8 +356,8 @@ const ALL_CANDY= [
         y: -3808
     }),
     new Candy({
-        id:'lemon_gumdrop', 
-        name: 'Lemon Gumdrop', 
+        id:'lemon_gumdrop',
+        name: 'Lemon Gumdrop',
         courage: 1,
         weight: 8,
         combatOnly: false,
@@ -368,8 +368,8 @@ const ALL_CANDY= [
         y: -962
     }),
     new Candy({
-        id:'grape_gumdrop', 
-        name: 'Grape Gumdrop', 
+        id:'grape_gumdrop',
+        name: 'Grape Gumdrop',
         courage: 3,
         weight: 3,
         combatOnly: false,
@@ -380,8 +380,8 @@ const ALL_CANDY= [
         y: -1026
     }),
     new Candy({
-        id:'blueberry_gumdrop', 
-        name: 'Blueberry Gumdrop', 
+        id:'blueberry_gumdrop',
+        name: 'Blueberry Gumdrop',
         courage: 3,
         weight: 3,
         combatOnly: false,
@@ -392,8 +392,8 @@ const ALL_CANDY= [
         y: -898
     }),
     new Candy({
-        id:'cherry_gumdrop', 
-        name: 'Cherry Gumdrop', 
+        id:'cherry_gumdrop',
+        name: 'Cherry Gumdrop',
         courage: 3,
         weight: 3,
         combatOnly: false,
@@ -408,8 +408,8 @@ const ALL_CANDY= [
 
     // effects
     new Candy({
-        id:'chocolate_fudge', 
-        name: 'Chocolate Fudge', 
+        id:'chocolate_fudge',
+        name: 'Chocolate Fudge',
         blk: [10],
         effects: [
             {effect: 'solid', amount: 6, turns: -1}
@@ -418,8 +418,8 @@ const ALL_CANDY= [
         y: -3776
     }),
     new Candy({
-        id:'white_fudge', 
-        name: 'White Fudge', 
+        id:'white_fudge',
+        name: 'White Fudge',
         weight: 3,
         courage: 3,
         blk: [20],
@@ -430,8 +430,8 @@ const ALL_CANDY= [
         y: -3776
     }),
     new Candy({
-        id:'chocolate_bar', 
-        name: 'Chocolate Bar', 
+        id:'chocolate_bar',
+        name: 'Chocolate Bar',
         target: 'monster',
         dmg: [10],
         effects: [
@@ -441,8 +441,8 @@ const ALL_CANDY= [
         y: -834
     }),
     new Candy({
-        id:'white_chocolate_bar', 
-        name: 'White Chocolate Bar', 
+        id:'white_chocolate_bar',
+        name: 'White Chocolate Bar',
         weight: 3,
         courage: 3,
         target: 'monster',
@@ -454,11 +454,11 @@ const ALL_CANDY= [
         y: -962
     }),
     new Candy({
-        id:'white_chocolate_clusters', 
-        name: 'White Chocolate Clusters', 
+        id:'white_chocolate_clusters',
+        name: 'White Chocolate Clusters',
         weight: 1,
         courage: 3,
-        dmg: [30], 
+        dmg: [30],
         effects: [
             {effect: 'might', amount: 12, turns: -1}
         ],
@@ -466,8 +466,8 @@ const ALL_CANDY= [
         y: -962
     }),
     new Candy({
-        id:'chocolate_cookie', 
-        name: 'Chocolate Cookie', 
+        id:'chocolate_cookie',
+        name: 'Chocolate Cookie',
         target: 'monster',
         dmg: [10],
         effects: [
@@ -477,8 +477,8 @@ const ALL_CANDY= [
         y: -3872
     }),
     new Candy({
-        id:'white_chocolate_cookie', 
-        name: 'White Chocolate Cookie', 
+        id:'white_chocolate_cookie',
+        name: 'White Chocolate Cookie',
         weight: 3,
         courage: 3,
         target: 'monster',
@@ -490,9 +490,9 @@ const ALL_CANDY= [
         y: -3904
     }),
     new Candy({
-        id:'chocolate_clusters', 
+        id:'chocolate_clusters',
         name: 'Chocolate Clusters',
-        dmg: [30], 
+        dmg: [30],
         weight: 1,
         courage: 3,
         effects: [
@@ -502,8 +502,8 @@ const ALL_CANDY= [
         y: -832
     }),
     new Candy({
-        id:'dark_truffle', 
-        name: 'Dark Truffle', 
+        id:'dark_truffle',
+        name: 'Dark Truffle',
         magic: [{type: 'aligned', amount: 10}],
         effects: [
             {effect: 'conjure', amount: 4, turns: -1}
@@ -512,8 +512,8 @@ const ALL_CANDY= [
         y: -4386
     }),
     new Candy({
-        id:'white_truffle', 
-        name: 'White Truffle', 
+        id:'white_truffle',
+        name: 'White Truffle',
         weight: 3,
         courage: 3,
         magic: [{type: 'aligned', amount: 20}],
@@ -524,8 +524,8 @@ const ALL_CANDY= [
         y: -4514
     }),
     new Candy({
-        id:'chocolate_pudding', 
-        name: 'Chocolate Pudding', 
+        id:'chocolate_pudding',
+        name: 'Chocolate Pudding',
         magic: [{type: 'aligned', amount: 10}],
         effects: [
             {effect: 'sorcery', amount: .3, turns: -1}
@@ -534,8 +534,8 @@ const ALL_CANDY= [
         y: -3650
     }),
     new Candy({
-        id:'vanilla_pudding', 
-        name: 'Vanilla Pudding', 
+        id:'vanilla_pudding',
+        name: 'Vanilla Pudding',
         weight: 3,
         courage: 3,
         magic: [{type: 'aligned', amount: 20}],
@@ -546,8 +546,8 @@ const ALL_CANDY= [
         y: -3650
     }),
     new Candy({
-        id:'gumball', 
-        name: 'Gumball', 
+        id:'gumball',
+        name: 'Gumball',
         effects: [
             {effect: 'momentum', amount: 3, turns: -1}
         ],
@@ -555,8 +555,8 @@ const ALL_CANDY= [
         y: -3360
     }),
     new Candy({
-        id:'sour_bears', 
-        name: 'Sour Bears', 
+        id:'sour_bears',
+        name: 'Sour Bears',
         weight: 4,
         effects: [
             {effect: 'vex', amount: 3, turns: -1}
@@ -565,8 +565,8 @@ const ALL_CANDY= [
         y: -3458
     }),
     new Candy({
-        id:'black_licorice', 
-        name: 'Black Licorice', 
+        id:'black_licorice',
+        name: 'Black Licorice',
         courage: 4,
         weight: 1,
         effects: [
@@ -576,8 +576,8 @@ const ALL_CANDY= [
         y: -1760
     }),
     new Candy({
-        id:'blueberry_taffy', 
-        name: 'Blueberry Taffy', 
+        id:'blueberry_taffy',
+        name: 'Blueberry Taffy',
         weight: 7,
         effects: [
             {effect: 'regen', amount: 6, turns: -1}
@@ -586,8 +586,8 @@ const ALL_CANDY= [
         y: -4224
     }),
     new Candy({
-        id:'watermelon_gobstopper', 
-        name: 'Watermelon Gobstopper', 
+        id:'watermelon_gobstopper',
+        name: 'Watermelon Gobstopper',
         magic: [{type: 'aligned', amount: 5}],
         effects: [
             {effect: 'lightning', amount: 5, turns: -1}
@@ -596,8 +596,8 @@ const ALL_CANDY= [
         y: -2496
     }),
     new Candy({
-        id:'blueberry_gobstopper', 
-        name: 'Blueberry Gobstopper', 
+        id:'blueberry_gobstopper',
+        name: 'Blueberry Gobstopper',
         weight: 3,
         courage: 3,
         magic: [{type: 'aligned', amount: 10}],
@@ -608,8 +608,8 @@ const ALL_CANDY= [
         y: -2432
     }),
     new Candy({
-        id:'grape_gobstopper', 
-        name: 'Grape Gobstopper', 
+        id:'grape_gobstopper',
+        name: 'Grape Gobstopper',
         magic: [{type: 'aligned', amount: 5}],
         effects: [
             {effect: 'thunder', amount: .3, turns: -1}
@@ -618,8 +618,8 @@ const ALL_CANDY= [
         y: -2464
     }),
     new Candy({
-        id:'orange_gobstopper', 
-        name: 'Orange Gobstopper', 
+        id:'orange_gobstopper',
+        name: 'Orange Gobstopper',
         weight: 3,
         courage: 3,
         magic: [{type: 'aligned', amount: 10}],
@@ -630,8 +630,8 @@ const ALL_CANDY= [
         y: -2528
     }),
     new Candy({
-        id:'pixie_sugar', 
-        name: 'Pixie Sugar', 
+        id:'pixie_sugar',
+        name: 'Pixie Sugar',
         effects: [
             {effect: 'mystery', amount: 4, turns: -1}
         ],
@@ -639,8 +639,8 @@ const ALL_CANDY= [
         y: -800
     }),
     new Candy({
-        id:'candy_lemon_slice', 
-        name: 'Candy Lemon Slice', 
+        id:'candy_lemon_slice',
+        name: 'Candy Lemon Slice',
         effects: [
             {effect: 'lemonade', amount: 2, turns: -1}
         ],
@@ -648,8 +648,8 @@ const ALL_CANDY= [
         y: -4160
     }),
     new Candy({
-        id:'sour_apple_candy', 
-        name: 'Sour Apple Candy', 
+        id:'sour_apple_candy',
+        name: 'Sour Apple Candy',
         effects: [
             {effect: 'spikes', amount: 24, turns: -1}
         ],
@@ -657,8 +657,8 @@ const ALL_CANDY= [
         y: -3584
     }),
     new Candy({
-        id:'spicy_cinnammon_candy', 
-        name: 'Spicy Cinnammon Candy', 
+        id:'spicy_cinnammon_candy',
+        name: 'Spicy Cinnammon Candy',
         effects: [
             {effect: 'retaliate', amount: 20, turns: -1}
         ],
@@ -666,8 +666,8 @@ const ALL_CANDY= [
         y: -3520
     }),
     new Candy({
-        id:'strawberry_pastry', 
-        name: 'Strawberry Pastry', 
+        id:'strawberry_pastry',
+        name: 'Strawberry Pastry',
         magic: [{type: 'aligned', amount: 5}],
         effects: [
             {effect: 'summon', amount: 8, turns: -1}
@@ -676,8 +676,8 @@ const ALL_CANDY= [
         y: -4224
     }),
     new Candy({
-        id:'peanut_butter_pastry', 
-        name: 'Peanut Butter Pastry', 
+        id:'peanut_butter_pastry',
+        name: 'Peanut Butter Pastry',
         weight: 3,
         courage: 3,
         magic: [{type: 'aligned', amount: 10}],
@@ -687,14 +687,14 @@ const ALL_CANDY= [
         x: -160,
         y: -4224
     }),
-    
+
 
 
 
     // abilities
     new Candy({
-        id:'pixie_dust', 
-        name: 'Pixie Dust', 
+        id:'pixie_dust',
+        name: 'Pixie Dust',
         courage: 3,
         weight: 2,
         abilities: [
@@ -704,8 +704,8 @@ const ALL_CANDY= [
         y: -800
     }),
     new Candy({
-        id:'cinnamon_drop', 
-        name: 'Cinnamon Drop', 
+        id:'cinnamon_drop',
+        name: 'Cinnamon Drop',
         courage: 3,
         weight: 2,
         abilities: [
@@ -715,9 +715,9 @@ const ALL_CANDY= [
         y: -736
     }),
     new Candy({
-        id:'chocolate_chips', 
+        id:'chocolate_chips',
         name: 'Chocolate Chips',
-        courage: 3, 
+        courage: 3,
         weight: 2,
         abilities: [
             {ability: 'explode', turns: 1, enabled: true}
@@ -726,8 +726,8 @@ const ALL_CANDY= [
         y: -3456
     }),
     new Candy({
-        id:'white_chocolate_chips', 
-        name: 'White Chocolate Chips', 
+        id:'white_chocolate_chips',
+        name: 'White Chocolate Chips',
         courage: 3,
         weight: 1,
         abilities: [
@@ -736,7 +736,7 @@ const ALL_CANDY= [
         x: -288,
         y: -3584
     }),
-    
+
 ];
 
 class Treasure {
@@ -779,10 +779,10 @@ class Treasure {
 
 const ALL_TREASURES = [
 
-    /* TREASURE EXAMPLE 
+    /* TREASURE EXAMPLE
     new Treasure({
-        id:'treasure_id', 
-        name: 'Treasure Name', 
+        id:'treasure_id',
+        name: 'Treasure Name',
 
         // relative to other treasures, can be any values but we can use 1 - 9
         weight: 5,
@@ -825,7 +825,7 @@ const ALL_TREASURES = [
 
     // STARTING
     new Treasure({
-        id:'gift_of_healing', 
+        id:'gift_of_healing',
         name: 'Gift Of Healing',
         permanent: true,
         starting: true,
@@ -837,7 +837,7 @@ const ALL_TREASURES = [
         y: -3104
     }),
     new Treasure({
-        id:'gift_of_strength', 
+        id:'gift_of_strength',
         name: 'Gift Of Strength',
         permanent: true,
         starting: true,
@@ -849,7 +849,7 @@ const ALL_TREASURES = [
         y: -2912
     }),
     new Treasure({
-        id:'gift_of_covering', 
+        id:'gift_of_covering',
         name: 'Gift Of Covering',
         permanent: true,
         starting: true,
@@ -861,7 +861,7 @@ const ALL_TREASURES = [
         y: -3200
     }),
     new Treasure({
-        id:'gift_of_protection', 
+        id:'gift_of_protection',
         name: 'Gift Of Protection',
         permanent: true,
         starting: true,
@@ -873,7 +873,7 @@ const ALL_TREASURES = [
         y: -3040
     }),
     new Treasure({
-        id:'gift_of_conjuring', 
+        id:'gift_of_conjuring',
         name: 'Gift Of Conjuring',
         permanent: true,
         starting: true,
@@ -885,7 +885,7 @@ const ALL_TREASURES = [
         y: -2976
     }),
     new Treasure({
-        id:'gift_of_summoning', 
+        id:'gift_of_summoning',
         name: 'Gift Of Summoning',
         permanent: true,
         starting: true,
@@ -897,7 +897,7 @@ const ALL_TREASURES = [
         y: -3008
     }),
     new Treasure({
-        id:'gift_of_power', 
+        id:'gift_of_power',
         name: 'Gift Of Power',
         permanent: true,
         starting: true,
@@ -909,7 +909,7 @@ const ALL_TREASURES = [
         y: -3072
     }),
     new Treasure({
-        id:'gift_of_longevity', 
+        id:'gift_of_longevity',
         name: 'Gift Of Longevity',
         permanent: true,
         starting: true,
@@ -922,7 +922,7 @@ const ALL_TREASURES = [
         y: -3168
     }),
     new Treasure({
-        id:'gift_of_the_craftsman', 
+        id:'gift_of_the_craftsman',
         name: 'Gift Of The Craftsman',
         permanent: true,
         starting: true,
@@ -934,7 +934,7 @@ const ALL_TREASURES = [
         y: -2880
     }),
     new Treasure({
-        id:'gift_of_magic', 
+        id:'gift_of_magic',
         name: 'Gift Of Magic',
         permanent: true,
         starting: true,
@@ -945,11 +945,11 @@ const ALL_TREASURES = [
         x: -416,
         y: -2944
     }),
-    
+
 
     // TIER 1
     new Treasure({
-        id:'burning_ruby', 
+        id:'burning_ruby',
         name: 'Burning Ruby',
         permanent: true,
         effects: [
@@ -959,8 +959,8 @@ const ALL_TREASURES = [
         y: -674
     }),
     new Treasure({
-        id:'gleaming_emerald', 
-        name: 'Gleaming Emerald', 
+        id:'gleaming_emerald',
+        name: 'Gleaming Emerald',
         permanent: true,
         effects: [
             {effect: 'fierce', base: 30}
@@ -969,9 +969,9 @@ const ALL_TREASURES = [
         y: -674
     }),
     new Treasure({
-        id:'twinkling_sapphire', 
+        id:'twinkling_sapphire',
         name: 'Twinkling Sapphire',
-        permanent: true, 
+        permanent: true,
         effects: [
             {effect: 'rowdy', base: 10}
         ],
@@ -979,8 +979,8 @@ const ALL_TREASURES = [
         y: -674
     }),
     new Treasure({
-        id:'glowing_totem', 
-        name: 'Glowing Totem', 
+        id:'glowing_totem',
+        name: 'Glowing Totem',
         courage: 10,
         permanent: true,
         effects: [
@@ -990,8 +990,8 @@ const ALL_TREASURES = [
         y: -768
     }),
     new Treasure({
-        id:'talisman', 
-        name: 'Talisman', 
+        id:'talisman',
+        name: 'Talisman',
         permanent: true,
         effects: [
             {effect: 'mage', base: 1}
@@ -1000,9 +1000,9 @@ const ALL_TREASURES = [
         y: -15072
     }),
     new Treasure({
-        id:'magic_dust', 
+        id:'magic_dust',
         name: 'Magic Dust',
-        permanent: true, 
+        permanent: true,
         weight:2,
         effects: [
             {effect: 'enchanter', base: 1}
@@ -1011,8 +1011,8 @@ const ALL_TREASURES = [
         y: -3680
     }),
     new Treasure({
-        id:'black_cauldron', 
-        name: 'Black Cauldron', 
+        id:'black_cauldron',
+        name: 'Black Cauldron',
         weight: 4,
         courage: 11,
         permanent: true,
@@ -1023,8 +1023,8 @@ const ALL_TREASURES = [
         y: -6080
     }),
     new Treasure({
-        id:'opaque_charm', 
-        name: 'Opaque Charm', 
+        id:'opaque_charm',
+        name: 'Opaque Charm',
         courage: 8,
         permanent: true,
         effects: [
@@ -1034,8 +1034,8 @@ const ALL_TREASURES = [
         y: -544
     }),
     new Treasure({
-        id:'pridwen', 
-        name: "Pridwen", 
+        id:'pridwen',
+        name: "Pridwen",
         weight: 6,
         permanent: true,
         effects: [
@@ -1045,8 +1045,8 @@ const ALL_TREASURES = [
         y: -15008
     }),
     new Treasure({
-        id:'snakestone', 
-        name: "Snakestone", 
+        id:'snakestone',
+        name: "Snakestone",
         courage: 8,
         permanent: true,
         effects: [
@@ -1056,8 +1056,8 @@ const ALL_TREASURES = [
         y: -14912
     }),
     new Treasure({
-        id:'charmstone', 
-        name: "Charmstone", 
+        id:'charmstone',
+        name: "Charmstone",
         courage: 8,
         weight: 6,
         permanent: true,
@@ -1068,8 +1068,8 @@ const ALL_TREASURES = [
         y: -736
     }),
     new Treasure({
-        id:'thunderstone', 
-        name: "Thunderstone", 
+        id:'thunderstone',
+        name: "Thunderstone",
         permanent: true,
         effects: [
             {effect: 'stout', base: 10}
@@ -1078,8 +1078,8 @@ const ALL_TREASURES = [
         y: -15008
     }),
     new Treasure({
-        id:'dew_of_yarva', 
-        name: "Dew of Yarva", 
+        id:'dew_of_yarva',
+        name: "Dew of Yarva",
         permanent: true,
         effects: [
             {effect: 'heal', base: 10}
@@ -1088,8 +1088,8 @@ const ALL_TREASURES = [
         y: -2752
     }),
     new Treasure({
-        id:'dew_of_lunya', 
-        name: "Dew of Lunya", 
+        id:'dew_of_lunya',
+        name: "Dew of Lunya",
         permanent: true,
         effects: [
             {effect: 'regen', base: 5}
@@ -1098,8 +1098,8 @@ const ALL_TREASURES = [
         y: -2688
     }),
     new Treasure({
-        id:'razor_barb', 
-        name: 'Razor Barb', 
+        id:'razor_barb',
+        name: 'Razor Barb',
         courage: 8,
         weight: 7,
         permanent: true,
@@ -1110,8 +1110,8 @@ const ALL_TREASURES = [
         y: -5344
     }),
     new Treasure({
-        id:'lemon', 
-        name: 'Lemon', 
+        id:'lemon',
+        name: 'Lemon',
         courage: 8,
         weight: 2,
         permanent: true,
@@ -1122,8 +1122,8 @@ const ALL_TREASURES = [
         y: -4096
     }),
     new Treasure({
-        id:'spiked_punch', 
-        name: 'Spiked Punch', 
+        id:'spiked_punch',
+        name: 'Spiked Punch',
         courage: 8,
         weight: 2,
         //permanent: true,
@@ -1138,8 +1138,8 @@ const ALL_TREASURES = [
         y: -4256
     }),
     new Treasure({
-        id:'pricket', 
-        name: 'Pricket', 
+        id:'pricket',
+        name: 'Pricket',
         courage: 8,
         weight: 7,
         permanent: true,
@@ -1150,8 +1150,8 @@ const ALL_TREASURES = [
         y: -3392
     }),
     new Treasure({
-        id:'sifter', 
-        name: 'Sifter', 
+        id:'sifter',
+        name: 'Sifter',
         courage: 6,
         weight: 8,
         permanent: false,
@@ -1162,8 +1162,8 @@ const ALL_TREASURES = [
         y: -1632
     }),
     new Treasure({
-        id:'library_card', 
-        name: 'Library Card', 
+        id:'library_card',
+        name: 'Library Card',
         courage: 6,
         weight: 2,
         permanent: false,
@@ -1174,8 +1174,8 @@ const ALL_TREASURES = [
         y: -384
     }),
     new Treasure({
-        id:'amulet', 
-        name: "Amulet", 
+        id:'amulet',
+        name: "Amulet",
         weight: 1,
         descOverride: 'Each turn, when you play at least as many cards as your maximum speed, gain protection for 1 turn.',
         abilities: [
@@ -1186,8 +1186,8 @@ const ALL_TREASURES = [
         y: -10498
     }),
     new Treasure({
-        id:'sparkling_fragment', 
-        name: "Sparkling Fragment", 
+        id:'sparkling_fragment',
+        name: "Sparkling Fragment",
         courage: 6,
         weight: 6,
         permanent: true,
@@ -1198,8 +1198,8 @@ const ALL_TREASURES = [
         y: -896
     }),
     new Treasure({
-        id:'shimmering_fragment', 
-        name: "Shimmering Fragment", 
+        id:'shimmering_fragment',
+        name: "Shimmering Fragment",
         courage: 6,
         weight: 6,
         permanent: true,
@@ -1210,8 +1210,8 @@ const ALL_TREASURES = [
         y: -1024
     }),
     new Treasure({
-        id:'radiating_fragment', 
-        name: "Radiating Fragment", 
+        id:'radiating_fragment',
+        name: "Radiating Fragment",
         courage: 6,
         weight: 6,
         permanent: true,
@@ -1222,8 +1222,8 @@ const ALL_TREASURES = [
         y: -992
     }),
     new Treasure({
-        id:'pewter_mug', 
-        name: "Pewter Mug", 
+        id:'pewter_mug',
+        name: "Pewter Mug",
         courage: 5,
         permanent: true,
         actions: [
@@ -1233,8 +1233,8 @@ const ALL_TREASURES = [
         y: -192
     }),
     new Treasure({
-        id:'torch', 
-        name: "Torch", 
+        id:'torch',
+        name: "Torch",
         tier: 1,
         permanent: true,
         actions: [
@@ -1243,10 +1243,10 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'turns', at: 3, per: 'combat', once: false, activated: false},
         x: -0,
         y: -320
-    }), 
+    }),
     new Treasure({
-        id:'candlestick', 
-        name: "Candlestick", 
+        id:'candlestick',
+        name: "Candlestick",
         permanent: true,
         actions: [
             {action: 'stat', what: 'speed', key: 'current', value: 2},
@@ -1256,8 +1256,8 @@ const ALL_TREASURES = [
         y: -320
     }),
     new Treasure({
-        id:'frozen_knife', 
-        name: "Frozen Knife", 
+        id:'frozen_knife',
+        name: "Frozen Knife",
         tier: 1,
         permanent: true,
         actions: [
@@ -1266,10 +1266,10 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'turns', at: 4, per: 'combat', once: false, activated: false},
         x: -448,
         y: -9856
-    }),  
+    }),
     new Treasure({
-        id:'vibrating_shiv', 
-        name: "Vibrating Shiv", 
+        id:'vibrating_shiv',
+        name: "Vibrating Shiv",
         tier: 1,
         permanent: true,
         actions: [
@@ -1278,10 +1278,10 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -352,
         y: -9856
-    }), 
+    }),
     new Treasure({
-        id:'glowing_sludge', 
-        name: 'Glowing Sludge', 
+        id:'glowing_sludge',
+        name: 'Glowing Sludge',
         courage: 10,
         weight: 3,
         permanent: true,
@@ -1292,8 +1292,8 @@ const ALL_TREASURES = [
         y: -5472
     }),
     new Treasure({
-        id:'pile_o_coins', 
-        name: "Pile o Coins", 
+        id:'pile_o_coins',
+        name: "Pile o Coins",
         courage: 10,
         permanent: true,
         abilities: [
@@ -1304,15 +1304,15 @@ const ALL_TREASURES = [
     }),
 
 
-   
-    
+
+
 
 
     // TIER 2
 
     new Treasure({
-        id:'ancient_runestone', 
-        name: 'Ancient Runestone', 
+        id:'ancient_runestone',
+        name: 'Ancient Runestone',
         courage: 12,
         tier: 2,
         weight: 3,
@@ -1324,8 +1324,8 @@ const ALL_TREASURES = [
         y: -14816
     }),
     new Treasure({
-        id:'awl_of_the_master', 
-        name: "Awl of the Master", 
+        id:'awl_of_the_master',
+        name: "Awl of the Master",
         courage: 12,
         tier: 2,
         weight: 3,
@@ -1337,8 +1337,8 @@ const ALL_TREASURES = [
         y: -544
     }),
     new Treasure({
-        id:'excalibur', 
-        name: "Excalibur", 
+        id:'excalibur',
+        name: "Excalibur",
         courage: 10,
         tier: 2,
         weight: 4,
@@ -1350,8 +1350,8 @@ const ALL_TREASURES = [
         y: -9792
     }),
     new Treasure({
-        id:'alatyr', 
-        name: "Alatyr", 
+        id:'alatyr',
+        name: "Alatyr",
         courage: 10,
         tier: 2,
         weight: 4,
@@ -1363,8 +1363,8 @@ const ALL_TREASURES = [
         y: -14976
     }),
     new Treasure({
-        id:'snowball', 
-        name: "Snowball", 
+        id:'snowball',
+        name: "Snowball",
         courage: 13,
         tier: 2,
         weight: 3,
@@ -1376,8 +1376,8 @@ const ALL_TREASURES = [
         y: -5600
     }),
     new Treasure({
-        id:'hidden_relic', 
-        name: "Hidden Relic", 
+        id:'hidden_relic',
+        name: "Hidden Relic",
         courage: 11,
         tier: 2,
         weight: 4,
@@ -1388,8 +1388,8 @@ const ALL_TREASURES = [
         y: -766
     }),
     new Treasure({
-        id:'black_vial', 
-        name: "Black Vial", 
+        id:'black_vial',
+        name: "Black Vial",
         courage: 15,
         tier: 2,
         weight: 3,
@@ -1401,8 +1401,8 @@ const ALL_TREASURES = [
         y: -4064
     }),
     new Treasure({
-        id:'enigma_scroll', 
-        name: 'Enigma Scroll', 
+        id:'enigma_scroll',
+        name: 'Enigma Scroll',
         courage: 12,
         tier: 2,
         weight: 2,
@@ -1414,8 +1414,8 @@ const ALL_TREASURES = [
         y: -352
     }),
     new Treasure({
-        id:'prisma', 
-        name: 'Prisma', 
+        id:'prisma',
+        name: 'Prisma',
         courage: 10,
         tier: 2,
         weight: 4,
@@ -1427,8 +1427,8 @@ const ALL_TREASURES = [
         y: -10048
     }),
     new Treasure({
-        id:'dark_rift', 
-        name: "Dark Rift", 
+        id:'dark_rift',
+        name: "Dark Rift",
         courage: 13,
         tier: 2,
         weight: 3,
@@ -1440,8 +1440,8 @@ const ALL_TREASURES = [
         y: -5728
     }),
     new Treasure({
-        id:'time_potion', 
-        name: "Time Potion", 
+        id:'time_potion',
+        name: "Time Potion",
         courage: 11,
         tier: 2,
         weight: 4,
@@ -1453,8 +1453,8 @@ const ALL_TREASURES = [
         y: -2336
     }),
     new Treasure({
-        id:'bracelet', 
-        name: "Bracelet", 
+        id:'bracelet',
+        name: "Bracelet",
         courage: 13,
         tier: 2,
         weight: 3,
@@ -1466,8 +1466,8 @@ const ALL_TREASURES = [
         y: -15488
     }),
     new Treasure({
-        id:'locket', 
-        name: "Locket", 
+        id:'locket',
+        name: "Locket",
         courage: 10,
         tier: 2,
         actions: [
@@ -1478,8 +1478,8 @@ const ALL_TREASURES = [
         y: -13056
     }),
     new Treasure({
-        id:'pendant', 
-        name: "Pendant", 
+        id:'pendant',
+        name: "Pendant",
         weight: 4,
         effects: [
             {effect: 'might', amount: 4, turns: -1, persist: false}
@@ -1489,8 +1489,8 @@ const ALL_TREASURES = [
         y: -14944
     }),
     new Treasure({
-        id:'medallion', 
-        name: "Medallion", 
+        id:'medallion',
+        name: "Medallion",
         tier: 2,
         weight: 4,
         effects: [
@@ -1501,8 +1501,8 @@ const ALL_TREASURES = [
         y: -14880
     }),
     new Treasure({
-        id:'ornamental_staff', 
-        name: "Ornamental Staff", 
+        id:'ornamental_staff',
+        name: "Ornamental Staff",
         tier: 2,
         weight: 4,
         effects: [
@@ -1513,8 +1513,8 @@ const ALL_TREASURES = [
         y: -9822
     }),
     new Treasure({
-        id:'greased_cogwheel', 
-        name: "Greased Cogwheel", 
+        id:'greased_cogwheel',
+        name: "Greased Cogwheel",
         courage: 12,
         tier: 2,
         weight: 3,
@@ -1525,10 +1525,10 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'toolCardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -32,
         y: -0
-    }), 
+    }),
     new Treasure({
-        id:'hammerblade', 
-        name: "Hammerblade", 
+        id:'hammerblade',
+        name: "Hammerblade",
         courage: 12,
         tier: 2,
         weight: 2,
@@ -1538,10 +1538,10 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'attackCardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -128,
         y: -10016
-    }), 
+    }),
     new Treasure({
-        id:'storm_staff', 
-        name: "Storm Staff", 
+        id:'storm_staff',
+        name: "Storm Staff",
         courage: 12,
         tier: 2,
         weight: 2,
@@ -1551,10 +1551,10 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'magicCardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -288,
         y: -9792
-    }), 
+    }),
     new Treasure({
-        id:'mark_of_narfallow', 
-        name: "Mark of Narfallow", 
+        id:'mark_of_narfallow',
+        name: "Mark of Narfallow",
         courage: 12,
         tier: 2,
         weight: 2,
@@ -1564,10 +1564,10 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'toolCardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -384,
         y: -14880
-    }), 
+    }),
     new Treasure({
-        id:'unending_hourglass', 
-        name: "Unending Hourglass", 
+        id:'unending_hourglass',
+        name: "Unending Hourglass",
         courage: 13,
         tier: 2,
         weight: 3,
@@ -1579,8 +1579,8 @@ const ALL_TREASURES = [
         y: -544
     }),
     new Treasure({
-        id:'bronze_helm', 
-        name: "Bronze Helm", 
+        id:'bronze_helm',
+        name: "Bronze Helm",
         courage: 13,
         tier: 2,
         weight: 4,
@@ -1592,8 +1592,8 @@ const ALL_TREASURES = [
         y: -13794
     }),
     new Treasure({
-        id:'strongbox', 
-        name: "Strongbox", 
+        id:'strongbox',
+        name: "Strongbox",
         courage: 13,
         tier: 2,
         weight: 4,
@@ -1605,8 +1605,8 @@ const ALL_TREASURES = [
         y: -418
     }),
     new Treasure({
-        id:'charged_wand', 
-        name: "Charged Wand", 
+        id:'charged_wand',
+        name: "Charged Wand",
         courage: 10,
         tier: 2,
         weight: 4,
@@ -1618,8 +1618,8 @@ const ALL_TREASURES = [
         y: -10112
     }),
     new Treasure({
-        id:'charged_gauntlet', 
-        name: "Charged Gauntlet", 
+        id:'charged_gauntlet',
+        name: "Charged Gauntlet",
         weight: 4,
         effects: [
             {effect: 'lightning', amount: 4, turns: -1, persist: false}
@@ -1629,8 +1629,8 @@ const ALL_TREASURES = [
         y: -15520
     }),
     new Treasure({
-        id:'thunder_cloak', 
-        name: "Thunder Cloak", 
+        id:'thunder_cloak',
+        name: "Thunder Cloak",
         courage: 12,
         tier: 2,
         weight: 2,
@@ -1640,10 +1640,10 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'magicCardsPlayed', at: 10, per: 'combat', once: false, activated: false},
         x: -480,
         y: -12352
-    }), 
+    }),
     new Treasure({
-        id:'myriad_staff', 
-        name: "Myriad Staff", 
+        id:'myriad_staff',
+        name: "Myriad Staff",
         courage: 15,
         tier: 2,
         weight: 1,
@@ -1653,10 +1653,10 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: true, activated: false},
         x: -32,
         y: -10208
-    }), 
+    }),
     new Treasure({
-        id:'red_envelope', 
-        name: 'Red Envelope', 
+        id:'red_envelope',
+        name: 'Red Envelope',
         courage: 13,
         weight: 1,
         permanent: true,
@@ -1667,8 +1667,8 @@ const ALL_TREASURES = [
         y: -320
     }),
     new Treasure({
-        id:'magical_lantern', 
-        name: 'Magical Lantern', 
+        id:'magical_lantern',
+        name: 'Magical Lantern',
         courage: 15,
         weight: 2,
         permanent: true,
@@ -1683,8 +1683,8 @@ const ALL_TREASURES = [
     // TIER 3
 
     new Treasure({
-        id:'hawthorn_staff', 
-        name: "Hawthorn Staff", 
+        id:'hawthorn_staff',
+        name: "Hawthorn Staff",
         courage: 15,
         tier: 3,
         weight: 2,
@@ -1698,8 +1698,8 @@ const ALL_TREASURES = [
         y: -10112
     }),
     new Treasure({
-        id:'hemlock_staff', 
-        name: "Hemlock Staff", 
+        id:'hemlock_staff',
+        name: "Hemlock Staff",
         courage: 15,
         tier: 3,
         weight: 2,
@@ -1713,8 +1713,8 @@ const ALL_TREASURES = [
         y: -9792
     }),
     new Treasure({
-        id:'hickory_staff', 
-        name: "Hickory Staff", 
+        id:'hickory_staff',
+        name: "Hickory Staff",
         courage: 15,
         tier: 3,
         weight: 2,
@@ -1728,8 +1728,8 @@ const ALL_TREASURES = [
         y: -9568
     }),
     new Treasure({
-        id:'falcon_feather', 
-        name: "Falcon Feather", 
+        id:'falcon_feather',
+        name: "Falcon Feather",
         courage: 14,
         tier: 3,
         weight: .8,
@@ -1738,14 +1738,14 @@ const ALL_TREASURES = [
             {action: 'stat', what: 'speed', key: 'base', value: 1},
             {action: 'stat', what: 'health', key: 'current', value: -5},
             {action: 'stat', what: 'health', key: 'max', value: -5}
-            
+
         ],
         x: -288,
         y: -2208
     }),
     new Treasure({
-        id:'hummingbird_feather', 
-        name: "Hummingbird Feather", 
+        id:'hummingbird_feather',
+        name: "Hummingbird Feather",
         courage: 14,
         tier: 3,
         weight: .8,
@@ -1758,8 +1758,8 @@ const ALL_TREASURES = [
         y: -2144
     }),
     new Treasure({
-        id:'swift_feather', 
-        name: "Swift Feather", 
+        id:'swift_feather',
+        name: "Swift Feather",
         courage: 14,
         tier: 3,
         weight: .8,
@@ -1774,8 +1774,8 @@ const ALL_TREASURES = [
         y: -1888
     }),
     new Treasure({
-        id:'labrys_of_zeus', 
-        name: "Labrys of Zeus", 
+        id:'labrys_of_zeus',
+        name: "Labrys of Zeus",
         courage: 15,
         tier: 3,
         weight: 3,
@@ -1787,8 +1787,8 @@ const ALL_TREASURES = [
         y: -10240
     }),
     new Treasure({
-        id:'philosopher_stone', 
-        name: "Philosopher Stone", 
+        id:'philosopher_stone',
+        name: "Philosopher Stone",
         courage: 15,
         tier: 3,
         weight: 3,
@@ -1800,8 +1800,8 @@ const ALL_TREASURES = [
         y: -672
     }),
     new Treasure({
-        id:'crystalized_wand', 
-        name: 'Crystalized Wand', 
+        id:'crystalized_wand',
+        name: 'Crystalized Wand',
         courage: 15,
         tier: 3,
         weight: 3,
@@ -1813,8 +1813,8 @@ const ALL_TREASURES = [
         y: -10272
     }),
     new Treasure({
-        id:'signet_ring', 
-        name: 'Signet Ring', 
+        id:'signet_ring',
+        name: 'Signet Ring',
         courage: 13,
         tier: 3,
         weight: 3,
@@ -1826,8 +1826,8 @@ const ALL_TREASURES = [
         y: -13088
     }),
     new Treasure({
-        id:'death_vial', 
-        name: "Death Vial", 
+        id:'death_vial',
+        name: "Death Vial",
         courage: 15,
         tier: 3,
         weight: 2,
@@ -1839,8 +1839,8 @@ const ALL_TREASURES = [
         y: -4032
     }),
     new Treasure({
-        id:'gold_leaf', 
-        name: "Gold Leaf", 
+        id:'gold_leaf',
+        name: "Gold Leaf",
         courage: 13,
         tier: 3,
         weight: 3,
@@ -1852,8 +1852,8 @@ const ALL_TREASURES = [
         y: -2752
     }),
     new Treasure({
-        id:'thunder_blade', 
-        name: "Thunder Blade", 
+        id:'thunder_blade',
+        name: "Thunder Blade",
         courage: 15,
         tier: 3,
         weight: 3,
@@ -1865,8 +1865,8 @@ const ALL_TREASURES = [
         y: -9824
     }),
     new Treasure({
-        id:'organic_shield', 
-        name: "Organic Shield", 
+        id:'organic_shield',
+        name: "Organic Shield",
         tier: 3,
         weight: 2,
         courage: 15,
@@ -1877,10 +1877,10 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -384,
         y: -14976
-    }), 
+    }),
     new Treasure({
-        id:'organic_armor', 
-        name: "Organic Armor", 
+        id:'organic_armor',
+        name: "Organic Armor",
         tier: 3,
         weight: 2,
         courage: 15,
@@ -1893,8 +1893,8 @@ const ALL_TREASURES = [
         y: -13440
     }),
     new Treasure({
-        id:'organic_staff', 
-        name: "Organic Staff", 
+        id:'organic_staff',
+        name: "Organic Staff",
         tier: 3,
         weight: 2,
         courage: 15,
@@ -1905,13 +1905,13 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -288,
         y: -10016
-    }),  
+    }),
 
 
     // TIER 4
     new Treasure({
-        id:'luminous_crown', 
-        name: "Luminous Crown", 
+        id:'luminous_crown',
+        name: "Luminous Crown",
         courage: 20,
         tier: 4,
         weight: .5,
@@ -1923,8 +1923,8 @@ const ALL_TREASURES = [
         y: -14080
     }),
     new Treasure({
-        id:'resplendent_helm', 
-        name: "Resplendent Helm", 
+        id:'resplendent_helm',
+        name: "Resplendent Helm",
         courage: 20,
         tier: 4,
         weight: 4,
@@ -1936,8 +1936,8 @@ const ALL_TREASURES = [
         y: -14112
     }),
     new Treasure({
-        id:'majestic_headpiece', 
-        name: "Majestic Headpiece", 
+        id:'majestic_headpiece',
+        name: "Majestic Headpiece",
         courage: 20,
         tier: 4,
         weight: 4,
@@ -1949,8 +1949,8 @@ const ALL_TREASURES = [
         y: -14048
     }),
     new Treasure({
-        id:'brilliant_tiara', 
-        name: "Brilliant Tiara", 
+        id:'brilliant_tiara',
+        name: "Brilliant Tiara",
         courage: 20,
         tier: 4,
         weight: 5,
@@ -1962,8 +1962,8 @@ const ALL_TREASURES = [
         y: -14144
     }),
     new Treasure({
-        id:'lavish_coronet', 
-        name: "Lavish Coronet", 
+        id:'lavish_coronet',
+        name: "Lavish Coronet",
         courage: 20,
         tier: 4,
         weight: 5,
@@ -1975,8 +1975,8 @@ const ALL_TREASURES = [
         y: -14080
     }),
     new Treasure({
-        id:'winged_cloak', 
-        name: "Winged Cloak", 
+        id:'winged_cloak',
+        name: "Winged Cloak",
         courage: 20,
         tier: 4,
         weight: .5,
@@ -1988,8 +1988,8 @@ const ALL_TREASURES = [
         y: -13120
     }),
     new Treasure({
-        id:'winged_mantle', 
-        name: "Winged Mantle", 
+        id:'winged_mantle',
+        name: "Winged Mantle",
         courage: 20,
         tier: 4,
         weight: 6,
@@ -2001,8 +2001,8 @@ const ALL_TREASURES = [
         y: -13120
     }),
     new Treasure({
-        id:'winged_veil', 
-        name: "Winged Veil", 
+        id:'winged_veil',
+        name: "Winged Veil",
         courage: 20,
         tier: 4,
         weight: 7,
@@ -2014,8 +2014,8 @@ const ALL_TREASURES = [
         y: -13088
     }),
     new Treasure({
-        id:'winged_shroud', 
-        name: "Winged Shroud", 
+        id:'winged_shroud',
+        name: "Winged Shroud",
         courage: 20,
         tier: 4,
         weight: 4,
@@ -2027,8 +2027,8 @@ const ALL_TREASURES = [
         y: -13088
     }),
     new Treasure({
-        id:'eternal_sword', 
-        name: "Eternal Sword", 
+        id:'eternal_sword',
+        name: "Eternal Sword",
         tier: 4,
         weight: 2,
         courage: 20,
@@ -2039,10 +2039,10 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -0,
         y: -9856
-    }), 
+    }),
     new Treasure({
-        id:'eternal_shield', 
-        name: "Eternal Shield", 
+        id:'eternal_shield',
+        name: "Eternal Shield",
         tier: 4,
         weight: 2,
         courage: 20,
@@ -2055,8 +2055,8 @@ const ALL_TREASURES = [
         y: -14976
     }),
     new Treasure({
-        id:'eternal_staff', 
-        name: "Eternal Staff", 
+        id:'eternal_staff',
+        name: "Eternal Staff",
         tier: 4,
         weight: 2,
         courage: 20,
@@ -2067,13 +2067,13 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -480,
         y: -10016
-    }),  
+    }),
 
 
     /* unaddable */
     new Treasure({
-        id:'artisanal_boots', 
-        name: "Artisanal Boots", 
+        id:'artisanal_boots',
+        name: "Artisanal Boots",
         courage: 15,
         tier: 3,
         weight: 4,
@@ -2086,8 +2086,8 @@ const ALL_TREASURES = [
         y: -12704
     }),
     new Treasure({
-        id:'artisanal_chestplate', 
-        name: "Artisanal Chestplate", 
+        id:'artisanal_chestplate',
+        name: "Artisanal Chestplate",
         courage: 15,
         tier: 3,
         weight: 4,
@@ -2100,8 +2100,8 @@ const ALL_TREASURES = [
         y: -12672
     }),
     new Treasure({
-        id:'artisanal_sword', 
-        name: "Artisanal Sword", 
+        id:'artisanal_sword',
+        name: "Artisanal Sword",
         courage: 15,
         tier: 3,
         weight: 4,
@@ -2114,8 +2114,8 @@ const ALL_TREASURES = [
         y: -8800
     }),
     new Treasure({
-        id:'artisanal_hat', 
-        name: "Artisanal Hat", 
+        id:'artisanal_hat',
+        name: "Artisanal Hat",
         courage: 15,
         tier: 3,
         weight: 4,
@@ -2128,7 +2128,7 @@ const ALL_TREASURES = [
         y: -12640
     }),
 
-    
+
 
 ];
 
