@@ -1,22 +1,28 @@
 import { Cards, Util } from './scripts/index.js';
 
-import {     jab,
+import {
+    jab,
     leather_armor,
     rainbow_orb,
     shield,
     stun,
     aura_stance,
     aura,
+    auxiliary,
+    boost,
     courage,
+    energize,
     familiar_agony,
     fleeting_slash,
     lingering_slash,
     momentous_slash,
+    safety,
     shimmer_stance,
     shimmer,
     slash,
     sparkle_stance,
-    sparkle, } from './scripts/cards/non-addable/index.js';
+    sparkle
+ } from './scripts/cards/non-addable/index.js';
 
 const util = new Util();
 
@@ -45,49 +51,10 @@ const ALL_CARDS = [
     new Cards(fleeting_slash),
     new Cards(lingering_slash),
     new Cards(momentous_slash),
-    new Cards({
-        id: 'safety', name: 'Safety', type: 'tool', mana: 1, addable: false, retain: true,
-        blk: [22],
-        slots: 1,
-        shardUpgrades: {
-            blk: [30],
-        },
-    }),
-    new Cards({
-        id: 'energize', name: 'Energize', type: 'tool', mana: 0, tier: 'uncommon', vanish: true, addable: false,
-        actions: [
-            {action: 'stat', what: 'mana', key: 'current', value: 1}
-        ],
-        slots: 1,
-        shardUpgrades: {
-            retain: true
-        },
-    }),
-    new Cards({
-        id: 'boost', name: 'Boost', type: 'tool', mana: 0, tier: 'uncommon', retain: true, vanish: true, addable: false,
-        actions: [
-            {action: 'stat', what: 'speed', key: 'current', value: 2}
-        ],
-        slots: 1,
-        shardUpgrades: {
-            actions: [
-                {action: 'stat', what: 'speed', key: 'current', value: 3}
-            ],
-        },
-    }),
-    new Cards({
-        id: 'auxiliary', name: 'Auxiliary', type: 'tool', mana: 0, retain: true, addable: false, vanish: true,
-        actions: [
-            {action: 'playOldest'}
-        ],
-        slots: 1,
-        shardUpgrades: {
-            actions: [
-                {action: 'playOldest'},
-                {action: 'addCard', value: 1, what: 'auxiliary', to: 'handCards'},
-            ],
-        },
-    }),
+    new Cards(safety),
+    new Cards(energize),
+    new Cards(boost),
+    new Cards(auxiliary),
     new Cards({
         id: 'impresa', name: 'Impresa', type: 'magic', mana: 1, tier: 'uncommon', addable: false, retain: true, vanish: true,
         magic: [{type: 'aligned', amount: 5}],

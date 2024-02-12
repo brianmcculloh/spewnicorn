@@ -7,11 +7,15 @@ import stun from './stun.js';
 
 import aura_stance from './aura_stance.js';
 import aura from './aura.js';
+import auxiliary from './auxiliary.js';
+import boost from './boost.js';
 import courage from './courage.js';
+import energize from './energize.js';
 import familiar_agony from './familiar_agony.js';
 import fleeting_slash from './fleeting_slash.js';
 import lingering_slash from './lingering_slash.js';
 import momentous_slash from './momentous_slash.js';
+import safety from './safety.js';
 import shimmer_stance from './shimmer_stance.js';
 import shimmer from './shimmer.js';
 import slash from './slash.js';
@@ -28,14 +32,18 @@ export {
     stun,
     aura_stance,
     aura,
+    auxiliary,
+    boost,
     courage,
+    energize,
     familiar_agony,
     fleeting_slash,
     lingering_slash,
     momentous_slash,
+    safety,
     shimmer_stance,
     shimmer,
     slash,
     sparkle_stance,
-    sparkle,
+    sparkle
 };
