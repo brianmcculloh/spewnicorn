@@ -98,6 +98,21 @@ async function updateIndexFiles() {
 }
 
 
+function replaceCardDefinitions() {
+    let fileContent = fs.readFileSync(cardsFilePath, 'utf8');
+
+    // Regex to match the 'new Cards({...})' pattern and capture the 'id'
+    const regex = /new Cards\(\{\s*id:\s*'([^']+)',[^]+?\}\),/g;
+
+    // Replace each match with 'new Cards('id')'
+    fileContent = fileContent.replace(regex, (match, cardId) => `new Cards('${cardId}'),`);
+
+    // Write the modified content back to the file
+    fs.writeFileSync(cardsFilePath, fileContent);
+}
+
+
+
 async function main() {
     const fileContent = fs.readFileSync(cardsFilePath, 'utf8');
     const fileLines = fileContent.split('\n');
@@ -107,6 +122,7 @@ async function main() {
     }
 
     updateIndexFiles();
+    replaceCardDefinitions();
 }
 
 main().catch(e => console.error(e));
