@@ -239,7 +239,7 @@
  * 
 *********************************************/
 
-import Util from './utils.js';
+import { Util } from "./scripts/utils/index.js";
 const util = new Util();
 
 import Game from './game.js';

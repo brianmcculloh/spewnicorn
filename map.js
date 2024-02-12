@@ -1,4 +1,4 @@
-import Util from './utils.js';
+import { Util } from "./scripts/utils/index.js";
 const util = new Util();
 
 export default function Map() {
