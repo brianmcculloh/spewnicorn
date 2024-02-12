@@ -105,7 +105,7 @@ function replaceCardDefinitions() {
     const regex = /new Cards\(\{\s*id:\s*'([^']+)',[^]+?\}\),/g;
 
     // Replace each match with 'new Cards('id')'
-    fileContent = fileContent.replace(regex, (match, cardId) => `new Cards('${cardId}'),`);
+    fileContent = fileContent.replace(regex, (match, cardId) => `new Cards(${cardId}),`);
 
     // Write the modified content back to the file
     fs.writeFileSync(cardsFilePath, fileContent);
