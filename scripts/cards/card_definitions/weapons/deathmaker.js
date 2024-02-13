@@ -8,4 +8,12 @@ export default {
   addable: false,
   tier: "legendary",
   weapon: true,
+  dmg: [10, 10, 10, 10, 10],
+  effects: [{ effect: "might", amount: 8, turns: 2 }],
+  additionalDesc: "Level V Weapon",
+  slots: 1,
+  shardUpgrades: {
+    mana: 1,
+    dmg: [10, 10, 10, 10, 10, 10],
+  },
 };

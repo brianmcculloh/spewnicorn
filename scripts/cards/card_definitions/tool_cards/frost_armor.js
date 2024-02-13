@@ -10,4 +10,21 @@ export default {
   tier: "uncommon",
   weight: 4,
   courage: 4,
+  sound: "tool16",
+  armor: [10],
+  slots: 2,
+  shardUpgrades: {
+    armor: [16],
+  },
+  iceShardUpgrades: {
+    armor: [16],
+    armor_2: [26],
+    use: 3,
+    use_2: 4,
+    linger: 2,
+    linger_2: 3,
+  },
+  bothShardUpgrades: {
+    armor: [20],
+  },
 };

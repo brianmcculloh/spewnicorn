@@ -6,4 +6,9 @@ export default {
   mana: 0,
   addable: false,
   natural: true,
+  dmg: [21],
+  slots: 1,
+  shardUpgrades: {
+    dmg: [30],
+  },
 };

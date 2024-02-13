@@ -8,4 +8,12 @@ export default {
   ephemeral: true,
   courage: 4,
   pack: "rainbow",
+  abilities: [{ ability: "hypnotize", turns: 1, enabled: true }],
+  slots: 2,
+  shardUpgrades: {
+    abilities: [{ ability: "hypnotize", turns: 2, enabled: true }],
+  },
+  bothShardUpgrades: {
+    mana: 0,
+  },
 };

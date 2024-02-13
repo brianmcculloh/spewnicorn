@@ -9,4 +9,10 @@ export default {
   weapon: true,
   vanish: true,
   addable: false,
+  dmg: [70],
+  additionalDesc: "Level III Weapon",
+  slots: 1,
+  shardUpgrades: {
+    vanish: false,
+  },
 };

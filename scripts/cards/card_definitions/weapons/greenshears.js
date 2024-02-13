@@ -8,4 +8,13 @@ export default {
   addable: false,
   tier: "uncommon",
   weapon: true,
+  dmg: [16],
+  draw: {
+    dmg: [2],
+  },
+  additionalDesc: "Level IV Weapon",
+  slots: 1,
+  shardUpgrades: {
+    dmg: [24],
+  },
 };

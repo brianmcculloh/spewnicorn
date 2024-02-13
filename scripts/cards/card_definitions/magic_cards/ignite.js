@@ -6,4 +6,35 @@ export default {
   tier: "legendary",
   courage: 8,
   vanish: true,
+  sound: "magic22",
+  actions: [
+    { action: "addCard", value: 2, what: "sparks", to: "drawCards" },
+    {
+      action: "addCard",
+      value: 1,
+      what: "sparks",
+      to: "drawCards",
+      with: ["frost"],
+    },
+    { action: "addCard", value: 2, what: "sparks", to: "handCards" },
+    {
+      action: "addCard",
+      value: 1,
+      what: "sparks",
+      to: "handCards",
+      with: ["frost"],
+    },
+    { action: "addCard", value: 2, what: "sparks", to: "discardCards" },
+    {
+      action: "addCard",
+      value: 1,
+      what: "sparks",
+      to: "discardCards",
+      with: ["frost"],
+    },
+  ],
+  slots: 1,
+  shardUpgrades: {
+    vanish: false,
+  },
 };

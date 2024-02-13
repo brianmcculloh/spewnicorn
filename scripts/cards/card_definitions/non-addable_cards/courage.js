@@ -7,4 +7,9 @@ export default {
   addable: false,
   vanish: true,
   pack: "combine",
+  slots: 1,
+  actions: [{ action: "stat", what: "courage", value: 1 }],
+  shardUpgrades: {
+    actions: [{ action: "stat", what: "courage", value: 2 }],
+  },
 };

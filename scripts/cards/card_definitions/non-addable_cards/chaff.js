@@ -6,4 +6,5 @@ export default {
   natural: true,
   ephemeral: true,
   playable: false,
+  additionalDesc: "It rises to the top.",
 };

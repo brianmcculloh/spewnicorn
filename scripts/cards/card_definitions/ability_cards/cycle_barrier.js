@@ -6,4 +6,9 @@ export default {
   tier: "uncommon",
   courage: 4,
   pack: "rainbow",
+  effects: [{ effect: "preserve", amount: 10, turns: -1 }],
+  slots: 1,
+  shardUpgrades: {
+    effects: [{ effect: "preserve", amount: 18, turns: -1 }],
+  },
 };

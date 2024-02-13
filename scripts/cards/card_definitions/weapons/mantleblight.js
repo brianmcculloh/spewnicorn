@@ -8,4 +8,14 @@ export default {
   addable: false,
   tier: "rare",
   weapon: true,
+  dmg: [10, 10, 10],
+  draw: {
+    dmg: [1, 1, 1],
+  },
+  additionalDesc: "Level VI Weapon",
+  slots: 1,
+  shardUpgrades: {
+    mana: 1,
+    dmg: [15, 15, 15],
+  },
 };

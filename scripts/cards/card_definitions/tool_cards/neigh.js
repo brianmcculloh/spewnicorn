@@ -7,4 +7,10 @@ export default {
   use: 1,
   weight: 4,
   target: "monster",
+  effects: [{ effect: "punch", amount: -0.15, turns: -1, hex: true }],
+  slots: 1,
+  shardUpgrades: {
+    linger: 2,
+    use: 2,
+  },
 };

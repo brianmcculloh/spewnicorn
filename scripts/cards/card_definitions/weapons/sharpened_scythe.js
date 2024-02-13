@@ -8,4 +8,11 @@ export default {
   weight: 10,
   weapon: true,
   addable: false,
+  dmg: [6],
+  additionalDesc: "Level II Weapon",
+  slots: 1,
+  shardUpgrades: {
+    dmg: [10],
+  },
+  trade: ["blackblade", "spiked_scythe"],
 };

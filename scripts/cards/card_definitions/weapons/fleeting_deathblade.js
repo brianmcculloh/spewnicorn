@@ -9,4 +9,14 @@ export default {
   addable: false,
   tier: "legendary",
   weapon: true,
+  dmg: [10, 10, 10, 10],
+  draw: {
+    dmg: [1, 1, 1, 1],
+  },
+  additionalDesc: "Level VII Weapon",
+  slots: 1,
+  shardUpgrades: {
+    expire: 6,
+    dmg: [15, 15, 15, 15],
+  },
 };

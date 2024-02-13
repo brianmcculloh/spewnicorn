@@ -8,4 +8,12 @@ export default {
   use: 2,
   retain: true,
   linger: 1,
+  magic: [{ type: "aligned", amount: 25 }],
+  slots: 1,
+  sound: "magic20",
+  shardUpgrades: {
+    use: 4,
+    retain: true,
+    linger: 2,
+  },
 };

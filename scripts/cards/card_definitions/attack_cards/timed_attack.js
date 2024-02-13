@@ -6,4 +6,9 @@ export default {
   mana: 1,
   retain: true,
   pack: "combine",
+  dmg: [5, 5],
+  slots: 1,
+  shardUpgrades: {
+    dmg: [9, 9],
+  },
 };

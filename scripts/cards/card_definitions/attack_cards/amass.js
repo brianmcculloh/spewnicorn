@@ -9,4 +9,77 @@ export default {
   weight: 3,
   courage: 3,
   pack: "rainbow",
+  dmg: [20],
+  actions: [
+    {
+      action: "addCard",
+      value: 1,
+      type: "attack",
+      tier: "uncommon",
+      to: "drawCards",
+    },
+    {
+      action: "addCard",
+      value: 1,
+      type: "attack",
+      tier: "rare",
+      to: "drawCards",
+    },
+  ],
+  slots: 2,
+  shardUpgrades: {
+    actions: [
+      {
+        action: "addCard",
+        value: 1,
+        type: "attack",
+        tier: "common",
+        to: "drawCards",
+        modifiers: { mana: 0 },
+      },
+      {
+        action: "addCard",
+        value: 1,
+        type: "attack",
+        tier: "uncommon",
+        to: "drawCards",
+        modifiers: { mana: 0 },
+      },
+      {
+        action: "addCard",
+        value: 1,
+        type: "attack",
+        tier: "rare",
+        to: "drawCards",
+      },
+    ],
+  },
+  bothShardUpgrades: {
+    actions: [
+      {
+        action: "addCard",
+        value: 2,
+        type: "attack",
+        tier: "common",
+        to: "drawCards",
+        modifiers: { mana: 0 },
+      },
+      {
+        action: "addCard",
+        value: 1,
+        type: "attack",
+        tier: "uncommon",
+        to: "drawCards",
+        modifiers: { mana: 0 },
+      },
+      {
+        action: "addCard",
+        value: 1,
+        type: "attack",
+        tier: "rare",
+        to: "drawCards",
+        modifiers: { mana: 0 },
+      },
+    ],
+  },
 };

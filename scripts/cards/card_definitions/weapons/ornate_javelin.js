@@ -9,4 +9,10 @@ export default {
   weapon: true,
   ephemeral: true,
   addable: false,
+  dmg: [35],
+  additionalDesc: "Level III Weapon",
+  slots: 1,
+  shardUpgrades: {
+    dmg: [55],
+  },
 };

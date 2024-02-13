@@ -7,4 +7,10 @@ export default {
   breakable: true,
   use: 1,
   retain: true,
+  dmg: [30],
+  slots: 1,
+  shardUpgrades: {
+    use: 2,
+    dmg: [40],
+  },
 };

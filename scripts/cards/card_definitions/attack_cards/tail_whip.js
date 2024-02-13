@@ -5,4 +5,10 @@ export default {
   mana: 2,
   target: "monster",
   ephemeral: true,
+  dmg: [4, 5, 6, 7, 8],
+  slots: 1,
+  shardUpgrades: {
+    dmg: [5, 6, 7, 8, 9],
+    ephemeral: false,
+  },
 };

@@ -5,4 +5,8 @@ export default {
   mana: 1,
   addable: false,
   vanish: true,
+  draw: {
+    dmg: [2],
+    target: "player",
+  },
 };
