@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 const { extractCardContent } = require('./card-convert.js');
 
 describe('extractCardContent', () => {
