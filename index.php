@@ -19,7 +19,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="vendor/jquery.powertip.min.js"></script>
 <script type="text/javascript" src="vendor/howler.core.min.js"></script>
-<script type="module" src="bundle.js"></script>
+<!-- <script type="module" src="bundle.js"></script> -->
+<script type="module" src="script.js"></script>
 
 
 </head>

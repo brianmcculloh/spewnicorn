@@ -13,8 +13,9 @@ let player = Player().player;
 window.player = player;
 const monsters = Monster();
 
-import { AllCards, Deck, CombatDeck } from "./cards.js";
-const allCards = AllCards();
+import { Deck, CombatDeck } from "./cards.js";
+import { ALL_CARDS, buildLibrary, getTotalCards, getAddableCards } from './scripts/index.js';
+
 let deck = Deck();
 let combatDeck = CombatDeck();
 
@@ -1895,7 +1896,7 @@ function setStatus(updateCards = true) {
 	$(".game-floor span").html(game.floor);
 	$(".game-round span").html(game.round);
 	$(".all-cards span.counter").html(player.cardsOwned);
-	$(".library span.counter").html(allCards.getTotalCards());
+	$(".library span.counter").html(getTotalCards());
 
 	$(".incoming-damage span").html(game.incomingDamage);
 	let healthLeft = util.getStatPercentage(player.health.current, player.health.max);
@@ -2158,7 +2159,7 @@ function viewLibrary() {
 			util.appendTreasure(treasure, ".library-treasures");
 		}
 		// load cards
-		allCards.buildLibrary();
+		buildLibrary(util);
 	}
 }
 function loadLibrary() {
@@ -2223,7 +2224,7 @@ function viewPackCards(pack) {
 	$(".pack-cards-panel .message span").html(card);
 	$(".pack-cards-panel .cards").empty();
 	$(".pack-cards-panel .select").attr("data-pack", pack);
-	let packCards = AllCards().getAddableCards(false, false, pack);
+	let packCards = getAddableCards(false, false, pack);
 	for (let i = 0; i < packCards.length; i++) {
 		let desc = deck.buildDescription(packCards[i]);
 		packCards[i].desc = desc;
@@ -2240,7 +2241,7 @@ function viewBasicCards() {
 	$(".pack-cards-panel .message").html(
 		"These are all the basic cards plus your selected booster pack cards."
 	);
-	let basicCards = AllCards().getAddableCards(false, false, false);
+	let basicCards = getAddableCards(false, false, false);
 	for (let i = 0; i < basicCards.length; i++) {
 		let desc = deck.buildDescription(basicCards[i]);
 		basicCards[i].desc = desc;
@@ -4513,7 +4514,7 @@ function buyCandy(id) {
 function buyCard(id) {
 	if (game.playsounds) sounds.play("buyItem");
 	addCardToDeck(id);
-	let card = util.getCardById(id, allCards);
+	let card = util.getCardById(id, ALL_CARDS);
 	player.courage -= card.courage;
 	updateItemCost();
 

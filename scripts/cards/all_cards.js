@@ -53,7 +53,7 @@ import {
     strength_beyond_measure,
     colossus,
     spectrum,
-  } from './ability_cards/index.js';
+  } from './card_definitions/ability_cards/index.js';
 
 import {
     parry,
@@ -112,7 +112,7 @@ import {
     erupt,
     monster_kill,
     malevolent_blow,
-  } from './attack_cards/index.js';
+  } from './card_definitions/attack_cards/index.js';
 
 import {
     rainbow_charge,
@@ -170,7 +170,7 @@ import {
     ignite,
     perfect_storm,
     eternal_runestone,
-  } from './magic_cards/index.js';
+  } from './card_definitions/magic_cards/index.js';
 
   import {
     jab,
@@ -240,7 +240,7 @@ import {
     briars,
     broken,
     mired,
-  } from './non-addable_cards/index.js';
+  } from './card_definitions/non-addable_cards/index.js';
 
   import {
     divert,
@@ -330,7 +330,7 @@ import {
     adrenaline_rush,
     untold_contract,
     myriad,
-  } from './tool_cards/index.js';
+  } from './card_definitions/tool_cards/index.js';
 
 import {
     rusty_dagger,
@@ -423,7 +423,7 @@ import {
     lumenfire,
     endless_light,
     dreadfurnace,
-  } from './weapons/index.js';
+  } from './card_definitions/weapons/index.js';
 
 const ALL_CARDS = [
 
