@@ -1,59 +1,13 @@
-import { ALL_CARDS, Util } from './scripts/index.js';
+import {Util, getAddableCards, ALL_CARDS } from './scripts/index.js';
 
 
 
 const util = new Util();
 
 
+
 export function AllCards() {
 
-    const cards = ALL_CARDS;
-    let game = window.game;
-
-    function getAddableCards(tier = false, type = false, pack = false, exclude = []) {
-        let items = cards;
-        if(tier && type) {
-            items = items.filter(i => i.tier == tier && i.type == type);
-        } else if(tier) {
-            items = items.filter(i => i.tier == tier);
-        } else if(type) {
-            items = items.filter(i => i.type == type);
-        }
-        if(pack) {
-            items = items.filter(i => i.pack == pack);
-        } else {
-            items = items.filter(i => i.pack == 'basic' || i.pack == game.boosterPack);
-        }
-        items = items.filter(i => i.addable == true);
-        items = items.filter(i => !exclude.includes(i.id));
-        return items;
-    }
-
-    function getAllCards() {
-        let items = cards;
-        for(let i = 0; i < items.length; i++) {
-            items[i].guid = util.randString();
-
-            // standard description
-            let desc = Deck().buildDescription(items[i]);
-            items[i].desc = desc;
-
-            // slots description
-            let slotDesc = Deck().buildSlotsDescription(items[i]);
-            items[i].slotDesc = slotDesc;
-        }
-        return items;
-    }
-
-    function getTotalCards() {
-        return cards?.length;
-    }
-
-    function buildLibrary() {
-        for(let i = 0; i < this.getTotalCards(); i++) {
-            util.appendCard(this.getAllCards()[i], '.library-panel .cards');
-        }
-    }
 
     function getWeapons() {
 
@@ -69,11 +23,6 @@ export function AllCards() {
 
 
     return {
-        cards,
-        getAddableCards,
-        getAllCards,
-        getTotalCards,
-        buildLibrary,
         getWeapons
     }
 }
@@ -114,7 +63,7 @@ export function Deck() {
     }
 
     function addCard(add, guid = false) {
-        let addCard = AllCards().cards.find(({ id }) => id === add);
+        let addCard = ALL_CARDS.find(({ id }) => id === add);
         //let copiedCard = JSON.parse(JSON.stringify(addCard)); // necessary to create a deep copy
         let copiedCard = $.extend(true, {}, addCard);
         if(guid) {
@@ -632,7 +581,7 @@ export function Deck() {
                     let description = action.desc; // future use
                     let what = actions[e].what;
                     let key = actions[e].key;
-                    let whatCard = util.getCardById(what, AllCards().cards);
+                    let whatCard = util.getCardById(what, ALL_CARDS);
                     let whatName = what;
                     if(whatCard != undefined) whatName = whatCard.name;
                     let select = actions[e].select;
@@ -754,7 +703,7 @@ export function Deck() {
             if(trades.length > 0) {
                 tradesDesc += '<div class="desc-item desc-trade">Trades for ';
                 for(let e = 0; e < trades.length; e++) {
-                    let thisCard = util.getCardById(trades[e], AllCards().cards);
+                    let thisCard = util.getCardById(trades[e], ALL_CARDS);
                     //if(thisCard == undefined) console.log(trades[e]);
                     tradesDesc += thisCard.name + ', ';
                 }
@@ -855,18 +804,18 @@ export function Deck() {
         if(game.uncommonChance > 50) game.uncommonChance = 50; // uncommon chance caps at 50
 
         // get array of cards to choose from
-        let addableCards = AllCards().getAddableCards(tier, type, false, game.toExclude);
+        let addableCards = getAddableCards(tier, type, false, game.toExclude);
         if(game.mapType == 'ice_gate' || game.mapType == 'fire_gate' || legendary) {
-            addableCards = AllCards().getAddableCards('legendary', type, false, game.toExclude); // there are currently no legendary addable cards
-            if(addableCards.length == 0) addableCards = AllCards().getAddableCards('rare', type, false, game.toExclude);
+            addableCards = getAddableCards('legendary', type, false, game.toExclude); // there are currently no legendary addable cards
+            if(addableCards.length == 0) addableCards = getAddableCards('rare', type, false, game.toExclude);
             game.legendaryChance = 0;
         } else if(game.mapType == 'arena' || rare) {
-            addableCards = AllCards().getAddableCards('rare', type, false, game.toExclude);
+            addableCards = getAddableCards('rare', type, false, game.toExclude);
             let rareDecrease = game.floor;
             game.rareChance -= rareDecrease;
             if(game.rareChance < 0) game.rareChance = 0;
         } else if(uncommon) {
-            addableCards = AllCards().getAddableCards('uncommon', type, false, game.toExclude);
+            addableCards = getAddableCards('uncommon', type, false, game.toExclude);
             let uncommonDecrease = game.floor;
             game.uncommonChance -= uncommonDecrease;
             if(game.uncommonChance < 0) game.uncommonChance = 0;
@@ -1269,7 +1218,7 @@ export function CombatDeck() {
     function transmuteCards(combatDeck, deck, player) {
         let permanent = false;
         for(let i = 0; i < game.toTransmute.length; i++) {
-            let possibleCards = AllCards().getAddableCards().filter(j => j.addable == true && j.id !== game.toTransmute[i].id && j.tier !== 'legendary');
+            let possibleCards = getAddableCards().filter(j => j.addable == true && j.id !== game.toTransmute[i].id && j.tier !== 'legendary');
             let transmutedCard = util.randFromArray(possibleCards);
             //transmutedCard = JSON.parse(JSON.stringify(transmutedCard)); // necessary to create a deep copy
             transmutedCard = $.extend(true, {}, transmutedCard);
@@ -1362,7 +1311,7 @@ export function CombatDeck() {
     }
 
     function addCard(add, combatDeck, part, player, shards = [], guid = false, playedCard = true, modifiers = {}) {
-        let addCard = AllCards().cards.find(({ id }) => id === add);
+        let addCard = ALL_CARDS.find(({ id }) => id === add);
         //let copiedCard = JSON.parse(JSON.stringify(addCard)); // necessary to create a deep copy
         let copiedCard = $.extend(true, {}, addCard);
         if(guid) {
