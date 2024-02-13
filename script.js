@@ -2228,7 +2228,6 @@ function viewPackCards(pack) {
 	$(".pack-cards-panel .cards").empty();
 	$(".pack-cards-panel .select").attr("data-pack", pack);
 	let packCards = getAddableCards(false, false, pack);
-	console.dir(packCards);
 	for (let i = 0; i < packCards.length; i++) {
 		let desc = buildDescription(packCards[i]);
 		packCards[i].desc = desc;
