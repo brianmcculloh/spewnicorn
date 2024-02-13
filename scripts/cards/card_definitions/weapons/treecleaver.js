@@ -9,4 +9,11 @@ export default {
   addable: false,
   tier: "rare",
   weapon: true,
+  dmg: [10, 10],
+  additionalDesc: "Level V Weapon",
+  slots: 1,
+  shardUpgrades: {
+    dmg: [15, 15],
+  },
+  trade: ["mantleblight", "armyfeller"],
 };

@@ -8,4 +8,12 @@ export default {
   addable: false,
   tier: "legendary",
   weapon: true,
+  dmg: [50],
+  effects: [{ effect: "punch", amount: -0.25, turns: -1, hex: true }],
+  additionalDesc: "Level VII Weapon",
+  slots: 1,
+  shardUpgrades: {
+    mana: 0,
+    dmg: [65],
+  },
 };

@@ -8,4 +8,13 @@ export default {
   weapon: true,
   addable: false,
   tier: "uncommon",
+  magic: [{ type: "aligned", amount: 12 }],
+  effects: [{ effect: "conjure", amount: 2, turns: -1 }],
+  sound: "magic4",
+  additionalDesc: "Level III Weapon",
+  slots: 1,
+  shardUpgrades: {
+    mana: 1,
+    magic: [{ type: "aligned", amount: 17 }],
+  },
 };

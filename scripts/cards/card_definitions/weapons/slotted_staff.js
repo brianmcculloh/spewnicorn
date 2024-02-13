@@ -7,4 +7,12 @@ export default {
   weight: 0.8,
   weapon: true,
   addable: false,
+  magic: [{ type: "aligned", amount: 5 }],
+  effects: [{ effect: "summon", amount: 1, turns: -1 }],
+  sound: "magic4",
+  additionalDesc: "Level II Weapon",
+  slots: 1,
+  shardUpgrades: {
+    magic: [{ type: "aligned", amount: 10 }],
+  },
 };

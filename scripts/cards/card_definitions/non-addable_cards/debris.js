@@ -6,4 +6,5 @@ export default {
   vanish: true,
   addable: false,
   natural: true,
+  additionalDesc: "It gets in the way.",
 };

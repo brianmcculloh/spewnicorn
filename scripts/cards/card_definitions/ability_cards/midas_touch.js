@@ -6,4 +6,9 @@ export default {
   tier: "uncommon",
   weight: 3,
   courage: 4,
+  abilities: [{ ability: "bless", enabled: true, baseTurns: -1 }],
+  slots: 1,
+  shardUpgrades: {
+    natural: true,
+  },
 };

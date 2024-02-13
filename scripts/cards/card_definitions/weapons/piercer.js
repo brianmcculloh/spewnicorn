@@ -8,4 +8,11 @@ export default {
   weight: 2,
   addable: false,
   weapon: true,
+  dmg: [12, 12],
+  additionalDesc: "Level III Weapon",
+  slots: 1,
+  shardUpgrades: {
+    dmg: [18, 18],
+  },
+  trade: ["shredder"],
 };

@@ -9,4 +9,11 @@ export default {
   addable: false,
   tier: "uncommon",
   weapon: true,
+  dmg: [10],
+  additionalDesc: "Level III Weapon",
+  slots: 1,
+  shardUpgrades: {
+    dmg: [18],
+  },
+  trade: ["greenshears", "glowscythe"],
 };

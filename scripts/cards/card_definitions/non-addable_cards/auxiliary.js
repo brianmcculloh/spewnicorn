@@ -6,4 +6,12 @@ export default {
   retain: true,
   addable: false,
   vanish: true,
+  actions: [{ action: "playOldest" }],
+  slots: 1,
+  shardUpgrades: {
+    actions: [
+      { action: "playOldest" },
+      { action: "addCard", value: 1, what: "auxiliary", to: "handCards" },
+    ],
+  },
 };

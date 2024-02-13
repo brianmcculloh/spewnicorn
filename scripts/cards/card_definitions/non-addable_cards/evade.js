@@ -7,4 +7,9 @@ export default {
   natural: true,
   tier: "uncommon",
   addable: false,
+  blk: [32],
+  slots: 1,
+  shardUpgrades: {
+    blk: [48],
+  },
 };

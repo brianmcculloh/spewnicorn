@@ -10,4 +10,16 @@ export default {
   pack: "rainbow",
   weight: 7,
   courage: 4,
+  magic: [{ type: "aligned", amount: 7 }],
+  sound: "magic6",
+  slots: 2,
+  shardUpgrades: {
+    natural: true,
+    expire: 4,
+  },
+  bothShardUpgrades: {
+    use: 3,
+    linger: 3,
+    expire: 6,
+  },
 };

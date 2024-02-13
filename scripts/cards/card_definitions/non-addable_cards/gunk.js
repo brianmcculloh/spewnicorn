@@ -4,4 +4,5 @@ export default {
   type: "clutter",
   addable: false,
   playable: false,
+  additionalDesc: "It clogs up your deck.",
 };

@@ -7,4 +7,9 @@ export default {
   tier: "rare",
   weight: 3,
   courage: 5,
+  effects: [{ effect: "wisdom", amount: 1, turns: -1 }],
+  slots: 1,
+  shardUpgrades: {
+    natural: true,
+  },
 };

@@ -6,4 +6,12 @@ export default {
   weight: 2,
   weapon: true,
   addable: false,
+  magic: [{ type: "aligned", amount: 10 }],
+  sound: "magic4",
+  additionalDesc: "Level III Weapon",
+  slots: 1,
+  shardUpgrades: {
+    magic: [{ type: "aligned", amount: 14 }],
+  },
+  trade: ["hooked_wand"],
 };

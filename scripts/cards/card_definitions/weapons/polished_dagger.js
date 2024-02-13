@@ -7,4 +7,11 @@ export default {
   weight: 10,
   addable: false,
   weapon: true,
+  dmg: [6, 6],
+  additionalDesc: "Level II Weapon",
+  slots: 1,
+  shardUpgrades: {
+    dmg: [10, 10],
+  },
+  trade: ["piercer"],
 };

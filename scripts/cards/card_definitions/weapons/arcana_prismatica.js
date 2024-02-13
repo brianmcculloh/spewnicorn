@@ -7,4 +7,12 @@ export default {
   weapon: true,
   addable: false,
   tier: "rare",
+  magic: [{ type: "rainbow", amount: 80 }],
+  sound: "magic4",
+  additionalDesc: "Level VII Weapon",
+  slots: 1,
+  shardUpgrades: {
+    mana: 1,
+    magic: [{ type: "rainbow", amount: 95 }],
+  },
 };

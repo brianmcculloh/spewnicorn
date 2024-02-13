@@ -5,4 +5,9 @@ export default {
   mana: 0,
   natural: true,
   addable: false,
+  magic: [{ type: "aligned", amount: 12 }],
+  slots: 1,
+  shardUpgrades: {
+    magic: [{ type: "aligned", amount: 18 }],
+  },
 };

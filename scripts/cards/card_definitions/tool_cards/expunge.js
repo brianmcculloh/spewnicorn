@@ -7,4 +7,10 @@ export default {
   pack: "cycle",
   weight: 4,
   courage: 4,
+  sound: "tool22",
+  actions: [{ action: "destroy", value: 10, optional: true }],
+  slots: 1,
+  shardUpgrades: {
+    mana: 1,
+  },
 };

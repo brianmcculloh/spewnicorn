@@ -8,4 +8,10 @@ export default {
   courage: 8,
   vanish: true,
   retain: true,
+  dmg: [45],
+  sound: "attack16",
+  slots: 1,
+  shardUpgrades: {
+    dmg: [60],
+  },
 };

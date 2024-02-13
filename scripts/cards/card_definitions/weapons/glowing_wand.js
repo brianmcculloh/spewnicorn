@@ -7,4 +7,12 @@ export default {
   weapon: true,
   addable: false,
   tier: "uncommon",
+  magic: [{ type: "aligned", amount: 19 }],
+  sound: "magic4",
+  additionalDesc: "Level V Weapon",
+  slots: 1,
+  shardUpgrades: {
+    magic: [{ type: "aligned", amount: 25 }],
+  },
+  trade: ["glowing_sceptre"],
 };

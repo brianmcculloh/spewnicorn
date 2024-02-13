@@ -8,4 +8,9 @@ export default {
   natural: true,
   tier: "uncommon",
   addable: false,
+  dmg: [30],
+  slots: 1,
+  shardUpgrades: {
+    dmg: [45],
+  },
 };

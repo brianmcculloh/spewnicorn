@@ -6,4 +6,10 @@ export default {
   weight: 2,
   courage: 3,
   use: 2,
+  armor: [6],
+  slots: 1,
+  shardUpgrades: {
+    armor: [9],
+    use: 3,
+  },
 };

@@ -8,4 +8,13 @@ export default {
   weapon: true,
   addable: false,
   tier: "rare",
+  magic: [{ type: "aligned", amount: 9 }],
+  effects: [{ effect: "thunder", amount: 0.1, turns: -1 }],
+  sound: "magic4",
+  additionalDesc: "Level VI Weapon",
+  slots: 1,
+  shardUpgrades: {
+    use: 4,
+    magic: [{ type: "aligned", amount: 15 }],
+  },
 };

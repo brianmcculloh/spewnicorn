@@ -5,4 +5,5 @@ export default {
   playable: false,
   addable: false,
   ephemeral: true,
+  additionalDesc: "It needs cleaned up.",
 };

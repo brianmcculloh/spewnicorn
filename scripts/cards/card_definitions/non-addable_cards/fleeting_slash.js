@@ -7,4 +7,9 @@ export default {
   target: "monster",
   vanish: true,
   expire: 0,
+  dmg: [2],
+  slots: 1,
+  shardUpgrades: {
+    dmg: [4],
+  },
 };

@@ -5,4 +5,12 @@ export default {
   tier: "common",
   playable: false,
   pack: "cycle",
+  sound: "magic3",
+  discard: {
+    magic: [{ type: "aligned", amount: 10 }],
+  },
+  slots: 1,
+  shardUpgrades: {
+    retain: true,
+  },
 };

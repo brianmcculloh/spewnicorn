@@ -8,4 +8,10 @@ export default {
   use: 2,
   pack: "cycle",
   weight: 2,
+  blk: [12],
+  slots: 1,
+  shardUpgrades: {
+    natural: true,
+    retain: true,
+  },
 };

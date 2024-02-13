@@ -8,4 +8,10 @@ export default {
   target: "monster",
   retain: true,
   use: 2,
+  dmg: [10],
+  linger: 1,
+  slots: 1,
+  shardUpgrades: {
+    dmg: [14],
+  },
 };

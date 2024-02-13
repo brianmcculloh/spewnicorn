@@ -8,4 +8,15 @@ export default {
   pack: "cycle",
   weight: 6,
   courage: 3,
+  dmg: [20],
+  sound: "attack15",
+  actions: [{ action: "destroy", value: 1 }],
+  slots: 1,
+  shardUpgrades: {
+    dmg: [30],
+    actions: [
+      { action: "draw", value: 1 },
+      { action: "destroy", value: 1 },
+    ],
+  },
 };

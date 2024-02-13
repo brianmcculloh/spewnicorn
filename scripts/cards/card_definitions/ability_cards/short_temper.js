@@ -5,4 +5,9 @@ export default {
   mana: 1,
   tier: "uncommon",
   courage: 3,
+  effects: [{ effect: "rowdy", amount: 8, turns: -1 }],
+  slots: 1,
+  shardUpgrades: {
+    effects: [{ effect: "rowdy", amount: 15, turns: -1 }],
+  },
 };
