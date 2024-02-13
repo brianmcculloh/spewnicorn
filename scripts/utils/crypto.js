@@ -33,12 +33,10 @@ let seed = cyrb128("bananas");
 
 const setGameSeed = (s) => {
 	seed = cyrb128(s);
+	return seed;
 };
 
-const rand = (s) => {
-	return mulberry32(seed[0]);
-};
-
+const rand = mulberry32(seed[0]);
 
 const randArrayIndex = (arr) => Math.floor(rand() * arr.length);
 

@@ -18,8 +18,8 @@ export default {
     use: 4,
     linger: 2,
     /*magic: [{type: 'aligned', amount: 2}],
-            effects: [
-                {effect: 'sorcery', amount: .2, turns: 2}
-            ],*/
+			effects: [
+				{effect: 'sorcery', amount: .2, turns: 2}
+			],*/
   },
 };
