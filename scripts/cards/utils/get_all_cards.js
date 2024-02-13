@@ -1,18 +1,19 @@
-import { ALL_CARDS } from '../index.js';
+import { ALL_CARDS, buildDescription, buildSlotsDescription } from '../index.js';
+import { randString } from '../../utils/index.js';
 
 const cards = ALL_CARDS;
 
 export default function getAllCards() {
     let items = cards;
     for(let i = 0; i < items.length; i++) {
-        items[i].guid = util.randString();
+        items[i].guid = randString();
 
         // standard description
-        let desc = Deck().buildDescription(items[i]);
+        let desc = buildDescription(items[i]);
         items[i].desc = desc;
 
         // slots description
-        let slotDesc = Deck().buildSlotsDescription(items[i]);
+        let slotDesc = buildSlotsDescription(items[i]);
         items[i].slotDesc = slotDesc;
     }
     return items;

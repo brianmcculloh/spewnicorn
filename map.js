@@ -1,4 +1,6 @@
 import { Util } from "./scripts/utils/index.js";
+import { randArrayIndex, randFromArray, randString } from './scripts/utils/index.js';
+
 const util = new Util();
 
 export default function Map() {
@@ -112,8 +114,8 @@ export default function Map() {
 		let questChance = 0; // TODO: reset this to 0
 		let iceGateTiles = [20, 40, 60, 80];
 		let fireGateTiles = [92, 94, 96, 98];
-		let iceGateTile = util.randArrayIndex(iceGateTiles);
-		let fireGateTile = util.randArrayIndex(fireGateTiles);
+		let iceGateTile = randArrayIndex(iceGateTiles);
+		let fireGateTile = randArrayIndex(fireGateTiles);
 		while (excludedTilesArena.indexOf(j) >= 0) {
 			j = Math.round(util.randDecimal() * 100);
 		}
@@ -209,7 +211,7 @@ export default function Map() {
 							questChance = 0;
 						} else {
 							// normal fights
-							let essence = util.randFromArray(game.essences);
+							let essence = randFromArray(game.essences);
 							let desc =
 								"<span class='" +
 								essence +

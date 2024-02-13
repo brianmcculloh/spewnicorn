@@ -1,4 +1,6 @@
 import { Util } from './scripts/utils/index.js';
+import { randArrayIndex, randFromArray, randString } from './scripts/utils/index.js';
+
 const util = new Util();
 
 class Creatures {
@@ -3729,7 +3731,7 @@ export function Monster() {
         }
 
         let copiedMonsters = JSON.parse(JSON.stringify(possibleMonsters)); // necessary to create a deep copy
-        monster = util.randFromArray(copiedMonsters);
+        monster = randFromArray(copiedMonsters);
 
         if(monster == undefined) return;
 
@@ -3739,7 +3741,7 @@ export function Monster() {
         }
 
         monster.health.current = monster.health.base;
-        monster.guid = util.randString();
+        monster.guid = randString();
         if(form == 'ghost') {
             monster.breed = 'ghost';
         }
@@ -3960,7 +3962,7 @@ export function Monster() {
 export function Player() {
 
     let player = new Creatures({
-        guid: util.randString(),
+        guid: randString(),
         type: 'player',
         id: 'player',
         name: 'Player',
@@ -3988,7 +3990,7 @@ export function Player() {
     }
 
     function addCandy(candy, player) {
-        candy.guid = util.randString();
+        candy.guid = randString();
         player.candies.push(candy);
         let slot = util.getFirstEmptyElement('.candies .candy-slot');
         if(slot.length > 0) {
