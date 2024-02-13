@@ -28,6 +28,7 @@ const addShards = (card, shard) => {
 }
 
 export default function buildDescription(thisCard, shard = false) {
+	let desc = "";
 	// let's just use a copy of the passed card since we're modifying it with shards for description purposes only
 	//let card = JSON.parse(JSON.stringify(thisCard)); // necessary to create a deep copy
 	let card = $.extend(true, {}, thisCard);

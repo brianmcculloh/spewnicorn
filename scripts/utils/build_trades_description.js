@@ -1,4 +1,4 @@
-import { getCardById } from '../cards/index.js';
+import { getCardById, ALL_CARDS } from '../cards/index.js';
 
 export default function buildTradesDescription(trades) {
     let tradesDesc = '';
