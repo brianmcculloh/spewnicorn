@@ -1,0 +1,21 @@
+{
+  "name": "spewnicorn",
+  "version": "0.52.0",
+  "main": "card-convert.js",
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4"
+  },
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github-ME:brianmcculloh/spewnicorn.git"
+  },
+  "author": "McCulloh",
+  "license": "ISC",
+  "description": ""
+}
+
