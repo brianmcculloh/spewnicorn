@@ -1,3 +1,7 @@
+// TODO: Make this file generate itself so that it doesn't have to be updated
+// All you will have to do to add a card to the game is literally just
+// add a card file to the appropriate card_definitions folder.
+
 import Cards from './Cards.js';
 
 import {
