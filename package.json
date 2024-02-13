@@ -3,6 +3,8 @@
   "version": "0.52.0",
   "main": "card-convert.js",
   "devDependencies": {
+    "jest": "^29.7.0",
+    "mock-fs": "^5.2.0",
     "prettier": "^3.2.5",
     "webpack": "^5.90.1",
     "webpack-cli": "^5.1.4"
@@ -10,9 +12,9 @@
   "engines": {
     "node": ">=20.10.0"
   },
-
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest"
   },
   "repository": {
     "type": "git",
@@ -22,4 +24,3 @@
   "license": "ISC",
   "description": ""
 }
-

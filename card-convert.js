@@ -2,12 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const prettier = require('prettier');
 
-const cardsFilePath = './cards.js';
-const baseDir = './scripts/cards/';
+const cardsFilePath = './all_cards.js';
+const baseDir = './scripts/cards/card_definitions/';
 let currentDir = 'non-addable';
 let importExports = {};
 
-async function processLine(line, fileLines, index) {
+const processLine = async function processLine (line, fileLines, index) {
     // Check for directory switch comment
     const dirMatch = line.match(/\/\*\s*([A-Z_\-\ ]+)\s*\*\//);
 
@@ -34,7 +34,7 @@ async function processLine(line, fileLines, index) {
     }
 }
 
-function extractCardContent(fileLines, startIndex) {
+const extractCardContent = function extractCardContent (fileLines, startIndex) {
     let isCapturing = false;
     let cardContent = '';
     let cardName = '';
@@ -45,6 +45,7 @@ function extractCardContent(fileLines, startIndex) {
 
         if (line.includes('new Cards({')) {
             isCapturing = true;
+            braceCount++;
             // Start capturing from the next line to exclude 'new Cards({'
             continue;
         }
@@ -77,14 +78,14 @@ function extractCardContent(fileLines, startIndex) {
 }
 
 
-function ensureDirectoryExists(directory) {
+const ensureDirectoryExists = function ensureDirectoryExists (directory) {
     if (!fs.existsSync(directory)) {
         fs.mkdirSync(directory, { recursive: true });
         fs.writeFileSync(path.join(directory, 'index.js'), '');
     }
 }
 
-async function updateIndexFiles() {
+const updateIndexFiles = async function updateIndexFiles () {
     for (const dir of Object.keys(importExports)) {
         const imports = importExports[dir].map(name => `import ${name} from './${name}.js';`).join('\n');
         const exports = `export {\n    ${importExports[dir].join(',\n    ')}\n};`;
@@ -99,7 +100,7 @@ async function updateIndexFiles() {
 }
 
 
-function replaceCardDefinitions() {
+const replaceCardDefinitions = function replaceCardDefinitions () {
     let fileContent = fs.readFileSync(cardsFilePath, 'utf8');
 
     // Regex to match the 'new Cards({...})' pattern and capture the 'id'
@@ -114,7 +115,7 @@ function replaceCardDefinitions() {
 
 
 
-async function main() {
+const main = async function main () {
     const fileContent = fs.readFileSync(cardsFilePath, 'utf8');
     const fileLines = fileContent.split('\n');
 
@@ -127,3 +128,7 @@ async function main() {
 }
 
 main().catch(e => console.error(e));
+
+module.exports = {
+    extractCardContent
+};
