@@ -1,31 +1,10 @@
 import {Util, getAddableCards, ALL_CARDS } from './scripts/index.js';
 
+import { randArrayIndex, randFromArray, randString } from './scripts/utils/index.js';
+import { buildDescription, buildSlotsDescription, getCardAttribute, getCardById } from './scripts/cards/index.js';
 
 
 const util = new Util();
-
-
-
-export function AllCards() {
-
-
-    function getWeapons() {
-
-        let weapons = cards.filter(i => i.weapon == true);
-
-        if(weapons.length == 0) {
-            weapons = false;
-        }
-
-        return weapons;
-
-    }
-
-
-    return {
-        getWeapons
-    }
-}
 
 var sounds = util.sound('soundsprite.mp3');
 
@@ -50,8 +29,8 @@ export function Deck() {
         }
 
         // this is how to add a shard on init - DEV MODE ONLY
-        //attachShard(util.getCardById('blitzkrieg', this.cards), 'flame');
-        //attachShard(util.getCardById('blitzkrieg', this.cards), 'flame');
+        //attachShard(getCardById('blitzkrieg', this.cards), 'flame');
+        //attachShard(getCardById('blitzkrieg', this.cards), 'flame');
 
 
     }
@@ -69,7 +48,7 @@ export function Deck() {
         if(guid) {
             copiedCard.guid = guid
         } else {
-            copiedCard.guid = util.randString();
+            copiedCard.guid = randString();
         }
 
         // standard card description
@@ -93,625 +72,6 @@ export function Deck() {
             console.log(cards);
         }
         player.cardsOwned += 1;
-    }
-
-    function buildSlotsDescription(card) {
-        let desc = '';
-        let frostDesc = buildDescription(card, 'frost');
-        let flameDesc = buildDescription(card, 'flame');
-        let frost2Desc = buildDescription(card, 'frost_2');
-        let flame2Desc = buildDescription(card, 'flame_2');
-        let bothDesc = buildDescription(card, 'both');
-        if(frostDesc == flameDesc) {
-            desc += frostDesc != '' ? '<div><span class="either">Shard</span>: ' + frostDesc : '</div>';
-        } else {
-            desc += frostDesc != '' ? '<div><span class="frost">Frost Shard</span>: ' + frostDesc : '</div>';
-            desc += flameDesc != '' ? '<div><span class="flame">Flame Shard</span>: ' + flameDesc : '</div>';
-        }
-        if(card.slots > 1) {
-            if(bothDesc == flame2Desc || bothDesc == frost2Desc) {
-                //desc += bothDesc != '' ? '<div><span class="frost">Frost Shard</span> + <span class="flame">Flame Shard</span>: ' + bothDesc : '</div>';
-                desc += bothDesc != '' ? '<div><span class="either">Double Shard</span>: ' + bothDesc : '</div>';
-            }
-            if(bothDesc != frost2Desc) {
-                desc += frost2Desc != '' ? '<div><span class="frost">Double Frost Shard</span>: ' + frost2Desc : '</div>';
-            }
-            if(bothDesc != flame2Desc) {
-                desc += flame2Desc != '' ? '<div><span class="flame">Double Flame Shard</span>: ' + flame2Desc : '</div>';
-            }
-        }
-        return desc;
-    }
-
-    function buildDescription(thisCard, shard = false) {
-
-        let desc = '';
-        // let's just use a copy of the passed card since we're modifying it with shards for description purposes only
-        //let card = JSON.parse(JSON.stringify(thisCard)); // necessary to create a deep copy
-        let card = $.extend(true, {}, thisCard);
-
-        if(shard=='flame') {
-            card.shards.push('flame');
-        } else if(shard=='frost') {
-            card.shards.push('frost');
-        } else if(shard=='flame_2') {
-            card.shards.push('flame');
-            card.shards.push('flame');
-        } else if(shard=='frost_2') {
-            card.shards.push('frost');
-            card.shards.push('frost');
-        } else if(shard=='both') {
-            card.shards.push('flame');
-            card.shards.push('frost');
-        }
-
-        // description override
-        let override = shard ? util.getShardAttribute(card, shard, 'descOverride') : util.getCardAttribute(card, 'descOverride');
-        if(override != '' && override != false) {
-            desc = override;
-            return desc;
-        }
-
-        // custom description preface
-        let additionalDesc = shard ? util.getShardAttribute(card, shard, 'additionalDesc') : util.getCardAttribute(card, 'additionalDesc');
-        desc += additionalDesc;
-
-        // trigger
-        let trigger = shard ? util.getShardAttribute(card, shard, 'trigger') : util.getCardAttribute(card, 'trigger');
-        let triggerDesc = buildTriggerDescription(trigger, desc);
-        desc += triggerDesc;
-
-        /*let natural = shard ? util.getShardAttribute(card, shard, 'natural') : util.getCardAttribute(card, 'natural');
-        if(natural) {
-            desc += '<div class="desc-item"><span class="highlight">Natural</span></div>';
-        }*/ // we're using a bubble indicator for this now
-
-        let blk = shard ? util.getShardAttribute(card, shard, 'blk') : util.getCardAttribute(card, 'blk');
-        if(blk.length > 0) {
-            desc += '<div class="desc-item">Gain ';
-            for(let i = 0; i < blk.length; i++) {
-                desc += '<span class="amount blk" data-amount="' + blk[i] + '">' + blk[i] + '</span>, ';
-            }
-            desc = desc.slice(0, -2);
-            if(card.mana == '?') {
-                desc += ' block ? times</div>';
-            } else {
-                desc += ' block</div>';
-            }
-        }
-
-        let armor = shard ? util.getShardAttribute(card, shard, 'armor') : util.getCardAttribute(card, 'armor');
-        if(armor.length > 0) {
-            desc += '<div class="desc-item">Gain ';
-            for(let i = 0; i < armor.length; i++) {
-                desc += '<span class="amount armor" data-amount="' + armor[i] + '">' + armor[i] + '</span>, ';
-            }
-            desc = desc.slice(0, -2);
-            if(card.mana == '?') {
-                desc += ' armor ? times</div>';
-            } else {
-                desc += ' armor</div>';
-            }
-        }
-
-        let dmg = shard ? util.getShardAttribute(card, shard, 'dmg') : util.getCardAttribute(card, 'dmg');
-        if(dmg.length > 0) {
-            desc += '<div class="desc-item desc-dmg">Deal ';
-            for(let i = 0; i < dmg.length; i++) {
-                desc += '<span class="amount dmg" data-amount="' + dmg[i] + '">' + dmg[i] + '</span>, ';
-            }
-            desc = desc.slice(0, -2);
-            if(card.mana == '?') {
-                desc += ' damage ? times</div>';
-            } else {
-                desc += ' damage</div>';
-            }
-        }
-
-        let magicDesc = '';
-        let magic = shard ? util.getShardAttribute(card, shard, 'magic') : util.getCardAttribute(card, 'magic');
-        if(magic.length > 0) {
-            magicDesc += '<div class="desc-item">Summon ';
-            for(let i = 0; i < magic.length; i++) {
-                magicDesc += '<span class="amount magic" data-amount="' + magic[i].amount + '">' + magic[i].amount + '</span> ' + magic[i].type + ', ';
-            }
-            magicDesc = magicDesc.slice(0, -2);
-            if(card.mana == '?') {
-                magicDesc += ' magic ? times</div>';
-            } else {
-                magicDesc += ' magic</div>';
-            }
-        }
-        desc += magicDesc;
-
-        // effects
-        let effects = shard ? util.getShardAttribute(card, shard, 'effects') : util.getCardAttribute(card, 'effects');
-        let effectsDesc = buildEffectsDescription(effects, desc, thisCard);
-        desc += effectsDesc;
-
-        // abilities
-        let abilities = shard ? util.getShardAttribute(card, shard, 'abilities') : util.getCardAttribute(card, 'abilities');
-        let abilitiesDesc = buildAbilitiesDescription(abilities, desc, thisCard);
-        desc += abilitiesDesc;
-
-        // actions
-        let actions = shard ? util.getShardAttribute(card, shard, 'actions') : util.getCardAttribute(card, 'actions');
-        let actionsDesc = buildActionsDescription(actions, desc);
-        desc += actionsDesc;
-
-
-        // shard-only descriptions
-        if(shard) {
-            let mana = util.getShardAttribute(card, shard, 'mana');
-            if(mana !== undefined && mana !== '') {
-                desc += '<div class="desc-item">Mana: ' + mana + '</div>';
-            }
-            let age = util.getShardAttribute(card, shard, 'age');
-            if(age > 0) {
-                desc += '<div class="desc-item"><span class="highlight">Age:</span> ' + age + '</span></div>';
-            }
-            let use = util.getShardAttribute(card, shard, 'use');
-            if(use > 0) {
-                desc += '<div class="desc-item"><span class="highlight">Use:</span> ' + use + '</div>';
-            }
-            let expire = util.getShardAttribute(card, shard, 'expire');
-            if(expire > 0) {
-                desc += '<div class="desc-item"><span class="highlight">Expire:</span> ' + expire + '</div>';
-            }
-            let linger = util.getShardAttribute(card, shard, 'linger');
-            if(linger > 0) {
-                desc += '<div class="desc-item"><span class="highlight">Linger:</span> ' + linger + '</div>';
-            }
-            let vanish = util.getShardAttribute(card, shard, 'vanish');
-            if(vanish !== '') {
-                let prefix = vanish ? '' : 'Lose ';
-                desc += '<div class="desc-item">' + prefix + '<span class="highlight">Vanish</span></div>';
-            }
-            let retain = util.getShardAttribute(card, shard, 'retain');
-            if(retain !== '') {
-                let prefix = retain ? '' : 'Lose ';
-                desc += '<div class="desc-item">' + prefix + '<span class="highlight">Retain</span></div>';
-            }
-            let ephemeral = util.getShardAttribute(card, shard, 'ephemeral');
-            if(ephemeral !== '') {
-                let prefix = ephemeral ? '' : 'Lose ';
-                desc += '<div class="desc-item">' + prefix + '<span class="highlight">Ephemeral</span></div>';
-            }
-            let breakable = util.getShardAttribute(card, shard, 'breakable');
-            if(breakable !== '') {
-                let prefix = breakable ? '' : 'Lose ';
-                desc += '<div class="desc-item">' + prefix + '<span class="highlight">Breakable</span></div>';
-            }
-            let natural = util.getShardAttribute(card, shard, 'natural');
-            if(natural !== '') {
-                let prefix = natural ? '' : 'Lose ';
-                desc += '<div class="desc-item">' + prefix + '<span class="highlight">Natural</span></div>';
-            }
-        } else {
-            // does not apply to shard
-            // trades
-            let trades = util.getCardAttribute(card, 'trade');
-            let tradesDesc = buildTradesDescription(trades, desc);
-            desc += tradesDesc;
-        }
-
-        // behaviors
-        let behaviors = [['combine', 'Combined'], ['draw', 'Drawn'], ['discard', 'Discarded'], ['destroy', 'Destroyed']];
-        let behaviorsDesc = '';
-        for(let i = 0; i < behaviors.length; i++) {
-            let noun = behaviors[i][0];
-            let verb = behaviors[i][1];
-            let behavior = shard ? util.getShardAttribute(card, shard, noun) : util.getCardAttribute(card, noun);
-            let behaviorsPrefix = '<div class="desc-item desc-behavior">When ' + verb + ': ';
-            let behaviorDesc = '';
-            if(behavior) {
-                let dmgDesc = '';
-                let dmg = shard ? util.getShardAttribute(card, shard, 'dmg', noun) : util.getCardAttribute(card, 'dmg', noun);
-                let target = shard ? util.getShardAttribute(card, shard, 'target', noun) : util.getCardAttribute(card, 'target', noun);
-                if(dmg.length > 0) {
-                    if(target == 'player') {
-                        dmgDesc += '<div class="desc-item desc-sub-item">Take ';
-                    } else {
-                        dmgDesc += '<div class="desc-item desc-sub-item">Deal ';
-                    }
-                    for(let i = 0; i < dmg.length; i++) {
-                        dmgDesc += '<span class="amount dmg" data-amount="' + dmg[i] + '">' + dmg[i] + '</span>, ';
-                    }
-                    dmgDesc = dmgDesc.slice(0, -2);
-                    dmgDesc += ' damage</div>';
-                }
-                behaviorDesc += dmgDesc;
-                let blkDesc = '';
-                let blk = shard ? util.getShardAttribute(card, shard, 'blk', noun) : util.getCardAttribute(card, 'blk', noun);
-                if(blk.length > 0) {
-                    blkDesc += '<div class="desc-item desc-sub-item">Gain ';
-                    for(let i = 0; i < blk.length; i++) {
-                        blkDesc += '<span class="amount blk" data-amount="' + blk[i] + '">' + blk[i] + '</span>, ';
-                    }
-                    blkDesc = blkDesc.slice(0, -2);
-                    blkDesc += ' block</div>';
-                }
-                behaviorDesc += blkDesc;
-                let armorDesc = '';
-                let armor = shard ? util.getShardAttribute(card, shard, 'armor', noun) : util.getCardAttribute(card, 'armor', noun);
-                if(armor.length > 0) {
-                    armorDesc += '<div class="desc-item desc-sub-item">Gain ';
-                    for(let i = 0; i < armor.length; i++) {
-                        armorDesc += '<span class="amount armor" data-amount="' + armor[i] + '">' + armor[i] + '</span>, ';
-                    }
-                    armorDesc = armorDesc.slice(0, -2);
-                    armorDesc += ' armor</div>';
-                }
-                behaviorDesc += armorDesc;
-                let magicDesc = '';
-                let magic = shard ? util.getShardAttribute(card, shard, 'magic', noun) : util.getCardAttribute(card, 'magic', noun);
-                if(magic.length > 0) {
-                    magicDesc += '<div class="desc-item desc-sub-item">Summon ';
-                    for(let i = 0; i < magic.length; i++) {
-                        magicDesc += '<span class="amount magic" data-amount="' + magic[i].amount + '">' + magic[i].amount + '</span> ' + magic[i].type + ', ';
-                    }
-                    magicDesc = magicDesc.slice(0, -2);
-                    magicDesc += ' magic</div>';
-                }
-                behaviorDesc += magicDesc;
-
-                // effects
-                let effects = shard ? util.getShardAttribute(card, shard, 'effects', noun) : util.getCardAttribute(card, 'effects', noun);
-                let effectsDesc = buildEffectsDescription(effects, behaviorDesc, thisCard);
-                behaviorDesc += effectsDesc;
-
-                // abilities
-                let abilities = shard ? util.getShardAttribute(card, shard, 'abilities', noun) : util.getCardAttribute(card, 'abilities', noun);
-                let abilitiesDesc = buildAbilitiesDescription(abilities, behaviorDesc, thisCard);
-                behaviorDesc += abilitiesDesc;
-
-                // actions
-                let actions = shard ? util.getShardAttribute(card, shard, 'actions', noun) : util.getCardAttribute(card, 'actions', noun);
-                let actionsDesc = buildActionsDescription(actions, behaviorDesc);
-                behaviorDesc += actionsDesc;
-
-                // add to overall string
-                behaviorsDesc += behaviorsPrefix + behaviorDesc + '</div>';
-            }
-        }
-
-        desc += behaviorsDesc;
-
-        // stances
-        let stances = ['aura', 'sparkle', 'shimmer'];
-        let stancesDesc = '';
-        if(!shard) {
-            for(let i = 0; i < stances.length; i++) {
-                let stance = stances[i];
-                let att = util.getCardAttribute(card, stance);
-                let attPrefix = '<div class="desc-item desc-stance"><span class="' + stance + '">' + stance + ' Stance</span>: ';
-                let attDesc = '';
-                if(att) {
-                    let dmgDesc = '';
-                    let dmg = util.getCardAttribute(card, 'dmg', stance);
-                    let target = util.getCardAttribute(card, 'target', stance);
-                    if(dmg.length > 0) {
-                        if(target == 'player') {
-                            dmgDesc += '<div class="desc-item desc-sub-item">Take ';
-                        } else {
-                            dmgDesc += '<div class="desc-item desc-sub-item">Deal ';
-                        }
-                        for(let i = 0; i < dmg.length; i++) {
-                            dmgDesc += '<span class="amount dmg" data-amount="' + dmg[i] + '">' + dmg[i] + '</span>, ';
-                        }
-                        dmgDesc = dmgDesc.slice(0, -2);
-                        dmgDesc += ' damage</div>';
-                    }
-                    attDesc += dmgDesc;
-                    let blkDesc = '';
-                    let blk = util.getCardAttribute(card, 'blk', stance);
-                    if(blk.length > 0) {
-                        blkDesc += '<div class="desc-item desc-sub-item">Gain ';
-                        for(let i = 0; i < blk.length; i++) {
-                            blkDesc += '<span class="amount blk" data-amount="' + blk[i] + '">' + blk[i] + '</span>, ';
-                        }
-                        blkDesc = blkDesc.slice(0, -2);
-                        blkDesc += ' block</div>';
-                    }
-                    attDesc += blkDesc;
-                    let armorDesc = '';
-                    let armor = util.getCardAttribute(card, 'armor', stance);
-                    if(armor.length > 0) {
-                        armorDesc += '<div class="desc-item desc-sub-item">Gain ';
-                        for(let i = 0; i < armor.length; i++) {
-                            armorDesc += '<span class="amount armor" data-amount="' + armor[i] + '">' + armor[i] + '</span>, ';
-                        }
-                        armorDesc = armorDesc.slice(0, -2);
-                        armorDesc += ' armor</div>';
-                    }
-                    attDesc += armorDesc;
-                    let magicDesc = '';
-                    let magic = util.getCardAttribute(card, 'magic', stance);
-                    if(magic.length > 0) {
-                        magicDesc += '<div class="desc-item desc-sub-item">Summon ';
-                        for(let i = 0; i < magic.length; i++) {
-                            magicDesc += '<span class="amount magic" data-amount="' + magic[i].amount + '">' + magic[i].amount + '</span> ' + magic[i].type + ', ';
-                        }
-                        magicDesc = magicDesc.slice(0, -2);
-                        magicDesc += ' magic</div>';
-                    }
-                    attDesc += magicDesc;
-
-                    // effects
-                    let effects = util.getCardAttribute(card, 'effects', stance);
-                    let effectsDesc = buildEffectsDescription(effects, attDesc, thisCard);
-                    attDesc += effectsDesc;
-
-                    // abilities
-                    let abilities = util.getCardAttribute(card, 'abilities', stance);
-                    let abilitiesDesc = buildAbilitiesDescription(abilities, attDesc, thisCard);
-                    attDesc += abilitiesDesc;
-
-                    // actions
-                    let actions = util.getCardAttribute(card, 'actions', stance);
-                    let actionsDesc = buildActionsDescription(actions, attDesc);
-                    attDesc += actionsDesc;
-
-                    // add to overall string
-                    stancesDesc += attPrefix + attDesc + '</div>';
-                }
-            }
-        }
-
-        desc += stancesDesc;
-
-        return desc;
-
-    }
-
-    function buildTriggerDescription(trigger, desc) {
-        let triggerDesc = '';
-        if(trigger != undefined) {
-            if(trigger.counter > -1) {
-                let when = trigger.when;
-                let at = trigger.at;
-                let per = trigger.per;
-                let once = trigger.once;
-                let plural = at == 1 ? '' : 's';
-                let atText = at == 1 ? '' : at;
-                triggerDesc += '<div class="desc-item">';
-                switch(when) {
-                    case 'turns':
-                        if(once) {
-                            triggerDesc += 'On turn ' + at;
-                        } else {
-                            triggerDesc += 'Every ' + atText + ' turn' + plural;
-                        }
-                        break;
-                    case 'cardsPlayed':
-                        triggerDesc += 'Every ' + at + ' cards played';
-                        break;
-                    case 'attackCardsPlayed':
-                        triggerDesc += 'Every ' + at + ' attack cards played';
-                        break;
-                    case 'toolCardsPlayed':
-                        triggerDesc += 'Every ' + at + ' tool cards played';
-                        break;
-                    case 'magicCardsPlayed':
-                        triggerDesc += 'Every ' + at + ' magic cards played';
-                        break;
-                }
-                if(per == 'turn') {
-                    triggerDesc += ' per ' + per;
-                }
-                triggerDesc += '</div>';
-
-            }
-        }
-        return triggerDesc;
-    }
-
-    function buildEffectsDescription(effects, behaviorDesc, thisCard) {
-        let effectsDesc = '';
-        if(effects != undefined) {
-            if(effects.length > 0) {
-                for(let e = 0; e < effects.length; e++) {
-                    if(effects[e].hex) {
-                        effectsDesc += '<div class="desc-item">Hex ';
-                    } else {
-                        effectsDesc += '<div class="desc-item">Gain ';
-                    }
-                    let plural = effects[e].turns > 1 ? 's' : '';
-                    let turns = effects[e].turns > 0 ? ' <span class="desc-turns">for ' + effects[e].turns + ' turn' + plural + '</span> ' : '';
-                    let effectText = effects[e].amount;
-                    let effectAmount = effects[e].amount;
-                    let desc = '';
-                    // don't we want to show description on cards too, not just treasures and candies?
-                    //if((thisCard.type == 'ability') || ((thisCard.type == 'treasure' || thisCard.type == 'candy') && thisCard.effects.length > 0)) {
-                    if(thisCard.effects.length > 0) {
-                        let gameEffect = game.effects.find(({ id }) => id === effects[e].effect);
-                        desc = ' <span class="effect-description">(' + gameEffect.desc + ')</span>';
-                    }
-                    if(effectText == undefined) {
-                        effectText = effects[e].base;
-                        effectAmount = effects[e].base;
-                    }
-                    if(effects[e].effect == 'punch' || effects[e].effect == 'sorcery' || effects[e].effect == 'resistance' || effects[e].effect == 'thunder') {
-                        effectText = Math.round((effectText + Number.EPSILON) * 100);
-                        effectText += '%';
-                    }
-                    effectsDesc += ' <span class="amount ' + effects[e].effect + '" data-amount="' + effectAmount + '">' + effectText + '</span> ' + '<span class="effect-text">' + effects[e].effect + '</span>' + turns + desc + '</div>';
-                }
-            }
-        }
-        return effectsDesc;
-    }
-
-    //{ability: 'explode', turns: 1, enabled: true}
-    function buildAbilitiesDescription(abilities, behaviorDesc, thisCard) {
-        let abilitiesDesc = '';
-        if(abilities != undefined) {
-            if(abilities.length > 0) {
-                for(let e = 0; e < abilities.length; e++) {
-                    let gameAbility = game.abilities.find(({ id }) => id === abilities[e].ability);
-                    if(abilities[e].hex) {
-                        abilitiesDesc += '<div class="desc-item">Hex ';
-                    } else {
-                        abilitiesDesc += '<div class="desc-item">Gain ';
-                    }
-                    let plural = abilities[e].turns > 1 ? 's' : '';
-                    let turns = abilities[e].turns > 0 && gameAbility.context !== 'card' ? ' for ' + abilities[e].turns + ' turn' + plural : '';
-                    let amount = abilities[e].turns > 0 && gameAbility.context == 'card' ? abilities[e].turns + ' ' : '';
-                    let desc = '';
-                    // don't we want to show description on cards too, not just treasures and candies?
-                    //if(((thisCard.type == 'treasure' || thisCard.type == 'candy') && thisCard.abilities.length > 0)) {
-                    if(thisCard.abilities.length > 0) {
-                        desc = ' <span class="ability-description">(' + gameAbility.desc + ')</span>';
-                    }
-                    abilitiesDesc += amount + '<span class="ability-text">' + gameAbility.name + '</span>' + turns + desc + '</div>';
-                }
-            }
-        }
-        return abilitiesDesc;
-    }
-
-    function buildActionsDescription(actions, behaviorDesc) {
-        let actionsDesc = '';
-        if(actions != undefined) {
-            if(actions.length > 0) {
-                for(let e = 0; e < actions.length; e++) {
-                    let id = actions[e].action;
-                    let action = game.actions.find(o => o.id === id);
-                    let name = action.name;
-                    let description = action.desc; // future use
-                    let what = actions[e].what;
-                    let key = actions[e].key;
-                    let whatCard = util.getCardById(what, ALL_CARDS);
-                    let whatName = what;
-                    if(whatCard != undefined) whatName = whatCard.name;
-                    let select = actions[e].select;
-                    let type = actions[e].type;
-                    let tier = actions[e].tier;
-                    let value = actions[e].value;
-                    let to = actions[e].to;
-                    let from = actions[e].from;
-                    let cardWith = actions[e].with;
-                    let optional = actions[e].optional;
-                    let modifiers = actions[e].modifiers != undefined ? actions[e].modifiers : {};
-                    let modified = '';
-                    let plural = value == 1 ? '' : 's';
-                    if(id == 'stat') {
-                        name = whatName.toUpperCase();
-                        name = key != undefined ? key.toUpperCase() + ' ' + name : name;
-                        let symbol = (typeof value === 'number' && value > 0) ? '+' : '';
-                        name = value == 'double' ? 'Double ' + name : name;
-                        key = key != undefined ? key : 'stat';
-                        value = value != undefined && value != 'double' ? ' ' + symbol + '<span class="amount ' + key + '-' + what + '-amount" data-amount="' + value + '">' + value + '</span>': '';
-                        // this would be redundant to display
-                        what = '';
-                    } else {
-                        what = what != undefined ? ' <span class="whatname">' + whatName + '</span>' : '';
-                        optional = optional == true ? ' up to ' : '';
-                        if(name == 'Find Draw Card' || name == 'Find Discard Card' || name == 'Find Dead Card') {
-                            value = value != undefined ? optional + ' (&times;' + value + ')' : '';
-                        } else {
-                            value = value != undefined ? optional + ' ' + value : '';
-                        }
-                    }
-                    if(id == 'removeHexes' || id == 'removeBuffs') {
-                        to = to != undefined ? ' from ' + util.getFromDisplay(to) : '';
-                    } else {
-                        to = to != undefined ? ' to ' + util.getFromDisplay(to) : '';
-                    }
-                    select = select != undefined ? ' ' + select : '';
-                    select = select == -1 ? ' all' : select;
-                    type = type != undefined ? ' ' + type : '';
-                    tier = tier != undefined ? ' ' + tier : '';
-                    from = from != undefined ? ' ' + util.getFromDisplay(from) : '';
-                    select = from == ' all cards' ? '' : select;
-                    if(id == 'transmute') {
-                        select = ' up to ' + select;
-                    }
-                    name = name == 'Add Card' ? 'Add' : name;
-                    if(cardWith != undefined) {
-                        if(cardWith.length > 1) {
-                            cardWith = ' with ' + cardWith[0] + ' and ' + cardWith[1] + ' shards';
-                        } else {
-                            cardWith = ' with ' + cardWith + ' shard';
-                        }
-                    } else {
-                        cardWith = '';
-                    }
-                    // process modifiers
-                    if(!$.isEmptyObject(modifiers)) {
-                        modified += ' with modifiers: '
-                        for (var att in modifiers) {
-                            if (modifiers.hasOwnProperty(att)) {
-                                modified += att + '&mdash;' + modifiers[att] + ', ';
-                            }
-                        }
-                        modified = modified.slice(0, -2);
-                    }
-                    if(select != '' && type != '' && value != '') {
-                        to = to != '' ? ' and add ' + to : '';
-                        if(type == ' any') {
-                            actionsDesc += 'Choose ' + select + ' of ' + value + tier + ' card' + plural + ' ' + to + cardWith + modified + '. ';
-                        } else {
-                            actionsDesc += 'Choose ' + select + ' of ' + value + tier + type + ' card' + plural + ' ' + to + cardWith + modified + '. ';
-                        }
-                    } else {
-                        if(type == ' any') {
-                            type = type != '' ? tier + ' card' + plural + ' ' : '';
-                        } else if(type == ' attack' || type == ' tool' || type == ' ability' || type == ' magic' || type == ' weapon') {
-                            type = type != '' ? tier + type + ' card' + plural + ' ' : '';
-                        } else if(type == ' clutter') {
-                            type = type != '' ? type : '';
-                        } else {
-                            type = type != '' ? ' with' + type : '';
-                        }
-
-                        // one-offs
-                        if(name == 'Ensharden') {
-                            what = from;
-                            from = '';
-                            type = type == ' with random' ? ' with random shards' : type;
-                        } else if(name == 'Destroy' || name == 'Discard' || name == 'Draw') {
-                            what = value == 1 || value == ' up to 1' ? ' card' : ' cards';
-                        } else if(name == 'TYPE RAINBOW') {
-                            name = 'Change magic type to';
-                        } else if(name == 'COURAGE') {
-                            name = 'Courage Coin';
-                        }
-
-                        actionsDesc +=
-                        '<div class="desc-item">'
-                            + '<span class="desc-item-name">' + name + '</span>'
-                            + '<span class="desc-item-select">' + select + '</span>'
-                            + '<span class="desc-item-value">' + value + '</span>'
-                            + '<span class="desc-item-what">' + what + '</span>'
-                            + '<span class="desc-item-type">' + type + '</span>'
-                            + '<span class="desc-item-to">' + to + '</span>'
-                            + '<span class="desc-item-from">' + from + '</span>'
-                            + '<span class="desc-item-cardWith">' + cardWith + '</span>'
-                            + '<span class="desc-item-modifiers">' + modified + '</span>'
-                        + '</div>';
-                    }
-                }
-            }
-        }
-        return actionsDesc;
-    }
-
-    function buildTradesDescription(trades) {
-        let tradesDesc = '';
-        if(trades != undefined) {
-            if(trades.length > 0) {
-                tradesDesc += '<div class="desc-item desc-trade">Trades for ';
-                for(let e = 0; e < trades.length; e++) {
-                    let thisCard = util.getCardById(trades[e], ALL_CARDS);
-                    //if(thisCard == undefined) console.log(trades[e]);
-                    tradesDesc += thisCard.name + ', ';
-                }
-                tradesDesc = tradesDesc.slice(0, -2);
-                tradesDesc += '</div>';
-            }
-        }
-        return tradesDesc;
     }
 
     function hasOpenSlot(card) {
@@ -771,7 +131,7 @@ export function Deck() {
                     if(thisCard != undefined) {
                         util.removeCardByGuid(thisCard.guid, 'replaced');
                         let css = thisCard.playable ? 'playable' : '';
-                        let cost = util.getCardAttribute(thisCard, 'mana');
+                        let cost = getCardAttribute(thisCard, 'mana');
                         if(cost > player.mana.current) {
                             css = '';
                         }
@@ -867,8 +227,6 @@ export function Deck() {
         showModifiedCards,
         hasOpenSlot,
         numOpenSlots,
-        buildDescription,
-        buildSlotsDescription,
         decideCard,
         getWeapons,
         getTradeableCards,
@@ -928,7 +286,7 @@ export function CombatDeck() {
 
     function getNaturalCard(combatDeck, player) {
         for(let i = 0; i < combatDeck.drawCards.length; i++) {
-            let natural = util.getCardAttribute(combatDeck.drawCards[i], 'natural');
+            let natural = getCardAttribute(combatDeck.drawCards[i], 'natural');
             let supernatural = player.supernatural.enabled;
             let drawn = supernatural ? false : combatDeck.drawCards[i].drawn;
             if(natural && !drawn) {
@@ -978,11 +336,11 @@ export function CombatDeck() {
             let thisCard = false;
 
             if(player.speed.current > 0 || ignoreSpeed == true) {
-                let index = util.randArrayIndex(combatDeck.drawCards);
+                let index = randArrayIndex(combatDeck.drawCards);
                 let naturalCard = getNaturalCard(combatDeck, player);
                 thisCard = naturalCard ? naturalCard : combatDeck.drawCards[index];
                 thisCard.drawn = true;
-                let thisRetain = util.getCardAttribute(thisCard, 'retain');
+                let thisRetain = getCardAttribute(thisCard, 'retain');
                 let retain = thisRetain ? ' retained' : '';
                 let playable = thisCard.playable ? 'playable' : '';
                 let destroyable = $('body').hasClass('destroying') ? ' destroyable' : '';
@@ -1016,7 +374,7 @@ export function CombatDeck() {
         let thisCard = false;
 
         thisCard = util.getCardByGuid(guid, combatDeck.drawCards);
-        let thisRetain = util.getCardAttribute(thisCard, 'retain');
+        let thisRetain = getCardAttribute(thisCard, 'retain');
         let retain = thisRetain ? ' retained' : '';
 
         util.removeCardByGuid(thisCard.guid);
@@ -1051,7 +409,7 @@ export function CombatDeck() {
         let thisCard = false;
 
         thisCard = util.getCardByGuid(guid, combatDeck.discardCards);
-        let thisRetain = util.getCardAttribute(thisCard, 'retain');
+        let thisRetain = getCardAttribute(thisCard, 'retain');
         let retain = thisRetain ? ' retained' : '';
 
         util.removeCardByGuid(thisCard.guid);
@@ -1086,7 +444,7 @@ export function CombatDeck() {
         let thisCard = false;
 
         thisCard = util.getCardByGuid(guid, combatDeck.deadCards);
-        let thisRetain = util.getCardAttribute(thisCard, 'retain');
+        let thisRetain = getCardAttribute(thisCard, 'retain');
         let retain = thisRetain ? ' retained' : '';
 
         util.removeCardByGuid(thisCard.guid);
@@ -1118,7 +476,7 @@ export function CombatDeck() {
 
         let thisCard = false;
         thisCard = util.getCardByGuid(guid, combatDeck.chooseCards);
-        let thisRetain = util.getCardAttribute(thisCard, 'retain');
+        let thisRetain = getCardAttribute(thisCard, 'retain');
         let retain = thisRetain ? ' retained' : '';
         let discardable = $('body').hasClass('discarding') ? ' discardable' : '';
 
@@ -1156,8 +514,8 @@ export function CombatDeck() {
 
         for(let i = 0; i < combatDeck.handCards.length; i++) {
             let thisCard = combatDeck.handCards[i];
-            let thisRetain = util.getCardAttribute(thisCard, 'retain');
-            let ephemeral = util.getCardAttribute(thisCard, 'ephemeral');;
+            let thisRetain = getCardAttribute(thisCard, 'retain');
+            let ephemeral = getCardAttribute(thisCard, 'ephemeral');;
             if(thisRetain == false && thisCard.tempRetain == false) {
                 // check for sift
                 if(player.sift.enabled && thisCard.type=='clutter') {
@@ -1219,17 +577,17 @@ export function CombatDeck() {
         let permanent = false;
         for(let i = 0; i < game.toTransmute.length; i++) {
             let possibleCards = getAddableCards().filter(j => j.addable == true && j.id !== game.toTransmute[i].id && j.tier !== 'legendary');
-            let transmutedCard = util.randFromArray(possibleCards);
+            let transmutedCard = randFromArray(possibleCards);
             //transmutedCard = JSON.parse(JSON.stringify(transmutedCard)); // necessary to create a deep copy
             transmutedCard = $.extend(true, {}, transmutedCard);
-            transmutedCard.guid = util.randString();
+            transmutedCard.guid = randString();
 
             // standard description
-            let desc = Deck().buildDescription(transmutedCard);
+            let desc = buildDescription(transmutedCard);
             transmutedCard.desc = desc;
 
             // slots description
-            let slotDesc = Deck().buildSlotsDescription(transmutedCard);
+            let slotDesc = buildSlotsDescription(transmutedCard);
             transmutedCard.slotDesc = slotDesc;
 
             // show transmuted cards
@@ -1267,7 +625,7 @@ export function CombatDeck() {
 
         for(let i = 0; i < combatDeck.handCards.length; i++) {
             let thisCard = combatDeck.handCards[i];
-            let expire = util.getCardAttribute(thisCard, 'expire');
+            let expire = getCardAttribute(thisCard, 'expire');
             if(expire == 0) {
                 if(game.playsounds) sounds.play('removeCard');
                 combatDeck.deadCards.push(thisCard);
@@ -1278,7 +636,7 @@ export function CombatDeck() {
         }
         for(let i = 0; i < combatDeck.drawCards.length; i++) {
             let thisCard = combatDeck.drawCards[i];
-            let expire = util.getCardAttribute(thisCard, 'expire');
+            let expire = getCardAttribute(thisCard, 'expire');
             if(expire == 0) {
                 if(game.playsounds) sounds.play('removeCard');
                 combatDeck.deadCards.push(thisCard);
@@ -1289,7 +647,7 @@ export function CombatDeck() {
         }
         for(let i = 0; i < combatDeck.discardCards.length; i++) {
             let thisCard = combatDeck.discardCards[i];
-            let expire = util.getCardAttribute(thisCard, 'expire');
+            let expire = getCardAttribute(thisCard, 'expire');
             if(expire == 0) {
                 if(game.playsounds) sounds.play('removeCard');
                 combatDeck.deadCards.push(thisCard);
@@ -1303,7 +661,7 @@ export function CombatDeck() {
     function incrementExpiredCards(combatDeck) {
         for(let i = 0; i < combatDeck.allLiveCards(combatDeck).length; i++) {
             let thisCard = combatDeck.allLiveCards(combatDeck)[i];
-            let expire = util.getCardAttribute(thisCard, 'expire');
+            let expire = getCardAttribute(thisCard, 'expire');
             if(expire > 0) {
                 thisCard.expire -= 1;
             }
@@ -1317,7 +675,7 @@ export function CombatDeck() {
         if(guid) {
             copiedCard.guid = guid
         } else {
-            copiedCard.guid = util.randString();
+            copiedCard.guid = randString();
         }
 
         // process modifiers
@@ -1328,11 +686,11 @@ export function CombatDeck() {
         }
 
         // standard description
-        let desc = Deck().buildDescription(copiedCard);
+        let desc = buildDescription(copiedCard);
         copiedCard.desc = desc;
 
         // slots description
-        let slotDesc = Deck().buildSlotsDescription(copiedCard);
+        let slotDesc = buildSlotsDescription(copiedCard);
         copiedCard.slotDesc = slotDesc;
 
         if(shards.length > 0) {
@@ -1357,7 +715,7 @@ export function CombatDeck() {
                 } else {
                     combatDeck[part].push(copiedCard);
                     if(part == 'handCards') {
-                        let thisRetain = util.getCardAttribute(copiedCard, 'retain');
+                        let thisRetain = getCardAttribute(copiedCard, 'retain');
                         let retain = thisRetain ? ' retained' : '';
                         let css = copiedCard.playable ? 'playable' : '';
                         // card might be added automatically by another card while we are discarding - clever maneuver draws surprise attack for instance
@@ -1380,7 +738,7 @@ export function CombatDeck() {
     function initCard(card, modifiers = {}) {
         //let copiedCard = JSON.parse(JSON.stringify(card)); // necessary to create a deep copy
         let copiedCard = $.extend(true, {}, card);
-        copiedCard.guid = util.randString();
+        copiedCard.guid = randString();
 
         // process modifiers
         for (var key in modifiers) {
@@ -1390,11 +748,11 @@ export function CombatDeck() {
         }
 
         // standard description
-        let desc = Deck().buildDescription(copiedCard);
+        let desc = buildDescription(copiedCard);
         copiedCard.desc = desc;
 
         // slots description
-        let slotDesc = Deck().buildSlotsDescription(copiedCard);
+        let slotDesc = buildSlotsDescription(copiedCard);
         copiedCard.slotDesc = slotDesc;
 
         return copiedCard;
@@ -1403,7 +761,7 @@ export function CombatDeck() {
     function updateCardPlayability(player, combatDeck) {
 
         for(let i = 0; i < combatDeck.handCards.length; i++) {
-            let cost = util.getCardAttribute(combatDeck.handCards[i], 'mana');
+            let cost = getCardAttribute(combatDeck.handCards[i], 'mana');
             let domCard = util.getDomCardByGuid(combatDeck.handCards[i].guid);
             if(cost > player.mana.current) {
                 domCard.removeClass('playable');

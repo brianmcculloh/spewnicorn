@@ -1,4 +1,5 @@
-import { cyrb128, mulberry32 } from "./index.js";
+import { cyrb128, mulberry32, getShardAttribute, getShardNum, rand } from "./index.js";
+import { getCardAttribute } from '../cards/index.js';
 
 export default class Util {
 	constructor() {
@@ -31,16 +32,6 @@ export default class Util {
 	}
 	monsterNumChance(initial = 0, increase = 10) {
 		return Math.round(game.floor / game.monsterGroup) * increase + initial;
-	}
-	randFromArray(arr) {
-		let item = arr[Math.floor(util.rand() * arr.length)];
-		return item;
-	}
-	randArrayIndex(arr) {
-		return Math.floor(util.rand() * arr.length);
-	}
-	randString() {
-		return (Math.random() + 1).toString(36).substring(2);
 	}
 	shuffle(arr) {
 		let currentIndex = arr.length,
@@ -93,7 +84,7 @@ export default class Util {
 		let slots = "";
 		slots = util.buildCardSlots(card);
 
-		let mana = util.getCardAttribute(card, "mana");
+		let mana = getCardAttribute(card, "mana");
 		let manaDom = "";
 		let manaTip = "<span class='highlight'>Mana:</span> energy cost to play this card";
 		manaDom =
@@ -106,7 +97,7 @@ export default class Util {
 			"</span></div>";
 
 		let age = -1;
-		age = util.getCardAttribute(card, "age");
+		age = getCardAttribute(card, "age");
 		let ageDom = "";
 		let ageTip = "";
 		let plural = "";
@@ -129,7 +120,7 @@ export default class Util {
 		}
 
 		let use = -1;
-		use = util.getCardAttribute(card, "use");
+		use = getCardAttribute(card, "use");
 		let useDom = "";
 		let useTip = "";
 		if (use > -1) {
@@ -147,7 +138,7 @@ export default class Util {
 		}
 
 		let expire = -1;
-		expire = util.getCardAttribute(card, "expire");
+		expire = getCardAttribute(card, "expire");
 		let expireDom = "";
 		let expireTip = "";
 		if (expire > -1) {
@@ -165,7 +156,7 @@ export default class Util {
 		}
 
 		let linger = -1;
-		linger = util.getCardAttribute(card, "linger");
+		linger = getCardAttribute(card, "linger");
 		let lingerDom = "";
 		let lingerTip = "";
 		if (linger > -1) {
@@ -183,7 +174,7 @@ export default class Util {
 		}
 
 		let vanish = false;
-		vanish = util.getCardAttribute(card, "vanish");
+		vanish = getCardAttribute(card, "vanish");
 		let vanishDom = "";
 		let vanishTip = "";
 		if (vanish) {
@@ -193,7 +184,7 @@ export default class Util {
 		}
 
 		let retain = false;
-		retain = util.getCardAttribute(card, "retain");
+		retain = getCardAttribute(card, "retain");
 		let retainDom = "";
 		let retainTip = "";
 		if (retain) {
@@ -204,7 +195,7 @@ export default class Util {
 		}
 
 		let ephemeral = false;
-		ephemeral = util.getCardAttribute(card, "ephemeral");
+		ephemeral = getCardAttribute(card, "ephemeral");
 		let ephemeralDom = "";
 		let ephemeralTip = "";
 		if (ephemeral) {
@@ -217,7 +208,7 @@ export default class Util {
 		}
 
 		let breakable = false;
-		breakable = util.getCardAttribute(card, "breakable");
+		breakable = getCardAttribute(card, "breakable");
 		let breakableDom = "";
 		let breakableTip = "";
 		if (breakable) {
@@ -242,7 +233,7 @@ export default class Util {
 		}
 
 		let unaddable = false;
-		unaddable = !util.getCardAttribute(card, "addable");
+		unaddable = !getCardAttribute(card, "addable");
 		let unaddableDom = "";
 		let unaddableTip = "";
 		if (unaddable) {
@@ -257,7 +248,7 @@ export default class Util {
 		unaddableDom = "";
 
 		let natural = false;
-		natural = util.getCardAttribute(card, "natural");
+		natural = getCardAttribute(card, "natural");
 		let naturalDom = "";
 		let naturalTip = "";
 		if (natural) {
@@ -270,7 +261,7 @@ export default class Util {
 		}
 
 		let aura = false;
-		aura = util.getCardAttribute(card, "aura");
+		aura = getCardAttribute(card, "aura");
 		let auraDom = "";
 		let auraTip = "";
 		if (aura != "") {
@@ -283,7 +274,7 @@ export default class Util {
 		}
 
 		let shimmer = false;
-		shimmer = util.getCardAttribute(card, "shimmer");
+		shimmer = getCardAttribute(card, "shimmer");
 		let shimmerDom = "";
 		let shimmerTip = "";
 		if (shimmer != "") {
@@ -296,7 +287,7 @@ export default class Util {
 		}
 
 		let sparkle = false;
-		sparkle = util.getCardAttribute(card, "sparkle");
+		sparkle = getCardAttribute(card, "sparkle");
 		let sparkleDom = "";
 		let sparkleTip = "";
 		if (sparkle != "") {
@@ -309,7 +300,7 @@ export default class Util {
 		}
 
 		let trade = false;
-		trade = util.getCardAttribute(card, "trade");
+		trade = getCardAttribute(card, "trade");
 		let tradeDom = "";
 		let tradeTip = "";
 		if (trade != "") {
@@ -321,7 +312,7 @@ export default class Util {
 		}
 
 		let weapon = false;
-		weapon = util.getCardAttribute(card, "weapon");
+		weapon = getCardAttribute(card, "weapon");
 		let weaponDom = "";
 		let weaponTip = "";
 		if (weapon != "") {
@@ -331,7 +322,7 @@ export default class Util {
 		}
 
 		let aoe = false;
-		aoe = util.getCardAttribute(card, "target");
+		aoe = getCardAttribute(card, "target");
 		let aoeDom = "";
 		let aoeTip = "";
 		if (aoe == "all") {
@@ -340,7 +331,7 @@ export default class Util {
 		}
 
 		let pack = false;
-		pack = util.getCardAttribute(card, "pack");
+		pack = getCardAttribute(card, "pack");
 		let packDom = "";
 		let packTip = "";
 		if (pack) {
@@ -695,268 +686,23 @@ export default class Util {
 			return true;
 		}
 	}
-	getCardAttribute(card, attribute, type = false) {
-		let data = "";
 
-		// draw/discard/destroy/combine/stance values
-		if (type) {
-			if (card[type] != undefined) {
-				if (card[type][attribute] != undefined) {
-					data = card[type][attribute];
-				}
-			}
-			// overwrite with shard values
-			if (card.shards.length > 0) {
-				// single shard
-				if (card.shardUpgrades[type] != undefined) {
-					if (card.shardUpgrades[type][attribute] != undefined) {
-						data = card.shardUpgrades[type][attribute];
-					}
-				}
-				// overwrite with specific shard values
-				if (util.getShardNum(card, "frost") > 0) {
-					if (card.iceShardUpgrades[type] != undefined) {
-						if (card.iceShardUpgrades[type][attribute] != undefined) {
-							data = card.iceShardUpgrades[type][attribute];
-						}
-					}
-				}
-				if (util.getShardNum(card, "flame") > 0) {
-					if (card.fireShardUpgrades[type] != undefined) {
-						if (card.fireShardUpgrades[type][attribute] != undefined) {
-							data = card.fireShardUpgrades[type][attribute];
-						}
-					}
-				}
-
-				// multiple shards
-				if (card.shards.length > 1) {
-					// start with both shards values
-					if (card.bothShardUpgrades[type] != undefined) {
-						if (card.bothShardUpgrades[type][attribute] != undefined) {
-							data = card.bothShardUpgrades[type][attribute];
-						}
-					}
-					// overwrite with specific shard values
-					if (util.getShardNum(card, "frost") > 1) {
-						if (card.iceShardUpgrades[type] != undefined) {
-							if (card.iceShardUpgrades[type][attribute + "_2"] != undefined) {
-								data = card.iceShardUpgrades[type][attribute + "_2"];
-							}
-						}
-						if (card.iceShardUpgrades[type + "_2"] != undefined) {
-							if (card.iceShardUpgrades[type + "_2"][attribute] != undefined) {
-								data = card.iceShardUpgrades[type + "_2"][attribute];
-							}
-						}
-					}
-					if (util.getShardNum(card, "flame") > 1) {
-						if (card.fireShardUpgrades[type] != undefined) {
-							if (card.fireShardUpgrades[type][attribute + "_2"] != undefined) {
-								data = card.fireShardUpgrades[type][attribute + "_2"];
-							}
-						}
-						if (card.fireShardUpgrades[type + "_2"] != undefined) {
-							if (card.fireShardUpgrades[type + "_2"][attribute] != undefined) {
-								data = card.fireShardUpgrades[type + "_2"][attribute];
-							}
-						}
-					}
-				}
-			}
-
-			// standard defaults
-		} else {
-			if (card[attribute] != undefined) {
-				data = card[attribute];
-			}
-			// overwrite with shard values
-			if (card.shards?.length > 0) {
-				// single shard
-				// Note: don't remember why we needed the isNaN check on all of these but it was causing any upgrade that wasn't just a single value to fail
-				// so only single damage/block/armor values worked when the check was in place
-				//if(card.shardUpgrades[attribute] != undefined && !isNaN(card.shardUpgrades[attribute])) {
-				if (card.shardUpgrades[attribute] != undefined) {
-					data = card.shardUpgrades[attribute];
-				}
-				// overwrite with specific shard values
-				if (util.getShardNum(card, "frost") > 0) {
-					//if(card.iceShardUpgrades[attribute] != undefined && !isNaN(card.iceShardUpgrades[attribute])) {
-					if (card.iceShardUpgrades[attribute] != undefined) {
-						data = card.iceShardUpgrades[attribute];
-					}
-				}
-				if (util.getShardNum(card, "flame") > 0) {
-					//if(card.fireShardUpgrades[attribute] != undefined && !isNaN(card.fireShardUpgrades[attribute])) {
-					if (card.fireShardUpgrades[attribute] != undefined) {
-						data = card.fireShardUpgrades[attribute];
-					}
-				}
-
-				// multiple shards
-				if (card.shards.length > 1) {
-					// start with both shards values
-					if (card.bothShardUpgrades != undefined) {
-						//if(card.bothShardUpgrades[attribute] != undefined && !isNaN(card.bothShardUpgrades[attribute])) {
-						if (card.bothShardUpgrades[attribute] != undefined) {
-							data = card.bothShardUpgrades[attribute];
-						}
-					}
-					// overwrite with specific shard values
-					if (util.getShardNum(card, "frost") > 1) {
-						if (card.iceShardUpgrades != undefined) {
-							//if(card.iceShardUpgrades[attribute + '_2'] != undefined && !isNaN(card.iceShardUpgrades[attribute + '_2'])) {
-							if (card.iceShardUpgrades[attribute + "_2"] != undefined) {
-								data = card.iceShardUpgrades[attribute + "_2"];
-							}
-						}
-					}
-					if (util.getShardNum(card, "flame") > 1) {
-						if (card.fireShardUpgrades != undefined) {
-							//if(card.fireShardUpgrades[attribute + '_2'] != undefined && !isNaN(card.fireShardUpgrades[attribute + '_2'])) {
-							if (card.fireShardUpgrades[attribute + "_2"] != undefined) {
-								data = card.fireShardUpgrades[attribute + "_2"];
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return data;
-	}
-	getShardAttribute(card, shard, attribute, type = false) {
-		let data = "";
-
-		// draw/discard/destroy/combine values
-		if (type) {
-			// single shard
-			if (card.shardUpgrades[type] != undefined) {
-				if (card.shardUpgrades[type][attribute] != undefined) {
-					data = card.shardUpgrades[type][attribute];
-				}
-			}
-			// overwrite with specific shard values
-			if (shard == "frost") {
-				if (card.iceShardUpgrades[type] != undefined) {
-					if (card.iceShardUpgrades[type][attribute] != undefined) {
-						data = card.iceShardUpgrades[type][attribute];
-					}
-				}
-			}
-			if (shard == "flame") {
-				if (card.fireShardUpgrades[type] != undefined) {
-					if (card.fireShardUpgrades[type][attribute] != undefined) {
-						data = card.fireShardUpgrades[type][attribute];
-					}
-				}
-			}
-
-			// multiple shards
-			if (card.shards.length > 1) {
-				// start with both shards values
-				if (card.bothShardUpgrades[type] != undefined) {
-					if (card.bothShardUpgrades[type][attribute] != undefined) {
-						data = card.bothShardUpgrades[type][attribute];
-					}
-				}
-				// overwrite with specific shard values
-				if (shard == "frost_2") {
-					if (card.iceShardUpgrades[type] != undefined) {
-						if (card.iceShardUpgrades[type][attribute + "_2"] != undefined) {
-							data = card.iceShardUpgrades[type][attribute + "_2"];
-						}
-					}
-					if (card.iceShardUpgrades[type + "_2"] != undefined) {
-						if (card.iceShardUpgrades[type + "_2"][attribute] != undefined) {
-							data = card.iceShardUpgrades[type + "_2"][attribute];
-						}
-					}
-				}
-				if (shard == "flame_2") {
-					if (card.fireShardUpgrades[type] != undefined) {
-						if (card.fireShardUpgrades[type][attribute + "_2"] != undefined) {
-							data = card.fireShardUpgrades[type][attribute + "_2"];
-						}
-					}
-					if (card.fireShardUpgrades[type + "_2"] != undefined) {
-						if (card.fireShardUpgrades[type + "_2"][attribute] != undefined) {
-							data = card.fireShardUpgrades[type + "_2"][attribute];
-						}
-					}
-				}
-			}
-
-			// standard defaults
-		} else {
-			// single shard
-			if (card.shardUpgrades[attribute] != undefined) {
-				data = card.shardUpgrades[attribute];
-			}
-			// overwrite with specific shard values
-			if (shard == "frost") {
-				if (card.iceShardUpgrades[attribute] != undefined) {
-					data = card.iceShardUpgrades[attribute];
-				}
-			}
-			if (shard == "flame") {
-				if (card.fireShardUpgrades[attribute] != undefined) {
-					data = card.fireShardUpgrades[attribute];
-				}
-			}
-
-			// multiple shards
-			if (card.shards.length > 1) {
-				// start with both shards values
-				if (card.bothShardUpgrades != undefined) {
-					if (card.bothShardUpgrades[attribute] != undefined) {
-						data = card.bothShardUpgrades[attribute];
-					}
-				}
-				// overwrite with specific shard values
-				if (shard == "frost_2") {
-					if (card.iceShardUpgrades != undefined) {
-						if (card.iceShardUpgrades[attribute + "_2"] != undefined) {
-							data = card.iceShardUpgrades[attribute + "_2"];
-						}
-					}
-				}
-				if (shard == "flame_2") {
-					if (card.fireShardUpgrades != undefined) {
-						if (card.fireShardUpgrades[attribute + "_2"] != undefined) {
-							data = card.fireShardUpgrades[attribute + "_2"];
-						}
-					}
-				}
-			}
-		}
-
-		return data;
-	}
 	hasPlayAction(card) {
 		let action = false;
 		if (
 			// we don't care about dmg here because that is taken care of by the dom ability to click targeted monster
-			util.getCardAttribute(card, "blk").length > 0 ||
-			util.getCardAttribute(card, "armor").length > 0 ||
-			util.getCardAttribute(card, "magic").length > 0 ||
-			util.getCardAttribute(card, "effects").length > 0 ||
-			util.getCardAttribute(card, "abilities").length > 0 ||
-			util.getCardAttribute(card, "actions").length > 0
+			getCardAttribute(card, "blk").length > 0 ||
+			getCardAttribute(card, "armor").length > 0 ||
+			getCardAttribute(card, "magic").length > 0 ||
+			getCardAttribute(card, "effects").length > 0 ||
+			getCardAttribute(card, "abilities").length > 0 ||
+			getCardAttribute(card, "actions").length > 0
 		) {
 			action = true;
 		}
 		return action;
 	}
-	getShardNum(card, shard) {
-		let num = 0;
-		if (shard == "any") {
-			num = card.shards.length;
-		} else {
-			num = card.shards.filter((i) => i === shard).length;
-		}
-		return num;
-	}
+
 	getQuestSubOptions(quest, option) {
 		//let options = quest.options.filter(i => i.id == option);
 		//let subOptions = false;
@@ -974,13 +720,6 @@ export default class Util {
 		return false;
 
 		//return subOptions;
-	}
-	getCardById(add, allCards) {
-		if (allCards.cards == undefined) {
-			return allCards.find(({ id }) => id === add);
-		} else {
-			return allCards.cards.find(({ id }) => id === add);
-		}
 	}
 	getTreasureById(treasure, allTreasures) {
 		return allTreasures.find(({ id }) => id === treasure);
@@ -1168,20 +907,6 @@ export default class Util {
 		util.setTooltips(".treasures");
 		util.setTooltips(".candies");
 		util.setInitialTooltips();
-	}
-	getFromDisplay(text) {
-		if (text == "handCards") {
-			text = "hand cards";
-		} else if (text == "drawCards") {
-			text = "draw pile";
-		} else if (text == "discardCards") {
-			text = "discard pile";
-		} else if (text == "deadCards") {
-			text = "dead cards";
-		} else if (text == "allCards") {
-			text = "all cards";
-		}
-		return text;
 	}
 
 	sound(f) {

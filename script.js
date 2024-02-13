@@ -14,7 +14,10 @@ window.player = player;
 const monsters = Monster();
 
 import { Deck, CombatDeck } from "./cards.js";
-import { ALL_CARDS, buildLibrary, getTotalCards, getAddableCards } from './scripts/index.js';
+import { ALL_CARDS, buildLibrary, getTotalCards, getAddableCards, getWeapons, getCardById } from './scripts/index.js';
+import { setGameSeed, randArrayIndex, randFromArray, randString } from './scripts/utils/index.js';
+import { buildDescription, buildSlotsDescription, getCardAttribute } from './scripts/cards/index.js';
+
 
 let deck = Deck();
 let combatDeck = CombatDeck();
@@ -146,7 +149,7 @@ jQuery(document).ready(function ($) {
 				gameseed = (Math.random() + 1).toString(36).substring(2);
 			}
 			game.seed = gameseed;
-			util.setGameSeed(gameseed);
+			setGameSeed(gameseed);
 			$(".game-seed span").html(gameseed);
 			$(".game-version span").html(game.version);
 
@@ -571,7 +574,7 @@ jQuery(document).ready(function ($) {
 		let shard = $(".shard-cards-panel").attr("data-shard");
 		let thisShard = shard;
 		if (shard == "random") {
-			thisShard = util.randFromArray(treasures.shards);
+			thisShard = randFromArray(treasures.shards);
 			thisShard = thisShard.id;
 		}
 		let card = util.getCardByGuid($(this).data("guid"), deck.cards);
@@ -1007,10 +1010,10 @@ jQuery(document).ready(function ($) {
 			removeCardFromDeck(guid);
 			$(".trade-cards-panel .cards").empty();
 			for (let i = 0; i < card.trade.length; i++) {
-				let thisCard = util.getCardById(card.trade[i], AllCards().cards);
-				let desc = deck.buildDescription(thisCard);
+				let thisCard = getCardById(card.trade[i], ALL_CARDS);
+				let desc = buildDescription(thisCard);
 				thisCard.desc = desc;
-				let slotDesc = deck.buildSlotsDescription(thisCard);
+				let slotDesc = buildSlotsDescription(thisCard);
 				thisCard.slotDesc = slotDesc;
 				util.appendCard(thisCard, ".trade-cards-panel .cards");
 				game.toShow.push(thisCard);
@@ -1303,26 +1306,26 @@ function buildScenario(which = "frozen_forest_combine") {
 			addCardToDeck("adrenaline_rush");
 
 			// shards
-			deck.attachShard(util.getCardById("stun", deck.cards), "flame");
-			deck.attachShard(util.getCardById("razzle", deck.cards), "flame");
-			deck.attachShard(util.getCardById("stomp", deck.cards), "frost");
-			deck.attachShard(util.getCardById("repel", deck.cards), "frost");
-			deck.attachShard(util.getCardById("repel", deck.cards), "frost");
-			deck.attachShard(util.getCardById("hammer_thrust", deck.cards), "frost");
-			deck.attachShard(util.getCardById("remember", deck.cards), "frost");
-			deck.attachShard(util.getCardById("cutting_ring", deck.cards), "frost");
-			deck.attachShard(util.getCardById("thwart", deck.cards), "flame");
-			deck.attachShard(util.getCardById("thwart", deck.cards), "frost");
-			deck.attachShard(util.getCardById("safeguard", deck.cards), "flame");
-			deck.attachShard(util.getCardById("delayed_charge", deck.cards), "flame");
-			deck.attachShard(util.getCardById("fleeting_shield", deck.cards), "frost");
-			deck.attachShard(util.getCardById("prescience", deck.cards), "flame");
-			deck.attachShard(util.getCardById("glowing_orb", deck.cards), "frost");
-			deck.attachShard(util.getCardById("mysterious_fissure", deck.cards), "flame");
-			deck.attachShard(util.getCardById("fire_spell", deck.cards), "flame");
-			deck.attachShard(util.getCardById("dazzle", deck.cards), "flame");
-			deck.attachShard(util.getCardById("mezmerize", deck.cards), "flame");
-			deck.attachShard(util.getCardById("mezmerize", deck.cards), "flame");
+			deck.attachShard(getCardById("stun", deck.cards), "flame");
+			deck.attachShard(getCardById("razzle", deck.cards), "flame");
+			deck.attachShard(getCardById("stomp", deck.cards), "frost");
+			deck.attachShard(getCardById("repel", deck.cards), "frost");
+			deck.attachShard(getCardById("repel", deck.cards), "frost");
+			deck.attachShard(getCardById("hammer_thrust", deck.cards), "frost");
+			deck.attachShard(getCardById("remember", deck.cards), "frost");
+			deck.attachShard(getCardById("cutting_ring", deck.cards), "frost");
+			deck.attachShard(getCardById("thwart", deck.cards), "flame");
+			deck.attachShard(getCardById("thwart", deck.cards), "frost");
+			deck.attachShard(getCardById("safeguard", deck.cards), "flame");
+			deck.attachShard(getCardById("delayed_charge", deck.cards), "flame");
+			deck.attachShard(getCardById("fleeting_shield", deck.cards), "frost");
+			deck.attachShard(getCardById("prescience", deck.cards), "flame");
+			deck.attachShard(getCardById("glowing_orb", deck.cards), "frost");
+			deck.attachShard(getCardById("mysterious_fissure", deck.cards), "flame");
+			deck.attachShard(getCardById("fire_spell", deck.cards), "flame");
+			deck.attachShard(getCardById("dazzle", deck.cards), "flame");
+			deck.attachShard(getCardById("mezmerize", deck.cards), "flame");
+			deck.attachShard(getCardById("mezmerize", deck.cards), "flame");
 
 			// essence
 			updateEssenceLevels("shimmer", 14);
@@ -1411,32 +1414,32 @@ function buildScenario(which = "frozen_forest_combine") {
 			addCardToDeck("crippling_stare");
 
 			// shards
-			deck.attachShard(util.getCardById("shield", deck.cards), "frost");
-			deck.attachShard(util.getCardById("stun", deck.cards), "flame");
-			deck.attachShard(util.getCardById("sparks", deck.cards), "frost");
-			deck.attachShard(util.getCardById("remember", deck.cards), "frost");
-			deck.attachShard(util.getCardById("remember", deck.cards), "frost");
-			deck.attachShard(util.getCardById("rainbow_charge", deck.cards), "flame");
-			deck.attachShard(util.getCardById("robustness", deck.cards), "flame");
-			deck.attachShard(util.getCardById("deter", deck.cards), "frost");
-			deck.attachShard(util.getCardById("deter", deck.cards), "frost");
-			deck.attachShard(util.getCardById("safeguard", deck.cards), "flame");
-			deck.attachShard(util.getCardById("patience", deck.cards), "frost");
-			deck.attachShard(util.getCardById("amass", deck.cards), "frost");
-			deck.attachShard(util.getCardById("amass", deck.cards), "flame");
-			deck.attachShard(util.getCardById("sudden_barrage", deck.cards), "flame");
-			deck.attachShard(util.getCardById("acuity", deck.cards), "frost");
-			deck.attachShard(util.getCardById("acuity", deck.cards), "frost");
-			deck.attachShard(util.getCardById("midas_touch", deck.cards), "frost");
-			deck.attachShard(util.getCardById("stamina", deck.cards), "frost");
-			deck.attachShard(util.getCardById("forbid", deck.cards), "flame");
-			deck.attachShard(util.getCardById("forbid", deck.cards), "flame");
-			deck.attachShard(util.getCardById("adrenaline_rush", deck.cards), "flame");
-			deck.attachShard(util.getCardById("mystical_energy", deck.cards), "flame");
-			deck.attachShard(util.getCardById("mystical_energy", deck.cards), "flame");
-			deck.attachShard(util.getCardById("attuned_barrier", deck.cards), "flame");
-			deck.attachShard(util.getCardById("attuned_barrier", deck.cards), "flame");
-			deck.attachShard(util.getCardById("bulwark", deck.cards), "frost");
+			deck.attachShard(getCardById("shield", deck.cards), "frost");
+			deck.attachShard(getCardById("stun", deck.cards), "flame");
+			deck.attachShard(getCardById("sparks", deck.cards), "frost");
+			deck.attachShard(getCardById("remember", deck.cards), "frost");
+			deck.attachShard(getCardById("remember", deck.cards), "frost");
+			deck.attachShard(getCardById("rainbow_charge", deck.cards), "flame");
+			deck.attachShard(getCardById("robustness", deck.cards), "flame");
+			deck.attachShard(getCardById("deter", deck.cards), "frost");
+			deck.attachShard(getCardById("deter", deck.cards), "frost");
+			deck.attachShard(getCardById("safeguard", deck.cards), "flame");
+			deck.attachShard(getCardById("patience", deck.cards), "frost");
+			deck.attachShard(getCardById("amass", deck.cards), "frost");
+			deck.attachShard(getCardById("amass", deck.cards), "flame");
+			deck.attachShard(getCardById("sudden_barrage", deck.cards), "flame");
+			deck.attachShard(getCardById("acuity", deck.cards), "frost");
+			deck.attachShard(getCardById("acuity", deck.cards), "frost");
+			deck.attachShard(getCardById("midas_touch", deck.cards), "frost");
+			deck.attachShard(getCardById("stamina", deck.cards), "frost");
+			deck.attachShard(getCardById("forbid", deck.cards), "flame");
+			deck.attachShard(getCardById("forbid", deck.cards), "flame");
+			deck.attachShard(getCardById("adrenaline_rush", deck.cards), "flame");
+			deck.attachShard(getCardById("mystical_energy", deck.cards), "flame");
+			deck.attachShard(getCardById("mystical_energy", deck.cards), "flame");
+			deck.attachShard(getCardById("attuned_barrier", deck.cards), "flame");
+			deck.attachShard(getCardById("attuned_barrier", deck.cards), "flame");
+			deck.attachShard(getCardById("bulwark", deck.cards), "frost");
 
 			// essence
 			updateEssenceLevels("shimmer", 14);
@@ -1528,25 +1531,25 @@ function buildScenario(which = "frozen_forest_combine") {
 			addCardToDeck("firmament_mover");
 
 			// shards
-			deck.attachShard(util.getCardById("stun", deck.cards), "frost");
-			deck.attachShard(util.getCardById("clever_trick", deck.cards), "flame");
-			deck.attachShard(util.getCardById("dark_codex", deck.cards), "frost");
-			deck.attachShard(util.getCardById("wing_sweep", deck.cards), "frost");
-			deck.attachShard(util.getCardById("wing_sweep", deck.cards), "flame");
-			deck.attachShard(util.getCardById("provisioned_attack", deck.cards), "frost");
-			deck.attachShard(util.getCardById("provisioned_attack", deck.cards), "frost");
-			deck.attachShard(util.getCardById("fortress", deck.cards), "flame");
-			deck.attachShard(util.getCardById("ultra_kill", deck.cards), "frost");
-			deck.attachShard(util.getCardById("ultra_kill", deck.cards), "frost");
-			deck.attachShard(util.getCardById("masterwork", deck.cards), "flame");
-			deck.attachShard(util.getCardById("thwart", deck.cards), "frost");
-			deck.attachShard(util.getCardById("thwart", deck.cards), "flame");
-			deck.attachShard(util.getCardById("midas_touch", deck.cards), "flame");
-			deck.attachShard(util.getCardById("overpowered", deck.cards), "frost");
-			deck.attachShard(util.getCardById("overpowered", deck.cards), "flame");
-			deck.attachShard(util.getCardById("colossus", deck.cards), "flame");
-			deck.attachShard(util.getCardById("trade_up", deck.cards), "frost");
-			deck.attachShard(util.getCardById("trade_up", deck.cards), "flame");
+			deck.attachShard(getCardById("stun", deck.cards), "frost");
+			deck.attachShard(getCardById("clever_trick", deck.cards), "flame");
+			deck.attachShard(getCardById("dark_codex", deck.cards), "frost");
+			deck.attachShard(getCardById("wing_sweep", deck.cards), "frost");
+			deck.attachShard(getCardById("wing_sweep", deck.cards), "flame");
+			deck.attachShard(getCardById("provisioned_attack", deck.cards), "frost");
+			deck.attachShard(getCardById("provisioned_attack", deck.cards), "frost");
+			deck.attachShard(getCardById("fortress", deck.cards), "flame");
+			deck.attachShard(getCardById("ultra_kill", deck.cards), "frost");
+			deck.attachShard(getCardById("ultra_kill", deck.cards), "frost");
+			deck.attachShard(getCardById("masterwork", deck.cards), "flame");
+			deck.attachShard(getCardById("thwart", deck.cards), "frost");
+			deck.attachShard(getCardById("thwart", deck.cards), "flame");
+			deck.attachShard(getCardById("midas_touch", deck.cards), "flame");
+			deck.attachShard(getCardById("overpowered", deck.cards), "frost");
+			deck.attachShard(getCardById("overpowered", deck.cards), "flame");
+			deck.attachShard(getCardById("colossus", deck.cards), "flame");
+			deck.attachShard(getCardById("trade_up", deck.cards), "frost");
+			deck.attachShard(getCardById("trade_up", deck.cards), "flame");
 
 			// essence
 			updateEssenceLevels("shimmer", 10);
@@ -1616,18 +1619,18 @@ function buildScenario(which = "frozen_forest_combine") {
 			addCardToDeck("blockade");
 
 			// shards
-			deck.attachShard(util.getCardById("shield", deck.cards), "frost");
-			deck.attachShard(util.getCardById("stun", deck.cards), "flame");
-			deck.attachShard(util.getCardById("concuss", deck.cards), "flame");
-			deck.attachShard(util.getCardById("provisioned_attack", deck.cards), "frost");
-			deck.attachShard(util.getCardById("provisioned_attack", deck.cards), "frost");
-			deck.attachShard(util.getCardById("bravery", deck.cards), "flame");
-			deck.attachShard(util.getCardById("neigh", deck.cards), "frost");
-			deck.attachShard(util.getCardById("paralyzing_touch", deck.cards), "flame");
-			deck.attachShard(util.getCardById("paralyzing_touch", deck.cards), "flame");
-			deck.attachShard(util.getCardById("delightful", deck.cards), "frost");
-			deck.attachShard(util.getCardById("thwart", deck.cards), "frost");
-			deck.attachShard(util.getCardById("thwart", deck.cards), "frost");
+			deck.attachShard(getCardById("shield", deck.cards), "frost");
+			deck.attachShard(getCardById("stun", deck.cards), "flame");
+			deck.attachShard(getCardById("concuss", deck.cards), "flame");
+			deck.attachShard(getCardById("provisioned_attack", deck.cards), "frost");
+			deck.attachShard(getCardById("provisioned_attack", deck.cards), "frost");
+			deck.attachShard(getCardById("bravery", deck.cards), "flame");
+			deck.attachShard(getCardById("neigh", deck.cards), "frost");
+			deck.attachShard(getCardById("paralyzing_touch", deck.cards), "flame");
+			deck.attachShard(getCardById("paralyzing_touch", deck.cards), "flame");
+			deck.attachShard(getCardById("delightful", deck.cards), "frost");
+			deck.attachShard(getCardById("thwart", deck.cards), "frost");
+			deck.attachShard(getCardById("thwart", deck.cards), "frost");
 
 			// essence
 			updateEssenceLevels("shimmer", 24);
@@ -1694,12 +1697,12 @@ function buildScenario(which = "frozen_forest_combine") {
 			addCardToDeck("paralyzing_touch");
 
 			// shards
-			deck.attachShard(util.getCardById("stun", deck.cards), "frost");
-			deck.attachShard(util.getCardById("cleanse", deck.cards), "flame");
-			deck.attachShard(util.getCardById("cleanse", deck.cards), "frost");
-			deck.attachShard(util.getCardById("amass", deck.cards), "frost");
-			deck.attachShard(util.getCardById("amass", deck.cards), "flame");
-			deck.attachShard(util.getCardById("make_ready", deck.cards), "frost");
+			deck.attachShard(getCardById("stun", deck.cards), "frost");
+			deck.attachShard(getCardById("cleanse", deck.cards), "flame");
+			deck.attachShard(getCardById("cleanse", deck.cards), "frost");
+			deck.attachShard(getCardById("amass", deck.cards), "frost");
+			deck.attachShard(getCardById("amass", deck.cards), "flame");
+			deck.attachShard(getCardById("make_ready", deck.cards), "frost");
 
 			// essence
 			updateEssenceLevels("shimmer", 12);
@@ -1787,24 +1790,24 @@ function buildScenario(which = "frozen_forest_combine") {
 			addCardToDeck("reaper");
 
 			// shards
-			deck.attachShard(util.getCardById("stun", deck.cards), "frost");
-			deck.attachShard(util.getCardById("tail_whip", deck.cards), "flame");
-			deck.attachShard(util.getCardById("tail_whip", deck.cards), "flame");
-			deck.attachShard(util.getCardById("auto_attack", deck.cards), "frost");
-			deck.attachShard(util.getCardById("recoil", deck.cards), "flame");
-			deck.attachShard(util.getCardById("clever_maneuver", deck.cards), "flame");
-			deck.attachShard(util.getCardById("blockade", deck.cards), "frost");
-			deck.attachShard(util.getCardById("blockade", deck.cards), "frost");
-			deck.attachShard(util.getCardById("target", deck.cards), "frost");
-			deck.attachShard(util.getCardById("repel", deck.cards), "flame");
-			deck.attachShard(util.getCardById("repel", deck.cards), "flame");
-			deck.attachShard(util.getCardById("devastator", deck.cards), "frost");
-			deck.attachShard(util.getCardById("devastator", deck.cards), "frost");
-			deck.attachShard(util.getCardById("remember", deck.cards), "flame");
-			deck.attachShard(util.getCardById("remember", deck.cards), "flame");
-			deck.attachShard(util.getCardById("critical_hit", deck.cards), "flame");
-			deck.attachShard(util.getCardById("elite_maneuver", deck.cards), "frost");
-			deck.attachShard(util.getCardById("cutting_ring", deck.cards), "flame");
+			deck.attachShard(getCardById("stun", deck.cards), "frost");
+			deck.attachShard(getCardById("tail_whip", deck.cards), "flame");
+			deck.attachShard(getCardById("tail_whip", deck.cards), "flame");
+			deck.attachShard(getCardById("auto_attack", deck.cards), "frost");
+			deck.attachShard(getCardById("recoil", deck.cards), "flame");
+			deck.attachShard(getCardById("clever_maneuver", deck.cards), "flame");
+			deck.attachShard(getCardById("blockade", deck.cards), "frost");
+			deck.attachShard(getCardById("blockade", deck.cards), "frost");
+			deck.attachShard(getCardById("target", deck.cards), "frost");
+			deck.attachShard(getCardById("repel", deck.cards), "flame");
+			deck.attachShard(getCardById("repel", deck.cards), "flame");
+			deck.attachShard(getCardById("devastator", deck.cards), "frost");
+			deck.attachShard(getCardById("devastator", deck.cards), "frost");
+			deck.attachShard(getCardById("remember", deck.cards), "flame");
+			deck.attachShard(getCardById("remember", deck.cards), "flame");
+			deck.attachShard(getCardById("critical_hit", deck.cards), "flame");
+			deck.attachShard(getCardById("elite_maneuver", deck.cards), "frost");
+			deck.attachShard(getCardById("cutting_ring", deck.cards), "flame");
 
 			// essence
 			updateEssenceLevels("shimmer", 7);
@@ -2115,16 +2118,16 @@ function updateCardDescription(elem, cards) {
 		}
 		$(this).addClass(css);
 	});*/
-	let use = util.getCardAttribute(card, "use");
+	let use = getCardAttribute(card, "use");
 	elem.find(".use").html(use);
-	let linger = util.getCardAttribute(card, "linger");
+	let linger = getCardAttribute(card, "linger");
 	elem.find(".linger").html(linger);
-	let expire = util.getCardAttribute(card, "expire");
+	let expire = getCardAttribute(card, "expire");
 	elem.find(".expire").html(expire);
-	let age = util.getCardAttribute(card, "age");
+	let age = getCardAttribute(card, "age");
 	elem.find(".age").html(age);
-	let mana = util.getCardAttribute(card, "mana");
-	let baseMana = util.getCardAttribute(card, "baseMana");
+	let mana = getCardAttribute(card, "mana");
+	let baseMana = getCardAttribute(card, "baseMana");
 	let css = mana < baseMana ? "better" : "worse";
 	if (mana == baseMana) css = "";
 	elem.find(".mana").html(mana).addClass(css);
@@ -2149,13 +2152,13 @@ function viewLibrary() {
 		// load candies
 		for (let i = 0; i < treasures.candies.length; i++) {
 			let candy = treasures.candies[i];
-			candy.desc = deck.buildDescription(candy);
+			candy.desc = buildDescription(candy);
 			util.appendCandy(candy, ".library-candies", false);
 		}
 		// load treasures
 		for (let i = 0; i < treasures.treasures.length; i++) {
 			let treasure = treasures.treasures[i];
-			treasure.desc = deck.buildDescription(treasure);
+			treasure.desc = buildDescription(treasure);
 			util.appendTreasure(treasure, ".library-treasures");
 		}
 		// load cards
@@ -2225,10 +2228,11 @@ function viewPackCards(pack) {
 	$(".pack-cards-panel .cards").empty();
 	$(".pack-cards-panel .select").attr("data-pack", pack);
 	let packCards = getAddableCards(false, false, pack);
+	console.dir(packCards);
 	for (let i = 0; i < packCards.length; i++) {
-		let desc = deck.buildDescription(packCards[i]);
+		let desc = buildDescription(packCards[i]);
 		packCards[i].desc = desc;
-		let slotDesc = deck.buildSlotsDescription(packCards[i]);
+		let slotDesc = buildSlotsDescription(packCards[i]);
 		packCards[i].slotDesc = slotDesc;
 		util.appendCard(packCards[i], ".pack-cards-panel .cards");
 	}
@@ -2243,9 +2247,9 @@ function viewBasicCards() {
 	);
 	let basicCards = getAddableCards(false, false, false);
 	for (let i = 0; i < basicCards.length; i++) {
-		let desc = deck.buildDescription(basicCards[i]);
+		let desc = buildDescription(basicCards[i]);
 		basicCards[i].desc = desc;
-		let slotDesc = deck.buildSlotsDescription(basicCards[i]);
+		let slotDesc = buildSlotsDescription(basicCards[i]);
 		basicCards[i].slotDesc = slotDesc;
 		util.appendCard(basicCards[i], ".pack-cards-panel .cards");
 	}
@@ -2255,11 +2259,11 @@ function viewArmory() {
 	$(".armory-panel").addClass("shown");
 	if (!game.armoryBuilt) {
 		game.armoryBuilt = true;
-		let armory = AllCards().getWeapons();
+		let armory = getWeapons();
 		for (let i = 0; i < armory.length; i++) {
-			let desc = deck.buildDescription(armory[i]);
+			let desc = buildDescription(armory[i]);
 			armory[i].desc = desc;
-			let slotDesc = deck.buildSlotsDescription(armory[i]);
+			let slotDesc = buildSlotsDescription(armory[i]);
 			armory[i].slotDesc = slotDesc;
 			util.appendCard(armory[i], ".armory-panel .cards");
 		}
@@ -2444,12 +2448,12 @@ function startingBonus(elem) {
 		entity[att] += amount;
 	} else if (action != undefined) {
 		if (action == "addRare") {
-			let possibleCards = AllCards().cards.filter(
+			let possibleCards = ALL_CARDS.filter(
 				(i) => i.addable == true && i.tier == "rare"
 			);
-			let card = util.randFromArray(possibleCards);
+			let card = randFromArray(possibleCards);
 			deck.addCard(card.id);
-			let addedCard = util.getCardById(card.id, deck.cards);
+			let addedCard = getCardById(card.id, deck.cards);
 			game.toShow.push(addedCard);
 			deck.showModifiedCards(combatDeck, player, true);
 			entity.health.current -= 12;
@@ -2495,7 +2499,7 @@ function appendStartingTreasures() {
 	if (possibleTreasures.length > 0) {
 		for (let i = 0; i < 3; i++) {
 			let treasure = possibleTreasures[i];
-			treasure.desc = deck.buildDescription(treasure);
+			treasure.desc = buildDescription(treasure);
 			util.appendTreasure(treasure, ".starting-treasures");
 		}
 	}
@@ -2519,7 +2523,7 @@ function startingBoosterPack(elem) {
 		id = "bottled_speed";
 	}
 	deck.addCard(id);
-	card = util.getCardById(id, deck.cards);
+	card = getCardById(id, deck.cards);
 	game.toShow.push(card);
 	deck.showModifiedCards(combatDeck, player, true);
 	game.boosterPack = pack;
@@ -2649,7 +2653,7 @@ async function updateEssenceLevels(essence, amount) {
 					if (game.essenceThresholds[0] == current) {
 						deck.addCard(essence + "_stance");
 						combatDeck.addCard(essence + "_stance", combatDeck, "drawCards", player);
-						let card = util.getCardById(essence + "_stance", deck.cards);
+						let card = getCardById(essence + "_stance", deck.cards);
 						game.toShow.push(card);
 						deck.showModifiedCards(combatDeck, player, true);
 					}
@@ -2978,7 +2982,7 @@ async function monsterAction(action = "perform") {
 
 	// check for hypnotize
 	if (player.hypnotize.enabled) {
-		let targetedMonster = util.randFromArray(currentMonsters);
+		let targetedMonster = randFromArray(currentMonsters);
 		game.targetedMonster = targetedMonster;
 	} else {
 		game.targetedMonster = {};
@@ -4111,7 +4115,7 @@ function loot(type, tier = 3) {
 
 	switch (type) {
 		case "shard":
-			var index = util.randArrayIndex(treasures.shards);
+			var index = randArrayIndex(treasures.shards);
 			util.appendShard(treasures.shards[index], ".loot-items");
 			$(".loot-screen .message").html("You found a shard.");
 			break;
@@ -4124,7 +4128,7 @@ function loot(type, tier = 3) {
 				possibleTreasures = util.shuffle(possibleTreasures);
 				for (let i = 0; i < 3; i++) {
 					let treasure = possibleTreasures[i];
-					treasure.desc = deck.buildDescription(treasure);
+					treasure.desc = buildDescription(treasure);
 					util.appendTreasure(treasure, ".loot-items");
 				}
 			}
@@ -4141,7 +4145,7 @@ function loot(type, tier = 3) {
 				possibleTreasures = util.shuffle(possibleTreasures);
 				for (let i = 0; i < 3; i++) {
 					let treasure = possibleTreasures[i];
-					treasure.desc = deck.buildDescription(treasure);
+					treasure.desc = buildDescription(treasure);
 					util.appendTreasure(treasure, ".loot-items");
 				}
 			}
@@ -4154,21 +4158,21 @@ function loot(type, tier = 3) {
 				//for(let i = 0; i < possibleTreasures.length; i++) { // use this to show all possible treasures on the loot screen
 				//let treasure = possibleTreasures[i];
 				let treasure = util.weightedRandom(possibleTreasures);
-				treasure.desc = deck.buildDescription(treasure);
+				treasure.desc = buildDescription(treasure);
 				util.appendTreasure(treasure, ".loot-items");
 				//}
 			}
 			// one or two essences
 			var numEssences = util.chance(75) ? 1 : 2;
 			for (let i = 0; i < numEssences; i++) {
-				var index = util.randArrayIndex(game.essences);
+				var index = randArrayIndex(game.essences);
 				util.appendEssence(game.essences[index], ".loot-items");
 			}
 			// chance for shard
 			if (util.chance(game.shardChance) && deck.numOpenSlots() > 0) {
 				game.shardChance -= 5;
 				if (game.shardChance < 0) game.shardChance = 0;
-				var index = util.randArrayIndex(treasures.shards);
+				var index = randArrayIndex(treasures.shards);
 				util.appendShard(treasures.shards[index], ".loot-items");
 			}
 			// chance for candy
@@ -4178,7 +4182,7 @@ function loot(type, tier = 3) {
 				let candy = util.weightedRandom(treasures.candies);
 				//let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
 				let copiedCandy = $.extend(true, {}, candy);
-				copiedCandy.desc = deck.buildDescription(copiedCandy);
+				copiedCandy.desc = buildDescription(copiedCandy);
 				let clickable = player.candies.length < game.candySlots ? true : false;
 				util.appendCandy(copiedCandy, ".loot-items", clickable);
 			}
@@ -4189,7 +4193,7 @@ function loot(type, tier = 3) {
 				let candy = util.weightedRandom(treasures.candies);
 				//let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
 				let copiedCandy = $.extend(true, {}, candy);
-				copiedCandy.desc = deck.buildDescription(copiedCandy);
+				copiedCandy.desc = buildDescription(copiedCandy);
 				let clickable = player.candies.length < game.candySlots ? true : false;
 				util.appendCandy(copiedCandy, ".loot-items", clickable);
 			}
@@ -4229,7 +4233,7 @@ function rewardsScreen() {
 		let candy = util.weightedRandom(treasures.candies);
 		//let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
 		let copiedCandy = $.extend(true, {}, candy);
-		copiedCandy.desc = deck.buildDescription(copiedCandy);
+		copiedCandy.desc = buildDescription(copiedCandy);
 		let clickable = player.candies.length < game.candySlots ? true : false;
 		util.appendCandy(copiedCandy, ".rewards-loot", clickable);
 		$(".rewards-loot-wrapper").addClass("shown");
@@ -4237,7 +4241,7 @@ function rewardsScreen() {
 	if (util.chance(game.shardChance) && deck.numOpenSlots() > 0) {
 		game.shardChance -= 15;
 		if (game.shardChance < 0) game.shardChance = 0;
-		var index = util.randArrayIndex(treasures.shards);
+		var index = randArrayIndex(treasures.shards);
 		util.appendShard(treasures.shards[index], ".rewards-loot");
 		$(".rewards-loot-wrapper").addClass("shown");
 	}
@@ -4303,13 +4307,13 @@ function courageScreen() {
 			theseTreasures.push(thisTreasure);
 			possibleTreasures = possibleTreasures.filter((i) => i.id !== thisTreasure.id);
 			if (thisTreasure == undefined) break;
-			thisTreasure.desc = deck.buildDescription(thisTreasure);
+			thisTreasure.desc = buildDescription(thisTreasure);
 			util.appendTreasure(thisTreasure, ".courage-items");
 		}
 
 		for (let i = 0; i < game.courageCandyAmount; i++) {
 			let thisCandy = util.weightedRandom(treasures.candies);
-			thisCandy.desc = deck.buildDescription(thisCandy);
+			thisCandy.desc = buildDescription(thisCandy);
 			let clickable = player.candies.length < game.candySlots ? true : false;
 			util.appendCandy(thisCandy, ".courage-items", clickable);
 		}
@@ -4389,7 +4393,7 @@ function addCandy(add) {
 		let candy = treasures.candies.find(({ id }) => id === add);
 		//let copiedCandy = JSON.parse(JSON.stringify(candy)); // necessary to create a deep copy
 		let copiedCandy = $.extend(true, {}, candy);
-		copiedCandy.desc = deck.buildDescription(copiedCandy);
+		copiedCandy.desc = buildDescription(copiedCandy);
 		Player().addCandy(copiedCandy, player);
 		if (player.candies.length == game.candySlots) {
 			$(".loot-items .candy").removeClass("clickable");
@@ -4479,7 +4483,7 @@ function addTreasure(add) {
 	if (game.playsounds) sounds.play("addTreasure");
 	let treasure = treasures.treasures.find(({ id }) => id === add);
 	if (treasure == undefined) return false;
-	treasure.desc = deck.buildDescription(treasure);
+	treasure.desc = buildDescription(treasure);
 	Player().addTreasure(treasure, player);
 
 	// treasures that have counters don't get applied immediately
@@ -4514,7 +4518,7 @@ function buyCandy(id) {
 function buyCard(id) {
 	if (game.playsounds) sounds.play("buyItem");
 	addCardToDeck(id);
-	let card = util.getCardById(id, ALL_CARDS);
+	let card = getCardById(id, ALL_CARDS);
 	player.courage -= card.courage;
 	updateItemCost();
 
@@ -4572,7 +4576,7 @@ function selectCard(elem) {
 		combatDeck.updateCardPlayability(player, combatDeck);
 		elem.find(".button.play-card").remove();
 	} else {
-		//let card = util.getCardById(elem.data('id'), allCards); // was this wrong?
+		//let card = getCardById(elem.data('id'), allCards); // was this wrong?
 		let card = util.getCardByGuid(elem.data("guid"), combatDeck.handCards);
 		if (card != undefined) {
 			$(".card.playable").removeClass("selected"); // deselect any other previously selected cards
@@ -4820,15 +4824,15 @@ function transmuteCards() {
 }
 
 function shouldDestroyCard(card) {
-	let vanish = util.getCardAttribute(card, "vanish");
-	let use = util.getCardAttribute(card, "use");
-	let breakable = util.getCardAttribute(card, "breakable");
+	let vanish = getCardAttribute(card, "vanish");
+	let use = getCardAttribute(card, "use");
+	let breakable = getCardAttribute(card, "breakable");
 
 	return vanish || use == 0 || (breakable && use == 0);
 }
 
 function activateCard(card) {
-	let type = util.getCardAttribute(card, "type");
+	let type = getCardAttribute(card, "type");
 
 	return type == "ability";
 }
@@ -4915,13 +4919,13 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	if (monster != undefined && card.target !== "all") {
 		if (monster == "random") {
 			let currentMonsters = game.currentMonsters.filter((i) => i.dead == false);
-			currentMonster = [util.randFromArray(currentMonsters)];
+			currentMonster = [randFromArray(currentMonsters)];
 		} else {
 			currentMonster = game.currentMonsters.filter((i) => i.guid == monster.data("guid"));
 		}
 	}
 
-	let mana = util.getCardAttribute(card, "mana");
+	let mana = getCardAttribute(card, "mana");
 	let multiply = 1;
 	let numShards = util.getShardNum(card, "any");
 	if (mana == "?" && useMana) {
@@ -5001,9 +5005,9 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	}
 	player.antimomentumAmount += player.antimomentum.current;
 
-	let linger = util.getCardAttribute(card, "linger");
-	let breakable = util.getCardAttribute(card, "breakable");
-	let use = util.getCardAttribute(card, "use");
+	let linger = getCardAttribute(card, "linger");
+	let breakable = getCardAttribute(card, "breakable");
+	let use = getCardAttribute(card, "use");
 
 	// figure out what to do with card
 	if (shouldDestroyCard(card)) {
@@ -5055,12 +5059,12 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	if (card.type == "ability" && player.bless.enabled) {
 		let possibleCards = [];
 		for (let i = 0; i < combatDeck.handCards.length; i++) {
-			let mana = util.getCardAttribute(combatDeck.handCards[i], "mana");
+			let mana = getCardAttribute(combatDeck.handCards[i], "mana");
 			if (mana > 0) {
 				possibleCards.push(combatDeck.handCards[i]);
 			}
 		}
-		let freeCard = util.randFromArray(possibleCards);
+		let freeCard = randFromArray(possibleCards);
 		console.log("tried to bless", freeCard);
 		if (freeCard != undefined) {
 			freeCard.mana = 0;
@@ -5107,7 +5111,7 @@ async function processCard(card, currentMonster, type, multiply = 1, cardWasPlay
 	let target = currentMonster;
 	// only process card draw target if monster has not been passed through
 	if (target == false || target == undefined) {
-		let cardTarget = util.getCardAttribute(card, "target", type);
+		let cardTarget = getCardAttribute(card, "target", type);
 		if (!(cardTarget == false || cardTarget == undefined)) {
 			target = cardTarget;
 			if (target == "all") {
@@ -5126,27 +5130,27 @@ async function processCard(card, currentMonster, type, multiply = 1, cardWasPlay
 		}
 	}
 
-	let blk = util.getCardAttribute(card, "blk", type);
+	let blk = getCardAttribute(card, "blk", type);
 	await processBlk(blk, multiply, card, cardWasPlayed);
 
-	let armor = util.getCardAttribute(card, "armor", type);
+	let armor = getCardAttribute(card, "armor", type);
 	await processArmor(armor, multiply, card, cardWasPlayed);
 
-	let dmg = util.getCardAttribute(card, "dmg", type);
+	let dmg = getCardAttribute(card, "dmg", type);
 	await processDmg(dmg, target, multiply, card, type, cardWasPlayed);
 
 	if (monsters.allDead()) return;
 
-	let effects = util.getCardAttribute(card, "effects", type);
+	let effects = getCardAttribute(card, "effects", type);
 	await processEffects(effects, currentMonster, multiply, card, cardWasPlayed);
 
-	let abilities = util.getCardAttribute(card, "abilities", type);
+	let abilities = getCardAttribute(card, "abilities", type);
 	await processAbilities(abilities, currentMonster, card, cardWasPlayed);
 
-	let magic = util.getCardAttribute(card, "magic", type);
+	let magic = getCardAttribute(card, "magic", type);
 	await processMagic(magic, multiply, card, cardWasPlayed);
 
-	let actions = util.getCardAttribute(card, "actions", type);
+	let actions = getCardAttribute(card, "actions", type);
 	await processActions(actions, target, multiply, card, cardWasPlayed);
 
 	// stance attributes
@@ -5161,25 +5165,25 @@ async function processCard(card, currentMonster, type, multiply = 1, cardWasPlay
 			hex: false,
 		});
 
-		let dmgStance = util.getCardAttribute(card, "dmg", player.stance);
+		let dmgStance = getCardAttribute(card, "dmg", player.stance);
 		await processDmg(dmgStance, target, multiply, card, type, cardWasPlayed);
 
-		let blkStance = util.getCardAttribute(card, "blk", player.stance);
+		let blkStance = getCardAttribute(card, "blk", player.stance);
 		await processBlk(blkStance, multiply, card, cardWasPlayed);
 
-		let armorStance = util.getCardAttribute(card, "armor", player.stance);
+		let armorStance = getCardAttribute(card, "armor", player.stance);
 		await processArmor(armorStance, multiply, card, cardWasPlayed);
 
-		let effectsStance = util.getCardAttribute(card, "effects", player.stance);
+		let effectsStance = getCardAttribute(card, "effects", player.stance);
 		await processEffects(effectsStance, currentMonster, multiply, card, cardWasPlayed);
 
-		let abilitiesStance = util.getCardAttribute(card, "abilities", player.stance);
+		let abilitiesStance = getCardAttribute(card, "abilities", player.stance);
 		await processAbilities(abilitiesStance, currentMonster, card, cardWasPlayed);
 
-		let magicStance = util.getCardAttribute(card, "magic", player.stance);
+		let magicStance = getCardAttribute(card, "magic", player.stance);
 		await processMagic(magicStance, multiply, card, cardWasPlayed);
 
-		let actionsStance = util.getCardAttribute(card, "actions", player.stance);
+		let actionsStance = getCardAttribute(card, "actions", player.stance);
 		await processActions(actionsStance, false, multiply, card, cardWasPlayed);
 	}
 
@@ -5443,24 +5447,24 @@ async function processActions(
 							if (actions[e].type != undefined) {
 								if (actions[e].tier != undefined) {
 									if (actions[e].type == "any") {
-										possibleCards = AllCards().cards.filter(
+										possibleCards = ALL_CARDS.filter(
 											(i) => i.addable == true && i.tier == actions[e].tier
 										);
 									} else if (
 										actions[e].type == "converter" ||
 										actions[e].type == "bottled"
 									) {
-										possibleCards = AllCards().cards.filter(
+										possibleCards = ALL_CARDS.filter(
 											(i) =>
 												i.type == actions[e].type &&
 												i.tier == actions[e].tier
 										);
 									} else if (actions[e].type == "weapon") {
-										possibleCards = AllCards().cards.filter(
+										possibleCards = ALL_CARDS.filter(
 											(i) => i.weapon == true && i.tier == actions[e].tier
 										);
 									} else {
-										possibleCards = AllCards().cards.filter(
+										possibleCards = ALL_CARDS.filter(
 											(i) =>
 												i.type == actions[e].type &&
 												i.tier == actions[e].tier &&
@@ -5469,7 +5473,7 @@ async function processActions(
 									}
 								} else {
 									if (actions[e].type == "any") {
-										possibleCards = AllCards().cards.filter(
+										possibleCards = ALL_CARDS.filter(
 											(i) => i.addable == true
 										);
 									} else if (
@@ -5477,22 +5481,22 @@ async function processActions(
 										actions[e].type == "bottled" ||
 										actions[e].type == "clutter"
 									) {
-										possibleCards = AllCards().cards.filter(
+										possibleCards = ALL_CARDS.filter(
 											(i) => i.type == actions[e].type
 										);
 									} else if (actions[e].type == "weapon") {
-										possibleCards = AllCards().cards.filter(
+										possibleCards = ALL_CARDS.filter(
 											(i) => i.weapon == true
 										);
 									} else {
-										possibleCards = AllCards().cards.filter(
+										possibleCards = ALL_CARDS.filter(
 											(i) => i.type == actions[e].type && i.addable == true
 										);
 									}
 								}
 							} else {
 								if (actions[e].tier != undefined) {
-									possibleCards = AllCards().cards.filter(
+									possibleCards = ALL_CARDS.filter(
 										(i) => i.addable == true && i.tier == actions[e].tier
 									);
 								}
@@ -5510,7 +5514,7 @@ async function processActions(
 						}
 
 						for (let i = 0; i < actions[e].value; i++) {
-							thisCard = util.randFromArray(possibleCards);
+							thisCard = randFromArray(possibleCards);
 							possibleCards = possibleCards.filter((i) => i.id !== thisCard.id);
 
 							addThisCard = addCard;
@@ -5531,7 +5535,7 @@ async function processActions(
 
 								// we need to pass the guid in case the card is added during combat before the decks
 								// have a chance to sync. this is the only time currently that we're actually passing a guid in
-								let guid = util.randString();
+								let guid = randString();
 								if (actions[e].to != "deck") {
 									combatDeck.addCard(
 										addThisCard,
@@ -5547,9 +5551,9 @@ async function processActions(
 								if (actions[e].permanent) {
 									deck.addCard(addThisCard, guid);
 								}
-								thisCard = util.getCardById(addThisCard, AllCards().cards);
+								thisCard = getCardById(addThisCard, ALL_CARDS);
 								if (thisCard != undefined) {
-									let desc = deck.buildDescription(thisCard);
+									let desc = buildDescription(thisCard);
 									thisCard.desc = desc;
 									game.toShow.push(thisCard);
 								}
@@ -5614,10 +5618,10 @@ async function processActions(
 								if (num < 0) num = deck.numOpenSlots(combatDeck.chooseCards);
 								for (let i = 0; i < num; i++) {
 									if (shard == "random") {
-										thisShard = util.randFromArray(treasures.shards);
+										thisShard = randFromArray(treasures.shards);
 										thisShard = thisShard.id;
 									}
-									let card = util.randFromArray(combatDeck.chooseCards);
+									let card = randFromArray(combatDeck.chooseCards);
 									if (card != undefined) {
 										if (game.playsounds) sounds.play("attachShard");
 										deck.attachShard(card, thisShard);
@@ -5655,7 +5659,7 @@ async function processActions(
 								for (let i = 0; i < actions[e].value; i++) {
 									let handCards = combatDeck.handCards;
 									handCards = handCards.filter((i) => i.playing == false);
-									let randomCard = util.randFromArray(handCards);
+									let randomCard = randFromArray(handCards);
 									if (randomCard !== undefined) {
 										let domCard = util.getDomCardByGuid(randomCard.guid);
 										await discardCard(domCard);
@@ -5684,7 +5688,7 @@ async function processActions(
 								for (let i = 0; i < actions[e].value; i++) {
 									let handCards = combatDeck.handCards;
 									handCards = handCards.filter((i) => i.playing == false);
-									let randomCard = util.randFromArray(handCards);
+									let randomCard = randFromArray(handCards);
 									if (randomCard !== undefined) {
 										let domCard = util.getDomCardByGuid(randomCard.guid);
 										await destroyCard(domCard);
@@ -5716,7 +5720,7 @@ async function processActions(
 							for (let i = 0; i < actions[e].select; i++) {
 								let handCards = combatDeck.handCards;
 								handCards = handCards.filter((i) => i.playing == false);
-								let randomCard = util.randFromArray(handCards);
+								let randomCard = randFromArray(handCards);
 								if (randomCard !== undefined) {
 									game.toTransmute.push(randomCard);
 								}
@@ -5759,7 +5763,7 @@ async function processActions(
 									await util.wait(500);
 									let drawCards = $(".draw-cards-panel .card");
 									if (drawCards.length > 0) {
-										let randomCard = $(util.randFromArray(drawCards));
+										let randomCard = $(randFromArray(drawCards));
 										addCardTo("drawCards", randomCard);
 									}
 									$(".draw-cards-panel").removeClass("shown");
@@ -5785,7 +5789,7 @@ async function processActions(
 									await util.wait(500);
 									let discardCards = $(".discard-cards-panel .card");
 									if (discardCards.length > 0) {
-										let randomCard = $(util.randFromArray(discardCards));
+										let randomCard = $(randFromArray(discardCards));
 										addCardTo("discardCards", randomCard);
 									}
 									$(".discard-cards-panel").removeClass("shown");
@@ -5810,7 +5814,7 @@ async function processActions(
 									await util.wait(500);
 									let deadCards = $(".dead-cards-panel .card");
 									if (deadCards.length > 0) {
-										let randomCard = $(util.randFromArray(deadCards));
+										let randomCard = $(randFromArray(deadCards));
 										addCardTo("deadCards", randomCard);
 									}
 									$(".dead-cards-panel").removeClass("shown");
@@ -6043,7 +6047,7 @@ async function processActions(
 						if (actions[e].what.constructor === Array) {
 							for (let i = 0; i < actions[e].value; i++) {
 								let id = game.round + "-" + i;
-								let what = util.randFromArray(actions[e].what);
+								let what = randFromArray(actions[e].what);
 								monsters.summonMonster(what, id, form);
 								await util.wait(game.animationGap);
 							}
@@ -6066,7 +6070,7 @@ async function processActions(
 										);
 									}
 								}
-								let what = util.randFromArray(possibleMonsters);
+								let what = randFromArray(possibleMonsters);
 								monsters.summonMonster(what.id, id, form);
 								await util.wait(game.animationGap);
 							}
@@ -6891,7 +6895,7 @@ async function applyMagic(magic, to) {
 	if (magic.type == "aligned") {
 		type = to.rainbow.type;
 	} else if (magic.type == "random") {
-		type = util.randFromArray(types);
+		type = randFromArray(types);
 	}
 
 	// don't let rainbow max go negative
@@ -6942,7 +6946,7 @@ async function applyMagic(magic, to) {
 		} else if (to.rainbow.type == "chaos") {
 			//let effects = [{effect: 'might', amount: might, turns: 1, hex: true}];
 			//await processEffects(effects, currentMonsters);
-			let whichMonster = [util.randFromArray(currentMonsters)];
+			let whichMonster = [randFromArray(currentMonsters)];
 			await doDamage(dmgChaos, undefined, whichMonster, false, false);
 		}
 		for (let i = 0; i < game.currentMonsters.length; i++) {
@@ -7045,7 +7049,7 @@ async function activateRainbow(type, to) {
 
 	let whichMonster =
 		to.rainbow.type == "muddled" || to.rainbow.type == "chaos"
-			? [util.randFromArray(currentMonsters)]
+			? [randFromArray(currentMonsters)]
 			: currentMonsters;
 
 	await doDamage(dmg, undefined, whichMonster, ignoreBlock, ignoreArmor);

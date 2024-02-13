@@ -31,9 +31,19 @@ const mulberry32 = (a) => {
 
 let seed = cyrb128("bananas");
 
+const setGameSeed = (s) => {
+	seed = cyrb128(s);
+};
+
 const rand = (s) => {
-	if (s) seed = cyrb128(s);
 	return mulberry32(seed[0]);
 };
 
-export { cyrb128, mulberry32, rand };
+
+const randArrayIndex = (arr) => Math.floor(rand() * arr.length);
+
+const randFromArray = (arr) => arr[Math.floor(rand() * arr.length)];
+
+const randString = () => (Math.random() + 1).toString(36).substring(2);
+
+export { cyrb128, mulberry32, rand, randArrayIndex, randFromArray, randString, setGameSeed};
