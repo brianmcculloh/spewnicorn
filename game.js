@@ -445,7 +445,7 @@ const ALL_ABILITIES = [
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'resurrect', baseTurns: -1, enabled: true}
-    {id: 'resurrect', name: 'Resurrect', desc: 'Each time this creature receives damage, add one random monster to combat next turn', context: 'turn', x: -416, y: -6592, offset: true},
+    {id: 'resurrect', name: 'Resurrect', desc: 'Each time this creature receives damage, add one random tier 4 or 5 monster to combat next turn', context: 'turn', x: -416, y: -6592, offset: true},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
@@ -563,7 +563,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.52 Alpha';
+    let version = '0.54 Alpha';
     let seed = false;
     let difficulty = 'medium';
     let floor = 0; // TODO: set to 0

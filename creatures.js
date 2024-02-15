@@ -2531,7 +2531,7 @@ const ALL_MONSTERS = [
         breed: 'flame_guardian',
         name: 'Super Frozen Flame Guardian', 
         health: {base: 700, current: 0, max: 700},
-        tier: 6,
+        tier: 7,
         category: 'fire_guardian',
         pattern: 'fixed',
         moveSet: [
@@ -2573,7 +2573,7 @@ const ALL_MONSTERS = [
         breed: 'flame_guardian',
         name: 'Super Burning Flame Guardian', 
         health: {base: 350, current: 0, max: 350},
-        tier: 6,
+        tier: 7,
         category: 'fire_guardian',
         pattern: 'fixed',
         moveSet: [
@@ -2669,7 +2669,7 @@ const ALL_MONSTERS = [
         breed: 'frost_guardian',
         name: 'Super Frozen Frost Guardian', 
         health: {base: 1000, current: 0, max: 1000},
-        tier: 6,
+        tier: 7,
         category: 'ice_guardian',
         pattern: 'fixed',
         moveSet: [
@@ -2720,7 +2720,7 @@ const ALL_MONSTERS = [
         breed: 'frost_guardian',
         name: 'Super Burning Frost Guardian', 
         health: {base: 500, current: 0, max: 500},
-        tier: 6,
+        tier: 7,
         category: 'ice_guardian',
         pattern: 'fixed',
         moveSet: [
@@ -2770,25 +2770,25 @@ const ALL_MONSTERS = [
         breed: 'singularity',
         name: 'Singularity', 
         health: {base: 15, current: 0, max: 15},
-        tier: 7,
+        tier: 8,
         category: 'singularity',
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'retaliate', amount: 2, turns: -1},
+                {effect: 'retaliate', amount: 3, turns: -1},
                 {effect: 'might', amount: 50, turns: -1}
             ]},
             {effects: [
-                {effect: 'retaliate', amount: 2, turns: -1}
+                {effect: 'retaliate', amount: 3, turns: -1}
             ]},
             {effects: [
-                {effect: 'retaliate', amount: 2, turns: -1}
+                {effect: 'retaliate', amount: 3, turns: -1}
             ]},
             {effects: [
-                {effect: 'retaliate', amount: 2, turns: -1}
+                {effect: 'retaliate', amount: 3, turns: -1}
             ]},
             {dmg: [1], effects: [
-                {effect: 'retaliate', amount: 2, turns: -1}
+                {effect: 'retaliate', amount: 3, turns: -1}
             ], actions: [
                 {action: 'stat', what: 'might', key: 'current', value: 'double'},
             ],},
@@ -2797,7 +2797,7 @@ const ALL_MONSTERS = [
         unreachable: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
         resurrect: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
         eternal: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
-        vex: {base: 2, current: 0, temp: [], turns: -1},
+        vex: {base: 15, current: 0, temp: [], turns: -1},
         veil: {base: .5, current: 0, temp: [], turns: -1},
     }),
 
@@ -3140,7 +3140,7 @@ export function Monster() {
                 }
             } else {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(6, i, 'fire_guardian', [], context);
+                    let thisMonster = createMonster(7, i, 'fire_guardian', [], context);
                     currentMonsters.push(thisMonster);
                 }
             }
@@ -3154,7 +3154,7 @@ export function Monster() {
                 }
             } else {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(6, i, 'ice_guardian', [], context);
+                    let thisMonster = createMonster(7, i, 'ice_guardian', [], context);
                     currentMonsters.push(thisMonster);
                 }
             }
@@ -3162,7 +3162,7 @@ export function Monster() {
         } else if(game.mapType == 'singularity') {
 
             for (let i = 0; i < 1; i++) {
-                let thisMonster = createMonster(7, i, 'singularity', [], 'forest', false, 'singularity');
+                let thisMonster = createMonster(8, i, 'singularity', [], 'forest', false, 'singularity');
                 currentMonsters.push(thisMonster);
             }
 

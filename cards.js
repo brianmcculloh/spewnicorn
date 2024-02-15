@@ -811,12 +811,12 @@ const ALL_CARDS = [
     new Cards({
         id: 'stun', name: 'Stun', type: 'tool', mana: 0, addable: false, target: 'monster',
         effects: [
-            {effect: 'punch', amount: -.5, turns: 1, hex: true},
+            {effect: 'punch', amount: -.4, turns: 1, hex: true},
         ],
         slots: 1,
         shardUpgrades: {
             effects: [
-                {effect: 'punch', amount: -.5, turns: 2, hex: true}
+                {effect: 'punch', amount: -.6, turns: 1, hex: true}
             ],
         },
     }),
@@ -4000,7 +4000,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'remember', name: 'Remember', type: 'tool', mana: 1, weight: 2, use: 3,
+        id: 'remember', name: 'Remember', type: 'tool', mana: 1, weight: .8, use: 3,
         actions: [
             {action: 'findDiscardCard', value: 1}
         ],
@@ -5222,7 +5222,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'paralyzing_touch', name: 'Paralyzing Touch', type: 'tool', target: 'monster', mana: 1, vanish: true, tier: 'rare', weight: 4, courage: 6, 
+        id: 'paralyzing_touch', name: 'Paralyzing Touch', type: 'tool', target: 'monster', mana: 1, vanish: true, tier: 'rare', weight: 1, courage: 6, 
         abilities: [
             {ability: 'frozen', turns: 1, enabled: true}
         ],
@@ -5236,7 +5236,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'blitzkrieg', name: 'Blitzkrieg', type: 'tool', tier: 'rare', mana: 3, courage: 5, vanish: true,
+        id: 'blitzkrieg', name: 'Blitzkrieg', type: 'tool', tier: 'rare', mana: 3, courage: 5, vanish: true, weight: 1,
         actions: [
             {action: 'playHand'}
         ],
@@ -5794,7 +5794,7 @@ const ALL_CARDS = [
         }
     }),
     new Cards({
-        id: 'cycle_barrier', name: 'Cycle Barrier', type: 'ability', mana: 1, tier: 'uncommon', courage: 4, pack: 'rainbow', 
+        id: 'cycle_barrier', name: 'Cycle Barrier', type: 'ability', mana: 1, tier: 'uncommon', courage: 4, pack: 'cycle', 
         effects: [
             {effect: 'preserve', amount: 10, turns: -1}
         ],
@@ -6219,7 +6219,7 @@ const ALL_CARDS = [
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'rainbow', amount: 18}], 
+            magic: [{type: 'rainbow', amount: 24}], 
         },
     }),
     new Cards({
@@ -6228,7 +6228,7 @@ const ALL_CARDS = [
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'chaos', amount: 15}], 
+            magic: [{type: 'chaos', amount: 20}], 
         },
     }),
     new Cards({
@@ -6237,7 +6237,7 @@ const ALL_CARDS = [
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'dark', amount: 15}], 
+            magic: [{type: 'dark', amount: 20}], 
         },
     }),
     new Cards({
@@ -6246,7 +6246,7 @@ const ALL_CARDS = [
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'elemental', amount: 15}], 
+            magic: [{type: 'elemental', amount: 20}], 
         },
     }),
     new Cards({
@@ -6255,7 +6255,7 @@ const ALL_CARDS = [
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'random', amount: 20}], 
+            magic: [{type: 'random', amount: 30}], 
         },
     }),
     new Cards({
@@ -6264,17 +6264,17 @@ const ALL_CARDS = [
         sound: 'magic3',
         slots: 2,
         shardUpgrades: {
-            magic: [{type: 'aligned', amount: 15}], 
+            magic: [{type: 'aligned', amount: 18}], 
         },
         bothShardUpgrades: {
-            magic: [{type: 'aligned', amount: 20}], 
+            magic: [{type: 'aligned', amount: 26}], 
         },
     }),
     new Cards({
         id: 'delayed_charge', name: 'Delayed Charge', type: 'magic', tier: 'common', playable: false, pack: 'cycle',
         sound: 'magic3',
         discard: {
-            magic: [{type: 'aligned', amount: 10}], 
+            magic: [{type: 'aligned', amount: 15}], 
         },
         slots: 1,
         shardUpgrades: {
@@ -6285,7 +6285,7 @@ const ALL_CARDS = [
         id: 'sacrificial_charge', name: 'Sacrificial Charge', type: 'magic', tier: 'common', playable: false, pack: 'cycle',
         sound: 'magic3',
         destroy: {
-            magic: [{type: 'aligned', amount: 20}], 
+            magic: [{type: 'aligned', amount: 30}], 
         },
         slots: 1,
         shardUpgrades: {
@@ -6294,11 +6294,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'risky_charm', name: 'Risky Charm', type: 'magic', mana: 0, tier: 'common', weight: 7, retain: true,
-        magic: [{type: 'random', amount: 10}], 
+        magic: [{type: 'random', amount: 15}], 
         sound: 'magic2',
         slots: 1,
         fireShardUpgrades: {
-            magic: [{type: 'random', amount: 20}], 
+            magic: [{type: 'random', amount: 30}], 
         },
         iceShardUpgrades: {
             linger: 1
@@ -6884,7 +6884,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'mystical_energy', name: 'Mystical Energy', type: 'magic', mana: 0, tier: 'rare', vanish: true, weight: 2, courage: 5, 
+        id: 'mystical_energy', name: 'Mystical Energy', type: 'magic', mana: 0, tier: 'rare', vanish: true, weight: .8, courage: 5, 
         magic: [{type: 'aligned', amount: 7}],
         actions: [
             {action: 'removeHexes', to: 'player'},
@@ -7218,6 +7218,7 @@ export function Deck() {
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
         }
+
 
         // this is how to add a shard on init - DEV MODE ONLY
         //attachShard(util.getCardById('blitzkrieg', this.cards), 'flame');

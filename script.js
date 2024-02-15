@@ -85,6 +85,7 @@
  * Quest: heal to full health, heal to full armor, or gamble for courage
  * Quest: next combat is peaceful, meaning enemies do half damage
  * Quest: Snitch - gain agggro for a reward, lose 1 aggro for nothing, lose 2 (or more?) aggro at a cost of health or courage
+ * Quest: trade health any number of times for courage and other things
  * 
  * 
  * 
@@ -110,9 +111,6 @@
  * PHASE V:
  * 
  * 
- * 
- * TODO: test out the new flame guardian moveset for balancing
- * TODO: test the singularity fight for balancing
  * TODO: implement mechanics first and then add some more cards after that
  * 
  * 
@@ -1386,11 +1384,6 @@ jQuery(document).ready(function($) {
 			} else {
 				endGame('victory');
 			}
-		} else {
-			// we don't want to show courage screen after quests or fountains
-			if(game.mapType == 'arena' || game.mapType == 'normal') {
-				courageScreen();
-			}
 		}
 
 	});
@@ -1419,7 +1412,7 @@ function init() {
 	console.clear();
 
 	//addTreasure('signet_ring'); // use this to manually add treasures
-	//addCandy('cherry_taffy'); // use this to manually add candies
+	//addCandy('chocolate_bar'); // use this to manually add candies
 
 	if(game.debug) $('body').addClass('debug');
 	if(game.tutorial) {
@@ -1519,6 +1512,7 @@ function init_map_2() {
 }
 
 function setDifficulty() {
+	$('.game-difficulty .difficulty-level').html(game.difficulty).data('difficulty', game.difficulty).attr('data-difficulty', game.difficulty);
 	if(game.difficulty=='easy') {
 		game.questChance = 2.2;
 		game.fountainChance = 2;
@@ -1547,16 +1541,16 @@ function setDifficulty() {
 			player.health.max = 65;
 		}
 	} else if(game.difficulty=='expert') {
-		game.questChance = 1.8;
-		game.fountainChance = 1.6;
+		game.questChance = 1.6;
+		game.fountainChance = 1.4;
 		if(!game.debug) {
 			player.health.base = 55;
 			player.health.current = 55;
 			player.health.max = 55;
 		}
 	} else if(game.difficulty=='nightmare') {
-		game.questChance = 1.5;
-		game.fountainChance = 1.3;
+		game.questChance = 1.4;
+		game.fountainChance = 1.2;
 		game.arenasRequired = 3;
 		//game.essenceThresholds = [12, 23, 33, 44];
     	//game.aggroThresholds = [9, 14, 17, 20, 23, 26, 29, 31, 34, 37];
@@ -2585,7 +2579,7 @@ async function startCombat(tile = false) {
 	game.combatEndedFlag = false;
 	game.incomingDamage = 0;
 
-	game.floor += 1;
+	increaseFloor();
 	game.combat += 1;
 	game.round = 0;
 
@@ -2634,7 +2628,6 @@ async function startCombat(tile = false) {
 		}
 	} else if(game.mapType == 'singularity') {
 		$('body').addClass('singularity');
-		game.mapType = 'singularity';
 		backgroundImage = './images/singularity.png';
 		setTimeout(function() {
 			if(!musicSingularity.playing() && game.playmusic) musicSingularity.play();
@@ -2812,8 +2805,8 @@ function visitFountain(visited) {
 	stopMusic();
 	if(!musicFountain.playing() && game.playmusic) musicFountain.play();
 
-	if(game.difficulty=='expert' || game.difficulty=='nightmare') {
-		game.floor += 1;
+	if(game.difficulty=='hard' || game.difficulty=='expert' || game.difficulty=='nightmare') {
+		increaseFloor();
 		updateAggro(1);
 	}
 
@@ -2841,8 +2834,8 @@ function visitQuest(visited = false) {
 	game.mapType = 'quest';
 	$('.quest-screen').addClass('shown');
 
-	if(game.difficulty=='expert' || game.difficulty=='nightmare') {
-		game.floor += 1;
+	if(game.difficulty=='hard' || game.difficulty=='expert' || game.difficulty=='nightmare') {
+		increaseFloor();
 		updateAggro(1);
 	}
 
@@ -3268,7 +3261,15 @@ async function monsterAction(action = 'perform') {
 			// check for resurrect
 			if(thisMonster.resurrect.enabled) {
 				//let actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, form: 'ghost', tier: [3, 4]}];
-				let actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: [3, 4, 5]}];
+				let tiers = [4, 5];
+				if(game.difficulty=='hard') {
+					tiers = util.chance(75) ? [5] : [4];
+				} else if(game.difficulty=='expert') {
+					tiers = [5];
+				} else if(game.difficulty=='nightmare') {
+					tiers = util.chance(75) ? [5] : util.chance(90) ? [6] : [7];
+				}
+				let actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers}];
 				let update = processActions(actions, thisMonster);
 			}
 
@@ -3327,24 +3328,17 @@ async function monsterAction(action = 'perform') {
 					attackAmount += 2;
 				}
 				if(game.difficulty=='nightmare') {
-					attackAmount *= .2;
+					attackAmount += attackAmount * .2;
 				}
 
-				// for flame context increase damage based on aggro level
-				if(thisMonster.context == 'flame') {
-					attackAmount += ((player.aggro.level / 4) + .5) * attackAmount;
-				}
-
-				// apply aggro if this is a gate or arena
-				if(game.mapType == 'ice_gate' || game.mapType == 'fire_gate' || game.mapType == 'arena') {
-					attackAmount = ((player.aggro.level / 2) + 1) * attackAmount;
-				}
+				attackAmount = applyAggro(attackAmount, thisMonster);
 
 				if(action == 'query') {
-					let a = Math.round((attackAmount + thisMonster.might.current) * thisMonster.punch.current);
-					if(a < 0) a = 0;
-					game.incomingDamage += a;
-					intent += '<span class="tooltip" data-powertip="Attack for ' + a + ' damage"><span class="intent-dmg intent-amount">' + a + '</span><span class="intent-dmg-icon intent-icon"></span></span>';
+
+					if(attackAmount < 0) attackAmount = 0;
+					game.incomingDamage += attackAmount;
+					intent += '<span class="tooltip" data-powertip="Attack for ' + attackAmount + ' damage"><span class="intent-dmg intent-amount">' + attackAmount + '</span><span class="intent-dmg-icon intent-icon"></span></span>';
+				
 				} else {
 
 					// check for hypnotize
@@ -3368,7 +3362,7 @@ async function monsterAction(action = 'perform') {
 			if (defend.hasOwnProperty(key)) {
 				let a = defend[key];
 
-				if(game.difficulty=='nightmare') {
+				if(game.difficulty=='expert' || game.difficulty=='nightmare') {
 					a += 5;
 				}
 
@@ -4179,6 +4173,11 @@ function gainCourage(amount) {
 
 }
 
+async function increaseFloor() {
+	game.floor += 1;
+	courageScreen();
+}
+
 async function updateAggro(amount) {
 
 	let whichThresholds = game.map == 1 ? game.aggroThresholds : game.aggroThresholds2;
@@ -4281,7 +4280,7 @@ function loot(type, tier = 3) {
 					util.appendTreasure(treasure, '.loot-items');
 				}
 			}
-			$('.loot-screen .message').html('Choose&nbsp;<span class="highlight">ONE</div>&nbsp;legendary treasure.');
+			$('.loot-screen .message').html('Choose&nbsp;<span class="highlight">ONE</span>&nbsp;legendary treasure.');
 		break;
 		case 'treasure':
 			if(possibleTreasures.length > 0) {
@@ -4402,11 +4401,6 @@ function treasureScreen() {
 
 		loot('treasure');
 		game.treasureChance = 0;
-		
-	} else {
-
-		// go right to the courage screen if there are no treasures to be had
-		courageScreen();
 
 	}
 
@@ -4422,9 +4416,10 @@ function gateScreen() {
 
 function courageScreen() {
 
-	if(game.mapType == 'fountain') return false; // courage screen would have displayed prior to the fountain screen
-
-	game.mapType = 'normal'; // if mapType is still arena or gate it would result in all rare cards at the shop
+	// if mapType is still arena or gate it would result in all rare cards at the shop
+	if(game.mapType !== 'singularity') {
+		game.mapType = 'normal'; 
+	}
 
 	if(game.floor % game.courageInterval == 0) {
 
@@ -4623,8 +4618,8 @@ async function eatCandy(add, monster = false) {
 
 	// we now have at least one candy slot open, so re-enable clickability
 	$('.loot-items .candy').addClass('clickable');
-	
-	setStatus();
+
+	monsterIntent(); // this calls setStatus()
 
 }
 
@@ -5910,8 +5905,12 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 
 						if(value==='double') {
 							value = player[what][key];
-							if((what==='punch' || what==='thunder') && value > 1) {
-								value = value - 1;
+							if((what==='punch' || what==='thunder')) {
+								if(value > 1) {
+									value = value - 1;
+								} else {
+									value = 0;
+								}
 							}
 						}
 
@@ -6103,10 +6102,10 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						} else if(actions[e].what == 'random') {
 							for(let i = 0; i < actions[e].value; i++) {
 								let id = game.round + '-' + i;
-								let possibleMonsters = monsters.monsters.filter(i => i.category == 'normal' && i.breed != 'ghost' && i.context == game.overworld);
+								let possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost');
 								if(actions[e].tier !== undefined) {
 									if(actions[e].tier.constructor === Array) {
-										possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context == game.overworld && actions[e].tier.includes(i.tier));
+										possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && actions[e].tier.includes(i.tier));
 									}
 								}
 								let what = util.randFromArray(possibleMonsters);
@@ -7014,7 +7013,19 @@ async function activateRainbow(type, to) {
 
 	let whichMonster = to.rainbow.type == 'muddled' || to.rainbow.type == 'chaos' ? [util.randFromArray(currentMonsters)] : currentMonsters;
 
-	await doDamage(dmg, undefined, whichMonster, ignoreBlock, ignoreArmor);
+	for (let i = 0; i < whichMonster.length; i++) {
+		// check for magic resistance
+		let thisDmg = dmg;
+		thisDmg = Math.round(thisDmg - (thisDmg * whichMonster[i].resistance.current));
+
+		// check for veil
+		if(whichMonster[i].veil.current > 0) {
+			let resistanceEffect = {effect: 'resistance', amount: whichMonster[i].veil.current, turns: 1};
+			await applyEffect(resistanceEffect, whichMonster[i], 1);
+		}
+
+		await doDamage(thisDmg, undefined, [whichMonster[i]], ignoreBlock, ignoreArmor);
+	}
 
 	// update rainbow magic to overflow type
 	to.rainbow.type = type;
@@ -7072,15 +7083,21 @@ function applyArmor(arm, to) {
 	}
 }
 
-async function attackPlayer(monster, dmg) {
-
-	// might effect
-	if(monster) {
-		dmg += monster.might.current;
-		dmg = dmg * monster.punch.current;
+function applyAggro(dmg, monster) {
+	let aggroDmg = Math.round((dmg + monster.might.current) * monster.punch.current);
+	if(monster.context == 'flame') {
+		// 10 base damage will increase by 2.5 per aggro level, starting at level 0
+		// note this is additive rather than setting a new value for aggroDmg
+		aggroDmg += Math.round(((player.aggro.level / 4) + .5) * aggroDmg);
 	}
+	if((game.mapType == 'ice_gate' || game.mapType == 'fire_gate' || game.mapType == 'arena') || (game.difficulty=='nightmare' && game.mapType=='singularity')) {
+		// 10 base damage will increase by 5 per aggro level, starting at level 1
+		aggroDmg = Math.round(((player.aggro.level / 2) + 1) * aggroDmg);
+	}
+	return aggroDmg;
+}
 
-	dmg = Math.round(dmg);
+async function attackPlayer(monster, dmg) {
 
 	await doDamage(dmg, monster, [player]);
 
@@ -7130,15 +7147,6 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 					endCombat();
 					return;
 				}
-			}
-
-			// check for magic resistance
-			dmg = Math.round(dmg - (dmg * to[i].resistance.current));
-
-			// check for veil
-			if(to[i].veil.current > 0) {
-				let resistanceEffect = {effect: 'resistance', amount: to[i].veil.current, turns: 1};
-				await applyEffect(resistanceEffect, to[i], 1);
 			}
 
 			let thisTo = to[i] == false || to[i] == undefined ? player : to[i];

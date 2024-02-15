@@ -53,9 +53,9 @@
         <div class="difficulties">
           <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="1 arena required per map, start with a <span class='highlight'>Spewnicorn Spray</span> card, reduced aggro, heal to full after gates, extra magic fountains and quests, and start with 100 max health.">Easy</span></div>
           <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="2 arenas required per map, do not start with a <span class='highlight'>Spewnicorn Spray</span> card, standard amount of magic fountains and quests, and start with 75 max health.">Medium</span></div>
-          <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="No healing after gates, and start with 65 max health.">Hard</span></div>
-          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="Visiting magic fountains and quests increases aggro, +2 damage to all enemy attacks, and start with 55 max health.">Expert</span></div>
-          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="3 arenas required per map, reduced number of magic fountains and quests, shards and candies are rarer, +10% damage to all enemy attacks, and +5 to all enemy block.">Nightmare</span></div>
+          <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="No healing after gates, visiting magic fountains and quests increases aggro, and start with 65 max health.">Hard</span></div>
+          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="+2 damage to all enemy attacks, +5 to all enemy block, reduced number of magic fountains and quests, and start with 55 max health.">Expert</span></div>
+          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="3 arenas required per map, even fewer magic fountains and quests, shards and candies are rarer, +10% damage to all enemy attacks, and aggro affects The Singularity fight.">Nightmare</span></div>
         </div>
 
         <input id="custom-seed" class="tooltip" data-powertip="You can enter a custom seed or keep this blank to generate a random game." type="text" placeholder="Custom Seed..." />
@@ -130,6 +130,28 @@
 
 
           <h2>RELEASE NOTES</h2>
+
+          <p>0.54 Alpha (2/x/2024)</p>
+
+          <ul>
+            <li>Nerfed the Stun card</li>
+            <li>Increased rarity of several powerful cards</li>
+            <li>Aggro now calculates after damage buffs (like might and punch) instead of only on base damage</li>
+            <li>The Singularity can summon guardians on Nightmare difficulty</li>
+          </ul>
+
+          <p>0.53 Alpha (2/13/2024)</p>
+
+          <ul>
+            <li>Fixed a Resistance bug that applied to all damage instead of just magic damage</li>
+            <li>Cycle Barrier card moved to Cycle pack</li>
+            <li>Fixed bug where playing Roar or Cloudburst would double non-existing or debuffed punch/thunder</li>
+            <li>The Singularity now only summons tier 4 and 5 monsters</li>
+            <li>Buffs to various magic summon cards</li>
+            <li>Incoming damage now updates correctly after eating candies that damage and kill enemies</li>
+            <li>Fixed candies that both caused damage and buffed player (Chocolate Bar, Chocolate Clusters, etc.)</li>
+            <li>Hard, Expert, and Nightmare difficulty settings are harder</li>
+          </ul>
 
           <p>0.52 Alpha (2/11/2024)</p>
 
@@ -351,6 +373,13 @@
         <div class="icon"></div> <span></span>
 
         <div class="courage-amount"></div>
+
+      </div>
+
+      <div class="game-difficulty">
+
+        <span>Difficulty</span>
+        <span class="difficulty-level" data-difficulty=""></span>
 
       </div>
 
