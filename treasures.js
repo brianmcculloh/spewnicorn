@@ -105,6 +105,7 @@ const ALL_CANDY= [
         weight: 7,
         blk: [25],
         armor: [15],
+        combatOnly: false,
         x: -288,
         y: -4224
     }),
@@ -130,6 +131,7 @@ const ALL_CANDY= [
         name: 'Kettle Corn',
         weight: 4,
         armor: [35],
+        combatOnly: false,
         x: -64,
         y: -1568
     }),
@@ -158,6 +160,7 @@ const ALL_CANDY= [
         weight: 2,
         courage: 3,
         armor: [45],
+        combatOnly: false,
         x: 0,
         y: -1760
     }),
@@ -349,6 +352,7 @@ const ALL_CANDY= [
         name: 'Salted Caramel',
         courage: 3,
         weight: 4,
+        combatOnly: false,
         actions: [
             {action: 'stat', what: 'health', key: 'max', value: 15}
         ],
@@ -458,6 +462,7 @@ const ALL_CANDY= [
         name: 'White Chocolate Clusters',
         weight: 1,
         courage: 3,
+        target: 'monster',
         dmg: [30],
         effects: [
             {effect: 'might', amount: 12, turns: -1}
@@ -495,6 +500,7 @@ const ALL_CANDY= [
         dmg: [30],
         weight: 1,
         courage: 3,
+        target: 'monster',
         effects: [
             {effect: 'punch', amount: .8, turns: -1}
         ],
@@ -2008,7 +2014,7 @@ const ALL_TREASURES = [
         weight: 7,
         permanent: true,
         effects: [
-            {effect: 'regen', base: 6}
+            {effect: 'regen', base: 8}
         ],
         x: -96,
         y: -13088

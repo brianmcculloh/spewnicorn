@@ -84,6 +84,7 @@ Quest: trade increasingly more health to choose one common weapon, or one uncomm
 Quest: heal to full health, heal to full armor, or gamble for courage
 Quest: next combat is peaceful, meaning enemies do half damage
 Quest: Snitch - gain agggro for a reward, lose 1 aggro for nothing, lose 2 (or more?) aggro at a cost of health or courage
+Quest: trade health any number of times for courage and other things
 
 
 
@@ -110,8 +111,7 @@ PHASE V:
 
 
 
-TODO: test out the new flame guardian moveset for balancing
-TODO: test the singularity fight for balancing
+
 TODO: implement mechanics first and then add some more cards after that
 
 

@@ -7,7 +7,7 @@ export default {
   pack: "cycle",
   sound: "magic3",
   destroy: {
-    magic: [{ type: "aligned", amount: 20 }],
+    magic: [{ type: "aligned", amount: 30 }],
   },
   slots: 1,
   shardUpgrades: {

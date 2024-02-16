@@ -5,7 +5,7 @@ export default {
   mana: 1,
   tier: "uncommon",
   courage: 4,
-  pack: "rainbow",
+  pack: "cycle",
   effects: [{ effect: "preserve", amount: 10, turns: -1 }],
   slots: 1,
   shardUpgrades: {

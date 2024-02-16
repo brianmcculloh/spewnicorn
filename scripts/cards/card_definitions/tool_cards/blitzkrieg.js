@@ -14,4 +14,5 @@ export default {
   bothShardUpgrades: {
     mana: 2,
   },
+  weight: 1,
 };

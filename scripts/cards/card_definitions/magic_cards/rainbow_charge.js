@@ -8,6 +8,6 @@ export default {
   sound: "magic3",
   slots: 1,
   shardUpgrades: {
-    magic: [{ type: "rainbow", amount: 18 }],
+    magic: [{ type: "rainbow", amount: 24 }],
   },
 };
