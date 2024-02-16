@@ -6305,7 +6305,7 @@ async function processQuest(elem) {
 		break;
 		case 'library':
 			if(option == 'find_a_card') {
-				let actions = [{action: 'addCard', select: 1, value: 20, type: 'weapon', to: 'deck'}];
+				let actions = [{action: 'addCard', select: 1, value: 20, type: 'any', to: 'deck'}];
 				await processActions(actions);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
