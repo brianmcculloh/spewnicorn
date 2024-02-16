@@ -11,9 +11,9 @@ export default {
   sound: "magic3",
   slots: 2,
   shardUpgrades: {
-    magic: [{ type: "aligned", amount: 15 }],
+    magic: [{ type: "aligned", amount: 18 }],
   },
   bothShardUpgrades: {
-    magic: [{ type: "aligned", amount: 20 }],
+    magic: [{ type: "aligned", amount: 26 }],
   },
 };

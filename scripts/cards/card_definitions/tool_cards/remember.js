@@ -3,7 +3,7 @@ export default {
   name: "Remember",
   type: "tool",
   mana: 1,
-  weight: 2,
+  weight: .8,
   use: 3,
   actions: [{ action: "findDiscardCard", value: 1 }],
   slots: 2,

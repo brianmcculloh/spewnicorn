@@ -5,7 +5,7 @@ export default {
   mana: 0,
   tier: "rare",
   vanish: true,
-  weight: 2,
+  weight: .8,
   courage: 5,
   magic: [{ type: "aligned", amount: 7 }],
   actions: [

@@ -6,11 +6,11 @@ export default {
   tier: "common",
   weight: 7,
   retain: true,
-  magic: [{ type: "random", amount: 10 }],
+  magic: [{ type: "random", amount: 15 }],
   sound: "magic2",
   slots: 1,
   fireShardUpgrades: {
-    magic: [{ type: "random", amount: 20 }],
+    magic: [{ type: "random", amount: 30 }],
   },
   iceShardUpgrades: {
     linger: 1,

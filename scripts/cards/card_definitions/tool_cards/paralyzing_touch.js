@@ -6,7 +6,7 @@ export default {
   mana: 1,
   vanish: true,
   tier: "rare",
-  weight: 4,
+  weight: 1,
   courage: 6,
   abilities: [{ ability: "frozen", turns: 1, enabled: true }],
   slots: 2,
