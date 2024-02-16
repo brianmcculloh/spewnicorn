@@ -7,7 +7,7 @@ export default {
   pack: "rainbow",
   vanish: true,
   expire: 2,
-  weight: 3,
+  weight: 1,
   courage: 4,
   additionalDesc: "BASE MAGIC ",
   actions: [{ action: "stat", what: "rainbow", key: "base", value: 1 }],

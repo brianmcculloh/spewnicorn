@@ -2100,7 +2100,7 @@ const ALL_TREASURES = [
         permanent: true,
         owned: true,
         effects: [
-            {effect: 'solid', base: 4}
+            {effect: 'solid', base: 5}
         ],
         x: -192,
         y: -12672
@@ -2114,7 +2114,7 @@ const ALL_TREASURES = [
         permanent: true,
         owned: true,
         effects: [
-            {effect: 'might', base: 3}
+            {effect: 'might', base: 5}
         ],
         x: -416,
         y: -8800
@@ -2128,7 +2128,7 @@ const ALL_TREASURES = [
         permanent: true,
         owned: true,
         effects: [
-            {effect: 'lightning', base: 4}
+            {effect: 'lightning', base: 8}
         ],
         x: -352,
         y: -12640
