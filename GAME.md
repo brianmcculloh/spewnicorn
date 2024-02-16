@@ -112,7 +112,7 @@ PHASE V:
 
 
 
-TODO:
+TODO: why does attuned barrier say "mana: 1" at the top of the description?
 
 
 Bug/Balance Testing playthroughs

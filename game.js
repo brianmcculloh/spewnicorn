@@ -1111,7 +1111,7 @@ const ALL_ACTIONS = [
 ];
 
 export default function Game() {
-	let version = "0.54 Alpha";
+	let version = "0.55 Alpha";
 	let seed = false;
 	let difficulty = "medium";
 	let floor = 0; // TODO: set to 0
@@ -1154,6 +1154,7 @@ export default function Game() {
 	let courageCandyAmount = 5;
 	let courageCardAmount = 2;
 	let courageInterval = 5; // TODO: set this to 5
+	let lastCourageScreenFloor = 0;
 	let removeCardCost = 2;
 	let tradeCardCost = 1;
 	let tradeExpired = false;
@@ -1376,6 +1377,7 @@ export default function Game() {
 		courageCandyAmount,
 		courageCardAmount,
 		courageInterval,
+		lastCourageScreenFloor,
 		removeCardCost,
 		tradeCardCost,
 		tradeExpired,
