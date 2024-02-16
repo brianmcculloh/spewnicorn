@@ -54,9 +54,9 @@
         <div class="difficulties">
           <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="1 arena required per map, start with a <span class='highlight'>Spewnicorn Spray</span> card, reduced aggro, heal to full after gates, extra magic fountains and quests, and start with 100 max health.">Easy</span></div>
           <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="2 arenas required per map, do not start with a <span class='highlight'>Spewnicorn Spray</span> card, standard amount of magic fountains and quests, and start with 75 max health.">Medium</span></div>
-          <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="No healing after gates, visiting magic fountains and quests increases aggro, and start with 65 max health.">Hard</span></div>
-          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="+2 damage to all enemy attacks, +5 to all enemy block, reduced number of magic fountains and quests, and start with 55 max health.">Expert</span></div>
-          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="3 arenas required per map, even fewer magic fountains and quests, shards and candies are rarer, +10% damage to all enemy attacks, and aggro affects The Singularity fight.">Nightmare</span></div>
+          <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="No healing after gates, reduced number of magic fountains and quests, and start with 65 max health.">Hard</span></div>
+          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="+2 damage to all enemy attacks, +5 to all enemy block, and start with 55 max health.">Expert</span></div>
+          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="3 arenas required per map, visiting magic fountains and quests increases aggro, shards and candies are rarer, +10% damage to all enemy attacks, and aggro affects The Singularity fight.">Nightmare</span></div>
         </div>
 
         <input id="custom-seed" class="tooltip" data-powertip="You can enter a custom seed or keep this blank to generate a random game." type="text" placeholder="Custom Seed..." />
@@ -132,7 +132,15 @@
 
           <h2>RELEASE NOTES</h2>
 
-          <p>0.54 Alpha (2/x/2024)</p>
+          <p>0.55 Alpha (2/16/2024)</p>
+
+          <ul>
+            <li>Tweaked difficulty settings and cards for balance</li>
+            <li>Singularity now summons only upgraded monsters</li>
+            <li>Fixed bug affecting shop tooltips and functionality</li>
+          </ul>
+
+          <p>0.54 Alpha (2/14/2024)</p>
 
           <ul>
             <li>Nerfed the Stun card</li>
