@@ -86,7 +86,7 @@
  * Quest: next combat is peaceful, meaning enemies do half damage
  * Quest: Snitch - gain agggro for a reward, lose 1 aggro for nothing, lose 2 (or more?) aggro at a cost of health or courage
  * Quest: trade health any number of times for courage and other things
- * 
+ * Quest: decrease aggro 
  * 
  * 
  * PHASE III:
@@ -110,14 +110,15 @@
  * 
  * PHASE V:
  * 
+ * TODO: 
  * 
- * TODO: implement mechanics first and then add some more cards after that
+ * 
  * 
  * 
  * Bug/Balance Testing playthroughs
  * Tutorial	- DONE		
  * Save progress
- * Record results - use Google Analytics for this
+ * Record results - use Google Analytics for this?
  * 
  * 
  * 
@@ -132,6 +133,7 @@
  * When playing a card that draws and discards (upgraded recoil) and the drawn card adds a card to hand (surprise attack), added card cannot be discarded
  * Speech: add speech bubble system to monsters - make it random chance with a set of possible texts
  * When retaining cards, retain cards shouldn't be selectable
+ * When my machine was super laggy i was able to draw a bunch of cards before ensharden opened the card panel and it didn't decrease my speed
  * 
  * 
  * NEW CARDS & TREASURES:
@@ -700,6 +702,8 @@ jQuery(document).ready(function($) {
 
 		treasureScreen();
 
+		checkForCourageScreen();
+
 	});
 
 	$(document).on('click', '.rewards-loot .treasure, .loot-screen .treasure', function(e) {
@@ -1105,6 +1109,10 @@ jQuery(document).ready(function($) {
 			$('.choose-cards-panel .message').html('');
 			combatDeck.chooseCards = [];
 		}
+		// if card was a weapon we need to show trade button
+		if(deck.getTradeableCards() && !game.tradeExpired) {
+			$('.courage-trade').addClass('shown');
+		}
 
 	});
 
@@ -1178,6 +1186,7 @@ jQuery(document).ready(function($) {
 		heal(player, $(this).attr('data-amount'));
 		applyArmor($(this).attr('data-armor'), player);
 		$('.magic-fountain').removeClass('shown');
+		checkForCourageScreen();
 
 	});
 
@@ -1188,12 +1197,14 @@ jQuery(document).ready(function($) {
 		processActions(actions);
 		heal(player, $(this).attr('data-amount'));
 		$('.magic-fountain').removeClass('shown');
+		checkForCourageScreen();
 
 	});
 
 	$(document).on('click', '.fountain-search', function(e) {
 
 		loot('shard');
+		checkForCourageScreen();
 
 	});
 
@@ -1201,18 +1212,21 @@ jQuery(document).ready(function($) {
 
 		gainCourage($(this).attr('data-amount'));
 		$('.magic-fountain').removeClass('shown');
+		checkForCourageScreen();
 
 	});
 
 	$(document).on('click', '.fountain-skip', function(e) {
 
 		$('.magic-fountain').removeClass('shown');
+		checkForCourageScreen();
 
 	});
 
 	$(document).on('click', '.quest-options .button', function(e) {
 
 		processQuest($(this));
+		checkForCourageScreen();
 
 	});
 
@@ -1532,8 +1546,8 @@ function setDifficulty() {
 			player.health.max = 75;
 		}
 	} else if(game.difficulty=='hard') {
-		game.questChance = 1.8;
-		game.fountainChance = 1.6;
+		game.questChance = 1.5;
+		game.fountainChance = 1.3;
 		game.arenasRequired = 2;
 		if(!game.debug) {
 			player.health.base = 65;
@@ -1541,16 +1555,16 @@ function setDifficulty() {
 			player.health.max = 65;
 		}
 	} else if(game.difficulty=='expert') {
-		game.questChance = 1.6;
-		game.fountainChance = 1.4;
+		game.questChance = 1.5;
+		game.fountainChance = 1.3;
 		if(!game.debug) {
 			player.health.base = 55;
 			player.health.current = 55;
 			player.health.max = 55;
 		}
 	} else if(game.difficulty=='nightmare') {
-		game.questChance = 1.4;
-		game.fountainChance = 1.2;
+		game.questChance = 1.5;
+		game.fountainChance = 1.3;
 		game.arenasRequired = 3;
 		//game.essenceThresholds = [12, 23, 33, 44];
     	//game.aggroThresholds = [9, 14, 17, 20, 23, 26, 29, 31, 34, 37];
@@ -2579,7 +2593,7 @@ async function startCombat(tile = false) {
 	game.combatEndedFlag = false;
 	game.incomingDamage = 0;
 
-	increaseFloor();
+	game.floor += 1;
 	game.combat += 1;
 	game.round = 0;
 
@@ -2805,8 +2819,8 @@ function visitFountain(visited) {
 	stopMusic();
 	if(!musicFountain.playing() && game.playmusic) musicFountain.play();
 
-	if(game.difficulty=='hard' || game.difficulty=='expert' || game.difficulty=='nightmare') {
-		increaseFloor();
+	if(game.difficulty=='nightmare') {
+		game.floor += 1;
 		updateAggro(1);
 	}
 
@@ -2834,8 +2848,8 @@ function visitQuest(visited = false) {
 	game.mapType = 'quest';
 	$('.quest-screen').addClass('shown');
 
-	if(game.difficulty=='hard' || game.difficulty=='expert' || game.difficulty=='nightmare') {
-		increaseFloor();
+	if(game.difficulty=='nightmare') {
+		game.floor += 1;
 		updateAggro(1);
 	}
 
@@ -3263,13 +3277,13 @@ async function monsterAction(action = 'perform') {
 				//let actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, form: 'ghost', tier: [3, 4]}];
 				let tiers = [4, 5];
 				if(game.difficulty=='hard') {
-					tiers = util.chance(75) ? [5] : [4];
+					tiers = util.chance(25) ? [4] : util.chance(90) ? [5] : [6];
 				} else if(game.difficulty=='expert') {
-					tiers = [5];
+					tiers = util.chance(90) ? [5] : [6];
 				} else if(game.difficulty=='nightmare') {
-					tiers = util.chance(75) ? [5] : util.chance(90) ? [6] : [7];
+					tiers = util.chance(75) ? [5] : util.chance(75) ? [6] : [7];
 				}
-				let actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers}];
+				let actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers, context: 'upgraded'}];
 				let update = processActions(actions, thisMonster);
 			}
 
@@ -4173,9 +4187,10 @@ function gainCourage(amount) {
 
 }
 
-async function increaseFloor() {
-	game.floor += 1;
-	courageScreen();
+function checkForCourageScreen() {
+	if(game.floor > 0 && game.floor % game.courageInterval == 0) {
+		courageScreen();
+	}
 }
 
 async function updateAggro(amount) {
@@ -4421,70 +4436,66 @@ function courageScreen() {
 		game.mapType = 'normal'; 
 	}
 
-	if(game.floor % game.courageInterval == 0) {
+	util.setTooltip('.courage-gamble');
+	util.setTooltip('.courage-trade');
+	util.setTooltip('.courage-remove');
+	util.setTooltip('.remove-courage');
+	util.setTooltip('.trade-courage');
+	game.tradeExpired = false;
 
-		util.setTooltip('.courage-gamble');
-		util.setTooltip('.courage-trade');
-		util.setTooltip('.courage-remove');
-		util.setTooltip('.remove-courage');
-		util.setTooltip('.trade-courage');
-		game.tradeExpired = false;
+	stopMusic();
+	if(!musicCourage.playing() && game.playmusic) musicCourage.play();
 
-		stopMusic();
-		if(!musicCourage.playing() && game.playmusic) musicCourage.play();
-
-		$('.courage-screen').addClass('shown');
-		$('.courage-remove').addClass('shown');
-		$('.courage-gamble').addClass('shown');
-		
-		if(deck.getTradeableCards()) {
-			$('.courage-trade').addClass('shown');
-		} else {
-			$('.courage-trade').removeClass('shown');
-		}
-
-		let theseTreasures = [];
-		let possibleTreasures = treasures.treasures.filter(i => i.owned == false);
-
-		for(let i = 0; i < game.courageTreasureAmount; i++) {
-			let thisTreasure = util.weightedRandom(possibleTreasures);
-			theseTreasures.push(thisTreasure);
-			possibleTreasures = possibleTreasures.filter(i => i.id !== thisTreasure.id);
-			if(thisTreasure == undefined) break;
-			thisTreasure.desc = deck.buildDescription(thisTreasure);
-			util.appendTreasure(thisTreasure, '.courage-items');
-		}
-
-		for(let i = 0; i < game.courageCandyAmount; i++) {
-			let thisCandy = util.weightedRandom(treasures.candies);
-			thisCandy.desc = deck.buildDescription(thisCandy);
-			let clickable = player.candies.length < game.candySlots ? true : false;
-			util.appendCandy(thisCandy, '.courage-items', clickable);
-		}
-
-		for(let i = 0; i < game.courageCardAmount; i++) {
-			let card = deck.decideCard('attack');
-			util.appendCard(card, '.courage-cards');
-		}
-
-		for(let i = 0; i < game.courageCardAmount; i++) {
-			let card = deck.decideCard('tool');
-			util.appendCard(card, '.courage-cards');
-		}
-
-		for(let i = 0; i < game.courageCardAmount; i++) {
-			let card = deck.decideCard('magic');
-			util.appendCard(card, '.courage-cards');
-		}
-
-		for(let i = 0; i < game.courageCardAmount; i++) {
-			let card = deck.decideCard('ability', 'uncommon');
-			util.appendCard(card, '.courage-cards');
-		}
-
-		updateItemCost();
-
+	$('.courage-screen').addClass('shown');
+	$('.courage-remove').addClass('shown');
+	$('.courage-gamble').addClass('shown');
+	
+	if(deck.getTradeableCards()) {
+		$('.courage-trade').addClass('shown');
+	} else {
+		$('.courage-trade').removeClass('shown');
 	}
+
+	let theseTreasures = [];
+	let possibleTreasures = treasures.treasures.filter(i => i.owned == false);
+
+	for(let i = 0; i < game.courageTreasureAmount; i++) {
+		let thisTreasure = util.weightedRandom(possibleTreasures);
+		theseTreasures.push(thisTreasure);
+		possibleTreasures = possibleTreasures.filter(i => i.id !== thisTreasure.id);
+		if(thisTreasure == undefined) break;
+		thisTreasure.desc = deck.buildDescription(thisTreasure);
+		util.appendTreasure(thisTreasure, '.courage-items');
+	}
+
+	for(let i = 0; i < game.courageCandyAmount; i++) {
+		let thisCandy = util.weightedRandom(treasures.candies);
+		thisCandy.desc = deck.buildDescription(thisCandy);
+		let clickable = player.candies.length < game.candySlots ? true : false;
+		util.appendCandy(thisCandy, '.courage-items', clickable);
+	}
+
+	for(let i = 0; i < game.courageCardAmount; i++) {
+		let card = deck.decideCard('attack');
+		util.appendCard(card, '.courage-cards');
+	}
+
+	for(let i = 0; i < game.courageCardAmount; i++) {
+		let card = deck.decideCard('tool');
+		util.appendCard(card, '.courage-cards');
+	}
+
+	for(let i = 0; i < game.courageCardAmount; i++) {
+		let card = deck.decideCard('magic');
+		util.appendCard(card, '.courage-cards');
+	}
+
+	for(let i = 0; i < game.courageCardAmount; i++) {
+		let card = deck.decideCard('ability', 'uncommon');
+		util.appendCard(card, '.courage-cards');
+	}
+
+	updateItemCost();
 
 }
 
@@ -6092,6 +6103,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					}
 					case 'summonMonster': {
 						let form = actions[e].form !== undefined ? actions[e].form : false;
+						let context = actions[e].context !== undefined ? actions[e].context : false;
 						if(actions[e].what.constructor === Array) {
 							for(let i = 0; i < actions[e].value; i++) {
 								let id = game.round + '-' + i;
@@ -6103,9 +6115,20 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							for(let i = 0; i < actions[e].value; i++) {
 								let id = game.round + '-' + i;
 								let possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost');
+								if(context === 'upgraded') {
+									possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context !== 'forest');
+								} else if(context !== false) {
+									possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context == context);
+								}
+								console.log(context);
 								if(actions[e].tier !== undefined) {
 									if(actions[e].tier.constructor === Array) {
 										possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && actions[e].tier.includes(i.tier));
+										if(context === 'upgraded') {
+											possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context !== 'forest' && actions[e].tier.includes(i.tier));
+										} else if(context !== false) {
+											possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context == context && actions[e].tier.includes(i.tier));
+										}
 									}
 								}
 								let what = util.randFromArray(possibleMonsters);
@@ -6275,7 +6298,7 @@ async function processQuest(elem) {
 		break;
 		case 'library':
 			if(option == 'find_a_card') {
-				let actions = [{action: 'addCard', select: 1, value: 20, type: 'any', to: 'deck'}];
+				let actions = [{action: 'addCard', select: 1, value: 20, type: 'weapon', to: 'deck'}];
 				await processActions(actions);
 				$('.quest-screen').removeClass('shown');
 				$('.quest-options').empty();
@@ -6717,7 +6740,7 @@ async function processQuest(elem) {
 		break;
 		case 'sudden_trap':
 			if(option == 'buy_your_way_out') {
-				gainCourage(-1);
+				gainCourage(-5);
 			}
 			$('.quest-screen').removeClass('shown');
 			$('.quest-options').empty();
@@ -6725,19 +6748,19 @@ async function processQuest(elem) {
 		case 'the_liar':
 			if(option == 'lose_1_shimmer') {
 				let actions = [
-					{action: 'stat', what: 'shimmer', key: 'current', value: -1},
+					{action: 'stat', what: 'shimmer', key: 'current', value: -3},
 				];
 				await processActions(actions);
 			}
 			if(option == 'lose_1_sparkle') {
 				let actions = [
-					{action: 'stat', what: 'sparkle', key: 'current', value: -1},
+					{action: 'stat', what: 'sparkle', key: 'current', value: -3},
 				];
 				await processActions(actions);
 			}
 			if(option == 'lose_1_aura') {
 				let actions = [
-					{action: 'stat', what: 'aura', key: 'current', value: -1},
+					{action: 'stat', what: 'aura', key: 'current', value: -3},
 				];
 				await processActions(actions);
 			}
@@ -6747,13 +6770,13 @@ async function processQuest(elem) {
 		case 'briar_patch':
 			if(option == 'run_through') {
 				let actions = [
-					{action: 'stat', what: 'health', key: 'max', value: -3},
+					{action: 'stat', what: 'health', key: 'max', value: -10},
 				];
 				await processActions(actions);
 			}
 			if(option == 'take_your_time') {
 				let actions = [
-					{action: 'stat', what: 'health', key: 'current', value: -9},
+					{action: 'stat', what: 'health', key: 'current', value: -30},
 				];
 				await processActions(actions);
 			}
@@ -6764,7 +6787,7 @@ async function processQuest(elem) {
 			if(option == 'accept_offer') {
 				let actions = [
 					{action: 'addCard', value: 1, type: 'weapon', to: 'deck', permanent: true},
-					{action: 'addCard', value: 2, type: 'clutter', to: 'deck', permanent: true},
+					{action: 'addCard', value: 3, type: 'clutter', to: 'deck', permanent: true},
 				];
 				await processActions(actions);
 			}
