@@ -110,7 +110,7 @@
  * 
  * PHASE V:
  * 
- * TODO: 
+ * TODO: why does attuned barrier say "mana: 1" at the top of the description?
  * 
  * 
  * 
@@ -4188,7 +4188,12 @@ function gainCourage(amount) {
 }
 
 function checkForCourageScreen() {
-	if(game.floor > 0 && game.floor % game.courageInterval == 0) {
+	if(game.floor > 0 && 
+		game.floor % game.courageInterval == 0 && 
+		game.floor != game.lastCourageScreenFloor &&
+		game.mapType != 'ice_gate' && 
+		game.mapType != 'fire_gate' &&
+		game.mapType != 'singularity') {
 		courageScreen();
 	}
 }
@@ -4435,6 +4440,8 @@ function courageScreen() {
 	if(game.mapType !== 'singularity') {
 		game.mapType = 'normal'; 
 	}
+
+	game.lastCourageScreenFloor = game.floor;
 
 	util.setTooltip('.courage-gamble');
 	util.setTooltip('.courage-trade');

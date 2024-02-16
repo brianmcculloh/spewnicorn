@@ -29,9 +29,9 @@ const ALL_QUESTS = [
             {id: 'explore', name: 'Explore', desc: 'Sharpen your skills',
                 options: [
                     {id: 'quickness', name: 'Quickness', desc: 'Gain 1 Speed'},
-                    {id: 'strength', name: 'Strength', desc: 'Gain 2 Might'},
-                    {id: 'thickness', name: 'Thickness', desc: 'Gain 3 Solid'},
-                    {id: 'wizardry', name: 'Wizardry', desc: 'Gain 5 Lightning'},
+                    {id: 'strength', name: 'Strength', desc: 'Gain 5 Might'},
+                    {id: 'thickness', name: 'Thickness', desc: 'Gain 5 Solid'},
+                    {id: 'wizardry', name: 'Wizardry', desc: 'Gain 8 Lightning'},
                     {id: 'leave', name: 'Leave'}
                 ]
             },
