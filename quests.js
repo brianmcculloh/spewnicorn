@@ -3718,7 +3718,7 @@ const ALL_QUESTS = [
 		name: "Sudden Trap",
 		desc: "The walls close in and there is nowhere to go. But a mysterious figure offers a hand, for a price.",
 		weight: 6,
-		options: [{ id: "buy_your_way_out", name: "Buy your way out", desc: "Pay 1 courage coin" }],
+		options: [{ id: "buy_your_way_out", name: "Buy your way out", desc: "Pay 5 courage coins" }],
 	}),
 	new Quests({
 		id: "the_liar",
@@ -3726,9 +3726,9 @@ const ALL_QUESTS = [
 		desc: "She tells you she will give you a gift and you quickly accept. Probably too quickly.",
 		weight: 5,
 		options: [
-			{ id: "lose_1_shimmer", name: "Lose 1 Shimmer" },
-			{ id: "lose_1_sparkle", name: "Lose 1 Sparkle" },
-			{ id: "lose_1_aura", name: "Lose 1 Aura" },
+			{ id: "lose_1_shimmer", name: "Lose 3 Shimmer" },
+			{ id: "lose_1_sparkle", name: "Lose 3 Sparkle" },
+			{ id: "lose_1_aura", name: "Lose 3 Aura" },
 		],
 	}),
 	new Quests({
@@ -3737,8 +3737,8 @@ const ALL_QUESTS = [
 		desc: "How shall you navigate this bramble thicket?",
 		weight: 5,
 		options: [
-			{ id: "run_through", name: "Run Through", desc: "Lose 3 max health" },
-			{ id: "take_your_time", name: "Take Your Time", desc: "Lose 9 health" },
+			{ id: "run_through", name: "Run Through", desc: "Lose 10 max health" },
+			{ id: "take_your_time", name: "Take Your Time", desc: "Lose 30 health" },
 		],
 	}),
 	new Quests({
@@ -3750,7 +3750,7 @@ const ALL_QUESTS = [
 			{
 				id: "accept_offer",
 				name: "Accept Offer",
-				desc: "Receive a random weapon and 2 clutter",
+				desc: "Receive a random weapon and 3 clutter",
 			},
 			{ id: "reject_offer", name: "Reject Offer" },
 		],
