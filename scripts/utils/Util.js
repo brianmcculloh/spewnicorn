@@ -1,4 +1,4 @@
-import { cyrb128, mulberry32, getShardAttribute, getShardNum, rand, shuffle } from "./index.js";
+import { cyrb128, mulberry32, getShardAttribute, getShardNum, rand, shuffle, buildCardSlots } from "./index.js";
 import { getCardAttribute } from '../cards/index.js';
 
 export default class Util {
@@ -20,37 +20,11 @@ export default class Util {
 
 
 
-	buildCardSlots(card) {
-		let slots = "";
-		for (let i = 0; i < card.slots; i++) {
-			let shard = "";
-			let filled = "";
-			let multiple = card.slots > 1 ? " multiple" : "";
-			if (card.shards[i] != undefined) {
-				shard =
-					'<span class="shard ' +
-					card.shards[i] +
-					'" data-id="' +
-					card.shards[i] +
-					'"></span>';
-				filled = " filled";
-			}
-			slots +=
-				'<div class="slot' +
-				multiple +
-				filled +
-				'" data-id="' +
-				i +
-				'">' +
-				shard +
-				"</div>";
-		}
-		return slots;
-	}
+
 	appendCard(card, to, cssClass = "") {
 		if (!card) return;
 		let slots = "";
-		slots = util.buildCardSlots(card);
+		slots = buildCardSlots(card);
 
 		let mana = getCardAttribute(card, "mana");
 		let manaDom = "";

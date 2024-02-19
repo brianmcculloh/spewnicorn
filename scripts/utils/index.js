@@ -16,6 +16,7 @@ import {
 import Util from "./Util.js";
 import getShardAttribute from "./get_shard_attribute.js";
 import getShardNum from "./get_shard_num.js";
+import buildCardSlots from "./build_card_slots.js";
 import buildTriggerDescription from "./build_trigger_description.js";
 import buildAbilitiesDescription from "./build_abilities_description.js";
 import buildActionsDescription from "./build_actions_description.js";
@@ -33,6 +34,7 @@ export {
 	getShardAttribute,
 	getShardNum,
 	setGameSeed,
+    buildCardSlots,
 	buildTriggerDescription,
 	buildAbilitiesDescription,
 	buildActionsDescription,
