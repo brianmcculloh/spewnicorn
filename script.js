@@ -1,4 +1,15 @@
-import { Util, setGameSeed, randArrayIndex, randFromArray, randIntFromInterval, randString, getShardNum, chance, shuffle, sort } from './scripts/utils/index.js';
+import {
+	Util,
+	setGameSeed,
+	randArrayIndex,
+	randFromArray,
+	randIntFromInterval,
+	randString,
+	getShardNum,
+	chance,
+	shuffle,
+	sort,
+} from "./scripts/utils/index.js";
 const util = new Util();
 
 import Game from "./game.js";
@@ -15,8 +26,17 @@ const monsters = Monster();
 
 import { Deck, CombatDeck } from "./cards.js";
 
-import { ALL_CARDS, buildLibrary, getTotalCards, getAddableCards, getWeapons, getCardById, buildDescription, buildSlotsDescription, getCardAttribute } from './scripts/cards/index.js';
-
+import {
+	ALL_CARDS,
+	buildLibrary,
+	getTotalCards,
+	getAddableCards,
+	getWeapons,
+	getCardById,
+	buildDescription,
+	buildSlotsDescription,
+	getCardAttribute,
+} from "./scripts/cards/index.js";
 
 let deck = Deck();
 let combatDeck = CombatDeck();
@@ -469,7 +489,6 @@ jQuery(document).ready(function ($) {
 		treasureScreen();
 
 		checkForCourageScreen();
-
 	});
 
 	$(document).on("click", ".rewards-loot .treasure, .loot-screen .treasure", function (e) {
@@ -810,8 +829,8 @@ jQuery(document).ready(function ($) {
 			combatDeck.chooseCards = [];
 		}
 		// if card was a weapon we need to show trade button
-		if(deck.getTradeableCards() && !game.tradeExpired) {
-			$('.courage-trade').addClass('shown');
+		if (deck.getTradeableCards() && !game.tradeExpired) {
+			$(".courage-trade").addClass("shown");
 		}
 	});
 
@@ -1205,7 +1224,10 @@ function init_map_2() {
 }
 
 function setDifficulty() {
-	$('.game-difficulty .difficulty-level').html(game.difficulty).data('difficulty', game.difficulty).attr('data-difficulty', game.difficulty);
+	$(".game-difficulty .difficulty-level")
+		.html(game.difficulty)
+		.data("difficulty", game.difficulty)
+		.attr("data-difficulty", game.difficulty);
 	if (game.difficulty == "easy") {
 		game.questChance = 2.2;
 		game.fountainChance = 2;
@@ -2454,9 +2476,7 @@ function startingBonus(elem) {
 		entity[att] += amount;
 	} else if (action != undefined) {
 		if (action == "addRare") {
-			let possibleCards = ALL_CARDS.filter(
-				(i) => i.addable == true && i.tier == "rare"
-			);
+			let possibleCards = ALL_CARDS.filter((i) => i.addable == true && i.tier == "rare");
 			let card = randFromArray(possibleCards);
 			deck.addCard(card.id);
 			let addedCard = getCardById(card.id, deck.cards);
@@ -3021,7 +3041,7 @@ async function monsterAction(action = "perform") {
 						what: "random",
 						value: game.toResurrect,
 						tier: tiers,
-						context: 'upgraded'
+						context: "upgraded",
 					},
 				];
 				let update = processActions(actions, thisMonster);
@@ -3087,7 +3107,7 @@ async function monsterAction(action = "perform") {
 				attackAmount = applyAggro(attackAmount, thisMonster);
 
 				if (action == "query") {
-					if(attackAmount < 0) attackAmount = 0;
+					if (attackAmount < 0) attackAmount = 0;
 					game.incomingDamage += attackAmount;
 					intent +=
 						'<span class="tooltip" data-powertip="Attack for ' +
@@ -4040,12 +4060,14 @@ function gainCourage(amount) {
 }
 
 function checkForCourageScreen() {
-	if(game.floor > 0 &&
+	if (
+		game.floor > 0 &&
 		game.floor % game.courageInterval == 0 &&
 		game.floor != game.lastCourageScreenFloor &&
-		game.mapType != 'ice_gate' &&
-		game.mapType != 'fire_gate' &&
-		game.mapType != 'singularity') {
+		game.mapType != "ice_gate" &&
+		game.mapType != "fire_gate" &&
+		game.mapType != "singularity"
+	) {
 		courageScreen();
 	}
 }
@@ -4349,7 +4371,6 @@ function courageScreen() {
 	}
 
 	updateItemCost();
-
 }
 
 function updateItemCost() {
@@ -5483,9 +5504,7 @@ async function processActions(
 									}
 								} else {
 									if (actions[e].type == "any") {
-										possibleCards = ALL_CARDS.filter(
-											(i) => i.addable == true
-										);
+										possibleCards = ALL_CARDS.filter((i) => i.addable == true);
 									} else if (
 										actions[e].type == "converter" ||
 										actions[e].type == "bottled" ||
@@ -5495,9 +5514,7 @@ async function processActions(
 											(i) => i.type == actions[e].type
 										);
 									} else if (actions[e].type == "weapon") {
-										possibleCards = ALL_CARDS.filter(
-											(i) => i.weapon == true
-										);
+										possibleCards = ALL_CARDS.filter((i) => i.weapon == true);
 									} else {
 										possibleCards = ALL_CARDS.filter(
 											(i) => i.type == actions[e].type && i.addable == true
@@ -5857,13 +5874,12 @@ async function processActions(
 
 						if (value === "double") {
 							value = player[what][key];
-							if ((what === "punch" || what === "thunder")) {
-								if(value > 1) {
+							if (what === "punch" || what === "thunder") {
+								if (value > 1) {
 									value = value - 1;
 								} else {
 									value = 0;
 								}
-
 							}
 						}
 
@@ -6070,11 +6086,17 @@ async function processActions(
 						} else if (actions[e].what == "random") {
 							for (let i = 0; i < actions[e].value; i++) {
 								let id = game.round + "-" + i;
-								let possibleMonsters = monsters.monsters.filter((i) => i.breed != "ghost");
-								if(context === 'upgraded') {
-									possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context !== 'forest');
-								} else if(context !== false) {
-									possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context == context);
+								let possibleMonsters = monsters.monsters.filter(
+									(i) => i.breed != "ghost"
+								);
+								if (context === "upgraded") {
+									possibleMonsters = monsters.monsters.filter(
+										(i) => i.breed != "ghost" && i.context !== "forest"
+									);
+								} else if (context !== false) {
+									possibleMonsters = monsters.monsters.filter(
+										(i) => i.breed != "ghost" && i.context == context
+									);
 								}
 								console.log(context);
 								if (actions[e].tier !== undefined) {
@@ -6084,10 +6106,20 @@ async function processActions(
 												i.breed != "ghost" &&
 												actions[e].tier.includes(i.tier)
 										);
-										if(context === 'upgraded') {
-											possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context !== 'forest' && actions[e].tier.includes(i.tier));
-										} else if(context !== false) {
-											possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context == context && actions[e].tier.includes(i.tier));
+										if (context === "upgraded") {
+											possibleMonsters = monsters.monsters.filter(
+												(i) =>
+													i.breed != "ghost" &&
+													i.context !== "forest" &&
+													actions[e].tier.includes(i.tier)
+											);
+										} else if (context !== false) {
+											possibleMonsters = monsters.monsters.filter(
+												(i) =>
+													i.breed != "ghost" &&
+													i.context == context &&
+													actions[e].tier.includes(i.tier)
+											);
 										}
 									}
 								}
@@ -7076,11 +7108,15 @@ async function activateRainbow(type, to) {
 	for (let i = 0; i < whichMonster.length; i++) {
 		// check for magic resistance
 		let thisDmg = dmg;
-		thisDmg = Math.round(thisDmg - (thisDmg * whichMonster[i].resistance.current));
+		thisDmg = Math.round(thisDmg - thisDmg * whichMonster[i].resistance.current);
 
 		// check for veil
-		if(whichMonster[i].veil.current > 0) {
-			let resistanceEffect = {effect: 'resistance', amount: whichMonster[i].veil.current, turns: 1};
+		if (whichMonster[i].veil.current > 0) {
+			let resistanceEffect = {
+				effect: "resistance",
+				amount: whichMonster[i].veil.current,
+				turns: 1,
+			};
 			await applyEffect(resistanceEffect, whichMonster[i], 1);
 		}
 
@@ -7145,14 +7181,19 @@ function applyArmor(arm, to) {
 
 function applyAggro(dmg, monster) {
 	let aggroDmg = Math.round((dmg + monster.might.current) * monster.punch.current);
-	if(monster.context == 'flame') {
+	if (monster.context == "flame") {
 		// 10 base damage will increase by 2.5 per aggro level, starting at level 0
 		// note this is additive rather than setting a new value for aggroDmg
-		aggroDmg += Math.round(((player.aggro.level / 4) + .5) * aggroDmg);
+		aggroDmg += Math.round((player.aggro.level / 4 + 0.5) * aggroDmg);
 	}
-	if((game.mapType == 'ice_gate' || game.mapType == 'fire_gate' || game.mapType == 'arena') || (game.difficulty=='nightmare' && game.mapType=='singularity')) {
+	if (
+		game.mapType == "ice_gate" ||
+		game.mapType == "fire_gate" ||
+		game.mapType == "arena" ||
+		(game.difficulty == "nightmare" && game.mapType == "singularity")
+	) {
 		// 10 base damage will increase by 5 per aggro level, starting at level 1
-		aggroDmg = Math.round(((player.aggro.level / 2) + 1) * aggroDmg);
+		aggroDmg = Math.round((player.aggro.level / 2 + 1) * aggroDmg);
 	}
 	return aggroDmg;
 }
