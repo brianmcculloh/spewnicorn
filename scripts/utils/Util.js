@@ -17,22 +17,7 @@ export default class Util {
 			window.navigator.msMaxTouchPoints > 0
 		); // works on ie10
 	}
-	randDecimal() {
-		return util.rand();
-	}
-	randIntFromInterval(threshold) {
-		return Math.floor(util.rand() * (10 - threshold + 1) + threshold);
-	}
-	randFromRange(min, max) {
-		return Math.round(util.rand() * (max - min) + min);
-	}
-	chance(percent) {
-		let d = util.rand();
-		return d <= percent / 100;
-	}
-	monsterNumChance(initial = 0, increase = 10) {
-		return Math.round(game.floor / game.monsterGroup) * increase + initial;
-	}
+
 	shuffle(arr) {
 		let currentIndex = arr.length,
 			randomIndex;

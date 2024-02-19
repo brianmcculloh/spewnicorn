@@ -1,4 +1,4 @@
-import { Util } from "./scripts/utils/index.js";
+import { Util, setGameSeed, randArrayIndex, randFromArray, randIntFromInterval, randString, getShardNum, chance } from './scripts/utils/index.js';
 const util = new Util();
 
 import Game from "./game.js";
@@ -14,7 +14,7 @@ window.player = player;
 const monsters = Monster();
 
 import { Deck, CombatDeck } from "./cards.js";
-import { setGameSeed, randArrayIndex, randFromArray, randString, getShardNum } from './scripts/utils/index.js';
+
 import { ALL_CARDS, buildLibrary, getTotalCards, getAddableCards, getWeapons, getCardById, buildDescription, buildSlotsDescription, getCardAttribute } from './scripts/cards/index.js';
 
 
@@ -3009,11 +3009,11 @@ async function monsterAction(action = "perform") {
 				//let actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, form: 'ghost', tier: [3, 4]}];
 				let tiers = [4, 5];
 				if (game.difficulty == "hard") {
-					tiers = util.chance(25) ? [4] : util.chance(90) ? [5] : [6];
+					tiers = chance(25) ? [4] : chance(90) ? [5] : [6];
 				} else if (game.difficulty == "expert") {
-					tiers = util.chance(90) ? [5] : [6];
+					tiers = chance(90) ? [5] : [6];
 				} else if (game.difficulty == "nightmare") {
-					tiers = util.chance(75) ? [5] : util.chance(75) ? [6] : [7];
+					tiers = chance(75) ? [5] : chance(75) ? [6] : [7];
 				}
 				let actions = [
 					{
@@ -4080,7 +4080,7 @@ async function updateAggro(amount) {
 		} else {
 			for (let i = 0; i < amount; i++) {
 				let amt = 1;
-				if (game.difficulty == "easy") amt = util.chance(50) ? 1 : 0;
+				if (game.difficulty == "easy") amt = chance(50) ? 1 : 0;
 				player.aggro.current += amt;
 				if (
 					whichThresholds.includes(player.aggro.current) ||
@@ -4174,20 +4174,20 @@ function loot(type, tier = 3) {
 				//}
 			}
 			// one or two essences
-			var numEssences = util.chance(75) ? 1 : 2;
+			var numEssences = chance(75) ? 1 : 2;
 			for (let i = 0; i < numEssences; i++) {
 				var index = randArrayIndex(game.essences);
 				util.appendEssence(game.essences[index], ".loot-items");
 			}
 			// chance for shard
-			if (util.chance(game.shardChance) && deck.numOpenSlots() > 0) {
+			if (chance(game.shardChance) && deck.numOpenSlots() > 0) {
 				game.shardChance -= 5;
 				if (game.shardChance < 0) game.shardChance = 0;
 				var index = randArrayIndex(treasures.shards);
 				util.appendShard(treasures.shards[index], ".loot-items");
 			}
 			// chance for candy
-			if (util.chance(game.candyChance)) {
+			if (chance(game.candyChance)) {
 				game.candyChance -= 20;
 				if (game.candyChance < 0) game.candyChance = 0;
 				let candy = util.weightedRandom(treasures.candies);
@@ -4238,7 +4238,7 @@ function rewardsScreen() {
 		let card = deck.decideCard();
 		util.appendCard(card, ".rewards-cards");
 	}
-	if (util.chance(game.candyChance)) {
+	if (chance(game.candyChance)) {
 		game.candyChance -= 20;
 		if (game.candyChance < 0) game.candyChance = 0;
 		let candy = util.weightedRandom(treasures.candies);
@@ -4249,7 +4249,7 @@ function rewardsScreen() {
 		util.appendCandy(copiedCandy, ".rewards-loot", clickable);
 		$(".rewards-loot-wrapper").addClass("shown");
 	}
-	if (util.chance(game.shardChance) && deck.numOpenSlots() > 0) {
+	if (chance(game.shardChance) && deck.numOpenSlots() > 0) {
 		game.shardChance -= 15;
 		if (game.shardChance < 0) game.shardChance = 0;
 		var index = randArrayIndex(treasures.shards);
@@ -4269,7 +4269,7 @@ function treasureScreen() {
 		let tier = 4;
 		loot("gate", tier);
 		game.treasureChance = 0;
-	} else if (util.chance(game.treasureChance)) {
+	} else if (chance(game.treasureChance)) {
 		loot("treasure");
 		game.treasureChance = 0;
 	}
@@ -5213,7 +5213,7 @@ async function processDmg(
 			for (let j = 0; j < dmg.length; j++) {
 				let criticalHit =
 					type != "draw" && type != "discard" && type != "destroy"
-						? util.chance(game.critChance)
+						? chance(game.critChance)
 						: false;
 				let thisDmg = dmg[j];
 				if (currentMonster) {
@@ -6212,7 +6212,7 @@ async function processQuest(elem) {
 			break;
 		case "challenge":
 			if (option == "meet_challenge") {
-				if (util.chance(75)) {
+				if (chance(75)) {
 					gainCourage(3);
 				} else {
 					let actions = [{ action: "stat", what: "health", key: "current", value: -3 }];
@@ -6220,7 +6220,7 @@ async function processQuest(elem) {
 				}
 			}
 			if (option == "rematch") {
-				if (util.chance(50)) {
+				if (chance(50)) {
 					gainCourage(5);
 				} else {
 					let actions = [{ action: "stat", what: "health", key: "current", value: -5 }];
@@ -6228,7 +6228,7 @@ async function processQuest(elem) {
 				}
 			}
 			if (option == "final_battle") {
-				if (util.chance(25)) {
+				if (chance(25)) {
 					gainCourage(10);
 				} else {
 					let actions = [{ action: "stat", what: "health", key: "current", value: -10 }];
@@ -6460,12 +6460,12 @@ async function processQuest(elem) {
 				gainCourage(1);
 			}
 			if (option == "medium_trunk") {
-				if (util.chance(66)) {
+				if (chance(66)) {
 					gainCourage(4);
 				}
 			}
 			if (option == "large_trunk") {
-				if (util.chance(33)) {
+				if (chance(33)) {
 					gainCourage(9);
 				}
 			}
@@ -6474,7 +6474,7 @@ async function processQuest(elem) {
 			break;
 		case "leap_of_faith":
 			if (option == "leap1") {
-				if (util.chance(25)) {
+				if (chance(25)) {
 					let possibleTreasures = treasures.treasures.filter(
 						(i) => i.owned == false && i.tier == 1
 					);
@@ -6487,7 +6487,7 @@ async function processQuest(elem) {
 				await processActions(actions);
 			}
 			if (option == "leap2") {
-				if (util.chance(35)) {
+				if (chance(35)) {
 					let possibleTreasures = treasures.treasures.filter(
 						(i) => i.owned == false && i.tier == 1
 					);
@@ -6500,7 +6500,7 @@ async function processQuest(elem) {
 				await processActions(actions);
 			}
 			if (option == "leap3") {
-				if (util.chance(45)) {
+				if (chance(45)) {
 					let possibleTreasures = treasures.treasures.filter(
 						(i) => i.owned == false && i.tier == 1
 					);
@@ -6513,7 +6513,7 @@ async function processQuest(elem) {
 				await processActions(actions);
 			}
 			if (option == "leap4") {
-				if (util.chance(55)) {
+				if (chance(55)) {
 					let possibleTreasures = treasures.treasures.filter(
 						(i) => i.owned == false && i.tier == 1
 					);
@@ -6526,7 +6526,7 @@ async function processQuest(elem) {
 				await processActions(actions);
 			}
 			if (option == "leap5") {
-				if (util.chance(65)) {
+				if (chance(65)) {
 					let possibleTreasures = treasures.treasures.filter(
 						(i) => i.owned == false && i.tier == 1
 					);
@@ -6539,7 +6539,7 @@ async function processQuest(elem) {
 				await processActions(actions);
 			}
 			if (option == "leap6") {
-				if (util.chance(75)) {
+				if (chance(75)) {
 					let possibleTreasures = treasures.treasures.filter(
 						(i) => i.owned == false && i.tier == 1
 					);
@@ -6552,7 +6552,7 @@ async function processQuest(elem) {
 				await processActions(actions);
 			}
 			if (option == "leap7") {
-				if (util.chance(85)) {
+				if (chance(85)) {
 					let possibleTreasures = treasures.treasures.filter(
 						(i) => i.owned == false && i.tier == 1
 					);
@@ -6565,7 +6565,7 @@ async function processQuest(elem) {
 				await processActions(actions);
 			}
 			if (option == "leap8") {
-				if (util.chance(95)) {
+				if (chance(95)) {
 					let possibleTreasures = treasures.treasures.filter(
 						(i) => i.owned == false && i.tier == 1
 					);
@@ -6652,7 +6652,7 @@ async function processQuest(elem) {
 		case "labyrinth":
 			// large prize
 			if (option == "right3221") {
-				if (util.chance(75)) {
+				if (chance(75)) {
 					let possibleTreasures = treasures.treasures.filter(
 						(i) => i.owned == false && i.tier == 2
 					);
@@ -6835,7 +6835,7 @@ function crit(dmg, unreachable = false) {
 	let mastery = player.mastery.current;
 	let threshold = 5; // crits are always at least 1.5x dmg
 	threshold += mastery;
-	let multiplier = util.randIntFromInterval(threshold) / 10 + 1; // multiplier is over and above 1 (100% dmg)
+	let multiplier = randIntFromInterval(threshold) / 10 + 1; // multiplier is over and above 1 (100% dmg)
 	let critDmg = Math.round(dmg * multiplier);
 	let fierce = player.fierce.current;
 	critDmg += fierce;

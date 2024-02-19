@@ -1,5 +1,4 @@
-import { Util } from "./scripts/utils/index.js";
-import { randArrayIndex, randFromArray, randString } from './scripts/utils/index.js';
+import { Util, randArrayIndex, randFromArray, randString, randDecimal, chance } from './scripts/utils/index.js';
 
 const util = new Util();
 
@@ -99,11 +98,11 @@ export default function Map() {
 		$(".start-arrow").show();
 
 		let i = 0;
-		let j = Math.round(util.randDecimal() * 100);
-		let k = Math.round(util.randDecimal() * 100);
-		let l = Math.round(util.randDecimal() * 100);
-		let m = Math.round(util.randDecimal() * 100);
-		let n = Math.round(util.randDecimal() * 100);
+		let j = Math.round(randDecimal() * 100);
+		let k = Math.round(randDecimal() * 100);
+		let l = Math.round(randDecimal() * 100);
+		let m = Math.round(randDecimal() * 100);
+		let n = Math.round(randDecimal() * 100);
 		let excludedTilesFountain = [1, 2, 3, 11, 12, 21, 22];
 		let excludedTilesQuest = [1, 2, 3, 4, 11, 12, 13, 21, 22, 23, 31, 32];
 		//excludedTilesQuest = []; // TODO: comment this out - debug purposes only
@@ -117,19 +116,19 @@ export default function Map() {
 		let iceGateTile = randArrayIndex(iceGateTiles);
 		let fireGateTile = randArrayIndex(fireGateTiles);
 		while (excludedTilesArena.indexOf(j) >= 0) {
-			j = Math.round(util.randDecimal() * 100);
+			j = Math.round(randDecimal() * 100);
 		}
 		while (excludedTilesArena.indexOf(k) >= 0) {
-			k = Math.round(util.randDecimal() * 100);
+			k = Math.round(randDecimal() * 100);
 		}
 		while (excludedTilesArena.indexOf(l) >= 0) {
-			l = Math.round(util.randDecimal() * 100);
+			l = Math.round(randDecimal() * 100);
 		}
 		while (excludedTilesArena.indexOf(m) >= 0) {
-			m = Math.round(util.randDecimal() * 100);
+			m = Math.round(randDecimal() * 100);
 		}
 		while (excludedTilesArena.indexOf(n) >= 0) {
-			n = Math.round(util.randDecimal() * 100);
+			n = Math.round(randDecimal() * 100);
 		}
 		$(".tile div").each(function (e) {
 			i++;
@@ -190,7 +189,7 @@ export default function Map() {
 				} else {
 					fountainChance += game.fountainChance;
 					// fountains
-					if (util.chance(fountainChance) && excludedTilesFountain.indexOf(i) < 0) {
+					if (chance(fountainChance) && excludedTilesFountain.indexOf(i) < 0) {
 						$(this).html('<span class="icon"></span>');
 						$(this).parent().addClass("fountain");
 						$(this)
@@ -201,7 +200,7 @@ export default function Map() {
 					} else {
 						questChance += game.questChance;
 						// quests
-						if (util.chance(questChance) && excludedTilesQuest.indexOf(i) < 0) {
+						if (chance(questChance) && excludedTilesQuest.indexOf(i) < 0) {
 							$(this).html('<span class="icon"></span>');
 							$(this).parent().addClass("quest");
 							$(this)

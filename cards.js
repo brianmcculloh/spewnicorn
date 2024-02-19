@@ -1,4 +1,4 @@
-import { Util, randArrayIndex, randFromArray, randString } from './scripts/utils/index.js';
+import { Util, randArrayIndex, randFromArray, randString, chance } from './scripts/utils/index.js';
 import { getAddableCards, ALL_CARDS, buildDescription, buildSlotsDescription, getCardAttribute, getCardById } from './scripts/cards/index.js';
 
 
@@ -145,9 +145,9 @@ export function Deck() {
     function decideCard(type = false, tier = 'common') {
 
         // determine & update chances
-        let legendary = util.chance(game.legendaryChance);
-        let rare = util.chance(game.rareChance);
-        let uncommon = util.chance(game.uncommonChance);
+        let legendary = chance(game.legendaryChance);
+        let rare = chance(game.rareChance);
+        let uncommon = chance(game.uncommonChance);
         let legendaryIncrease = Math.round((game.floor - 10) / 2);
         if(legendaryIncrease < 0) legendaryIncrease = 0;
         //game.legendaryChance += legendaryIncrease; // enable this if we want to show legendary cards outside of gate rewards
@@ -517,7 +517,7 @@ export function CombatDeck() {
             if(thisRetain == false && thisCard.tempRetain == false) {
                 // check for sift
                 if(player.sift.enabled && thisCard.type=='clutter') {
-                    //if(util.chance(50)) { // used to be 50% chance to vanish but changed to always vanish
+                    //if(chance(50)) { // used to be 50% chance to vanish but changed to always vanish
                         ephemeral = true;
                     //}
                 }

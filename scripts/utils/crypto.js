@@ -44,4 +44,14 @@ const randFromArray = (arr) => arr[Math.floor(rand() * arr.length)];
 
 const randString = () => (Math.random() + 1).toString(36).substring(2);
 
-export { cyrb128, mulberry32, rand, randArrayIndex, randFromArray, randString, setGameSeed};
+const randDecimal = () => rand();
+
+const randIntFromInterval = (threshold) => Math.floor(rand() * (10 - threshold + 1) + threshold);
+
+const randFromRange = (min, max) => Math.round(rand() * (max - min) + min);
+
+const chance = (percent) => rand() <= percent / 100;
+
+const monsterNumChance = (initial = 0, increase = 10) => Math.round(window.game.floor / window.game.monsterGroup) * increase + initial;
+
+export { cyrb128, mulberry32, rand, randArrayIndex, randFromArray, randString, setGameSeed, randDecimal, randIntFromInterval, randFromRange, chance, monsterNumChance};
