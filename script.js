@@ -15,7 +15,7 @@ const monsters = Monster();
 
 import { Deck, CombatDeck } from "./cards.js";
 import { ALL_CARDS, buildLibrary, getTotalCards, getAddableCards, getWeapons, getCardById } from './scripts/index.js';
-import { setGameSeed, randArrayIndex, randFromArray, randString } from './scripts/utils/index.js';
+import { setGameSeed, randArrayIndex, randFromArray, randString, getShardNum } from './scripts/utils/index.js';
 import { buildDescription, buildSlotsDescription, getCardAttribute } from './scripts/cards/index.js';
 
 
@@ -4938,7 +4938,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 
 	let mana = getCardAttribute(card, "mana");
 	let multiply = 1;
-	let numShards = util.getShardNum(card, "any");
+	let numShards = getShardNum(card, "any");
 	if (mana == "?" && useMana) {
 		/* not sure if this mechanic makes sense, especially since the shard upgrades add more power already
 		if(numShards==1) {
