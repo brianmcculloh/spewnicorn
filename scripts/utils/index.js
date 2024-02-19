@@ -1,4 +1,5 @@
-import { shuffle, sort } from "./array.js";
+import appendCard from "./append_card.js";
+import { shuffle, sort } from "./arr.js";
 import {
 	cyrb128,
 	mulberry32,
@@ -22,8 +23,16 @@ import buildAbilitiesDescription from "./build_abilities_description.js";
 import buildActionsDescription from "./build_actions_description.js";
 import buildEffectsDescription from "./build_effects_description.js";
 import buildTradesDescription from "./build_trades_description.js";
+import {
+	setInitialTooltips,
+	setSplashTooltips,
+	setTooltips,
+	setTooltip,
+	clearTooltips,
+} from "./tooltips.js";
 
 export {
+	appendCard,
 	cyrb128,
 	mulberry32,
 	Util,
@@ -34,7 +43,7 @@ export {
 	getShardAttribute,
 	getShardNum,
 	setGameSeed,
-    buildCardSlots,
+	buildCardSlots,
 	buildTriggerDescription,
 	buildAbilitiesDescription,
 	buildActionsDescription,
@@ -47,4 +56,9 @@ export {
 	monsterNumChance,
 	shuffle,
 	sort,
+	setInitialTooltips,
+	setSplashTooltips,
+	setTooltips,
+	setTooltip,
+	clearTooltips,
 };

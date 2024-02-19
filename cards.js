@@ -1,4 +1,4 @@
-import { Util, randArrayIndex, randFromArray, randString, chance, shuffle, buildCardSlots } from './scripts/utils/index.js';
+import { Util, randArrayIndex, randFromArray, randString, chance, shuffle, buildCardSlots, appendCard } from './scripts/utils/index.js';
 import { getAddableCards, ALL_CARDS, buildDescription, buildSlotsDescription, getCardAttribute, getCardById } from './scripts/cards/index.js';
 
 
@@ -117,7 +117,7 @@ export function Deck() {
                     domCard = util.getDomCardByGuid(cards[i].guid);
                 }
                 if(domCard.length == 0 || domCard == undefined) {
-                    util.appendCard(cards[i], '.library-panel .cards');
+                    appendCard(cards[i], '.library-panel .cards');
                     domCard = util.getDomCardById(cards[i].id);
                 }
 
@@ -133,7 +133,7 @@ export function Deck() {
                         if(cost > player.mana.current) {
                             css = '';
                         }
-                        util.appendCard(thisCard, '.player-cards', css);
+                        appendCard(thisCard, '.player-cards', css);
                     }
                 }
             }
@@ -349,7 +349,7 @@ export function CombatDeck() {
                     combatDeck.discardCards.push(thisCard);
                 } else {
                     combatDeck.handCards.push(thisCard);
-                    util.appendCard(thisCard, '.player-cards', playable + retain + destroyable + discardable);
+                    appendCard(thisCard, '.player-cards', playable + retain + destroyable + discardable);
                     if(!ignoreSpeed) player.speed.current -= 1;
                 }
 
@@ -384,7 +384,7 @@ export function CombatDeck() {
             } else {
                 combatDeck.handCards.push(thisCard);
                 let css = thisCard.playable ? 'playable' : '';
-                util.appendCard(thisCard, '.player-cards', css + retain);
+                appendCard(thisCard, '.player-cards', css + retain);
             }
         } else {
             if(thisCard == undefined || thisCard == '' || thisCard == null || thisCard == false) {
@@ -419,7 +419,7 @@ export function CombatDeck() {
             } else {
                 combatDeck.handCards.push(thisCard);
                 let css = thisCard.playable ? 'playable' : '';
-                util.appendCard(thisCard, '.player-cards', css + retain);
+                appendCard(thisCard, '.player-cards', css + retain);
             }
         } else {
             if(thisCard == undefined || thisCard == '' || thisCard == null || thisCard == false) {
@@ -454,7 +454,7 @@ export function CombatDeck() {
             } else {
                 combatDeck.handCards.push(thisCard);
                 let css = thisCard.playable ? 'playable' : '';
-                util.appendCard(thisCard, '.player-cards', css + retain);
+                appendCard(thisCard, '.player-cards', css + retain);
             }
         } else {
             if(thisCard == undefined || thisCard == '' || thisCard == null || thisCard == false) {
@@ -487,7 +487,7 @@ export function CombatDeck() {
             } else {
                 combatDeck.handCards.push(thisCard);
                 let css = thisCard.playable ? 'playable' : '';
-                util.appendCard(thisCard, '.player-cards', css + retain + discardable);
+                appendCard(thisCard, '.player-cards', css + retain + discardable);
             }
         } else if(to=='deck') {
             Deck().addCard(guid); // TODO: after changing how transmuteCards function works, this probably doesn't work anymore. needs testing.
@@ -718,7 +718,7 @@ export function CombatDeck() {
                         let css = copiedCard.playable ? 'playable' : '';
                         // card might be added automatically by another card while we are discarding - clever maneuver draws surprise attack for instance
                         css += $('body').hasClass('discarding') ? ' discardable' : '';
-                        util.appendCard(copiedCard, '.player-cards', css + retain);
+                        appendCard(copiedCard, '.player-cards', css + retain);
                     }
                 }
             }

@@ -6,6 +6,7 @@ import {
 	rand,
 	shuffle,
 	buildCardSlots,
+	setTooltips,
 } from "./index.js";
 import { getCardAttribute } from "../cards/index.js";
 
@@ -26,339 +27,6 @@ export default class Util {
 		); // works on ie10
 	}
 
-	appendCard(card, to, cssClass = "") {
-		if (!card) return;
-		let slots = "";
-		slots = buildCardSlots(card);
-
-		let mana = getCardAttribute(card, "mana");
-		let manaDom = "";
-		let manaTip = "<span class='highlight'>Mana:</span> energy cost to play this card";
-		manaDom =
-			'<div class="card-mana tooltip" data-powertip="' +
-			manaTip +
-			'"><span class="mana amount" data-amount="' +
-			mana +
-			'">' +
-			mana +
-			"</span></div>";
-
-		let age = -1;
-		age = getCardAttribute(card, "age");
-		let ageDom = "";
-		let ageTip = "";
-		let plural = "";
-		if (age > -1) {
-			plural = age == 1 ? "" : "s";
-			ageTip =
-				"<span class='highlight'>Age:</span> Card has been retained for " +
-				age +
-				" turn" +
-				plural +
-				" this combat";
-			ageDom +=
-				'<div class="card-age tooltip" data-powertip="' +
-				ageTip +
-				'"><span class="age amount" data-amount="' +
-				age +
-				'">' +
-				age +
-				"</span></div>";
-		}
-
-		let use = -1;
-		use = getCardAttribute(card, "use");
-		let useDom = "";
-		let useTip = "";
-		if (use > -1) {
-			plural = use == 1 ? "" : "s";
-			useTip =
-				"<span class='highlight'>Use:</span> Number of times this card can be used before vanishing";
-			useDom +=
-				'<span class="amount use tooltip" data-powertip="' +
-				useTip +
-				'" data-amount="' +
-				use +
-				'">' +
-				use +
-				"</span>";
-		}
-
-		let expire = -1;
-		expire = getCardAttribute(card, "expire");
-		let expireDom = "";
-		let expireTip = "";
-		if (expire > -1) {
-			plural = expire == 1 ? "" : "s";
-			expireTip =
-				"<span class='highlight'>Expire:</span> Number of turns this card remains in your deck before vanishing";
-			expireDom +=
-				'<span class="amount expire tooltip" data-powertip="' +
-				expireTip +
-				'" data-amount="' +
-				expire +
-				'">' +
-				expire +
-				"</span>";
-		}
-
-		let linger = -1;
-		linger = getCardAttribute(card, "linger");
-		let lingerDom = "";
-		let lingerTip = "";
-		if (linger > -1) {
-			plural = linger == 1 ? "" : "s";
-			lingerTip =
-				"<span class='highlight'>Linger:</span> Number of times this card can be played before it leaves your hand";
-			lingerDom +=
-				'<span class="amount linger tooltip" data-powertip="' +
-				lingerTip +
-				'" data-amount="' +
-				linger +
-				'">' +
-				linger +
-				"</span>";
-		}
-
-		let vanish = false;
-		vanish = getCardAttribute(card, "vanish");
-		let vanishDom = "";
-		let vanishTip = "";
-		if (vanish) {
-			vanishTip = "<span class='highlight'>Vanish:</span> Becomes a dead card when played";
-			vanishDom +=
-				'<div class="vanish tooltip" data-powertip="' + vanishTip + '"><span></span></div>';
-		}
-
-		let retain = false;
-		retain = getCardAttribute(card, "retain");
-		let retainDom = "";
-		let retainTip = "";
-		if (retain) {
-			retainTip =
-				"<span class='highlight'>Retain:</span> Does not discard at the end of your turn";
-			retainDom +=
-				'<div class="retain tooltip" data-powertip="' + retainTip + '"><span></span></div>';
-		}
-
-		let ephemeral = false;
-		ephemeral = getCardAttribute(card, "ephemeral");
-		let ephemeralDom = "";
-		let ephemeralTip = "";
-		if (ephemeral) {
-			ephemeralTip =
-				"<span class='highlight'>Ephemeral:</span> Becomes a dead card if drawn but not played";
-			ephemeralDom +=
-				'<div class="ephemeral tooltip" data-powertip="' +
-				ephemeralTip +
-				'"><span></span></div>';
-		}
-
-		let breakable = false;
-		breakable = getCardAttribute(card, "breakable");
-		let breakableDom = "";
-		let breakableTip = "";
-		if (breakable) {
-			breakableTip =
-				"<span class='highlight'>Breakable:</span> When used up, card is permanently removed from your deck";
-			breakableDom +=
-				'<div class="breakable tooltip" data-powertip="' +
-				breakableTip +
-				'"><span></span></div>';
-		}
-
-		let combinable = card.combine ? " combinable" : "";
-		let combinableDom = "";
-		let combinableTip = "";
-		if (combinable != "") {
-			combinableTip =
-				"<span class='highlight'>Combinable:</span> When in hand, this card can be combined with another identical card to create a new more powerful card.";
-			combinableDom +=
-				'<div class="combinable tooltip" data-powertip="' +
-				combinableTip +
-				'"><span></span></div>';
-		}
-
-		let unaddable = false;
-		unaddable = !getCardAttribute(card, "addable");
-		let unaddableDom = "";
-		let unaddableTip = "";
-		if (unaddable) {
-			unaddableTip =
-				"<span class='highlight'>Unaddable:</span> This card is not available in card reward screens or the market";
-			unaddableDom +=
-				'<div class="unaddable tooltip" data-powertip="' +
-				unaddableTip +
-				'"><span></span></div>';
-		}
-		// maybe this is too much info and unnecessary for player to know?
-		unaddableDom = "";
-
-		let natural = false;
-		natural = getCardAttribute(card, "natural");
-		let naturalDom = "";
-		let naturalTip = "";
-		if (natural) {
-			naturalTip =
-				"<span class='highlight'>Natural:</span> This card starts on the top of your draw pile each combat";
-			naturalDom +=
-				'<div class="natural tooltip" data-powertip="' +
-				naturalTip +
-				'"><span></span></div>';
-		}
-
-		let aura = false;
-		aura = getCardAttribute(card, "aura");
-		let auraDom = "";
-		let auraTip = "";
-		if (aura != "") {
-			auraTip =
-				"<span class='highlight'>Stance:</span> Triggers extra effects when in <span class='aura'>Aura</span> stance";
-			auraDom +=
-				'<div class="card-stance aura-stance tooltip" data-powertip="' +
-				auraTip +
-				'"><span></span></div>';
-		}
-
-		let shimmer = false;
-		shimmer = getCardAttribute(card, "shimmer");
-		let shimmerDom = "";
-		let shimmerTip = "";
-		if (shimmer != "") {
-			shimmerTip =
-				"<span class='highlight'>Stance:</span> Triggers extra effects when in <span class='shimmer'>Shimmer</span> stance";
-			shimmerDom +=
-				'<div class="card-stance shimmer-stance tooltip" data-powertip="' +
-				shimmerTip +
-				'"><span></span></div>';
-		}
-
-		let sparkle = false;
-		sparkle = getCardAttribute(card, "sparkle");
-		let sparkleDom = "";
-		let sparkleTip = "";
-		if (sparkle != "") {
-			sparkleTip =
-				"<span class='highlight'>Stance:</span> Triggers extra effects when in <span class='sparkle'>Sparkle</span> stance";
-			sparkleDom +=
-				'<div class="card-stance sparkle-stance tooltip" data-powertip="' +
-				sparkleTip +
-				'"><span></span></div>';
-		}
-
-		let trade = false;
-		trade = getCardAttribute(card, "trade");
-		let tradeDom = "";
-		let tradeTip = "";
-		if (trade != "") {
-			tradeTip = "<span class='highlight'>Tradeable:</span> Can be traded at the market";
-			tradeDom +=
-				'<div class="tradeable tooltip" data-powertip="' +
-				tradeTip +
-				'"><span></span></div>';
-		}
-
-		let weapon = false;
-		weapon = getCardAttribute(card, "weapon");
-		let weaponDom = "";
-		let weaponTip = "";
-		if (weapon != "") {
-			weaponTip = "<span class='highlight'>Weapon:</span> This is a weapon class card";
-			weaponDom +=
-				'<div class="weapon tooltip" data-powertip="' + weaponTip + '"><span></span></div>';
-		}
-
-		let aoe = false;
-		aoe = getCardAttribute(card, "target");
-		let aoeDom = "";
-		let aoeTip = "";
-		if (aoe == "all") {
-			aoeTip = "<span class='highlight'>AOE:</span> Targets all monsters";
-			aoeDom += '<div class="aoe tooltip" data-powertip="' + aoeTip + '"><span></span></div>';
-		}
-
-		let pack = false;
-		pack = getCardAttribute(card, "pack");
-		let packDom = "";
-		let packTip = "";
-		if (pack) {
-			if (pack != "basic") {
-				packTip = "From the <span class='highlight'>" + pack + "</span> Pack";
-				packDom +=
-					'<div class="pack tooltip" data-powertip="' + packTip + '"><span></span></div>';
-			}
-		}
-
-		let unplayable = card.playable ? "" : " unplayable";
-		let tooltipClass = slots != "" ? " tooltip" : "";
-		let tooltip = slots != "" ? card.slotDesc : "";
-		pack = card.pack ? " " + card.pack + "-pack" : "";
-		$(
-			"<div class='card-wrapper drawing'><div class='card " +
-				card.tier +
-				unplayable +
-				combinable +
-				pack +
-				" " +
-				card.type +
-				" " +
-				cssClass +
-				"' id='card-" +
-				card.id +
-				"' data-id='" +
-				card.id +
-				"' data-guid='" +
-				card.guid +
-				"' data-powertip='" +
-				tooltip +
-				"'><div class='card-image'></div><div class='card-frame'></div><div class='card-type'>" +
-				card.type +
-				"</div><div class='card-rarity'></div>" +
-				manaDom +
-				ageDom +
-				"<div class='bubbles-left'>" +
-				useDom +
-				expireDom +
-				lingerDom +
-				"</div><div class='bubbles-right'>" +
-				vanishDom +
-				retainDom +
-				ephemeralDom +
-				breakableDom +
-				combinableDom +
-				auraDom +
-				sparkleDom +
-				shimmerDom +
-				tradeDom +
-				weaponDom +
-				aoeDom +
-				unaddableDom +
-				naturalDom +
-				"</div><div class='bubbles-bottom-left'>" +
-				packDom +
-				"</div><div class='name'>" +
-				card.name +
-				"</div><div class='desc'><div class='desc-inner'>" +
-				card.desc +
-				"</div></div><div class='slots" +
-				tooltipClass +
-				"' data-powertip='" +
-				tooltip +
-				"'>" +
-				slots +
-				"</div><div class='card-courage tooltip' data-amount='" +
-				card.courage +
-				"' data-powertip='Courage coins'>" +
-				card.courage +
-				"</div></div></div>"
-		)
-			.appendTo(to)
-			.delay(1)
-			.queue(function () {
-				$(this).removeClass("drawing").dequeue();
-			});
-		util.setTooltips(to);
-	}
 	animateShowCards() {
 		$(".show-cards").addClass("shown");
 		$(".show-cards .card")
@@ -395,7 +63,7 @@ export default class Util {
 			.appendTo(".monster-panel")
 			.hide()
 			.fadeIn(1500);
-		util.setTooltips(".monster-panel");
+		setTooltips(".monster-panel");
 	}
 	appendTreasure(treasure, to) {
 		let trigger = "";
@@ -424,7 +92,7 @@ export default class Util {
 				treasure.courage +
 				"</div></div>"
 		).appendTo(to);
-		util.setTooltips(to);
+		setTooltips(to);
 	}
 	appendCandy(candy, to, clickable) {
 		let css = "trashable ";
@@ -453,7 +121,7 @@ export default class Util {
 				candy.courage +
 				"</div></div>"
 		).appendTo(to);
-		util.setTooltips(to);
+		setTooltips(to);
 	}
 	appendOption(option, to, quest) {
 		let desc = option.desc != undefined ? " (" + option.desc + ")" : "";
@@ -467,7 +135,7 @@ export default class Util {
 				desc +
 				"</div>"
 		).appendTo(to);
-		util.setTooltips(to);
+		setTooltips(to);
 	}
 	appendStartingBonuses() {
 		let options = shuffle(game.startingOptions);
@@ -496,7 +164,7 @@ export default class Util {
 					"</div>"
 			).appendTo(".starting-options");
 		}
-		util.setTooltips(".starting-options");
+		setTooltips(".starting-options");
 	}
 	appendBoosterPacks() {
 		let packs = game.boosterPacks;
@@ -509,7 +177,7 @@ export default class Util {
 					" Pack</span></div>"
 			).appendTo(".starting-booster-packs");
 		}
-		util.setTooltips(".starting-booster-packs");
+		setTooltips(".starting-booster-packs");
 	}
 	getFirstEmptyElement(selector) {
 		let elem;
@@ -537,7 +205,7 @@ export default class Util {
 				desc +
 				"'></div>"
 		).appendTo(to);
-		util.setTooltips(to);
+		setTooltips(to);
 	}
 	appendEssence(essence, to) {
 		let desc = '<span class="' + essence + '">' + essence + "</span>";
@@ -550,7 +218,7 @@ export default class Util {
 				desc +
 				" essence'></div>"
 		).appendTo(to);
-		util.setTooltips(to);
+		setTooltips(to);
 	}
 	appendConfirm(card, to) {
 		$(
@@ -558,7 +226,7 @@ export default class Util {
 				card.guid +
 				'">Play This Card</div>'
 		).appendTo(to);
-		util.setTooltips(to);
+		setTooltips(to);
 	}
 	removeCard(index, from) {
 		$(from).children().eq(index).parent().remove();
@@ -749,113 +417,6 @@ export default class Util {
 		}
 		$(".aggro-bar .aggro-bar-inner").css("width", percentage + "%");
 	}
-	setInitialTooltips() {
-		$(".top-bar .tooltip").powerTip({
-			followMouse: true,
-			placement: "s",
-			offset: 40,
-			fadeInTime: 50,
-			fadeOutTime: 30,
-			closeDelay: 100,
-			intentPollInterval: 30,
-			intentSensitivity: 5,
-			popupClass: "tooltip-top-bar",
-		});
-		$(".bottom-bar .tooltip").powerTip({
-			followMouse: false,
-			smartPlacement: true,
-			placement: "n",
-			offset: 10,
-			fadeInTime: 0,
-			fadeOutTime: 0,
-			closeDelay: 0,
-			intentPollInterval: 0,
-			intentSensitivity: 100,
-			popupClass: "tooltip-bottom-bar",
-		});
-		$(".bottom-bar .tooltip-right").powerTip({
-			followMouse: false,
-			smartPlacement: true,
-			placement: "nw",
-			offset: 5,
-			fadeInTime: 0,
-			fadeOutTime: 0,
-			closeDelay: 0,
-			intentPollInterval: 0,
-			intentSensitivity: 100,
-			popupClass: "tooltip-bottom-bar",
-		});
-		$(".magic-rainbow").powerTip({
-			followMouse: true,
-			offset: 5,
-			fadeInTime: 50,
-			fadeOutTime: 30,
-			closeDelay: 100,
-			intentPollInterval: 30,
-			intentSensitivity: 5,
-			popupClass: "standard",
-		});
-	}
-	setSplashTooltips() {
-		$("#splash").find(".tooltip").powerTip({
-			followMouse: true,
-			offset: 40,
-			fadeInTime: 50,
-			fadeOutTime: 30,
-			closeDelay: 100,
-			intentPollInterval: 30,
-			intentSensitivity: 5,
-			popupClass: "standard",
-		});
-	}
-	setTooltips(elem) {
-		$(elem).find(".tooltip").powerTip({
-			followMouse: true,
-			offset: 40,
-			fadeInTime: 50,
-			fadeOutTime: 30,
-			closeDelay: 100,
-			intentPollInterval: 30,
-			intentSensitivity: 5,
-			popupClass: "standard",
-		});
-	}
-	setTooltip(elem, cls = false) {
-		if (cls) {
-			$(elem).powerTip({
-				followMouse: false,
-				smartPlacement: true,
-				placement: "n",
-				offset: 5,
-				fadeInTime: 0,
-				fadeOutTime: 0,
-				closeDelay: 0,
-				intentPollInterval: 0,
-				intentSensitivity: 100,
-				popupClass: cls,
-			});
-		} else {
-			$(elem).powerTip({
-				followMouse: true,
-				offset: 5,
-				fadeInTime: 50,
-				fadeOutTime: 30,
-				closeDelay: 100,
-				intentPollInterval: 30,
-				intentSensitivity: 5,
-				popupClass: "standard",
-			});
-		}
-	}
-	clearTooltips() {
-		$.powerTip.destroy();
-		util.setTooltips(".map-inner");
-		util.setTooltips(".buttons-wrapper");
-		util.setTooltips(".treasures");
-		util.setTooltips(".candies");
-		util.setInitialTooltips();
-	}
-
 	sound(f) {
 		var s = false;
 		s = new Howl({
