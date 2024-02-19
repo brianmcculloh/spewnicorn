@@ -1,5 +1,13 @@
-import { cyrb128, mulberry32, getShardAttribute, getShardNum, rand, shuffle, buildCardSlots } from "./index.js";
-import { getCardAttribute } from '../cards/index.js';
+import {
+	cyrb128,
+	mulberry32,
+	getShardAttribute,
+	getShardNum,
+	rand,
+	shuffle,
+	buildCardSlots,
+} from "./index.js";
+import { getCardAttribute } from "../cards/index.js";
 
 export default class Util {
 	constructor() {
@@ -17,9 +25,6 @@ export default class Util {
 			window.navigator.msMaxTouchPoints > 0
 		); // works on ie10
 	}
-
-
-
 
 	appendCard(card, to, cssClass = "") {
 		if (!card) return;
