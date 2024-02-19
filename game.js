@@ -1,4 +1,4 @@
-import { Util } from "./scripts/utils/index.js";
+import { Util, randDecimal, chance } from "./scripts/utils/index.js";
 const util = new Util();
 
 const ALL_STARTING_OPTIONS = [
@@ -1193,10 +1193,10 @@ export default function Game() {
 	// don't need to wait for full animations to complete before starting the next one: https://youtu.be/AG6vXqPV2aE?t=1634
 
 	async function dmgAnimations(animation) {
-		let left = util.randDecimal() * 30;
-		let top = util.randDecimal() * 20;
-		let rotate = util.randDecimal() * 10;
-		rotate = util.chance(50) ? (rotate *= -1) : rotate;
+		let left = randDecimal() * 30;
+		let top = randDecimal() * 20;
+		let rotate = randDecimal() * 10;
+		rotate = chance(50) ? (rotate *= -1) : rotate;
 		let elem = $(
 			'<span style="top:' +
 				top +
