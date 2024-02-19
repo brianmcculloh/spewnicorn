@@ -1,4 +1,4 @@
-import { Util, randArrayIndex, randFromArray, randString, chance, shuffle } from './scripts/utils/index.js';
+import { Util, randArrayIndex, randFromArray, randString, chance, shuffle, buildCardSlots } from './scripts/utils/index.js';
 import { getAddableCards, ALL_CARDS, buildDescription, buildSlotsDescription, getCardAttribute, getCardById } from './scripts/cards/index.js';
 
 
@@ -100,7 +100,7 @@ export function Deck() {
         card.shards.push(shard);
         let desc = buildDescription(card);
         card.desc = desc;
-        let slots = util.buildCardSlots(card);
+        let slots = buildCardSlots(card);
         let domCard = util.getDomCardByGuid(card.guid);
         domCard.find('.desc-inner').html(desc);
         domCard.find('.slots').html(slots);
