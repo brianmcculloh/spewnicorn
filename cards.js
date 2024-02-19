@@ -1,7 +1,5 @@
-import {Util, getAddableCards, ALL_CARDS } from './scripts/index.js';
-
-import { randArrayIndex, randFromArray, randString } from './scripts/utils/index.js';
-import { buildDescription, buildSlotsDescription, getCardAttribute, getCardById } from './scripts/cards/index.js';
+import { Util, randArrayIndex, randFromArray, randString } from './scripts/utils/index.js';
+import { getAddableCards, ALL_CARDS, buildDescription, buildSlotsDescription, getCardAttribute, getCardById } from './scripts/cards/index.js';
 
 
 const util = new Util();

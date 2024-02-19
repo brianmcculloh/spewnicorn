@@ -14,9 +14,8 @@ window.player = player;
 const monsters = Monster();
 
 import { Deck, CombatDeck } from "./cards.js";
-import { ALL_CARDS, buildLibrary, getTotalCards, getAddableCards, getWeapons, getCardById } from './scripts/index.js';
 import { setGameSeed, randArrayIndex, randFromArray, randString, getShardNum } from './scripts/utils/index.js';
-import { buildDescription, buildSlotsDescription, getCardAttribute } from './scripts/cards/index.js';
+import { ALL_CARDS, buildLibrary, getTotalCards, getAddableCards, getWeapons, getCardById, buildDescription, buildSlotsDescription, getCardAttribute } from './scripts/cards/index.js';
 
 
 let deck = Deck();
