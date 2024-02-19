@@ -1,4 +1,4 @@
-import { Util, setGameSeed, randArrayIndex, randFromArray, randIntFromInterval, randString, getShardNum, chance } from './scripts/utils/index.js';
+import { Util, setGameSeed, randArrayIndex, randFromArray, randIntFromInterval, randString, getShardNum, chance, shuffle, sort } from './scripts/utils/index.js';
 const util = new Util();
 
 import Game from "./game.js";
@@ -2501,7 +2501,7 @@ function startingBonus(elem) {
 
 function appendStartingTreasures() {
 	let possibleTreasures = treasures.treasures.filter((i) => i.starting == true);
-	possibleTreasures = util.shuffle(possibleTreasures);
+	possibleTreasures = shuffle(possibleTreasures);
 	if (possibleTreasures.length > 0) {
 		for (let i = 0; i < 3; i++) {
 			let treasure = possibleTreasures[i];
@@ -4136,7 +4136,7 @@ function loot(type, tier = 3) {
 				(i) => i.owned == false && i.tier == tier
 			);
 			if (possibleTreasures.length > 0) {
-				possibleTreasures = util.shuffle(possibleTreasures);
+				possibleTreasures = shuffle(possibleTreasures);
 				for (let i = 0; i < 3; i++) {
 					let treasure = possibleTreasures[i];
 					treasure.desc = buildDescription(treasure);
@@ -4153,7 +4153,7 @@ function loot(type, tier = 3) {
 				(i) => i.owned == false && i.tier == tier
 			);
 			if (possibleTreasures.length > 0) {
-				possibleTreasures = util.shuffle(possibleTreasures);
+				possibleTreasures = shuffle(possibleTreasures);
 				for (let i = 0; i < 3; i++) {
 					let treasure = possibleTreasures[i];
 					treasure.desc = buildDescription(treasure);
@@ -5132,10 +5132,10 @@ async function processCard(card, currentMonster, type, multiply = 1, cardWasPlay
 				currentMonster = [player];
 				target = undefined;
 			} else {
-				target = util.shuffle(currentMonsters);
+				target = shuffle(currentMonsters);
 			}
 		} else {
-			target = util.shuffle(currentMonsters);
+			target = shuffle(currentMonsters);
 			currentMonster = [player];
 		}
 	}
@@ -5347,7 +5347,7 @@ async function processEffects(
 						to = currentMonster[k];
 					} else if (effects[e].hex) {
 						let currentMonsters = game.currentMonsters.filter((i) => i.dead == false);
-						to = util.shuffle(currentMonsters);
+						to = shuffle(currentMonsters);
 						to = to[0];
 					}
 					let turns = effects[e].turns == undefined ? -1 : effects[e].turns;
@@ -5376,7 +5376,7 @@ async function processAbilities(
 					turns = 0; // hexes always completely remove the buff
 				} else if (abilities[e].hex) {
 					let currentMonsters = game.currentMonsters.filter((i) => i.dead == false);
-					to = util.shuffle(currentMonsters);
+					to = shuffle(currentMonsters);
 					to = to[0];
 					turns = 0;
 				} else if (
@@ -5572,7 +5572,7 @@ async function processActions(
 
 						if (combatDeck.chooseCards.length > 0 && actions[e].select != undefined) {
 							game.toPick = actions[e].select;
-							viewChooseCards(util.sort(combatDeck.chooseCards));
+							viewChooseCards(sort(combatDeck.chooseCards));
 						} else {
 							deck.showModifiedCards(combatDeck, player, true);
 						}

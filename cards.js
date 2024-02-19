@@ -1,4 +1,4 @@
-import { Util, randArrayIndex, randFromArray, randString, chance } from './scripts/utils/index.js';
+import { Util, randArrayIndex, randFromArray, randString, chance, shuffle } from './scripts/utils/index.js';
 import { getAddableCards, ALL_CARDS, buildDescription, buildSlotsDescription, getCardAttribute, getCardById } from './scripts/cards/index.js';
 
 
@@ -278,7 +278,7 @@ export function CombatDeck() {
     }
 
     function shuffleDeck(combatDeck) {
-        combatDeck.drawCards = util.shuffle(combatDeck.discardCards);
+        combatDeck.drawCards = shuffle(combatDeck.discardCards);
         combatDeck.discardCards = [];
     }
 

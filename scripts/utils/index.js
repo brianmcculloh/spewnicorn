@@ -1,3 +1,4 @@
+import { shuffle, sort } from "./array.js";
 import {
 	cyrb128,
 	mulberry32,
@@ -42,4 +43,6 @@ export {
 	randFromRange,
 	chance,
 	monsterNumChance,
+	shuffle,
+	sort,
 };

@@ -1,4 +1,4 @@
-import { cyrb128, mulberry32, getShardAttribute, getShardNum, rand } from "./index.js";
+import { cyrb128, mulberry32, getShardAttribute, getShardNum, rand, shuffle } from "./index.js";
 import { getCardAttribute } from '../cards/index.js';
 
 export default class Util {
@@ -18,25 +18,8 @@ export default class Util {
 		); // works on ie10
 	}
 
-	shuffle(arr) {
-		let currentIndex = arr.length,
-			randomIndex;
 
-		// While there remain elements to shuffle.
-		while (currentIndex != 0) {
-			// Pick a remaining element.
-			randomIndex = Math.floor(Math.random() * currentIndex);
-			currentIndex--;
 
-			// And swap it with the current element.
-			[arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]];
-		}
-
-		return arr;
-	}
-	sort(arr) {
-		return arr.sort((a, b) => a.name.localeCompare(b.name));
-	}
 	buildCardSlots(card) {
 		let slots = "";
 		for (let i = 0; i < card.slots; i++) {
@@ -508,7 +491,7 @@ export default class Util {
 		util.setTooltips(to);
 	}
 	appendStartingBonuses() {
-		let options = util.shuffle(game.startingOptions);
+		let options = shuffle(game.startingOptions);
 		for (let i = 0; i < 4; i++) {
 			// TODO: reset this to 4
 			let att = options[i].att;
