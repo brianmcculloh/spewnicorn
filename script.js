@@ -1,4 +1,5 @@
 import {
+	appendCard,
 	Util,
 	setGameSeed,
 	randArrayIndex,
@@ -9,6 +10,11 @@ import {
 	chance,
 	shuffle,
 	sort,
+	setSplashTooltips,
+	setInitialTooltips,
+	setTooltips,
+	setTooltip,
+	clearTooltips,
 } from "./scripts/utils/index.js";
 const util = new Util();
 
@@ -131,7 +137,7 @@ jQuery(document).ready(function ($) {
 
 	setTimeout(function () {
 		$("#game-loading").addClass("hidden");
-		util.setSplashTooltips();
+		setSplashTooltips();
 	}, 1000);
 
 	setTimeout(function () {
@@ -1046,7 +1052,7 @@ jQuery(document).ready(function ($) {
 				thisCard.desc = desc;
 				let slotDesc = buildSlotsDescription(thisCard);
 				thisCard.slotDesc = slotDesc;
-				util.appendCard(thisCard, ".trade-cards-panel .cards");
+				appendCard(thisCard, ".trade-cards-panel .cards");
 				game.toShow.push(thisCard);
 			}
 			$(".trade-cards-panel .card").addClass("clickable");
@@ -1109,15 +1115,15 @@ function init() {
 		$(".game-panel").removeClass("shown");
 	}
 
-	util.setInitialTooltips();
+	setInitialTooltips();
 
 	setDifficulty();
 
 	map.buildMap();
 	if (game.debug) $(".map-inner div").addClass("clickable");
 
-	util.setTooltips(".map-inner");
-	util.setTooltips(".buttons-wrapper");
+	setTooltips(".map-inner");
+	setTooltips(".buttons-wrapper");
 
 	deck.buildDeck();
 
@@ -1213,7 +1219,7 @@ function init_map_2() {
 
 	if (game.debug) $(".map-inner div").addClass("clickable");
 
-	util.clearTooltips();
+	clearTooltips();
 
 	updateAggro();
 
@@ -1925,7 +1931,7 @@ function setStatus(updateCards = true) {
 				game.boosterPack.substr(1) +
 				"</span>. Click to view all booster pack cards."
 		);
-	util.setTooltips(".booster-pack");
+	setTooltips(".booster-pack");
 	$(".game-floor span").html(game.floor);
 	$(".game-round span").html(game.round);
 	$(".all-cards span.counter").html(player.cardsOwned);
@@ -2171,7 +2177,7 @@ function viewAllCards() {
 	$(".all-cards-panel").addClass("shown");
 	$(".all-cards-panel .cards").empty();
 	for (let i = 0; i < deck.cards.length; i++) {
-		util.appendCard(deck.cards[i], ".all-cards-panel .cards");
+		appendCard(deck.cards[i], ".all-cards-panel .cards");
 	}
 	updateCardDescriptions("allCards");
 }
@@ -2209,7 +2215,7 @@ function viewDrawCards() {
 	$(".draw-cards-panel").addClass("shown");
 	$(".draw-cards-panel .cards").empty();
 	for (let i = 0; i < combatDeck.drawCards.length; i++) {
-		util.appendCard(combatDeck.drawCards[i], ".draw-cards-panel .cards");
+		appendCard(combatDeck.drawCards[i], ".draw-cards-panel .cards");
 	}
 	updateCardDescriptions("drawCards");
 }
@@ -2218,7 +2224,7 @@ function viewDiscardCards() {
 	$(".discard-cards-panel").addClass("shown");
 	$(".discard-cards-panel .cards").empty();
 	for (let i = 0; i < combatDeck.discardCards.length; i++) {
-		util.appendCard(combatDeck.discardCards[i], ".discard-cards-panel .cards");
+		appendCard(combatDeck.discardCards[i], ".discard-cards-panel .cards");
 	}
 	updateCardDescriptions("discardCards");
 }
@@ -2227,7 +2233,7 @@ function viewDeadCards() {
 	$(".dead-cards-panel").addClass("shown");
 	$(".dead-cards-panel .cards").empty();
 	for (let i = 0; i < combatDeck.deadCards.length; i++) {
-		util.appendCard(combatDeck.deadCards[i], ".dead-cards-panel .cards");
+		appendCard(combatDeck.deadCards[i], ".dead-cards-panel .cards");
 	}
 	updateCardDescriptions("deadCards");
 }
@@ -2235,7 +2241,7 @@ function viewChooseCards(chooseCards, action = "pickable") {
 	$(".choose-cards-panel").addClass("shown");
 	$(".choose-cards-panel .cards").empty();
 	for (let i = 0; i < chooseCards.length; i++) {
-		util.appendCard(chooseCards[i], ".choose-cards-panel .cards");
+		appendCard(chooseCards[i], ".choose-cards-panel .cards");
 	}
 	$(".choose-cards-panel .card").addClass(action);
 	$(".choose-cards-panel .card").addClass(game.toPile);
@@ -2263,7 +2269,7 @@ function viewPackCards(pack) {
 		packCards[i].desc = desc;
 		let slotDesc = buildSlotsDescription(packCards[i]);
 		packCards[i].slotDesc = slotDesc;
-		util.appendCard(packCards[i], ".pack-cards-panel .cards");
+		appendCard(packCards[i], ".pack-cards-panel .cards");
 	}
 }
 function viewBasicCards() {
@@ -2280,7 +2286,7 @@ function viewBasicCards() {
 		basicCards[i].desc = desc;
 		let slotDesc = buildSlotsDescription(basicCards[i]);
 		basicCards[i].slotDesc = slotDesc;
-		util.appendCard(basicCards[i], ".pack-cards-panel .cards");
+		appendCard(basicCards[i], ".pack-cards-panel .cards");
 	}
 }
 function viewArmory() {
@@ -2294,7 +2300,7 @@ function viewArmory() {
 			armory[i].desc = desc;
 			let slotDesc = buildSlotsDescription(armory[i]);
 			armory[i].slotDesc = slotDesc;
-			util.appendCard(armory[i], ".armory-panel .cards");
+			appendCard(armory[i], ".armory-panel .cards");
 		}
 	}
 }
@@ -2307,7 +2313,7 @@ function chooseShardCard(shard, cards = deck.cards) {
 	if (game.playsounds) sounds.play("clickShard");
 	for (let i = 0; i < cards.length; i++) {
 		if (deck.hasOpenSlot(cards[i])) {
-			util.appendCard(cards[i], ".shard-cards-panel .cards");
+			appendCard(cards[i], ".shard-cards-panel .cards");
 		}
 	}
 }
@@ -2318,7 +2324,7 @@ function chooseTradeCard() {
 	if (game.playsounds) sounds.play("viewCards");
 	let cards = deck.getTradeableCards();
 	for (let i = 0; i < cards.length; i++) {
-		util.appendCard(cards[i], ".trade-cards-panel .cards");
+		appendCard(cards[i], ".trade-cards-panel .cards");
 	}
 }
 
@@ -2695,7 +2701,7 @@ async function updateEssenceLevels(essence, amount) {
 }
 
 async function beginTurn() {
-	util.clearTooltips();
+	clearTooltips();
 
 	$(".combat-text, .combat-text h2.player-turn").addClass("shown");
 
@@ -3338,7 +3344,7 @@ async function monsterAction(action = "perform") {
 		if (action == "query") {
 			thisMonster.chosenMoveSetIndex = moveSetIndex;
 			$(".monster[data-guid=" + thisMonster.guid + "] .monster-intent").html(intent);
-			util.setTooltips(".monster-intent");
+			setTooltips(".monster-intent");
 		} else {
 			monsters.updateMonsterStats(thisMonster);
 			$(".monster[data-guid=" + thisMonster.guid + "]").removeClass("taking-turn");
@@ -4258,7 +4264,7 @@ function rewardsScreen() {
 
 	for (let i = 0; i < game.cardRewardNumber; i++) {
 		let card = deck.decideCard();
-		util.appendCard(card, ".rewards-cards");
+		appendCard(card, ".rewards-cards");
 	}
 	if (chance(game.candyChance)) {
 		game.candyChance -= 20;
@@ -4311,11 +4317,11 @@ function courageScreen() {
 
 	game.lastCourageScreenFloor = game.floor;
 
-	util.setTooltip(".courage-gamble");
-	util.setTooltip(".courage-trade");
-	util.setTooltip(".courage-remove");
-	util.setTooltip(".remove-courage");
-	util.setTooltip(".trade-courage");
+	setTooltip(".courage-gamble");
+	setTooltip(".courage-trade");
+	setTooltip(".courage-remove");
+	setTooltip(".remove-courage");
+	setTooltip(".trade-courage");
 	game.tradeExpired = false;
 
 	stopMusic();
@@ -4352,22 +4358,22 @@ function courageScreen() {
 
 	for (let i = 0; i < game.courageCardAmount; i++) {
 		let card = deck.decideCard("attack");
-		util.appendCard(card, ".courage-cards");
+		appendCard(card, ".courage-cards");
 	}
 
 	for (let i = 0; i < game.courageCardAmount; i++) {
 		let card = deck.decideCard("tool");
-		util.appendCard(card, ".courage-cards");
+		appendCard(card, ".courage-cards");
 	}
 
 	for (let i = 0; i < game.courageCardAmount; i++) {
 		let card = deck.decideCard("magic");
-		util.appendCard(card, ".courage-cards");
+		appendCard(card, ".courage-cards");
 	}
 
 	for (let i = 0; i < game.courageCardAmount; i++) {
 		let card = deck.decideCard("ability", "uncommon");
-		util.appendCard(card, ".courage-cards");
+		appendCard(card, ".courage-cards");
 	}
 
 	updateItemCost();
@@ -5634,7 +5640,7 @@ async function processActions(
 						for (let i = 0; i < cards.length; i++) {
 							if (deck.hasOpenSlot(cards[i])) {
 								//if(!actions[e].random) {
-								util.appendCard(cards[i], ".shard-cards-panel .cards");
+								appendCard(cards[i], ".shard-cards-panel .cards");
 								//}
 								combatDeck.chooseCards.push(cards[i]);
 							}

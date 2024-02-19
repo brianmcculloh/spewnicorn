@@ -1,4 +1,4 @@
-export const buildCardSlots = (card) => {
+const buildCardSlots = (card) => {
 	let slots = "";
 	for (let i = 0; i < card.slots; i++) {
 		let shard = "";
@@ -12,3 +12,5 @@ export const buildCardSlots = (card) => {
 	}
 	return slots;
 };
+
+export default buildCardSlots;

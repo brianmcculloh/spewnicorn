@@ -1,4 +1,4 @@
-import { Util, randArrayIndex, randFromArray, randString, chance, monsterNumChance } from './scripts/utils/index.js';
+import { Util, randArrayIndex, randFromArray, randString, chance, monsterNumChance, setTooltips } from './scripts/utils/index.js';
 
 const util = new Util();
 
@@ -3813,7 +3813,7 @@ export function Monster() {
             }
         }
 
-        util.setTooltips('.status-bar');
+        setTooltips('.status-bar');
 
     }
 
