@@ -53,45 +53,6 @@ export default class Util {
 		});
 		return elem;
 	}
-	appendShard(shard, to) {
-		let desc =
-			'<span class="' +
-			shard.id +
-			'">' +
-			shard.name +
-			"</span> shard. Permanently attach this to a card with an empty shard slot";
-		$(
-			"<div class='shard tooltip " +
-				shard.id +
-				"' data-id='" +
-				shard.id +
-				"' data-powertip='" +
-				desc +
-				"'></div>"
-		).appendTo(to);
-		setTooltips(to);
-	}
-	appendEssence(essence, to) {
-		let desc = '<span class="' + essence + '">' + essence + "</span>";
-		$(
-			"<div class='essence tooltip " +
-				essence +
-				"' data-id='" +
-				essence +
-				"' data-powertip='Increases your " +
-				desc +
-				" essence'></div>"
-		).appendTo(to);
-		setTooltips(to);
-	}
-	appendConfirm(card, to) {
-		$(
-			'<div class="button play-card tooltip" data-powertip="Or you can click an identical card to combine them." data-guid="' +
-				card.guid +
-				'">Play This Card</div>'
-		).appendTo(to);
-		setTooltips(to);
-	}
 	removeCard(index, from) {
 		$(from).children().eq(index).parent().remove();
 	}
