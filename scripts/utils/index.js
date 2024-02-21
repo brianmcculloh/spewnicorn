@@ -1,4 +1,12 @@
 import appendCard from "./append_card.js";
+import {
+    appendMonster,
+    appendTreasure,
+    appendCandy,
+    appendOption,
+    appendStartingBonuses,
+    appendBoosterPacks
+} from "./append.js";
 import { shuffle, sort } from "./arr.js";
 import {
 	cyrb128,
@@ -33,6 +41,12 @@ import {
 
 export {
 	appendCard,
+    appendMonster,
+    appendTreasure,
+    appendCandy,
+    appendOption,
+    appendStartingBonuses,
+    appendBoosterPacks,
 	cyrb128,
 	mulberry32,
 	Util,
