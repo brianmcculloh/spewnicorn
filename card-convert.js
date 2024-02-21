@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const prettier = require('prettier');
 
-const cardsFilePath = './all_cards.js';
+const cardsFilePath = './scripts/cards/all_cards.js';
 const baseDir = './scripts/cards/card_definitions/';
 let currentDir = 'non-addable';
 let importExports = {};
