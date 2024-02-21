@@ -1,9 +1,9 @@
 import { ALL_CARDS } from '../index.js';
 
-const game = window.game;
 const cards = ALL_CARDS;
 
 export default function getAddableCards(tier = false, type = false, pack = false, exclude = []) {
+    const game = window.game;
     let items = cards;
     if(tier && type) {
         items = items.filter(i => i.tier == tier && i.type == type);
