@@ -1,5 +1,11 @@
 import {
-	appendCard,
+    appendCard,
+	appendMonster,
+    appendTreasure,
+    appendCandy,
+    appendOption,
+    appendStartingBonuses,
+    appendBoosterPacks,
 	Util,
 	setGameSeed,
 	randArrayIndex,
@@ -1127,11 +1133,11 @@ function init() {
 
 	deck.buildDeck();
 
-	util.appendStartingBonuses();
+	appendStartingBonuses();
 
 	appendStartingTreasures();
 
-	util.appendBoosterPacks();
+	appendBoosterPacks();
 
 	monsters.setEffects(player);
 	monsters.setAbilities(player);
@@ -2189,13 +2195,13 @@ function viewLibrary() {
 		for (let i = 0; i < treasures.candies.length; i++) {
 			let candy = treasures.candies[i];
 			candy.desc = buildDescription(candy);
-			util.appendCandy(candy, ".library-candies", false);
+			appendCandy(candy, ".library-candies", false);
 		}
 		// load treasures
 		for (let i = 0; i < treasures.treasures.length; i++) {
 			let treasure = treasures.treasures[i];
 			treasure.desc = buildDescription(treasure);
-			util.appendTreasure(treasure, ".library-treasures");
+			appendTreasure(treasure, ".library-treasures");
 		}
 		// load cards
 		buildLibrary(util);
@@ -2532,7 +2538,7 @@ function appendStartingTreasures() {
 		for (let i = 0; i < 3; i++) {
 			let treasure = possibleTreasures[i];
 			treasure.desc = buildDescription(treasure);
-			util.appendTreasure(treasure, ".starting-treasures");
+			appendTreasure(treasure, ".starting-treasures");
 		}
 	}
 }
@@ -2607,7 +2613,7 @@ function visitQuest(visited = false) {
 		$(".quest-screen h2").html("Deja Vu");
 		$(".quest-description").html("You swear you have seen this place before...");
 		let option = { id: "leave", name: "Leave" };
-		util.appendOption(option, ".quest-options", false);
+		appendOption(option, ".quest-options", false);
 	} else if (quest != undefined) {
 		quest.seen = true;
 
@@ -2620,14 +2626,14 @@ function visitQuest(visited = false) {
 		$(".quest-options").empty();
 
 		for (let i = 0; i < quest.options.length; i++) {
-			util.appendOption(quest.options[i], ".quest-options", quest.id);
+			appendOption(quest.options[i], ".quest-options", quest.id);
 		}
 	} else {
 		// just in case somehow all quests have been seen. only really possible during dev/debug
 		$(".quest-screen h2").html("...");
 		$(".quest-description").html("There is nothing left.");
 		let option = { id: "leave", name: "Leave" };
-		util.appendOption(option, ".quest-options", false);
+		appendOption(option, ".quest-options", false);
 	}
 }
 
@@ -4168,7 +4174,7 @@ function loot(type, tier = 3) {
 				for (let i = 0; i < 3; i++) {
 					let treasure = possibleTreasures[i];
 					treasure.desc = buildDescription(treasure);
-					util.appendTreasure(treasure, ".loot-items");
+					appendTreasure(treasure, ".loot-items");
 				}
 			}
 			$(".loot-screen .message").html(
@@ -4185,7 +4191,7 @@ function loot(type, tier = 3) {
 				for (let i = 0; i < 3; i++) {
 					let treasure = possibleTreasures[i];
 					treasure.desc = buildDescription(treasure);
-					util.appendTreasure(treasure, ".loot-items");
+					appendTreasure(treasure, ".loot-items");
 				}
 			}
 			$(".loot-screen .message").html(
@@ -4198,7 +4204,7 @@ function loot(type, tier = 3) {
 				//let treasure = possibleTreasures[i];
 				let treasure = util.weightedRandom(possibleTreasures);
 				treasure.desc = buildDescription(treasure);
-				util.appendTreasure(treasure, ".loot-items");
+				appendTreasure(treasure, ".loot-items");
 				//}
 			}
 			// one or two essences
@@ -4223,7 +4229,7 @@ function loot(type, tier = 3) {
 				let copiedCandy = $.extend(true, {}, candy);
 				copiedCandy.desc = buildDescription(copiedCandy);
 				let clickable = player.candies.length < game.candySlots ? true : false;
-				util.appendCandy(copiedCandy, ".loot-items", clickable);
+				appendCandy(copiedCandy, ".loot-items", clickable);
 			}
 			$(".loot-screen .message").html("Spoils of war.");
 			break;
@@ -4234,7 +4240,7 @@ function loot(type, tier = 3) {
 				let copiedCandy = $.extend(true, {}, candy);
 				copiedCandy.desc = buildDescription(copiedCandy);
 				let clickable = player.candies.length < game.candySlots ? true : false;
-				util.appendCandy(copiedCandy, ".loot-items", clickable);
+				appendCandy(copiedCandy, ".loot-items", clickable);
 			}
 			$(".loot-screen .message").html("Spoils of war.");
 			break;
@@ -4274,7 +4280,7 @@ function rewardsScreen() {
 		let copiedCandy = $.extend(true, {}, candy);
 		copiedCandy.desc = buildDescription(copiedCandy);
 		let clickable = player.candies.length < game.candySlots ? true : false;
-		util.appendCandy(copiedCandy, ".rewards-loot", clickable);
+		appendCandy(copiedCandy, ".rewards-loot", clickable);
 		$(".rewards-loot-wrapper").addClass("shown");
 	}
 	if (chance(game.shardChance) && deck.numOpenSlots() > 0) {
@@ -4346,14 +4352,14 @@ function courageScreen() {
 		possibleTreasures = possibleTreasures.filter((i) => i.id !== thisTreasure.id);
 		if (thisTreasure == undefined) break;
 		thisTreasure.desc = buildDescription(thisTreasure);
-		util.appendTreasure(thisTreasure, ".courage-items");
+		appendTreasure(thisTreasure, ".courage-items");
 	}
 
 	for (let i = 0; i < game.courageCandyAmount; i++) {
 		let thisCandy = util.weightedRandom(treasures.candies);
 		thisCandy.desc = buildDescription(thisCandy);
 		let clickable = player.candies.length < game.candySlots ? true : false;
-		util.appendCandy(thisCandy, ".courage-items", clickable);
+		appendCandy(thisCandy, ".courage-items", clickable);
 	}
 
 	for (let i = 0; i < game.courageCardAmount; i++) {
@@ -6861,7 +6867,7 @@ async function processQuest(elem) {
 	if (subOptions.options) {
 		$(".quest-options").empty();
 		for (let i = 0; i < subOptions.options.length; i++) {
-			util.appendOption(subOptions.options[i], ".quest-options", id);
+			appendOption(subOptions.options[i], ".quest-options", id);
 		}
 	}
 

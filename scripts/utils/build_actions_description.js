@@ -70,9 +70,9 @@ export default function buildActionsDescription(actions, behaviorDesc) {
                     cardWith = '';
                 }
                 // process modifiers
-                if(!$.isEmptyObject(modifiers)) {
+                if(!$.isEmptyObject(modifiers) && modifiers && typeof modifiers === 'object') {
                     modified += ' with modifiers: '
-                    for (var att in modifiers) {
+                    for (const att in modifiers) {
                         if (modifiers.hasOwnProperty(att)) {
                             modified += att + '&mdash;' + modifiers[att] + ', ';
                         }
