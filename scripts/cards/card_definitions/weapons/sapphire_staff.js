@@ -1,0 +1,20 @@
+export default {
+  id: "sapphire_staff",
+  name: "Sapphire Staff",
+  type: "magic",
+  mana: 1,
+  weight: 0.3,
+  use: 2,
+  weapon: true,
+  addable: false,
+  tier: "uncommon",
+  magic: [{ type: "aligned", amount: 14 }],
+  effects: [{ effect: "sorcery", amount: 0.2, turns: -1 }],
+  sound: "magic4",
+  additionalDesc: "Level IV Weapon",
+  slots: 1,
+  shardUpgrades: {
+    mana: 0,
+    magic: [{ type: "aligned", amount: 19 }],
+  },
+};

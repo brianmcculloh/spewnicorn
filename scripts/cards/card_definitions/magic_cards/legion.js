@@ -1,0 +1,32 @@
+export default {
+  id: "legion",
+  name: "Legion",
+  type: "magic",
+  mana: 2,
+  tier: "legendary",
+  courage: 8,
+  sound: "magic21",
+  magic: [
+    { type: "rainbow", amount: 3 },
+    { type: "chaos", amount: 3 },
+    { type: "dark", amount: 3 },
+    { type: "elemental", amount: 3 },
+    { type: "rainbow", amount: 3 },
+    { type: "chaos", amount: 3 },
+    { type: "dark", amount: 3 },
+    { type: "elemental", amount: 3 },
+  ],
+  slots: 1,
+  shardUpgrades: {
+    magic: [
+      { type: "rainbow", amount: 4 },
+      { type: "chaos", amount: 4 },
+      { type: "dark", amount: 4 },
+      { type: "elemental", amount: 4 },
+      { type: "rainbow", amount: 4 },
+      { type: "chaos", amount: 4 },
+      { type: "dark", amount: 4 },
+      { type: "elemental", amount: 4 },
+    ],
+  },
+};

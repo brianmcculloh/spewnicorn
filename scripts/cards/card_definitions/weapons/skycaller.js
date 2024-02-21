@@ -1,0 +1,22 @@
+export default {
+  id: "skycaller",
+  name: "Skycaller",
+  type: "magic",
+  mana: 2,
+  weight: 0.05,
+  use: 2,
+  weapon: true,
+  addable: false,
+  tier: "legendary",
+  magic: [{ type: "aligned", amount: 30 }],
+  effects: [{ effect: "summon", amount: 7, turns: -1 }],
+  sound: "magic4",
+  additionalDesc: "Level VII Weapon",
+  slots: 1,
+  shardUpgrades: {
+    mana: 1,
+    use: 3,
+    magic: [{ type: "aligned", amount: 45 }],
+    effects: [{ effect: "summon", amount: 9, turns: -1 }],
+  },
+};

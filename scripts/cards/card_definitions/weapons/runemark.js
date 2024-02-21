@@ -1,0 +1,20 @@
+export default {
+  id: "runemark",
+  name: "Runemark",
+  type: "magic",
+  mana: 1,
+  weight: 0.6,
+  use: 2,
+  weapon: true,
+  addable: false,
+  tier: "rare",
+  magic: [{ type: "aligned", amount: 18 }],
+  effects: [{ effect: "thunder", amount: 0.2, turns: -1 }],
+  sound: "magic4",
+  additionalDesc: "Level VI Weapon",
+  slots: 1,
+  shardUpgrades: {
+    mana: 0,
+    magic: [{ type: "aligned", amount: 23 }],
+  },
+};

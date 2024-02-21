@@ -19,6 +19,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="vendor/jquery.powertip.min.js"></script>
 <script type="text/javascript" src="vendor/howler.core.min.js"></script>
+<!-- <script type="module" src="bundle.js"></script> -->
 <script type="module" src="script.js"></script>
 
 
@@ -27,7 +28,7 @@
 <body>
 
   <div id="game-loading">
-    
+
     <div class="game-loading-bar">
 
       <div class="game-loading-progress"><div class="glow"></div></div>
@@ -60,7 +61,7 @@
 
         <input id="custom-seed" class="tooltip" data-powertip="You can enter a custom seed or keep this blank to generate a random game." type="text" placeholder="Custom Seed..." />
 
-        <div class="button begin">New Game</div> 
+        <div class="button begin">New Game</div>
 
         <div class="panel-part panel-top-left"></div>
         <div class="panel-part panel-top-middle"></div>
@@ -98,7 +99,7 @@
           <p>During combat, your <span class="highlight">Speed</span> determines how many cards you can draw per turn. <span class="highlight">Mana</span> is used to play your cards. Some cards can be combined, which does not cost mana.</p>
 
           <p><span class="aggro">Aggro</span> amount increases by 1 after each combat. Each aggro level increases monster blocks in the FROST forest and monster attacks in the FLAME Forest, and also highly increases Arena and Guardian attacks. The more aggro you create, the faster your aggro level will increase. Level 1: 75% increase to FROST Forest blocks and FLAME Forest attacks (increasing by 25% for each level), 150% increase to Arena and Guardian attacks (increasing by 50% for each level).</p>
-          
+
           <p><span class="crit">Crit</span> percentage, which increases by 1 for each attack card played, is the chance an attack is a critical hit (damage * 1.5). Crit percentage resets to 0 after a critical hit.</p>
 
           <p><span class="highlight">Armor</span> absorbs 50% of incoming attack damage.</p>
@@ -454,7 +455,7 @@
         <div class="player-health creature-health">
           <div class="health-amount">
             <div class="armor-amount tooltip" data-powertip="<span class='highlight'>Armor:</span> when taking damage, reduce by 50% and lose that much armor." >
-              <div class="icon-armor"></div>  
+              <div class="icon-armor"></div>
               <div class="armor-number"></div>
             </div>
             <div class="health-number"></div>
@@ -535,14 +536,14 @@
         <?php // Create the map
         $j = 0; for ($i = 1; $i <= 100; $i++) { $j++;
           $class='tile tooltip';
-          if($i == 1) $class .= ' clickable'; 
+          if($i == 1) $class .= ' clickable';
           if($j % 10 == 0) {
             $class .= ' last-col';
           } else if(($j - 1) % 10 == 0) {
             $class .= ' first-col';
           }
           if($j <= 10) {
-            $class .= ' odd-row'; 
+            $class .= ' odd-row';
           } else {
             $class .= ' even-row';
           }
@@ -552,7 +553,7 @@
             $class .= ' last-row';
           }
           if($j == 20) $j = 0;
-          
+
           ?>
 
           <div id="tile-<?php echo $i; ?>" class="<?php echo $class; ?>" data-powertip="Map Tile" data-shimmer="0" data-sparkle="0" data-aura="0">
@@ -623,7 +624,7 @@
         <div class="sorcery">sorcery: <span></span></div>
 
         <div class="momentum">momentum: <span></span></div>
-      
+
         <div class="wield">wield: <span></span></div>
 
         <div class="resistance">resistance: <span></span></div>
@@ -678,7 +679,7 @@
 
         <div class="expirex">expirex: <span></span></div>
 
-        
+
 
       </div>
 
@@ -776,9 +777,9 @@
     </div>
 
     <div class="view-map-done-wrapper">
-      
+
       <div class="buttons-wrapper">
-      
+
         <div class="button view-map-done">Done</div>
 
       </div>
@@ -1252,7 +1253,7 @@
 
       <div class="message">You have beaten the game. Rest easy, friend.</div>
 
-      <div class="button play-again">Play Again</div>  
+      <div class="button play-again">Play Again</div>
 
     </div>
 
@@ -1262,7 +1263,7 @@
 
       <div class="message">A valiant effort.</div>
 
-      <div class="button play-again">Try Again?</div>  
+      <div class="button play-again">Try Again?</div>
 
     </div>
 

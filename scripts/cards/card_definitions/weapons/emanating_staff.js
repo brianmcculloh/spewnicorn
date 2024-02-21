@@ -1,0 +1,20 @@
+export default {
+  id: "emanating_staff",
+  name: "Emanating Staff",
+  type: "magic",
+  mana: 1,
+  weight: 0.8,
+  use: 2,
+  weapon: true,
+  addable: false,
+  tier: "rare",
+  magic: [{ type: "aligned", amount: 16 }],
+  effects: [{ effect: "lightning", amount: 2, turns: -1 }],
+  sound: "magic4",
+  additionalDesc: "Level V Weapon",
+  slots: 1,
+  shardUpgrades: {
+    mana: 0,
+    magic: [{ type: "aligned", amount: 21 }],
+  },
+};

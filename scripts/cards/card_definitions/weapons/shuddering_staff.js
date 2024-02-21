@@ -1,0 +1,20 @@
+export default {
+  id: "shuddering_staff",
+  name: "Shuddering Staff",
+  type: "magic",
+  mana: 0,
+  weight: 0.8,
+  use: 3,
+  weapon: true,
+  addable: false,
+  tier: "rare",
+  magic: [{ type: "aligned", amount: 8 }],
+  effects: [{ effect: "lightning", amount: 1, turns: -1 }],
+  sound: "magic4",
+  additionalDesc: "Level V Weapon",
+  slots: 1,
+  shardUpgrades: {
+    use: 4,
+    magic: [{ type: "aligned", amount: 13 }],
+  },
+};

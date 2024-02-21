@@ -1,0 +1,667 @@
+import {
+	cyrb128,
+	mulberry32,
+	getShardAttribute,
+	getShardNum,
+	rand,
+	shuffle,
+	buildCardSlots,
+	setTooltips,
+} from "./index.js";
+import { getCardAttribute } from "../cards/index.js";
+
+export default class Util {
+	constructor() {
+		this.seed = cyrb128("bananas");
+		this.rand = mulberry32(this.seed[0]);
+		this.game = window.game;
+	}
+	setGameSeed(gameseed) {
+		util.seed = cyrb128(gameseed);
+		util.rand = mulberry32(util.seed[0]);
+	}
+	isTouchDevice() {
+		return (
+			"ontouchstart" in window || // works on most browsers
+			window.navigator.msMaxTouchPoints > 0
+		); // works on ie10
+	}
+
+	animateShowCards() {
+		$(".show-cards").addClass("shown");
+		$(".show-cards .card")
+			.delay(1000)
+			.queue(function () {
+				$(this)
+					.addClass("disappearing")
+					.delay(500)
+					.queue(function () {
+						$(".show-cards").removeClass("shown");
+						$(this).parent().remove().dequeue();
+					})
+					.dequeue();
+			});
+	}
+
+	getFirstEmptyElement(selector) {
+		let elem;
+		$(selector).each(function () {
+			if ($(this).children().length == 0) {
+				elem = $(this);
+				return false;
+			}
+		});
+		return elem;
+	}
+	appendShard(shard, to) {
+		let desc =
+			'<span class="' +
+			shard.id +
+			'">' +
+			shard.name +
+			"</span> shard. Permanently attach this to a card with an empty shard slot";
+		$(
+			"<div class='shard tooltip " +
+				shard.id +
+				"' data-id='" +
+				shard.id +
+				"' data-powertip='" +
+				desc +
+				"'></div>"
+		).appendTo(to);
+		setTooltips(to);
+	}
+	appendEssence(essence, to) {
+		let desc = '<span class="' + essence + '">' + essence + "</span>";
+		$(
+			"<div class='essence tooltip " +
+				essence +
+				"' data-id='" +
+				essence +
+				"' data-powertip='Increases your " +
+				desc +
+				" essence'></div>"
+		).appendTo(to);
+		setTooltips(to);
+	}
+	appendConfirm(card, to) {
+		$(
+			'<div class="button play-card tooltip" data-powertip="Or you can click an identical card to combine them." data-guid="' +
+				card.guid +
+				'">Play This Card</div>'
+		).appendTo(to);
+		setTooltips(to);
+	}
+	removeCard(index, from) {
+		$(from).children().eq(index).parent().remove();
+	}
+	removeCardByGuid(guid, animation = "none") {
+		switch (animation) {
+			case "none":
+				$(".card[data-guid=" + guid + "]")
+					.parent()
+					.remove();
+				break;
+			case "discarded":
+				$(".card[data-guid=" + guid + "]")
+					.parent()
+					.addClass("discarded")
+					.delay(300)
+					.queue(function () {
+						$(this).remove().dequeue();
+					});
+				break;
+			case "played":
+				$(".card[data-guid=" + guid + "]")
+					.parent()
+					.addClass("discarding")
+					.delay(300)
+					.queue(function () {
+						$(this)
+							.removeClass("discarding")
+							.addClass("discarded")
+							.delay(300)
+							.queue(function () {
+								$(this).remove().dequeue();
+							})
+							.dequeue();
+					});
+				break;
+			case "destroyed":
+				$(".card[data-guid=" + guid + "]")
+					.parent()
+					.addClass("destroying")
+					.delay(2000)
+					.queue(function () {
+						$(this).remove().dequeue();
+					});
+				break;
+			case "replaced":
+				$(".card[data-guid=" + guid + "]")
+					.parent()
+					.addClass("replacing")
+					.delay(2000)
+					.queue(function () {
+						$(this).remove().dequeue();
+					});
+				break;
+		}
+	}
+	removeMonster(monster) {
+		if (monster.breed == "ghost" || game.mapType == "singularity") {
+			$(".monster[data-guid=" + monster.guid + "]")
+				.addClass("hidden dead")
+				.removeClass("clickable");
+		} else {
+			$(".monster[data-guid=" + monster.guid + "]")
+				.addClass("dead")
+				.removeClass("clickable");
+		}
+	}
+	hasAttribute(card, attribute) {
+		if (card[attribute] == undefined || card[attribute] == false) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	hasPlayAction(card) {
+		let action = false;
+		if (
+			// we don't care about dmg here because that is taken care of by the dom ability to click targeted monster
+			getCardAttribute(card, "blk").length > 0 ||
+			getCardAttribute(card, "armor").length > 0 ||
+			getCardAttribute(card, "magic").length > 0 ||
+			getCardAttribute(card, "effects").length > 0 ||
+			getCardAttribute(card, "abilities").length > 0 ||
+			getCardAttribute(card, "actions").length > 0
+		) {
+			action = true;
+		}
+		return action;
+	}
+
+	getQuestSubOptions(quest, option) {
+		//let options = quest.options.filter(i => i.id == option);
+		//let subOptions = false;
+		//if(options.length > 0) subOptions = options[0].options;
+		if (quest.id === option) {
+			return quest;
+		} else if (quest.options) {
+			for (let i = 0; i < quest.options.length; i++) {
+				const result = util.getQuestSubOptions(quest.options[i], option);
+				if (result) {
+					return result;
+				}
+			}
+		}
+		return false;
+
+		//return subOptions;
+	}
+	getTreasureById(treasure, allTreasures) {
+		return allTreasures.find(({ id }) => id === treasure);
+	}
+	getCandyById(candy, allCandies) {
+		return allCandies.find(({ id }) => id === candy);
+	}
+	getCardByGuid(add, allCards) {
+		let card = allCards.find(({ guid }) => guid === add);
+		return card;
+	}
+	getDomCardByGuid(guid) {
+		return $(".card[data-guid=" + guid + "]:first");
+	}
+	getDomCardById(id) {
+		return $(".card[data-id=" + id + "]:first");
+	}
+	getCardFromPile(card, pile) {
+		return pile.find(({ guid }) => guid === card.guid);
+	}
+	getStatPercentage(x, y) {
+		return Math.round((x / y + Number.EPSILON) * 100).toFixed(0);
+	}
+	pickAWinningItem(data) {
+		let winner = util.rand();
+		let threshold = 0;
+		for (let i = 0; i < data.length; i++) {
+			threshold += parseFloat(data[i].p);
+			if (threshold > winner) {
+				return i;
+			}
+		}
+	}
+	// accepts any positive numeric value including decimals as the 'weight' value
+	weightedRandom(weightedArray) {
+		const totalWeight = weightedArray.reduce((sum, element) => sum + element.weight, 0);
+		const randomWeight = Math.random() * totalWeight;
+		let weightSum = 0;
+
+		for (const element of weightedArray) {
+			weightSum += element.weight;
+			if (randomWeight < weightSum) {
+				return element;
+			}
+		}
+
+		// Fallback in case of unexpected issues
+		return null;
+	}
+	wait(ms) {
+		return new Promise((resolve) => {
+			setTimeout(() => {
+				resolve();
+			}, ms);
+		});
+	}
+	async updateEssencePercentage(essence) {
+		let threshold = game.essenceThresholds[player[essence].level];
+		let previousThreshold = game.essenceThresholds[player[essence].level - 1];
+		if (previousThreshold == undefined) previousThreshold = 0;
+		let percentage =
+			((player[essence].current - previousThreshold) / (threshold - previousThreshold)) * 100;
+		let css = "";
+		if (player[essence].level > game.essences.length) {
+			percentage = 100;
+			css = "capped";
+		}
+		$(".essence-bar." + essence + " .essence-bar-inner").css("width", percentage + "%");
+		$(".essence-bar." + essence).addClass(css);
+	}
+	updateAggroPercentage() {
+		let whichThresholds = game.map == 1 ? game.aggroThresholds : game.aggroThresholds2;
+		let threshold = whichThresholds[player.aggro.level];
+		let previousThreshold = whichThresholds[player.aggro.level - 1];
+		if (previousThreshold == undefined) previousThreshold = 0;
+		let percentage =
+			((player.aggro.current - previousThreshold) / (threshold - previousThreshold)) * 100;
+		if (player.aggro.level >= whichThresholds.length) {
+			percentage = 100;
+		}
+		$(".aggro-bar .aggro-bar-inner").css("width", percentage + "%");
+	}
+	sound(f) {
+		var s = false;
+		s = new Howl({
+			src: ["audio/" + f],
+			sprite: {
+				arenaRewards: [0, 7839],
+				rewards: [7839, 4540],
+				loot: [12379, 2405],
+				gainArmor: [14757, 839],
+				attackCard: [15596, 280],
+				loseBlock: [15876, 839],
+				loseArmor: [16715, 603],
+				gainBlk: [17320, 641],
+				deselectCard: [17962, 517],
+				startingBonus: [18479, 1521],
+				viewCards: [20000, 483],
+				drawCard: [20483, 136],
+				doneCards: [20597, 535],
+				takeDmg: [21132, 858],
+				toolCard: [21990, 1000],
+				magicCard: [26309, 1828],
+				heal: [28135, 1991],
+				clickButton: [30127, 668],
+				choosePack: [31393, 3999],
+				clickShard: [35392, 3000],
+				selectCard: [38389, 660],
+				removeCard: [39049, 2000],
+				attachShard: [41049, 2341],
+				buyItem: [43390, 984],
+				addTreasure: [44374, 1655],
+				addCandy: [46029, 1181],
+				eatCandy: [47210, 1787],
+				shimmerAmount: [48997, 1878],
+				auraAmount: [50875, 2125],
+				sparkleAmount: [53000, 1717],
+				essenceLevel: [54717, 1283],
+				trashCandy: [56000, 1000],
+				aggroLevel: [57000, 1959],
+				frolic: [58959, 2768],
+				applyEffect: [61722, 917],
+				applyAbility: [61722, 917],
+				hex: [62639, 1418],
+				vex: [64057, 961],
+				death: [65020, 1694],
+				activateRainbow: [66719, 1694],
+				muddleMagic: [75243, 1476],
+				combineCards: [76719, 1000],
+				transmuteCard: [77719, 873],
+				focus: [84874, 2365],
+				grow: [99425, 2138],
+				statUp: [101563, 1238],
+				statDown: [102801, 920],
+				courage: [146724, 2755],
+				jester: [22990, 1000],
+				trade: [320737, 1408],
+				gate: [330767, 10837],
+
+				available: [23990, 964],
+
+				// specific cards
+				magic1: [78592, 6282],
+				magic2: [68413, 1831],
+				magic3: [70244, 2523],
+				magic4: [72767, 1512],
+				magic5: [74279, 964],
+				magic6: [87239, 2264],
+				magic7: [89503, 3436],
+				magic8: [92939, 4064],
+				magic9: [97003, 2422],
+				magic10: [103721, 2612],
+				magic11: [106333, 2775],
+				magic12: [109108, 3487],
+				magic13: [112595, 3708],
+				magic14: [116303, 1079],
+				magic15: [118382, 1171],
+				magic16: [119553, 2616],
+				magic17: [122169, 4513],
+				magic18: [276253, 3424],
+				magic19: [281880, 7332],
+				magic20: [289212, 5873],
+				magic21: [295085, 7500],
+				magic22: [302585, 6212],
+				magic23: [276253, 5627],
+				magic24: [308797, 4591],
+
+				attack1: [126682, 876],
+				attack2: [146236, 488],
+				attack3: [128024, 1979],
+				attack4: [130003, 1810],
+				attack5: [131813, 2188],
+				attack6: [134001, 1006],
+				attack7: [135007, 785],
+				attack8: [135792, 1339],
+				attack9: [137131, 1350],
+				attack10: [138481, 1242],
+				attack11: [139723, 754],
+				attack12: [140477, 1242],
+				attack13: [141719, 2003],
+				attack14: [143722, 998],
+				attack15: [144720, 1520],
+				attack16: [149479, 2727],
+				attack17: [152206, 581],
+				attack18: [241940, 1791],
+				attack19: [243731, 5152],
+				attack20: [248883, 1595],
+				attack21: [250478, 2504],
+				attack22: [252982, 3296],
+				attack23: [313375, 1104],
+
+				tool1: [152787, 3615],
+				tool2: [156402, 1836],
+				tool3: [158238, 3179],
+				tool4: [161417, 973],
+				tool5: [162390, 2610],
+				tool6: [165000, 2481],
+				tool7: [167481, 1186],
+				tool8: [168667, 1408],
+				tool9: [170075, 2163],
+				tool10: [172238, 871],
+				tool11: [174000, 1483],
+				tool12: [175483, 951],
+				tool13: [176434, 902],
+				tool14: [177336, 810],
+				tool15: [178146, 622],
+				tool16: [178768, 1064],
+				tool17: [179832, 1649],
+				tool18: [181481, 1570],
+				tool19: [183051, 2249],
+				tool20: [185300, 1420],
+				tool21: [186720, 2114],
+				tool22: [188834, 2245],
+				tool23: [191079, 2000],
+				tool24: [256278, 3202],
+				tool25: [259480, 2164],
+				tool26: [261644, 2387],
+				tool27: [264031, 3998],
+				tool29: [268029, 4850],
+				tool28: [272829, 3424],
+
+				// specific effects
+				effect1: [193079, 1163],
+				effect2: [194242, 437],
+				effect3: [194679, 802],
+				effect4: [195481, 540],
+				effect5: [196021, 885],
+				effect6: [196906, 1001],
+				effect7: [197907, 745],
+				effect8: [198652, 921],
+				effect9: [199573, 669],
+				effect10: [200242, 670],
+				effect11: [200912, 569],
+				effect12: [201481, 747],
+				effect13: [202228, 597],
+				effect14: [202825, 411],
+				effect15: [203236, 722],
+				effect16: [203958, 2284],
+				effect17: [206242, 1997],
+				effect18: [208239, 280],
+				effect19: [208519, 2699],
+				effect20: [211218, 2263],
+				effect21: [213481, 1519],
+				effect22: [215000, 1000],
+				effect23: [216000, 2000],
+				effect24: [218000, 2000],
+				effect25: [220000, 624],
+				effect26: [220624, 427],
+				effect27: [221051, 2436],
+				effect28: [223487, 1951],
+				effect29: [225438, 2385],
+				effect30: [227823, 1041],
+				effect31: [228863, 1274],
+				effect32: [230137, 1863],
+				effect33: [232000, 1725],
+				effect34: [233725, 1758],
+				effect35: [235483, 1999],
+				effect36: [237482, 2212],
+				effect37: [239694, 2246],
+				effect38: [314485, 994],
+				effect39: [315480, 3391],
+				effect40: [318870, 1882],
+				effect41: [322149, 3162],
+				effect42: [325311, 2970],
+				effect43: [328285, 2469],
+				effect44: [341604, 1331],
+
+				/* USED SOUND FILES (not in chronological order)
+
+                04_Fire_explosion_04_medium
+                04_Step_sand_01
+                08_Step_rock_02
+                03_Heal_04
+                13_Atk_buff_01
+                33_Light_02
+                39_Ultima_02s
+                40_Ultima_03
+                44_Sleep_01
+                68_Die_01
+                83_Whip_woosh_2
+                085_save_game_02
+                084_save_game_01
+                50_Poison_05
+                Encounter_2
+                GP_End_Turn_1
+                GB_Begin_Tuen_1
+                GP_Select_1
+                GP_Heal_1
+                Quest_Accepted
+                Success_1
+                Quest_Clear
+                rewards
+                Game_Exit
+                Minigame_Start
+                Failure
+                Round_End
+                Save_Point
+                Drums_1
+
+                fnt_ui_page_flipping_01
+                fnt_ui_page_flipping_02
+                fnt_ui_page_flipping_06
+                fnt_ui_use_wood_03
+                fnt_ui_equip_metal_06
+                fnt_ui_magic_book_page_flip_02
+                fnt_ui_magic_book_page_flip_11
+
+                Fantasy_UI (34)
+                Fantasy_UI (35)
+                Fantasy_UI (42)
+                Fantasy_UI (47)
+                Fantasy_UI (55)
+
+                SkywardHero_UI (1)
+                SkywardHero_UI (4)
+                SkywardHero_UI (8)
+                SkywardHero_UI (13)
+                SkywardHero_UI (18)
+                SkywardHero_UI (19)
+                SkywardHero_UI (21)
+                SkywardHero_UI (23)
+                SkywardHero_UI (26)
+                SkywardHero_UI (33)
+                SkywardHero_UI (35)
+                SkywardHero_UI (38)
+                SkywardHero_UI (39)
+
+                ESM_Fantasy_Game_...
+                Magic_Ice_Instant_Cast_Spell_A
+                Magic_Ice_Instant_Cast_Spell_C
+                Magic_Ice_Long_Cast_Spell_B
+                Magic_Fire_Instant_Cast_Spell_D
+                Magic_Fire_Long_Spell_A
+                Magic_Airy_Sting_Accent
+                Magic_Ancient_Metallic_Sting
+                Magic_Arcane_Long_Cast_Spell_B
+                Magic_Arcane_Spell_B
+                Magic_Molten_Lava_Hit_Fire_Gas_Burn
+                Magic_Earth_Instant_Cast_Spell_A
+                Magic_Shadow_Instant_Cast_Spell_A
+                Magic_Shadow_Instant_Cast_Spell_B
+                Magic_Shadow_Instant_Cast_Spell_C
+                Magic_Lightning_Spell_A
+                Magic_Lightnint_Instant_Cast_Spell_C
+                Magic_Key_Pick_Up_1
+                Magic_Key_Pick_Up_3
+                Magic_Debuff_Spell_A
+                Magic_Debuff_Spell_B
+                Magic_Debuff_Spell_D
+                Magic_Ring_Pickup_B
+                Organic_Magic_Poof_Buff_Hit
+                Organic_Magic_Poof_Buff_Hit_2
+                Organic_Magic_Poof_Buff_Hit_6
+                Organic_Magic_Accept_Quest_Drum_Impact_1
+                Organic_Coin_Collect_B
+                Organic_Item_Slide_2_Drag_Friction
+                Organic_Collect_Spell
+                Potion_Bottle_Cork_Pop_Magic
+                Dark_Transition_2_Lightning
+                Dark_Transition_3_Airy
+                Dark_Conjure_3
+
+                Item_Collect_Dark_Magic_A
+                Item_Collect_Dark_Magic_C
+                Item_Collect_Dark_Magic_D
+                Item_Collect_Dark_Magic_E
+                Item_Collect_Dark_Magic_F
+                Item_Collect_Dark_Magic_I
+                Item_Collect_Dark_Magic_J
+                Item_Collect_Dark_Magic_K
+                Item_Collect_Magic_A
+                Item_Collect_Magic_D
+                Item_Collect_Magic_F
+                Item_Collect_Herbs_Organic_Grass
+                Item_Pick_Up_Magic_Metal_Armor
+                Item_Pickup_Metal_Armor
+                Item_Pick_Up_Leather_Armor
+                Item_Paper_Scroll_B
+                Item_Magic_Pickup_2_Spell
+                Item_Magic_Trap_Weapon
+                Item_Wooden_Chest_Open_or_Close_Medium_Small
+                Item_Crafting_Axe_B
+                Item_Crafting_Sword_B
+                Item_Crafting_Wooden_Shield_B_Build_Work_Shop_Repair
+                Item_Potion_Bottle_A_Jar
+                Item_Crafting_Magic_Armor_Build
+                Item_Crafting_Bow_A_Build
+                Item_Totem_Scroll_C
+                Pick_Up_Orb_Touch_1
+                Skill_Knife_Throw_B
+                Skill_Target_Weakness_Weapon
+                Skill_Axe_Throw_B
+                Skill_Rain_Of_Arrows
+                Large_Gate_Close_2_Medium_Small
+                Felflame_1_Fire_Flame
+
+                Material_Stone_Touch_7_Magic
+                Material_Stone_Pickup_3_Magic
+                Material_Stone_Magic_Debris_Hit_4
+                Material_Stone_Medium_Slide_Magic
+                Material_Stone_Light_Hit_1_Magic
+                Material_Wood_Crate_Break_3_Magic
+                Material_Wood_Lever_5_Switch
+                Material_Liquid_Pick_Up_2_Jug_Magic
+                Material_Liquid_Bubble_Pick_Up_1_Magic
+                Material_Liquid_Deep_Hit_1_Magic
+                Material_Liquid_Pick_Up_1_Magic
+                Material_Water_Bubble_Potion_3
+                Material_Harvest_2_Wet_Magic
+                Potion_Bottle_Cork_Pop_Magic
+                Crafting_UI_Tab_Button_6
+                Crafting_UI_Tab_Button_7
+                Crafting_Select_Ore_Metal_Impact
+                Crafting_Select_Gem_Metal_Metallic_Ring
+                Craft_Armor_or_Weapon_1
+                Smash_Pot_B_Break
+                Book_Page_Turn_1_Paper
+
+                Attack_Fire_Arrow
+                Attack_Crossbow_E
+                Blade_Draw_1
+
+                Arcane_Missile_1_Accent
+
+                UI_Metal_Armory_Tab_1_Dry
+                UI_Earth_Select_Spell_Cast
+                UI_Arcane_Confirm_Spell_Cast
+                UI_Shadow_Confirm_Spell_Cast
+                UI_Arcane_Select_Spell_Cast
+                UI_Ice_Select_Spell_Cast
+
+                Backpack_Open_Close_Inventory
+                Creature_Longer_Low_Growl
+                Creature_Growl_Long_High_B
+                Creature_Crow_Distant_Monster
+                Gear_Inventory_UI_3
+                Inventory_Material_Stone_UI_3
+                Inventory_Material_Stone_Touch_4
+                Weapon_Impact_Weapon
+                Weapon_Impact_Blood_Weapon
+                Chest_Unlock_Small_2_Switch
+                Lock_Gate_Medium_Small
+                Open_Gate_Switch_User_Interface
+                UI_Magic_Confirm_A_Spell_Cast
+                Loading_Gear_Crafting_Table
+
+
+
+
+                */
+			},
+		});
+		return s;
+	}
+	music(f, v = 1) {
+		var m = false;
+		m = new Howl({
+			src: ["audio/" + f],
+			loop: true,
+			volume: v,
+		});
+		return m;
+	}
+}
+
+const util = new Util();

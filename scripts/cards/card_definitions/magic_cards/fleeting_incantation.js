@@ -1,0 +1,25 @@
+export default {
+  id: "fleeting_incantation",
+  name: "Fleeting Incantation",
+  type: "magic",
+  mana: 0,
+  tier: "rare",
+  linger: 2,
+  use: 2,
+  expire: 2,
+  pack: "rainbow",
+  weight: 7,
+  courage: 4,
+  magic: [{ type: "aligned", amount: 7 }],
+  sound: "magic6",
+  slots: 2,
+  shardUpgrades: {
+    natural: true,
+    expire: 4,
+  },
+  bothShardUpgrades: {
+    use: 3,
+    linger: 3,
+    expire: 6,
+  },
+};
