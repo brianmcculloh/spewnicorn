@@ -1,4 +1,4 @@
-import getCardAttribute from "../cards/utils/get_card_attribute.js";
+import { getCardAttribute } from "../cards/utils/get.js";
 import buildCardSlots from "./build_card_slots.js";
 import { setTooltips } from "./tooltips.js";
 

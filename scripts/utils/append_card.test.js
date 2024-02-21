@@ -1,12 +1,12 @@
 // Use ES6 imports to mock ES6 modules
-import getCardAttribute from '../cards/utils/get_card_attribute.js';
+import { getCardAttribute } from '../cards/utils/get.js';
 import appendCard, { createBooleanAttributeDom, createAttributeDom } from './append_card.js';
 
 // Mock the getCardAttribute function before the tests
-jest.mock('../cards/utils/get_card_attribute', () => ({
-  __esModule: true, // this property makes it work like an ES6 module
-  default: jest.fn(), // this is your mock function
-}));
+jest.mock('../cards/utils/get.js', () => ({
+    __esModule: true,
+    getCardAttribute: jest.fn(),
+  }));
 
 // Mock the getCardAttribute function before the tests
 jest.mock('./tooltips', () => ({
