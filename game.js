@@ -52,13 +52,13 @@ const ALL_EFFECTS = [
 
     // Usage:
     // creature {base: 5, current: 0, temp: 0, turns: 0}
-    {id: 'speed', name: 'Speed', desc: 'Card draw per turn', x: -32, y: -5922},
+    {id: 'speed', name: 'Speed', desc: 'Number of cards you can draw each turn', x: -32, y: -5922},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: 0, persist: false}
     // buff     {effect: 'solid', amount: 2, turns: -1}
     // hex      {effect: 'solid', amount: -1, hex: true, turns: 2}
-    {id: 'solid', name: 'Solid', desc: 'Gain x extra block each time you gain block', x: -256, y: -4672, sound: 'effect5', hex: false},
+    {id: 'solid', name: 'Solid', desc: 'Gain x extra block each time you gain block from cards', x: -256, y: -4672, sound: 'effect5', hex: false},
 
     // Usage:
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
@@ -76,7 +76,7 @@ const ALL_EFFECTS = [
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'mend', amount: 2, turns: -1}
     // hex      {effect: 'mend', amount: -2, hex: true}
-    {id: 'mend', name: 'Mend', desc: 'Gain x extra hit points each time you heal', x: -224, y: -6720, sound: 'effect25', hex: false},
+    {id: 'mend', name: 'Mend', desc: 'Gain x extra health each time you heal', x: -224, y: -6720, sound: 'effect25', hex: false},
 
     // Usage:
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
@@ -125,7 +125,7 @@ const ALL_EFFECTS = [
     // buff     {effect: 'mastery', amount: 5, turns: -1}
     // hex      {effect: 'mastery', amount: -5, hex: true}
     // Gets added to the base crit multiplier of 5 (150%). range is -15 (0%) to +5 (200%);
-    {id: 'mastery', name: 'Mastery', desc: 'Crit damage multiplier. 1 Mastery = +10% multiplier (150% default base + 10% = 160% total)', x: -320, y: -7200, sound: 'effect22', hex: false},
+    {id: 'mastery', name: 'Mastery', desc: 'Crit damage multiplier. 1 Mastery = +10% multiplier (base is 150%)', x: -320, y: -7200, sound: 'effect22', hex: false},
 
     // Usage:
     // creature {base: 3, current: 0, temp: 0, turns: -1, persist: false}
@@ -137,13 +137,13 @@ const ALL_EFFECTS = [
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'conjure', amount: 2, turns: -1}
     // hex      {effect: 'conjure', amount: -2, hex: true}
-    {id: 'conjure', name: 'Conjure', desc: 'When charging magic rainbow, charge it x amount more', x: -288, y: -4672, sound: 'effect27', hex: false},
+    {id: 'conjure', name: 'Conjure', desc: 'Magic rainbow charge modifier', x: -288, y: -4672, sound: 'effect27', hex: false},
 
     // Usage: 
     // creature {base: 1.5, current: 0, temp: 0, turns: -1, persist: false} // base is default 1 (100%), so 1.5 would be 150%
     // buff     {effect: 'sorcery', amount: .5, turns: -1}
     // hex      {effect: 'sorcery', amount: -.5, hex: true}
-    {id: 'sorcery', name: 'Sorcery', desc: 'When charging magic rainbow, charge it x% more', x: -64, y: -6816, sound: 'effect8', hex: false},
+    {id: 'sorcery', name: 'Sorcery', desc: 'Magic rainbow charge multiplier', x: -64, y: -6816, sound: 'effect8', hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
@@ -219,7 +219,7 @@ const ALL_EFFECTS = [
     // creature {base: 0, current: 0, temp: 1, turns: 2, persist: false}
     // buff     {effect: 'mystery', amount: 1, turns: -1}
     // hex      {effect: 'mystery', amount: -1, hex: true}
-    {id: 'mystery', name: 'Mystery', desc: '? cards are played x extra times', x: -384, y: -32, sound: 'effect20', hex: false},
+    {id: 'mystery', name: 'Mystery', desc: '? cards trigger x extra times', x: -384, y: -32, sound: 'effect20', hex: false},
 
     // Usage:
     // creature {base: 0, current: 0, temp: 1, turns: 2, persist: false}
@@ -237,18 +237,18 @@ const ALL_EFFECTS = [
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'lightning', amount: 5, turns: -1}
     // hex      {effect: 'lightning', amount: -8, hex: true}
-    {id: 'lightning', name: 'Lightning', desc: 'Your magic rainbow does x extra damage', x: -160, y: -6496, sound: 'effect37', hex: false},
+    {id: 'lightning', name: 'Lightning', desc: 'Magic rainbow damage modifier', x: -160, y: -6496, sound: 'effect37', hex: false},
 
     // Usage:
     // creature {base: 1.1, current: 0, temp: 0, turns: -1, persist: false}, // value should range from 0 (0%) to 2 (200%) - haven't tested higher
     // buff     {effect: 'thunder', amount: .1, turns: 3} // value should increment by .1 and will be added to base
     // hex     {effect: 'thunder', amount: -.1, turns: -1, hex: true}
-    {id: 'thunder', name: 'Thunder', desc: 'Magic damage multiplier', x: -160, y: -6528, sound: 'effect36', hex: false},
+    {id: 'thunder', name: 'Thunder', desc: 'Magic rainbow damage multiplier', x: -160, y: -6528, sound: 'effect36', hex: false},
 
     // Usage:
     // creature {base: 1, current: 1, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'retain', amount: 1, turns: -1}
-    {id: 'retain', name: 'Retain', desc: 'Select x cards to keep in hand each turn', x: -352, y: -418, sound: 'effect38', hex: false},
+    {id: 'retain', name: 'Retain', desc: 'Select x cards to keep in your hand when you end your turn', x: -352, y: -418, sound: 'effect38', hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
@@ -563,7 +563,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '0.55 Alpha';
+    let version = '0.56 Alpha';
     let seed = false;
     let difficulty = 'medium';
     let floor = 0; // TODO: set to 0
@@ -575,6 +575,7 @@ export default function Game() {
     let boosterPack = 'basic';
     let arenasComplete = 0;
     let arenasRequired = 2;
+    let questsVisited = 0;
     let fountainChance = 1.4;
     let questChance = 1.6;
     let treasureChance = 0; // TODO: set to 0
@@ -769,6 +770,7 @@ export default function Game() {
         boosterPack,
         arenasComplete,
         arenasRequired,
+        questsVisited,
         fountainChance,
         questChance,
         treasureChance,

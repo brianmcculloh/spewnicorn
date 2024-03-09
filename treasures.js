@@ -873,7 +873,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         effects: [
-            {effect: 'solid', base: 4}
+            {effect: 'solid', base: 3}
         ],
         x: -416,
         y: -3040
@@ -1045,7 +1045,7 @@ const ALL_TREASURES = [
         weight: 6,
         permanent: true,
         effects: [
-            {effect: 'solid', base: 5}
+            {effect: 'solid', base: 4}
         ],
         x: -32,
         y: -15008
@@ -1087,6 +1087,7 @@ const ALL_TREASURES = [
         id:'dew_of_yarva', 
         name: "Dew of Yarva", 
         permanent: true,
+        weight: 3,
         effects: [
             {effect: 'heal', base: 10}
         ],
@@ -1097,6 +1098,7 @@ const ALL_TREASURES = [
         id:'dew_of_lunya', 
         name: "Dew of Lunya", 
         permanent: true,
+        weight: 3,
         effects: [
             {effect: 'regen', base: 5}
         ],
@@ -1119,7 +1121,7 @@ const ALL_TREASURES = [
         id:'lemon', 
         name: 'Lemon', 
         courage: 8,
-        weight: 2,
+        weight: 1,
         permanent: true,
         effects: [
             {effect: 'lemonade', base: 1}
@@ -1131,7 +1133,7 @@ const ALL_TREASURES = [
         id:'spiked_punch', 
         name: 'Spiked Punch', 
         courage: 8,
-        weight: 2,
+        weight: 1,
         //permanent: true,
         effects: [
             {effect: 'lemonade', amount: 1, turns: -1}
@@ -1823,7 +1825,7 @@ const ALL_TREASURES = [
         name: 'Signet Ring', 
         courage: 13,
         tier: 3,
-        weight: 3,
+        weight: 1,
         permanent: true,
         effects: [
             {effect: 'wisdom', base: 4}
@@ -2001,7 +2003,7 @@ const ALL_TREASURES = [
         weight: 6,
         permanent: true,
         effects: [
-            {effect: 'solid', base: 12}
+            {effect: 'solid', base: 10}
         ],
         x: -320,
         y: -13120
@@ -2054,7 +2056,7 @@ const ALL_TREASURES = [
         courage: 20,
         permanent: true,
         effects: [
-            {effect: 'solid', amount: 4, turns: -1, persist: false}
+            {effect: 'solid', amount: 3, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -256,
@@ -2073,7 +2075,7 @@ const ALL_TREASURES = [
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -480,
         y: -10016
-    }),  
+    }),
 
 
     /* unaddable */

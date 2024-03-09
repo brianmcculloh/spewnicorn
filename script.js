@@ -110,13 +110,12 @@
  * 
  * PHASE V:
  * 
- * TODO: why does attuned barrier say "mana: 1" at the top of the description?
- * 
- * 
- * 
- * 
+ * Tutorial	- DONE	
  * Bug/Balance Testing playthroughs
- * Tutorial	- DONE		
+ * Beaten: Hard Combine, Hard Rainbow, Hard Cycle
+ * 
+ * TODO: 
+ *	
  * Save progress
  * Record results - use Google Analytics for this?
  * 
@@ -222,6 +221,8 @@
  * 
  * 
  * BUGS [can't replicate]:
+ * BUG: Myriad Staff adding Unstable Attacks - they start accumulating without any Use bubble
+ * BUG: flame guardian doesn't remove the +4 stout from gift of protection
  * BUG: candy that enshardens all cards sharded the permanent deck cards rather than the temp hand cards
  * BUG: done button ghost showing on subsequent combats - if this happens again, inspect the class of the button because .button-done is hidden on combat end and start
  * BUG: i was in a fight where i was at 0 health and armor but some block and i didn't die.
@@ -1425,7 +1426,7 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('signet_ring'); // use this to manually add treasures
+	//addTreasure('gift_of_magic'); // use this to manually add treasures
 	//addCandy('chocolate_bar'); // use this to manually add candies
 
 	if(game.debug) $('body').addClass('debug');
@@ -1484,6 +1485,8 @@ function init_singularity() {
 }
 
 function init_map_2() {
+
+	//addTreasure('razor_barb'); // use this to manually add treasures
 
 	game.map = 2;
 	game.floor = 0;
@@ -1557,6 +1560,7 @@ function setDifficulty() {
 	} else if(game.difficulty=='expert') {
 		game.questChance = 1.5;
 		game.fountainChance = 1.3;
+		game.arenasRequired = 3;
 		if(!game.debug) {
 			player.health.base = 55;
 			player.health.current = 55;
@@ -1566,9 +1570,6 @@ function setDifficulty() {
 		game.questChance = 1.5;
 		game.fountainChance = 1.3;
 		game.arenasRequired = 3;
-		//game.essenceThresholds = [12, 23, 33, 44];
-    	//game.aggroThresholds = [9, 14, 17, 20, 23, 26, 29, 31, 34, 37];
-    	//game.aggroThresholds2 = [5, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37];
 		game.candyChance = 0;
 		if(!game.debug) {
 			player.health.base = 55;
@@ -2652,7 +2653,6 @@ async function startCombat(tile = false) {
 	$('.message, .button-done').removeClass('shown');
 	$('.combat').addClass('shown');
 	$('.candy').removeClass('trashable').addClass('clickable');
-	$('body').addClass('combating');
 	$('.player-cards').removeClass('unavailable').empty();
 	$('body').removeClass('discarding');
 	$('.discard-done').removeClass('shown');
@@ -2682,11 +2682,13 @@ async function startCombat(tile = false) {
 	monsters.loadMonsters();
 
 	// setup rainbow
+	player.rainbow.current = player.rainbow.base;
 	if(player.rainbow.current >= player.rainbow.max && player.rainbow.max > 0) {
 		await util.wait(1500);
 		await activateRainbow(player.rainbow.type, player);
 		updateRainbowDom(player);
 	}
+	
 	let magicPower = util.getStatPercentage(player.rainbow.current, player.rainbow.max);
 	$('.magic-rainbow .rainbow-power').css('width', magicPower + '%');
 	$('.magic-rainbow .rainbow-power-current').html(player.rainbow.current);
@@ -2701,6 +2703,8 @@ async function startCombat(tile = false) {
 	$('.combat-text .draw-cards-arrow').addClass('shown');
 	await util.wait(400);
 	$('.combat-text h2.begin-combat').removeClass('shown');
+
+	$('body').addClass('combating');
 
 	await beginTurn();
 
@@ -2842,9 +2846,10 @@ function visitQuest(visited = false) {
 
 	stopMusic();
 	setTimeout(function() {
-		if(!musicQuests[game.floor % musicQuests.length].playing() && game.playmusic) musicQuests[game.floor % musicQuests.length].play();
+		if(!musicQuests[game.questsVisited % musicQuests.length].playing() && game.playmusic) musicQuests[game.questsVisited % musicQuests.length].play();
 	}, 200);
 
+	game.questsVisited += 1;
 	game.mapType = 'quest';
 	$('.quest-screen').addClass('shown');
 
@@ -3013,7 +3018,7 @@ async function beginTurn() {
 				//player.health.max += Math.floor((player.speed.current / 4) * player.shimmer.level); // we determined this could be infinitely farmable
 				//heal(player, Math.floor((player.speed.current * player.shimmer.level) / 2)); // too much healing overall
 				applyArmor(Math.floor(player.speed.current * player.shimmer.level), player);
-				applyBlock(Math.floor(player.speed.current * player.shimmer.level * 4), player);
+				applyBlock(Math.floor(player.speed.current * player.shimmer.level * 3), player);
 			}
 		}
 			
@@ -3076,12 +3081,7 @@ async function beginTurn() {
 
 	combatDeck.updateCardPlayability(player, combatDeck); // necessary for cards that were retained
 
-	$('.card.retained:not(.unplayable').addClass('playable');
-	$('.card').removeClass('retain');
-	$('.draw-card, .draw-all').removeClass('disabled');
-	$('.crit').removeClass('shown');
-
-	updateTreasureTriggers('turns');
+	updateTreasureTriggers('turns'); 
 
 	monsterIntent();
 
@@ -3096,6 +3096,10 @@ async function beginTurn() {
 
 	await util.wait(1000);
 	$('.combat-text, .combat-text h2, .combat-text .draw-cards-arrow').removeClass('shown');
+	$('.card.retained:not(.unplayable').addClass('playable');
+	$('.card').removeClass('retain');
+	$('.draw-card, .draw-all').removeClass('disabled');
+	$('.crit').removeClass('shown');
 	
 }
 
@@ -3109,7 +3113,7 @@ function updateTreasureTriggers(when) {
 					if(trigger.per == 'turn' && !trigger.once) {
 						trigger.counter = 0; // reset per turn counters
 					} else if(trigger.when == 'turns') {
-						trigger.counter += 1;
+						trigger.counter += 1; 
 						if(trigger.counter == trigger.at) {
 							if(trigger.once && !trigger.activated) {
 								activateTreasure(player.treasures[i]);
@@ -3274,16 +3278,18 @@ async function monsterAction(action = 'perform') {
 
 			// check for resurrect
 			if(thisMonster.resurrect.enabled) {
-				//let actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, form: 'ghost', tier: [3, 4]}];
 				let tiers = [4, 5];
+				let actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers}];
 				if(game.difficulty=='hard') {
-					tiers = util.chance(25) ? [4] : util.chance(90) ? [5] : [6];
+					tiers = util.chance(25) ? [4] : [5];
+					actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers}];
 				} else if(game.difficulty=='expert') {
-					tiers = util.chance(90) ? [5] : [6];
+					tiers = [5];
+					actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers}];
 				} else if(game.difficulty=='nightmare') {
-					tiers = util.chance(75) ? [5] : util.chance(75) ? [6] : [7];
+					tiers = [5];
+					actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers, context: 'upgraded'}];
 				}
-				let actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers, context: 'upgraded'}];
 				let update = processActions(actions, thisMonster);
 			}
 
@@ -3319,6 +3325,7 @@ async function monsterAction(action = 'perform') {
 		if(thisMonster.chosenMoveSetIndex > -1) {
 			moveSetIndex = thisMonster.chosenMoveSetIndex;
 		} 
+		if(moveSetIndex < 0) return;
 
 		let thisMoveSet = moveSet[moveSetIndex];
 		
@@ -3338,7 +3345,7 @@ async function monsterAction(action = 'perform') {
 
 				let attackAmount = attack[key];
 
-				if(game.difficulty=='expert') {
+				if(game.difficulty=='hard' || game.difficulty=='expert' || game.difficulty=='nightmare') {
 					attackAmount += 2;
 				}
 				if(game.difficulty=='nightmare') {
@@ -3361,6 +3368,14 @@ async function monsterAction(action = 'perform') {
 					} else {
 						await attackPlayer(thisMonster, attackAmount);
 					}
+					// it's possible this monster dies to retaliate or spikes this hit
+					if(monsters.dying(thisMonster)) {
+						if(game.playsounds) sounds.play('death');
+					}
+					if(monsters.dead(thisMonster)) {
+						util.removeMonster(thisMonster);
+						break;
+					}
 					if(monsters.allDead()) {
 						await util.wait(800);
 						endCombat();
@@ -3376,7 +3391,7 @@ async function monsterAction(action = 'perform') {
 			if (defend.hasOwnProperty(key)) {
 				let a = defend[key];
 
-				if(game.difficulty=='expert' || game.difficulty=='nightmare') {
+				if(game.difficulty=='hard' || game.difficulty=='expert' || game.difficulty=='nightmare') {
 					a += 5;
 				}
 
@@ -3389,7 +3404,7 @@ async function monsterAction(action = 'perform') {
 					a += thisMonster.solid.current;
 					intent += '<span class="tooltip" data-powertip="Gain ' + a + ' block"><span class="intent-blk intent-amount">' + a + '</span><span class="intent-blk-icon intent-icon"></span></span>';
 				} else {
-					applyBlock(a, thisMonster);
+					applyBlock(a, thisMonster, true);
 					await util.wait(300);
 				}
 			}
@@ -3411,7 +3426,8 @@ async function monsterAction(action = 'perform') {
 			for(let e = 0; e < effects.length; e++) {
 				let to = thisMonster
 				let prefix = 'Gain ';
-				let turns = effects[e].turns > 0 ? ' (' + effects[e].turns + ' turns)' : '';
+				let plural = effects[e].turns == 1 ? '' : 's';
+				let turns = effects[e].turns > 0 ? ' (' + effects[e].turns + ' turn' + plural + ')' : '';
 				let effect = effects[e].effect;
 				let gameEffect = game.effects.find(({ id }) => id === effect);
 				let amount = effects[e].amount;
@@ -3424,7 +3440,7 @@ async function monsterAction(action = 'perform') {
                     amount += '%';
 				}
 				if(action == 'query') {
-					intentTooltip = prefix + amount + ' ' + gameEffect.name + turns;
+					intentTooltip = (amount == 0 || amount == '0%') ? 'Remove ' + gameEffect.name + turns : prefix + amount + ' ' + gameEffect.name + turns;
 					if(effects[e].hex) {
 						intent += '<span class="intent-hex effect-hex intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
 					} else {
@@ -3673,7 +3689,7 @@ function endMonsterTurn() {
 	clearTurnAbilities(player, true);
 	monsters.updateStatusBar(player);
 	
-	if(!Player().dead(player)) {
+	if(!Player().dead(player) && !monsters.allDead()) {
 		beginTurn();
 	}
 
@@ -3813,7 +3829,8 @@ function removeHexes(to) {
 		} else {
 			// it's possible a monster hexed an effect and then a player buffed the same effect but not to the extent it was previously hexed
 			// e.g. monster hexes might -2 and player buffs might +1 resulting in "hexed" flag getting set to false but might is still at -1
-			let isHexed = to[game.effects[i].id].hexed; // this isn't really used because we're figuring out hexed logic below
+			//let isHexed = to[game.effects[i].id].hexed; // this isn't really used because we're figuring out hexed logic below
+			let isHexed = false;
 			let isHex = game.effects[i].hex;
 			if(game.effects[i].id == 'sorcery' || game.effects[i].id == 'punch' || game.effects[i].id == 'thunder') {
 				if(to[game.effects[i].id].current < 1) {
@@ -3879,6 +3896,14 @@ async function applyEffect(effect, to, turns = -1) {
 			statusDom = $('.monster[data-guid=' + to.guid + '] .status-text');
 		}
 		if(effect.amount != undefined) {
+			// if amount is 0 that means we're clearing whatever the current value is
+			if(effect.amount == 0) {
+				if(effect.effect == 'punch' || effect.effect == 'thunder' || effect.effect == 'sorcery') {
+					effect.amount = -(to[effect.effect].current - 1);
+				} else {
+					effect.amount = -to[effect.effect].current;
+				}
+			}
 			// conjure should never go below 0 because if it does then when player applies any magic it will decrease rather than increase rainbow
 			// basically when monster hexes conjure we want to reduce any positive conjuring, not go negative
 			//let amt = (effect.effect == 'conjure' && isHex) ? 0 : Math.round(((to[effect.effect].current + effect.amount) + Number.EPSILON) * 100) / 100;
@@ -3942,7 +3967,7 @@ async function applyEffect(effect, to, turns = -1) {
 				amtShow += '%';
 			}
 			if(isHex) {
-				to[effect.effect].hexed = true;
+				//to[effect.effect].hexed = true;
 				if(game.playsounds) sounds.play('hex');
 				game.statusAnimations({data: amtShow + ' ' + effect.effect, to: statusDom, hex: true});
 				// deal with angered effect
@@ -3951,7 +3976,7 @@ async function applyEffect(effect, to, turns = -1) {
 					applyEffect(angeredEffect, to);
 				}
 			} else {
-				to[effect.effect].hexed = false;
+				//to[effect.effect].hexed = false;
 				let sound = gameEffect.sound ? gameEffect.sound : 'applyEffect';
 				if(game.playsounds) sounds.play(sound);
 				game.statusAnimations({data: amtShow + ' ' + effect.effect, to: statusDom, hex: false});
@@ -4075,6 +4100,8 @@ function applyAbility(ability, to, turns = -1) {
 
 function endCombat() {
 
+	if(Player().dead(player)) return;
+
 	if(!game.combatEndedFlag) {
 
 		stopMusic();
@@ -4089,7 +4116,7 @@ function endCombat() {
 		}
 		
 		if(game.mapType != 'singularity') {
-			setTimeout(function() {
+			//setTimeout(function() {
 				if(game.overworld == 'frost') {
 					if(!musicOverworldFrost.playing() && game.playmusic) musicOverworldFrost.play();
 				} else if(game.overworld == 'flame') {
@@ -4097,7 +4124,7 @@ function endCombat() {
 				} else {
 					if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
 				}
-			}, 3000);
+			//}, 3000);
 
 			setTimeout(function() {
 				// these should delay to happen after lingering combat effects
@@ -4120,9 +4147,9 @@ function endCombat() {
 		gainCourage(1);
 		updateAggro(aggroAmount);
 		
-		if(game.difficulty == 'nightmare') {
-			game.candyChance += 8;
-			game.shardChance += 3;
+		if(game.difficulty = 'expert' || game.difficulty == 'nightmare') {
+			game.candyChance += 7;
+			game.shardChance += 2;
 		} else {
 			game.candyChance += 10;
 			game.shardChance += 5;
@@ -4256,7 +4283,7 @@ function loot(type, tier = 3) {
 
 	if(game.playsounds) sounds.play('loot');
 
-	setTimeout(function() {
+	//setTimeout(function() {
 		if(game.overworld == 'frost') {
 			if(!musicOverworldFrost.playing() && game.playmusic) musicOverworldFrost.play();
 		} else if(game.overworld == 'flame') {
@@ -4264,7 +4291,7 @@ function loot(type, tier = 3) {
 		} else {
 			if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
 		}
-	}, 1000);
+	//}, 1000);
 
 	$('.loot-screen').addClass('shown');
 	// for normal treasure screens, any tier 1 - 3
@@ -4369,6 +4396,8 @@ function endGame(result) {
 }
 
 function rewardsScreen() {
+
+	if(Player().dead(player)) return;
 
 	$('.rewards').addClass('shown');
 	$('.rewards-loot').empty();
@@ -4711,14 +4740,14 @@ async function activateTreasure(treasure) {
 	if(treasure.effects != undefined) {
 		for(let e = 0; e < treasure.effects.length; e++) {
 			let turns = treasure.effects[e].turns == undefined ? -1 : treasure.effects[e].turns;
-			applyEffect(treasure.effects[e], player, turns);
+			await applyEffect(treasure.effects[e], player, turns);
 		}
 	}
 	if(treasure.abilities != undefined) {
 		for(let e = 0; e < treasure.abilities.length; e++) {
 			let turns = treasure.abilities[e].baseTurns == undefined ? treasure.abilities[e].turns : treasure.abilities[e].baseTurns;
 			if(turns == undefined) turns = -1;
-			applyAbility(treasure.abilities[e], player, turns);
+			await applyAbility(treasure.abilities[e], player, turns);
 		}
 	}
 	if(treasure.actions != undefined) {
@@ -5088,8 +5117,6 @@ function combineCards(elem) {
 
 			$('.card.combinable').removeClass('combine-compatible');
 
-			game.combinedAge = 0;
-
 			setStatus();
 			
 		});
@@ -5454,7 +5481,7 @@ async function processBlk(blk, multiply, card = false, cardWasPlayed = false) {
 						blk[i] += card.age;
 					}
 				}
-				applyBlock(blk[i], player);
+				applyBlock(blk[i], player, true);
 				await util.wait(game.animationGap);
 			}
 		}
@@ -5634,6 +5661,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							} else {
 								// if we combined cards, aggregate ages
 								modifiers.age = game.combinedAge;
+
+								game.combinedAge = 0; // reset for the next set of combines
 
 								// we need to pass the guid in case the card is added during combat before the decks
 								// have a chance to sync. this is the only time currently that we're actually passing a guid in
@@ -5909,6 +5938,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						break;
 					}
 					case 'stat': {
+
 						let key = actions[e].key;
 						let what = actions[e].what;
 						let value = actions[e].value;
@@ -5942,7 +5972,6 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								}
 							}
 						}
-
 						// check for changing stances
 						if(what == 'stance') {
 							if(value != player.stance) {
@@ -5961,10 +5990,11 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							// some other options would be increase raindow, increase courage, or decrease aggro
 							// armor and block won't work in the current state unless we account for them as we have courage below
 						}
+						
 						if(key == undefined) {
 							// hacky provision for courage :( - it's the only simple/single value stat that needs to change numerically
 							if(what == 'courage') {
-								player[what] += value;
+								gainCourage(value);
 								updateItemCost();
 							} else {
 								player[what] = value;
@@ -5981,9 +6011,14 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 									}
 								} else if(what == 'courage') {
 									gainCourage(value);
+								} else if(what == 'aggro') {
+									updateAggro(value);
 								// we will actually increase the essence stats within the updateEssenceLevels function called below
 								} else if(what != 'aura' && what != 'sparkle' && what != 'shimmer') {
 									if(additive) {
+										if(what == 'rainbow' && key == 'base') {
+											player.rainbow.current += value;
+										}
 										player[what][key] += value;
 									} else {
 										player[what][key] = value;
@@ -6009,7 +6044,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 
 							}
 							let magic = {type: player.rainbow.type, amount: 0}
-							applyMagic(magic, player);
+							await applyMagic(magic, player);
 						}
 						// if max health was reduced and current health was at full, need to reduce current health
 						if(player.health.max < player.health.current) player.health.current = player.health.max;
@@ -6127,7 +6162,6 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								} else if(context !== false) {
 									possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context == context);
 								}
-								console.log(context);
 								if(actions[e].tier !== undefined) {
 									if(actions[e].tier.constructor === Array) {
 										possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && actions[e].tier.includes(i.tier));
@@ -6862,10 +6896,10 @@ async function attackMonster(monster, dmg, fatalityHit = false, hypnotizeHit = f
 	
 }
 
-function applyBlock(blk, to, ignoreEffects = false) {
+function applyBlock(blk, to, solid = false) {
 	if(to != undefined) {
 		let blkActual = blk;
-		if(!ignoreEffects) {
+		if(solid) {
 			blkActual = blk + to.solid.current;
 		}
 		if(blkActual > 0) {
@@ -7181,7 +7215,7 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 
 			let thisTo = to[i] == false || to[i] == undefined ? player : to[i];
 
-			let thisDmg = dmg;
+			let thisDmg = dmg < 0 ? 0 : dmg;
 			let dmgTaken = 0;
 			let armorLost = 0;
 			let healthLost = 0;
@@ -7367,60 +7401,3 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 
 	}
 }
-
-
-/*
-MONSTER LIST
-
-Tier 1:
--------
-Pixie
-Mummy
-Stone Walker
-Sludge
-Imp
-
-
-Tier 2:
--------
-Shatter
-Void Fairy
-Enchantress
-Power Liche
-Iron Walker
-
-
-Tier 3:
--------
-Swarm
-Sorcerer
-Fel Dragon
-Cunning Dragon
-Cyberskull
-
-
-Tier 4:
--------
-Transfigurer
-Writhing Dragon
-Darkness Dragon
-Obsidian Walker
-Seething Entity
-
-
-Arena:
-------
-Ultraumaton
-Unmaker
-Arch Summoner
-
-
-Gate:
------
-Frost Guardian
-Flame Guardian
-Super Frozen Frost Guardian
-Super Burning Frost Guardian
-Super Frozen Flame Guardian
-Super Burning Flame Guardian
-*/

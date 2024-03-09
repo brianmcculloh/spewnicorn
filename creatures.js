@@ -1997,14 +1997,16 @@ const ALL_MONSTERS = [
                 {ability: 'protection', turns: -1, enabled: true},
             ], effects: [
                 {effect: 'marked', amount: 1, turns: 5, hex: true},
+                {effect: 'might', amount: 0, turns: 2, hex: true},
+                {effect: 'punch', amount: 0, turns: 2, hex: true},
             ], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {actions: [
                 {action: 'summonMonster', what: 'seer', value: 2},
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ], effects: [
                 {effect: 'might', amount: 4, turns: -1},
                 {effect: 'punch', amount: .1, turns: -1},
@@ -2012,24 +2014,27 @@ const ALL_MONSTERS = [
             {blk: [25], effects: [
                 {effect: 'vex', amount: 1, turns: -1},
             ], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {dmg: [40], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
-            {blk: [25], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+            {blk: [25], effects: [
+                {effect: 'might', amount: 0, turns: 2, hex: true},
+                {effect: 'punch', amount: 0, turns: 2, hex: true},
+            ], actions: [
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {dmg: [40], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {dmg: [35], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
         ],
     }),
@@ -2044,38 +2049,42 @@ const ALL_MONSTERS = [
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'resistance', amount: .4, turns: 2}
+                {effect: 'resistance', amount: .4, turns: 2},
+                {effect: 'stout', amount: 0, turns: 2, hex: true},
+                {effect: 'solid', amount: 0, turns: 2, hex: true},
             ], actions: [
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {dmg: [35], actions: [
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {dmg: [25, 25], actions: [
                 {action: 'summonMonster', what: 'stinger', value: 2},
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {armor: [20], blk: [20], effects: [
                 {effect: 'fatigued', amount: 1, turns: 6, hex: true},
+                {effect: 'stout', amount: 0, turns: 2, hex: true},
+                {effect: 'solid', amount: 0, turns: 2, hex: true},
             ], actions: [
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {dmg: [30], actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards', hex: true},
                 {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards', hex: true},
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {dmg: [30], actions: [
                 {action: 'addCard', value: 1, what: 'execrate', to: 'drawCards', hex: true},
                 {action: 'addCard', value: 1, what: 'flay', to: 'discardCards', hex: true},
                 {action: 'summonMonster', what: 'cave_spider', value: 2},
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ], effects: [
                 {effect: 'might', amount: 10, turn: 1},
             ]},
@@ -2095,9 +2104,11 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'rainbow', amount: -2, turns: 1, hex: true},
                 {effect: 'sorcery', amount: -.2, turns: 1, hex: true},
+                {effect: 'lightning', amount: 0, turns: 2, hex: true},
+                {effect: 'thunder', amount: 0, turns: 2, hex: true},
             ], dmg: [3, 3, 3, 3, 3, 3, 3, 3], actions: [
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
                 {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
             ]},
             {effects: [
@@ -2106,24 +2117,26 @@ const ALL_MONSTERS = [
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards', hex: true},
                 {action: 'removeHexes', to: 'self'},
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {effects: [
                 {effect: 'rainbow', amount: -4, turns: 1, hex: true},
                 {effect: 'sorcery', amount: -.4, turns: 1, hex: true},
             ], dmg: [4, 4, 4, 4, 4, 4, 4, 4], actions: [
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 2, hex: true},
+                {effect: 'lightning', amount: 0, turns: 3, hex: true},
+                {effect: 'thunder', amount: 0, turns: 3, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'discardCards', hex: true},
                 {action: 'removeHexes', to: 'self'},
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {actions: [
                 {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
@@ -2131,15 +2144,15 @@ const ALL_MONSTERS = [
                 {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
             ]},
             {dmg: [5, 5, 5, 5, 5, 5, 5, 5], actions: [
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {effects: [
                 {effect: 'might', amount: 5, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
             ], dmg: [6, 6, 6, 6, 6, 6, 6, 6], actions: [
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
@@ -2162,14 +2175,16 @@ const ALL_MONSTERS = [
                 {ability: 'protection', turns: -1, enabled: true},
             ], effects: [
                 {effect: 'marked', amount: 1, turns: 5, hex: true},
+                {effect: 'might', amount: 0, turns: 2, hex: true},
+                {effect: 'punch', amount: 0, turns: 2, hex: true},
             ], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {actions: [
                 {action: 'summonMonster', what: 'seer', value: 2},
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ], effects: [
                 {effect: 'might', amount: 4, turns: -1},
                 {effect: 'punch', amount: .1, turns: -1},
@@ -2177,24 +2192,27 @@ const ALL_MONSTERS = [
             {blk: [25], effects: [
                 {effect: 'vex', amount: 1, turns: -1},
             ], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {dmg: [40], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
-            {blk: [25], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+            {blk: [25], effects: [
+                {effect: 'might', amount: 0, turns: 2, hex: true},
+                {effect: 'punch', amount: 0, turns: 2, hex: true},
+            ], actions: [
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {dmg: [40], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {dmg: [35], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
         ],
     }),
@@ -2210,38 +2228,42 @@ const ALL_MONSTERS = [
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'resistance', amount: .4, turns: 2}
+                {effect: 'resistance', amount: .4, turns: 2},
+                {effect: 'stout', amount: 0, turns: 2, hex: true},
+                {effect: 'solid', amount: 0, turns: 2, hex: true},
             ], actions: [
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {dmg: [35], actions: [
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {dmg: [25, 25], actions: [
                 {action: 'summonMonster', what: 'stinger', value: 2},
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {armor: [20], blk: [20], effects: [
                 {effect: 'fatigued', amount: 1, turns: 6, hex: true},
+                {effect: 'stout', amount: 0, turns: 2, hex: true},
+                {effect: 'solid', amount: 0, turns: 2, hex: true},
             ], actions: [
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {dmg: [30], actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards', hex: true},
                 {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards', hex: true},
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {dmg: [30], actions: [
                 {action: 'addCard', value: 1, what: 'execrate', to: 'drawCards', hex: true},
                 {action: 'addCard', value: 1, what: 'flay', to: 'discardCards', hex: true},
                 {action: 'summonMonster', what: 'cave_spider', value: 2},
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ], effects: [
                 {effect: 'might', amount: 10, turn: 1},
             ]},
@@ -2262,9 +2284,11 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'rainbow', amount: -2, turns: 1, hex: true},
                 {effect: 'sorcery', amount: -.2, turns: 1, hex: true},
+                {effect: 'lightning', amount: 0, turns: 2, hex: true},
+                {effect: 'thunder', amount: 0, turns: 2, hex: true},
             ], dmg: [3, 3, 3, 3, 3, 3, 3, 3], actions: [
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
                 {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
             ]},
             {effects: [
@@ -2273,40 +2297,42 @@ const ALL_MONSTERS = [
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards', hex: true},
                 {action: 'removeHexes', to: 'self'},
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {effects: [
                 {effect: 'rainbow', amount: -4, turns: 1, hex: true},
                 {effect: 'sorcery', amount: -.4, turns: 1, hex: true},
             ], dmg: [4, 4, 4, 4, 4, 4, 4, 4], actions: [
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 2, hex: true},
+                {effect: 'lightning', amount: 0, turns: 3, hex: true},
+                {effect: 'thunder', amount: 0, turns: 3, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'discardCards', hex: true},
                 {action: 'removeHexes', to: 'self'},
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {actions: [
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
                 {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
             ]},
             {dmg: [5, 5, 5, 5, 5, 5, 5, 5], actions: [
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {effects: [
                 {effect: 'might', amount: 5, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
             ], dmg: [6, 6, 6, 6, 6, 6, 6, 6], actions: [
-                {action: 'stat', what: 'thunder', key: 'current', value: 10, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 10, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
@@ -2327,15 +2353,16 @@ const ALL_MONSTERS = [
             {blk: [25], abilities: [
                 {ability: 'protection', turns: -1, enabled: true},
             ], effects: [
-                {effect: 'marked', amount: 1, turns: 5, hex: true},
+                {effect: 'might', amount: 0, turns: 2, hex: true},
+                {effect: 'punch', amount: 0, turns: 2, hex: true},
             ], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {actions: [
                 {action: 'summonMonster', what: 'seer', value: 2},
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ], effects: [
                 {effect: 'might', amount: 4, turns: -1},
                 {effect: 'punch', amount: .1, turns: -1},
@@ -2343,24 +2370,27 @@ const ALL_MONSTERS = [
             {blk: [25], effects: [
                 {effect: 'vex', amount: 1, turns: -1},
             ], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {dmg: [40], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
-            {blk: [25], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+            {blk: [25], effects: [
+                {effect: 'might', amount: 0, turns: 2, hex: true},
+                {effect: 'punch', amount: 0, turns: 2, hex: true},
+            ], actions: [
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {dmg: [40], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
             {dmg: [35], actions: [
-                {action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
-                {action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
+                //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
+                //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
         ],
     }),
@@ -2376,38 +2406,42 @@ const ALL_MONSTERS = [
         pattern: 'fixed',
         moveSet: [
             {effects: [
-                {effect: 'resistance', amount: .4, turns: 2}
+                {effect: 'resistance', amount: .4, turns: 2},
+                {effect: 'stout', amount: 0, turns: 2, hex: true},
+                {effect: 'solid', amount: 0, turns: 1, hex: true},
             ], actions: [
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {dmg: [35], actions: [
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {dmg: [25, 25], actions: [
                 {action: 'summonMonster', what: 'stinger', value: 2},
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {armor: [20], blk: [20], effects: [
                 {effect: 'fatigued', amount: 1, turns: 6, hex: true},
+                {effect: 'stout', amount: 0, turns: 2, hex: true},
+                {effect: 'solid', amount: 0, turns: 1, hex: true},
             ], actions: [
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {dmg: [30], actions: [
                 {action: 'addCard', value: 1, what: 'timid', to: 'drawCards', hex: true},
                 {action: 'addCard', value: 1, what: 'lethargy', to: 'discardCards', hex: true},
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ]},
             {dmg: [30], actions: [
                 {action: 'addCard', value: 1, what: 'execrate', to: 'drawCards', hex: true},
                 {action: 'addCard', value: 1, what: 'flay', to: 'discardCards', hex: true},
                 {action: 'summonMonster', what: 'cave_spider', value: 2},
-                {action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
-                {action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
+                //{action: 'stat', what: 'solid', key: 'current', value: 0, desc: 'Remove solid', additive: false, hex: true},
+                //{action: 'stat', what: 'stout', key: 'current', value: 0, desc: 'Remove stout', additive: false, hex: true},
             ], effects: [
                 {effect: 'might', amount: 10, turn: 1},
             ]},
@@ -2428,9 +2462,11 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'rainbow', amount: -2, turns: 1, hex: true},
                 {effect: 'sorcery', amount: -.2, turns: 1, hex: true},
+                {effect: 'lightning', amount: 0, turns: 2, hex: true},
+                {effect: 'thunder', amount: 0, turns: 2, hex: true},
             ], dmg: [3, 3, 3, 3, 3, 3, 3, 3], actions: [
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
                 {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
             ]},
             {effects: [
@@ -2439,40 +2475,42 @@ const ALL_MONSTERS = [
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'drawCards', hex: true},
                 {action: 'removeHexes', to: 'self'},
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {effects: [
                 {effect: 'rainbow', amount: -4, turns: 1, hex: true},
                 {effect: 'sorcery', amount: -.4, turns: 1, hex: true},
             ], dmg: [4, 4, 4, 4, 4, 4, 4, 4], actions: [
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {effects: [
                 {effect: 'conjure', amount: -5, turns: 2, hex: true},
+                {effect: 'lightning', amount: 0, turns: 3, hex: true},
+                {effect: 'thunder', amount: 0, turns: 3, hex: true},
             ],
             actions: [
                 {action: 'addCard', value: 1, what: 'curse', to: 'discardCards', hex: true},
                 {action: 'removeHexes', to: 'self'},
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {actions: [
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
                 {action: 'summonMonster', what: ['red_skeleton', 'blue_skeleton'], value: 1},
             ]},
             {dmg: [5, 5, 5, 5, 5, 5, 5, 5], actions: [
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
             {effects: [
                 {effect: 'might', amount: 5, turns: 1},
                 {effect: 'vex', amount: 1, turns: -1}
             ], dmg: [6, 6, 6, 6, 6, 6, 6, 6], actions: [
-                {action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
-                {action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
+                //{action: 'stat', what: 'thunder', key: 'current', value: 1, desc: 'Remove thunder', additive: false, hex: true},
+                //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
         ],
         resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
@@ -2645,13 +2683,11 @@ const ALL_MONSTERS = [
             {dmg: [30], armor: [30], actions: [
                 {action: 'summonMonster', what: ['seraphim', 'cherubim'], value: 2},
             ]},
-            {effects: [
+            {blk: [45], dmg: [35], effects: [
                 {effect: 'might', amount: 2, turns: -1}
             ]},
-            {blk: [45]},
-            {dmg: [35]},
             {effects: [
-                {effect: 'heal', amount: 250, turns: 2},
+                {effect: 'heal', amount: 300, turns: 2},
                 {effect: 'retaliate', amount: 1, turns: -1}
             ], actions: [
                 {action: 'removeHexes', to: 'self'}
@@ -2696,13 +2732,11 @@ const ALL_MONSTERS = [
             {dmg: [30], armor: [30], actions: [
                 {action: 'summonMonster', what: ['seraphim', 'cherubim'], value: 2},
             ]},
-            {effects: [
+            {blk: [45], dmg: [35], effects: [
                 {effect: 'might', amount: 2, turns: -1}
             ]},
-            {blk: [45]},
-            {dmg: [35]},
             {effects: [
-                {effect: 'heal', amount: 250, turns: 2},
+                {effect: 'heal', amount: 300, turns: 2},
                 {effect: 'retaliate', amount: 1, turns: -1}
             ], actions: [
                 {action: 'removeHexes', to: 'self'}
@@ -2747,13 +2781,11 @@ const ALL_MONSTERS = [
             {dmg: [30], armor: [30], actions: [
                 {action: 'summonMonster', what: ['seraphim', 'cherubim'], value: 2},
             ]},
-            {effects: [
+            {blk: [45], dmg: [35], effects: [
                 {effect: 'might', amount: 2, turns: -1}
             ]},
-            {blk: [45]},
-            {dmg: [35]},
             {effects: [
-                {effect: 'heal', amount: 250, turns: 2},
+                {effect: 'heal', amount: 300, turns: 2},
                 {effect: 'retaliate', amount: 1, turns: -1}
             ], actions: [
                 {action: 'removeHexes', to: 'self'}

@@ -53,9 +53,9 @@
         <div class="difficulties">
           <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="1 arena required per map, start with a <span class='highlight'>Spewnicorn Spray</span> card, reduced aggro, heal to full after gates, extra magic fountains and quests, and start with 100 max health.">Easy</span></div>
           <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="2 arenas required per map, do not start with a <span class='highlight'>Spewnicorn Spray</span> card, standard amount of magic fountains and quests, and start with 75 max health.">Medium</span></div>
-          <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="No healing after gates, reduced number of magic fountains and quests, and start with 65 max health.">Hard</span></div>
-          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="+2 damage to all enemy attacks, +5 to all enemy block, and start with 55 max health.">Expert</span></div>
-          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="3 arenas required per map, visiting magic fountains and quests increases aggro, shards and candies are rarer, +10% damage to all enemy attacks, and aggro affects The Singularity fight.">Nightmare</span></div>
+          <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="No healing after gates, +5 to all enemy block, +2 damage to all enemy attacks, reduced number of magic fountains and quests, higher chance of The Singularity summoning arena bosses, and start with 65 max health.">Hard</span></div>
+          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="3 arenas required per map, shards and candies are rarer, The Singularity summons only arena bosses, and start with 55 max health.">Expert</span></div>
+          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="Visiting magic fountains and quests increases aggro, +10% damage to all enemy attacks, aggro affects The Singularity fight, and The Singularity summons only upgraded arena bosses.">Nightmare</span></div>
         </div>
 
         <input id="custom-seed" class="tooltip" data-powertip="You can enter a custom seed or keep this blank to generate a random game." type="text" placeholder="Custom Seed..." />
@@ -89,7 +89,7 @@
 
           <p>Along the way you will fight enemies that will increase your <span class="sparkle">Sparkle</span>, <span class="shimmer">Shimmer</span>, or <span class="aura">Aura</span> essence. Once you reach level 1, a <span class="highlight">Stance</span> card of that essence will be automatically added to your deck, and the higher your essence level, the stronger the <span class="highlight">Stance</span> effects will be.</p>
 
-          <p>If you are not in a stance, unused speed will be converted to 4x block next turn. If you are in <span class="sparkle">Sparkle</span> <span class="highlight">Stance</span>, gain +3 might per turn, and unused speed will convert to 3x might next turn. If you are in <span class="shimmer">Shimmer</span> <span class="highlight">Stance</span>, gain +10 block and +1 armor per turn, and unused speed will convert to 4x block and 1x armor next turn. If you are in <span class="aura">Aura</span> <span class="highlight">Stance</span>, gain +1 mana per turn, and unused speed will convert to mana next turn.</p>
+          <p>If you are not in a stance, unused speed will be converted to 3x block next turn. If you are in <span class="sparkle">Sparkle</span> <span class="highlight">Stance</span>, gain +3 might per turn, and unused speed will convert to 3x might next turn. If you are in <span class="shimmer">Shimmer</span> <span class="highlight">Stance</span>, gain +10 block and +1 armor per turn, and unused speed will convert to 4x block and 1x armor next turn. If you are in <span class="aura">Aura</span> <span class="highlight">Stance</span>, gain +1 mana per turn, and unused speed will convert to mana next turn.</p>
 
           <p>You will also come across <span class="highlight">Magic Fountains</span> and <span class="highlight">Quests</span> that will aid you in your journey. You must prove your worth and unlock the Gates by fighting at least two <span class="highlight">Arenas</span> with powerful enemies.</p>
 
@@ -130,6 +130,31 @@
 
 
           <h2>RELEASE NOTES</h2>
+
+          <p>0.56 Alpha (3/8/2024)</p>
+
+          <ul>
+            <li>Singularity now summons only upgraded monsters on Nightmare difficulty</li>
+            <li>Shimmer stance nerfed from 4x block to 3x block</li>
+            <li>Solid effect now only applies to block gained from cards</li>
+            <li>Combining cards now correctly aggregates the ages of the combined cards</li>
+            <li>Shard effects for the Self Fulfill card were tweaked</li>
+            <li>Fixed a starting treasure base rainbow magic bug</li>
+            <li>Monsters that die to spikes or retaliate now immediately end their turn</li>
+            <li>Fixed bug that happened if player and enemy died the same turn where game wouldn't end right away</li>
+            <li>Fixed some visual bugs with card descriptions</li>
+            <li>Buffed the Stampede card</li>
+            <li>Nerfed the Self-Advance card</li>
+            <li>Added Retain to several combine cards</li>
+            <li>Tweaked how the Enrich card works</li>
+            <li>Nerfed the Adrenaline Rush card</li>
+            <li>Nerfed various Cycle deck cards</li>
+            <li>Fixed Flame Guardian buff removal not working sometimes</li>
+            <li>Fixed bug with Gold Leaf firing at the end of combat</li>
+            <li>Fixed bug where you could draw cards before rainbow activated at the start of combat and then gain extra speed</li>
+            <li>Buffed the Frost Guardian</li>
+            <li>Fixed bug where Singularity would get tons of block on magic rainbow activations</li>
+          </ul>
 
           <p>0.55 Alpha (2/16/2024)</p>
 
@@ -491,7 +516,7 @@
       <div class="dead-cards icon-button tooltip" data-powertip="Dead cards"><div class="icon"></div><span class="counter"></span></div>
 
       <div class="stance">
-        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> gain +10 block and +1 armor, and unused speed converts to 4x block and 1x armor next turn.<br /><br /><span class='sparkle'>Sparkle:</span> gain +3 might, and unused speed converts to 3x might next turn.<br /><br /><span class='aura'>Aura:</span> gain +1 mana, and unused speed converts to mana next turn.<br /><br />None: unused speed converts to 4x block next turn."></div>
+        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> gain +10 block and +1 armor, and unused speed converts to 3x block and 1x armor next turn.<br /><br /><span class='sparkle'>Sparkle:</span> gain +3 might, and unused speed converts to 3x might next turn.<br /><br /><span class='aura'>Aura:</span> gain +1 mana, and unused speed converts to mana next turn.<br /><br />None: unused speed converts to 4x block next turn."></div>
         <div class="icon-stance tooltip" data-stance="none" data-powertip="<span class='highlight'>Stance:</span> None"></div>
       </div>
 

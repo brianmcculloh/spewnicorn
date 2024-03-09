@@ -5203,6 +5203,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	text-shadow: 
 		0px 0px 3px rgba(255, 255, 255, 1);
 }
+.card .desc .desc-item.hidden {
+	display:none;
+}
 .card .desc .effect-text, .card .desc .ability-text {
 	text-transform:uppercase;
 }
@@ -5538,10 +5541,10 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	left:0;
 	right:0;
 	bottom:0;
-	z-index:10;
+	z-index:30;
 	opacity:0;
 	gap:0;
-	transition:opacity 5s linear;
+	transition:opacity 3s linear;
 	padding:0 100px;
 	background-size:cover;
 	background-position:center center;
