@@ -114,7 +114,8 @@
  * Bug/Balance Testing playthroughs
  * Beaten: Hard Combine, Hard Rainbow, Hard Cycle
  * 
- * TODO: 
+ * TODO: when adding card to draw pile via acquire, it does the draw effect 
+ * TODO: shouldn't be able to fight the same arena boss twice in a row
  *	
  * Save progress
  * Record results - use Google Analytics for this?

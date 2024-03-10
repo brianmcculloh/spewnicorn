@@ -131,7 +131,7 @@
 
           <h2>RELEASE NOTES</h2>
 
-          <p>0.56 Alpha (3/8/2024)</p>
+          <p>0.56 Alpha (3/9/2024)</p>
 
           <ul>
             <li>Singularity now summons only upgraded monsters on Nightmare difficulty</li>
@@ -154,6 +154,7 @@
             <li>Fixed bug where you could draw cards before rainbow activated at the start of combat and then gain extra speed</li>
             <li>Buffed the Frost Guardian</li>
             <li>Fixed bug where Singularity would get tons of block on magic rainbow activations</li>
+            <li>Buffed Hammer Thrust, Stomp, and Quick Buck</li>
           </ul>
 
           <p>0.55 Alpha (2/16/2024)</p>

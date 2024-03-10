@@ -2961,14 +2961,14 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'stomp', name: 'Stomp', type: 'attack', mana: 2, target: 'monster', 
-        dmg: [12],
+        dmg: [16],
         sound: 'attack2',
         effects: [
             {effect: 'might', amount: -3, turns: 1, hex: true}
         ],
         slots: 1,
         shardUpgrades: {
-            dmg: [20],
+            dmg: [28],
             effects: [
                 {effect: 'might', amount: -6, turns: 1, hex: true}
             ],
@@ -2976,12 +2976,12 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'quick_buck', name: 'Quick Buck', type: 'attack', mana: 0, vanish: true, target: 'monster',
-        dmg: [15],
+        dmg: [20],
         sound: 'attack2',
         slots: 1,
         shardUpgrades: {
             natural: true,
-            dmg: [25]
+            dmg: [30]
         },
     }),
     new Cards({
@@ -3014,7 +3014,7 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'hammer_thrust', name: 'Hammer Thrust', type: 'attack', target: 'monster', mana: 2, weight: 4,
-        dmg: [12],
+        dmg: [18],
         sound: 'attack2',
         effects: [
             {effect: 'punch', amount: -.25, turns: 1, hex: true},
@@ -3779,13 +3779,13 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'obliterate', name: 'Obliterate', type: 'attack', target: 'all', mana: 3, tier: 'rare', weight: 2, courage: 5, 
-        dmg: [20],
+        dmg: [25],
         slots: 2,
         shardUpgrades: {
-            dmg: [30],
+            dmg: [38],
         },
         bothShardUpgrades: {
-            dmg: [40]
+            dmg: [50]
         },
     }),
 
