@@ -115,7 +115,6 @@
  * Beaten: Hard Combine, Hard Rainbow, Hard Cycle
  * 
  * TODO: when adding card to draw pile via acquire, it does the draw effect 
- * TODO: shouldn't be able to fight the same arena boss twice in a row
  *	
  * Save progress
  * Record results - use Google Analytics for this?
@@ -3233,7 +3232,10 @@ async function addCardTo(type, domCard = null, to = 'handCards', ignoreSpeed = f
 	}
 
 	if(card) { // sometimes total deck size can be smaller than hand size
-		await processCard(card, false, 'draw');
+		// only process the card if it's added to hand (i.e. it's drawn)
+		if(type=='draw') {
+			await processCard(card, false, 'draw');
+		}
 	}
 
 	// if hand was full, card went to discard and will not exist in combatDeck.handCards
@@ -3398,7 +3400,7 @@ async function monsterAction(action = 'perform') {
 
 				// for frost context increase block based on aggro level
 				if(thisMonster.context == 'frost') {
-					a += Math.round(((player.aggro.level / 4) + .5) * a);
+					a += Math.round(((player.aggro.level / 2) + .5) * a);
 				}
 
 				if(action == 'query') {
@@ -5570,6 +5572,7 @@ async function processMagic(magic, multiply, card = false, cardWasPlayed = false
 		}
 	}
 }
+//{action: 'addCard', select: 1, value: 7, type: 'bottled', to: 'drawCards'},
 async function processActions(actions, monster = false, multiply = 1, playedCard = false, cardWasPlayed = false) {
 	let update = true;
 	if(actions != undefined) {
@@ -6066,6 +6069,10 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 									sounds.play('statDown');
 								}
 							}
+						}
+						// player may have died from losing health to a quest
+						if(Player().dead(player)) {
+							endGame('loss');
 						}
 						break;
 					}
@@ -7151,13 +7158,12 @@ function applyArmor(arm, to) {
 function applyAggro(dmg, monster) {
 	let aggroDmg = Math.round((dmg + monster.might.current) * monster.punch.current);
 	if(monster.context == 'flame') {
-		// 10 base damage will increase by 2.5 per aggro level, starting at level 0
-		// note this is additive rather than setting a new value for aggroDmg
-		aggroDmg += Math.round(((player.aggro.level / 4) + .5) * aggroDmg);
+		// for each turn, 10 base damage would become: 15, 20, 25, 30, etc.
+		aggroDmg += Math.round(((player.aggro.level / 2) + .5) * aggroDmg);
 	}
 	if((game.mapType == 'ice_gate' || game.mapType == 'fire_gate' || game.mapType == 'arena') || (game.difficulty=='nightmare' && game.mapType=='singularity')) {
-		// 10 base damage will increase by 5 per aggro level, starting at level 1
-		aggroDmg = Math.round(((player.aggro.level / 2) + 1) * aggroDmg);
+		// for each turn, 10 base damage would become: 20, 25, 30, 35, etc.
+		aggroDmg += Math.round(((player.aggro.level / 2) + 1) * aggroDmg);
 	}
 	return aggroDmg;
 }

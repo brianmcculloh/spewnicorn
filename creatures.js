@@ -3142,26 +3142,26 @@ export function Monster() {
         let currentMonsters = [];
 
         let excluded = game.previousMonsters;
+        let excludedArena = game.previousArena
 
         let context = game.overworld;
         
         game.previousMonsters = [];
+        game.previousArena = [];
 
         if(game.mapType == 'arena') {
 
             if(game.map==1) {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(5, i, 'boss', game.previousArena);
+                    let thisMonster = createMonster(5, i, 'boss', excludedArena);
                     currentMonsters.push(thisMonster);
                 }
             } else {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(5, i, 'boss', game.previousArena);
+                    let thisMonster = createMonster(5, i, 'boss', excludedArena);
                     currentMonsters.push(thisMonster);
                 }
             }
-
-            game.previousArena = [];
 
         } else if(game.mapType == 'fire_gate') {
 
@@ -3266,9 +3266,9 @@ export function Monster() {
                     } else {
                         switch(game.floor) {
                             case 4:
-                                // 3/2 super sludges, 2/1 standard sludges
-                                var numStandard = util.chance(80) ? 2 : 1;
-                                var numSuper = util.chance(80) ? 3 : 2;
+                                // 4 super sludges, 2 standard sludges
+                                var numStandard = 2;
+                                var numSuper = 4;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'sludge');
                                     currentMonsters.push(thisMonster);
@@ -3279,9 +3279,9 @@ export function Monster() {
                                 }
                             break;
                             case 5:
-                                // 3/2 super imps, 2/1 standard imps
-                                var numStandard = util.chance(80) ? 2 : 1;
-                                var numSuper = util.chance(80) ? 3 : 2;
+                                // 4 super imps, 2 standard imps
+                                var numStandard = 2;
+                                var numSuper = 4;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'imp');
                                     currentMonsters.push(thisMonster);
@@ -3292,9 +3292,9 @@ export function Monster() {
                                 }
                             break;
                             case 6:
-                                // 3/2 super shatters, 2/1 standard shatters
-                                var numStandard = util.chance(75) ? 2 : 1;
-                                var numSuper = util.chance(75) ? 3 : 2;
+                                // 4 super shatters, 2 standard shatters
+                                var numStandard = 2;
+                                var numSuper = 4;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'shatter');
                                     currentMonsters.push(thisMonster);
@@ -3318,9 +3318,9 @@ export function Monster() {
                     } else {
                         switch(game.floor) {
                             case 7:
-                                // 3/2 super void fairies, 2/1 standard void fairies
-                                var numStandard = util.chance(75) ? 2 : 1;
-                                var numSuper = util.chance(75) ? 3 : 2;
+                                // 4 super void fairies, 2 standard void fairies
+                                var numStandard = 2;
+                                var numSuper = 4;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'void_fairy');
                                     currentMonsters.push(thisMonster);
@@ -3331,9 +3331,9 @@ export function Monster() {
                                 }
                             break;
                             case 8:
-                                // 3/2 super enchantresses, 2 standard enchantresses
-                                var numStandard = util.chance(75) ? 2 : 2;
-                                var numSuper = util.chance(75) ? 3 : 2;
+                                // 4 super enchantresses, 2 standard enchantresses
+                                var numStandard = 2;
+                                var numSuper = 4;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'enchantress');
                                     currentMonsters.push(thisMonster);
@@ -3344,9 +3344,9 @@ export function Monster() {
                                 }
                             break;
                             case 9:
-                                // 3/2 super power liches, 2 standard power liches
-                                var numStandard = util.chance(80) ? 2 : 2;
-                                var numSuper = util.chance(80) ? 3 : 2;
+                                // 4 super power liches, 2 standard power liches
+                                var numStandard = 2;
+                                var numSuper = 4;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'power_liche');
                                     currentMonsters.push(thisMonster);
@@ -3368,9 +3368,9 @@ export function Monster() {
                     } else {
                         switch(game.floor) {
                             case 10:
-                                // 3/2 super iron walkers, 2 standard iron walkers
-                                var numStandard = util.chance(80) ? 2 : 2;
-                                var numSuper = util.chance(80) ? 3 : 2;
+                                // 4 super iron walkers, 2 standard iron walkers
+                                var numStandard = 2;
+                                var numSuper = 4;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'iron_walker');
                                     currentMonsters.push(thisMonster);
@@ -3381,9 +3381,9 @@ export function Monster() {
                                 }
                             break;
                             case 11:
-                                // 2/1 super swarms, 3/2 standard swarms
-                                var numStandard = util.chance(75) ? 3 : 2;
-                                var numSuper = util.chance(75) ? 2 : 1;
+                                // 2 super swarms, 3 standard swarms
+                                var numStandard = 3;
+                                var numSuper = 2;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'swarm');
                                     currentMonsters.push(thisMonster);
@@ -3394,9 +3394,9 @@ export function Monster() {
                                 }
                             break;
                             case 12:
-                                // 2/1 super sorcerer, 3/2 standard sorcerers
-                                var numStandard = util.chance(75) ? 3 : 2;
-                                var numSuper = util.chance(75) ? 2 : 1;
+                                // 3 super sorcerer, 2 standard sorcerers
+                                var numStandard = 2;
+                                var numSuper = 3;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'sorcerer');
                                     currentMonsters.push(thisMonster);
@@ -3418,9 +3418,9 @@ export function Monster() {
                     } else {
                         switch(game.floor) {
                             case 13:
-                                // 2 super Fel Dragons, 3/2 standard Fel Dragons
-                                var numStandard = util.chance(50) ? 3 : 2;
-                                var numSuper = util.chance(75) ? 2 : 2;
+                                // 2 super Fel Dragons, 3 standard Fel Dragons
+                                var numStandard = 3;
+                                var numSuper = 2;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'fel_dragon');
                                     currentMonsters.push(thisMonster);
@@ -3431,9 +3431,9 @@ export function Monster() {
                                 }
                             break;
                             case 14:
-                                // 2 super Cunning Dragons, 3/2 standard Cunning Dragons
-                                var numStandard = util.chance(50) ? 3 : 2;
-                                var numSuper = util.chance(80) ? 2 : 2;
+                                // 2 super Cunning Dragons, 3 standard Cunning Dragons
+                                var numStandard = 3;
+                                var numSuper = 2;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'cunning_dragon');
                                     currentMonsters.push(thisMonster);
@@ -3444,9 +3444,9 @@ export function Monster() {
                                 }
                             break;
                             case 15:
-                                // 2 super cyberskulls, 3/2 standard cyberskulls
-                                var numStandard = util.chance(75) ? 3 : 2;
-                                var numSuper = util.chance(80) ? 2 : 2;
+                                // 2 super cyberskulls, 3 standard cyberskulls
+                                var numStandard = 3;
+                                var numSuper = 2;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'cyberskull');
                                     currentMonsters.push(thisMonster);
@@ -3457,9 +3457,9 @@ export function Monster() {
                                 }
                             break;
                             case 16:
-                                // 2 super transfigurers, 2/1 standard transfigurer
-                                var numStandard = util.chance(75) ? 2 : 1;
-                                var numSuper = util.chance(80) ? 2 : 2;
+                                // 3 super transfigurers, 2 standard transfigurer
+                                var numStandard = 2;
+                                var numSuper = 3;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'transfigurer');
                                     currentMonsters.push(thisMonster);
@@ -3483,9 +3483,9 @@ export function Monster() {
                     } else {
                         switch(game.floor) {
                             case 17:
-                                // 2 super Writhing Dragons, 1 standard Writhing Dragon
-                                var numStandard = util.chance(75) ? 1 : 1;
-                                var numSuper = util.chance(80) ? 2 : 2;
+                                // 2 super Writhing Dragons, 2 standard Writhing Dragon
+                                var numStandard = 2;
+                                var numSuper = 2;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'writhing_dragon');
                                     currentMonsters.push(thisMonster);
@@ -3496,9 +3496,9 @@ export function Monster() {
                                 }
                             break;
                             case 18:
-                                // 2 super Darkness Dragon, 1 standard Darkness Dragon
-                                var numStandard = util.chance(75) ? 1 : 1;
-                                var numSuper = util.chance(80) ? 2 : 2;
+                                // 2 super Darkness Dragon, 2 standard Darkness Dragon
+                                var numStandard = 2;
+                                var numSuper = 2;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'darkness_dragon');
                                     currentMonsters.push(thisMonster);
@@ -3509,9 +3509,9 @@ export function Monster() {
                                 }
                             break;
                             case 19:
-                                // 2 super obsidian walkers, 1 standard obsidian walker
-                                var numStandard = util.chance(75) ? 1 : 1;
-                                var numSuper = util.chance(80) ? 2 : 2;
+                                // 2 super obsidian walkers, 2 standard obsidian walker
+                                var numStandard = 2;
+                                var numSuper = 2;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'obsidian_walker');
                                     currentMonsters.push(thisMonster);
@@ -3522,9 +3522,9 @@ export function Monster() {
                                 }
                             break;
                             case 20:
-                                // 2 super seething entities, 1 standard seething entity
-                                var numStandard = util.chance(75) ? 1 : 1;
-                                var numSuper = util.chance(80) ? 2 : 2;
+                                // 3 super seething entities, 1 standard seething entity
+                                var numStandard = 1;
+                                var numSuper = 3;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'seething_entity');
                                     currentMonsters.push(thisMonster);
@@ -3560,36 +3560,36 @@ export function Monster() {
                     } else {
                         switch(game.floor) {
                             case 21:
-                                // 1 from each tier
+                                // 1 from each tier, 2 from tier 3 and 4
                                 var thisMonster = createMonster(1, game, 'normal', [], context, 'pixie');
                                 currentMonsters.push(thisMonster);
                                 thisMonster = createMonster(1, game, 'normal', [], context, 'shatter');
                                 currentMonsters.push(thisMonster);
-                                thisMonster = createMonster(1, game, 'normal', [], context, 'swarm');
+                                thisMonster = createMonster(2, game, 'normal', [], context, 'swarm');
                                 currentMonsters.push(thisMonster);
-                                thisMonster = createMonster(1, game, 'normal', [], context, 'seething_entity');
+                                thisMonster = createMonster(2, game, 'normal', [], context, 'seething_entity');
                                 currentMonsters.push(thisMonster);
                             break;
                             case 22:
-                                // 1 from each tier
+                                // 1 from each tier, 2 from tier 3 and 4
                                 var thisMonster = createMonster(1, game, 'normal', [], context, 'mummy');
                                 currentMonsters.push(thisMonster);
                                 thisMonster = createMonster(1, game, 'normal', [], context, 'power_liche');
                                 currentMonsters.push(thisMonster);
-                                thisMonster = createMonster(1, game, 'normal', [], context, 'sorcerer');
+                                thisMonster = createMonster(2, game, 'normal', [], context, 'sorcerer');
                                 currentMonsters.push(thisMonster);
-                                thisMonster = createMonster(1, game, 'normal', [], context, 'transfigurer');
+                                thisMonster = createMonster(2, game, 'normal', [], context, 'transfigurer');
                                 currentMonsters.push(thisMonster);
                             break;
                             case 23:
-                                // 1 from each tier
+                                // 1 from each tier, 2 from tier 3 and 4
                                 var thisMonster = createMonster(1, game, 'normal', [], context, 'stone_walker');
                                 currentMonsters.push(thisMonster);
                                 thisMonster = createMonster(1, game, 'normal', [], context, 'iron_walker');
                                 currentMonsters.push(thisMonster);
-                                thisMonster = createMonster(1, game, 'normal', [], context, 'cunning_dragon');
+                                thisMonster = createMonster(2, game, 'normal', [], context, 'cunning_dragon');
                                 currentMonsters.push(thisMonster);
-                                thisMonster = createMonster(1, game, 'normal', [], context, 'writhing_dragon');
+                                thisMonster = createMonster(2, game, 'normal', [], context, 'writhing_dragon');
                                 currentMonsters.push(thisMonster);
                             break;
                         }
@@ -3616,30 +3616,30 @@ export function Monster() {
                     } else {
                         switch(game.floor) {
                             case 24:
-                                // 1 from each tier
+                                // 1 from each tier, 2 from tier 3 and 4
                                 var thisMonster = createMonster(1, game, 'normal', [], context, 'sludge');
                                 currentMonsters.push(thisMonster);
                                 thisMonster = createMonster(1, game, 'normal', [], context, 'enchantress');
                                 currentMonsters.push(thisMonster);
-                                thisMonster = createMonster(1, game, 'normal', [], context, 'fel_dragon');
+                                thisMonster = createMonster(2, game, 'normal', [], context, 'fel_dragon');
                                 currentMonsters.push(thisMonster);
-                                thisMonster = createMonster(1, game, 'normal', [], context, 'darkness_dragon');
+                                thisMonster = createMonster(2, game, 'normal', [], context, 'darkness_dragon');
                                 currentMonsters.push(thisMonster);
                             break;
                             case 25:
-                                // 1 from each tier
+                                // 1 from each tier, 2 from tier 3 and 4
                                 var thisMonster = createMonster(1, game, 'normal', [], context, 'imp');
                                 currentMonsters.push(thisMonster);
                                 thisMonster = createMonster(1, game, 'normal', [], context, 'void_fairy');
                                 currentMonsters.push(thisMonster);
-                                thisMonster = createMonster(1, game, 'normal', [], context, 'cyberskull');
+                                thisMonster = createMonster(2, game, 'normal', [], context, 'cyberskull');
                                 currentMonsters.push(thisMonster);
-                                thisMonster = createMonster(1, game, 'normal', [], context, 'obsidian_walker');
+                                thisMonster = createMonster(2, game, 'normal', [], context, 'obsidian_walker');
                                 currentMonsters.push(thisMonster);
                             break;
                             case 26:
-                                // 3 Tier 4 monsters
-                                for (let i = 0; i < 3; i++) {
+                                // 5 Tier 4 monsters
+                                for (let i = 0; i < 5; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], context, 'transfigurer');
                                     currentMonsters.push(thisMonster);
                                 }
@@ -3670,22 +3670,22 @@ export function Monster() {
                     } else {
                         switch(game.floor) {
                             case 27:
-                                // 3 Tier 4 monsters
-                                for (let i = 0; i < 3; i++) {
+                                // 5 Tier 4 monsters
+                                for (let i = 0; i < 5; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], context, 'writhing_dragon');
                                     currentMonsters.push(thisMonster);
                                 }
                             break;
                             case 28:
-                                // 3 Tier 4 monsters
-                                for (let i = 0; i < 3; i++) {
+                                // 5 Tier 4 monsters
+                                for (let i = 0; i < 5; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], context, 'darkness_dragon');
                                     currentMonsters.push(thisMonster);
                                 }
                             break;
                             case 29:
-                                // 3 Tier 4 monsters
-                                for (let i = 0; i < 3; i++) {
+                                // 5 Tier 4 monsters
+                                for (let i = 0; i < 5; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], context, 'obsidian_walker');
                                     currentMonsters.push(thisMonster);
                                 }
@@ -3724,14 +3724,14 @@ export function Monster() {
                             }
                         }
                     } else {
-                        // 1 of each dragon color
+                        // 1-2 of each dragon color
                         var thisMonster = createMonster(1, game, 'normal', [], context, 'fel_dragon');
                         currentMonsters.push(thisMonster);
-                        thisMonster = createMonster(1, game, 'normal', [], context, 'cunning_dragon');
+                        thisMonster = createMonster(2, game, 'normal', [], context, 'cunning_dragon');
                         currentMonsters.push(thisMonster);
                         thisMonster = createMonster(1, game, 'normal', [], context, 'writhing_dragon');
                         currentMonsters.push(thisMonster);
-                        thisMonster = createMonster(1, game, 'normal', [], context, 'darkness_dragon');
+                        thisMonster = createMonster(2, game, 'normal', [], context, 'darkness_dragon');
                         currentMonsters.push(thisMonster);
                     }
 

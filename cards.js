@@ -5010,7 +5010,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'mezmerize', name: 'Mezmerize', type: 'tool', mana: 1, tier: 'rare', vanish: true, ephemeral: true, courage: 4, pack: 'rainbow',
+        id: 'mezmerize', name: 'Mezmerize', type: 'tool', mana: 1, tier: 'rare', weight: 2, vanish: true, ephemeral: true, courage: 4, pack: 'rainbow',
         abilities: [
             {ability: 'hypnotize', turns: 1, enabled: true}
         ],
@@ -5215,7 +5215,7 @@ const ALL_CARDS = [
         },
     }),
     new Cards({
-        id: 'paralyzing_touch', name: 'Paralyzing Touch', type: 'tool', target: 'monster', mana: 1, vanish: true, tier: 'rare', weight: 1, courage: 6, 
+        id: 'paralyzing_touch', name: 'Paralyzing Touch', type: 'tool', target: 'monster', mana: 1, vanish: true, tier: 'rare', weight: .5, courage: 6, 
         abilities: [
             {ability: 'frozen', turns: 1, enabled: true}
         ],
@@ -5805,7 +5805,7 @@ const ALL_CARDS = [
 
     /* rare */
     new Cards({
-        id: 'bastion', name: 'Bastion', type: 'ability', mana: 3, tier: 'rare', ephemeral: true, weight: 1, courage: 6,
+        id: 'bastion', name: 'Bastion', type: 'ability', mana: 3, tier: 'rare', ephemeral: true, weight: .5, courage: 6,
         abilities: [
             {ability: 'protection', enabled: true, baseTurns: -1}
         ],
@@ -7199,7 +7199,7 @@ export function Deck() {
     let player = window.player;
 
     function buildDeck() {
-        addCard('jab');
+        /*addCard('jab');
         addCard('jab');
         addCard('jab');
         addCard('rainbow_orb');
@@ -7210,7 +7210,9 @@ export function Deck() {
         addCard('stun');
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
-        }
+        }*/
+
+        addCard('make_ready');
 
 
         // this is how to add a shard on init - DEV MODE ONLY

@@ -1578,7 +1578,7 @@ const ALL_TREASURES = [
         name: "Unending Hourglass", 
         courage: 13,
         tier: 2,
-        weight: 3,
+        weight: 2,
         abilities: [
             {ability: 'hypnotize', turns: 1, enabled: true}
         ],
@@ -1880,7 +1880,7 @@ const ALL_TREASURES = [
         courage: 15,
         permanent: true,
         effects: [
-            {effect: 'stout', amount: 2, turns: -1, persist: false}
+            {effect: 'stout', amount: 1, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -384,
@@ -1894,7 +1894,7 @@ const ALL_TREASURES = [
         courage: 15,
         permanent: true,
         effects: [
-            {effect: 'muster', amount: 2, turns: -1, persist: false}
+            {effect: 'muster', amount: 1, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -480,
@@ -1908,7 +1908,7 @@ const ALL_TREASURES = [
         courage: 15,
         permanent: true,
         effects: [
-            {effect: 'summon', amount: 2, turns: -1, persist: false}
+            {effect: 'summon', amount: 1, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -288,
@@ -2042,7 +2042,7 @@ const ALL_TREASURES = [
         courage: 20,
         permanent: true,
         effects: [
-            {effect: 'might', amount: 3, turns: -1, persist: false}
+            {effect: 'might', amount: 2, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -0,
@@ -2056,7 +2056,7 @@ const ALL_TREASURES = [
         courage: 20,
         permanent: true,
         effects: [
-            {effect: 'solid', amount: 3, turns: -1, persist: false}
+            {effect: 'solid', amount: 2, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -256,
@@ -2070,7 +2070,7 @@ const ALL_TREASURES = [
         courage: 20,
         permanent: true,
         effects: [
-            {effect: 'lightning', amount: 3, turns: -1, persist: false}
+            {effect: 'lightning', amount: 2, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -480,

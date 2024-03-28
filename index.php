@@ -131,6 +131,17 @@
 
           <h2>RELEASE NOTES</h2>
 
+          <p>0.57 Alpha (3/28/2024)</p>
+
+          <ul>
+            <li>Minor balancing for various cards and treasures</li>
+            <li>Aggro is more effective (frost monsters gain more block, fire monsters do more damage)</li>
+            <li>Late game standard combats are tougher</li>
+            <li>You can no longer fight the same arena boss consecutively</li>
+            <li>When a quest kills you, you now actually die</li>
+            <li>Cards added to draw pile during combat were triggering their draw effects</li>
+          </ul>
+
           <p>0.56 Alpha (3/9/2024)</p>
 
           <ul>
