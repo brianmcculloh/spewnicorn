@@ -7162,8 +7162,8 @@ function applyAggro(dmg, monster) {
 		aggroDmg += Math.round(((player.aggro.level / 2) + .5) * aggroDmg);
 	}
 	if((game.mapType == 'ice_gate' || game.mapType == 'fire_gate' || game.mapType == 'arena') || (game.difficulty=='nightmare' && game.mapType=='singularity')) {
-		// 10 base damage will increase by 8 per aggro level, starting at level 1
-		aggroDmg = Math.round(((player.aggro.level / 1.25) + 1) * aggroDmg);
+		// 10 base damage will increase by 5 per aggro level, starting at level 1
+		aggroDmg = Math.round(((player.aggro.level / 2) + 1) * aggroDmg);
 	}
 	return aggroDmg;
 }

@@ -135,7 +135,7 @@
 
           <ul>
             <li>Minor balancing for various cards and treasures</li>
-            <li>Aggro is more effective (frost monsters gain more block, fire monsters do more damage)</li>
+            <li>Aggro is more effective for frost enemies</li>
             <li>Late game standard combats are tougher</li>
             <li>You can no longer fight the same arena boss consecutively</li>
             <li>When a quest kills you, you now actually die</li>
