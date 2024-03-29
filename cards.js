@@ -7199,7 +7199,7 @@ export function Deck() {
     let player = window.player;
 
     function buildDeck() {
-        /*addCard('jab');
+        addCard('jab');
         addCard('jab');
         addCard('jab');
         addCard('rainbow_orb');
@@ -7210,9 +7210,7 @@ export function Deck() {
         addCard('stun');
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
-        }*/
-
-        addCard('make_ready');
+        }
 
 
         // this is how to add a shard on init - DEV MODE ONLY
