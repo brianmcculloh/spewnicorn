@@ -1494,7 +1494,6 @@ function init_map_2() {
 	player.aggro.level = 0;
 	if(game.debug) $('body').addClass('debug');
 
-	console.log(game.difficulty);
 	if(game.difficulty == 'easy' || game.difficulty == 'medium') { 
 		heal(player, 999);
 	}
