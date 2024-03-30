@@ -92,7 +92,6 @@ const ALL_CANDY= [
     new Candy({
         id:'rock_candy', 
         name: 'Rock Candy', 
-        courage: 3,
         weight: 7,
         armor: [25],
         combatOnly: false,
@@ -130,6 +129,7 @@ const ALL_CANDY= [
         id:'kettle_corn', 
         name: 'Kettle Corn', 
         weight: 4,
+        courage: 3,
         armor: [35],
         combatOnly: false,
         x: -64,

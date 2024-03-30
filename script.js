@@ -1494,6 +1494,7 @@ function init_map_2() {
 	player.aggro.level = 0;
 	if(game.debug) $('body').addClass('debug');
 
+	console.log(game.difficulty);
 	if(game.difficulty == 'easy' || game.difficulty == 'medium') { 
 		heal(player, 999);
 	}
@@ -4150,7 +4151,7 @@ function endCombat() {
 		gainCourage(1);
 		updateAggro(aggroAmount);
 		
-		if(game.difficulty = 'expert' || game.difficulty == 'nightmare') {
+		if(game.difficulty == 'expert' || game.difficulty == 'nightmare') {
 			game.candyChance += 7;
 			game.shardChance += 2;
 		} else {
