@@ -3998,7 +3998,7 @@ export function Player() {
         name: 'Player',
         armor: 0, // TODO: set to 0
         block: 0,
-        health: {base: 75, current: 5, max: 75}, // TODO: reset all values to 75
+        health: {base: 75, current: 75, max: 75}, // TODO: reset all values to 75
         speed: {base: 5, current: 0, temp: [], turns: 0}, // TODO: reset base to 5
         mana: {base: 3, current: 0, temp: 0}, // TODO: reset to base 3
         rainbow: {base: 0, current: 0, temp: [], turns: 0, max: 20, type: 'rainbow'},

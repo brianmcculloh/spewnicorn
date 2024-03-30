@@ -445,7 +445,7 @@ const ALL_ABILITIES = [
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'resurrect', baseTurns: -1, enabled: true}
-    {id: 'resurrect', name: 'Resurrect', desc: 'Each time this creature receives damage, add one random tier 4 or 5 monster to combat next turn', context: 'turn', x: -416, y: -6592, offset: true},
+    {id: 'resurrect', name: 'Resurrect', desc: 'Each time this creature receives damage, it summons one or more random monsters next turn (based on game difficulty.)', context: 'turn', x: -416, y: -6592, offset: true},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}

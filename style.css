@@ -5962,6 +5962,13 @@ body.tutorial #tutorial-overlay {
 #powerTip span.muddled {
 	color:var(--muddled_color);
 }
+#powerTip ul, #powerTip li {
+	margin:0;
+	padding:0 0 0 15px;
+}
+#powerTip li {
+	padding:5px 0;
+}
 
 
 @media screen and (max-height:900px) {

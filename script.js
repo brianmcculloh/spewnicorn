@@ -114,7 +114,7 @@
  * Bug/Balance Testing playthroughs
  * Beaten: Hard Combine, Hard Rainbow, Hard Cycle
  * 
- * TODO: when adding card to draw pile via acquire, it does the draw effect 
+ * TODO: why do rainbow converter cards summon magic?
  *	
  * Save progress
  * Record results - use Google Analytics for this?
@@ -1426,7 +1426,7 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('gift_of_magic'); // use this to manually add treasures
+	//addTreasure('gift_of_conjuring'); // use this to manually add treasures
 	//addCandy('chocolate_bar'); // use this to manually add candies
 
 	if(game.debug) $('body').addClass('debug');
@@ -3284,14 +3284,14 @@ async function monsterAction(action = 'perform') {
 				let tiers = [4, 5];
 				let actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers}];
 				if(game.difficulty=='hard') {
-					tiers = util.chance(25) ? [4] : [5];
-					actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers}];
-				} else if(game.difficulty=='expert') {
-					tiers = [5];
-					actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers}];
-				} else if(game.difficulty=='nightmare') {
 					tiers = [5];
 					actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers, context: 'upgraded'}];
+				} else if(game.difficulty=='expert') {
+					tiers = [5];
+					actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers, context: 'upgraded'}];
+				} else if(game.difficulty=='nightmare') {
+					tiers = [6, 7];
+					actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers}];
 				}
 				let update = processActions(actions, thisMonster);
 			}
@@ -5943,6 +5943,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					}
 					case 'stat': {
 
+						// {action: 'stat', what: 'rainbow', key: 'type', value: 'dark'}
+						
 						let key = actions[e].key;
 						let what = actions[e].what;
 						let value = actions[e].value;
@@ -6048,7 +6050,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 
 							}
 							let magic = {type: player.rainbow.type, amount: 0}
-							await applyMagic(magic, player);
+							let ignoreConjure = true;
+							await applyMagic(magic, player, ignoreConjure);
 						}
 						// if max health was reduced and current health was at full, need to reduce current health
 						if(player.health.max < player.health.current) player.health.current = player.health.max;
@@ -6921,7 +6924,7 @@ function applyBlock(blk, to, solid = false) {
 	}
 }
 
-async function applyMagic(magic, to) {
+async function applyMagic(magic, to, ignoreConjure = false) {
 
 	let type = magic.type;
 	let types = ['rainbow', 'chaos', 'dark', 'elemental'];
@@ -6942,7 +6945,12 @@ async function applyMagic(magic, to) {
 		to.rainbow.type = type;
 	}
 
-	let totalAmount = Math.round(player.sorcery.current * (magic.amount + player.conjure.current));
+	let totalAmount = 0;
+	if(ignoreConjure) {
+		totalAmount = Math.round(player.sorcery.current * magic.amount);
+	} else {
+		totalAmount = Math.round(player.sorcery.current * (magic.amount + player.conjure.current));
+	}
 	if(totalAmount < 0) totalAmount = 0;
 
 	// increase magic amount
@@ -7372,7 +7380,11 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 				}
 				// check for resurrect
 				if(thisTo.resurrect.enabled) {
-					game.toResurrect += 1;
+					if(game.difficulty=='expert' || game.difficulty=='nightmare') {
+						game.toResurrect += 2;
+					} else {
+						game.toResurrect += 1;
+					}
 					if(game.playsounds) sounds.play('effect44');
 				}
 

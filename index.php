@@ -51,11 +51,11 @@
         <div class="button tutorial">Tutorial<span>Off</span></div>
 
         <div class="difficulties">
-          <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="1 arena required per map, start with a <span class='highlight'>Spewnicorn Spray</span> card, reduced aggro, heal to full after gates, extra magic fountains and quests, and start with 100 max health.">Easy</span></div>
-          <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="2 arenas required per map, do not start with a <span class='highlight'>Spewnicorn Spray</span> card, standard amount of magic fountains and quests, and start with 75 max health.">Medium</span></div>
-          <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="No healing after gates, +5 to all enemy block, +2 damage to all enemy attacks, reduced number of magic fountains and quests, higher chance of The Singularity summoning arena bosses, and start with 65 max health.">Hard</span></div>
-          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="3 arenas required per map, shards and candies are rarer, The Singularity summons only arena bosses, and start with 55 max health.">Expert</span></div>
-          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="Visiting magic fountains and quests increases aggro, +10% damage to all enemy attacks, aggro affects The Singularity fight, and The Singularity summons only upgraded arena bosses.">Nightmare</span></div>
+          <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="<ul><li>1 arena required per map</li><li>Start with a <span class='highlight'>Spewnicorn Spray</span> card</li><li>Reduced aggro</li><li>Heal to full after gates</li><li>Extra magic fountains and quests</li><li>Start with 100 max health</li></ul>">Easy</span></div>
+          <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="<ul><li>2 arenas required per map</li><li>Do not start with a <span class='highlight'>Spewnicorn Spray</span> card</li><li>Standard amount of magic fountains and quests</li><li>Start with 75 max health</li></ul>">Medium</span></div>
+          <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="<ul><li>No healing after gates</li><li>+5 to all enemy block</li><li>+2 damage to all enemy attacks</li><li>Reduced number of magic fountains and quests</li><li><span class='highlight'>The Singularity</span> summons Frost and Flame <span class='highlight'>Arena Bosses</span></li><li>Start with 65 max health</li></ul>">Hard</span></div>
+          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="<ul><li>3 arenas required per map</li><li>Shards and candies are less common</li><li><span class='highlight'>The Singularity</span>'s Resurrect effect is doubled</li><li>Start with 55 max health</li></ul>">Expert</span></div>
+          <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="<ul><li>Visiting magic fountains and quests increases aggro</li><li>+10% damage to all enemy attacks</li><li>Aggro affects <span class='highlight'>The Singularity</span> fight</li><li><span class='highlight'>The Singularity</span> summons <span class='highlight'>Guardians</span></li></ul>">Nightmare</span></div>
         </div>
 
         <input id="custom-seed" class="tooltip" data-powertip="You can enter a custom seed or keep this blank to generate a random game." type="text" placeholder="Custom Seed..." />
@@ -131,7 +131,7 @@
 
           <h2>RELEASE NOTES</h2>
 
-          <p>0.57 Alpha (3/28/2024)</p>
+          <p>0.57 Alpha (3/30/2024)</p>
 
           <ul>
             <li>Minor balancing for various cards and treasures</li>
@@ -140,6 +140,7 @@
             <li>You can no longer fight the same arena boss consecutively</li>
             <li>When a quest kills you, you now actually die</li>
             <li>Cards added to draw pile during combat were triggering their draw effects</li>
+            <li>Fixed issue where converting rainbow magic type would trigger conjure effects</li>
           </ul>
 
           <p>0.56 Alpha (3/9/2024)</p>
