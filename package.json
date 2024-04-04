@@ -1,0 +1,23 @@
+{
+  "name": "spewnicorn",
+  "version": "1.0.0",
+  "description": "A deck-builder with whimsy!",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron . "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://brianmcculloh@github.com/brianmcculloh/spewnicorn.git"
+  },
+  "author": "Brian McCulloh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brianmcculloh/spewnicorn/issues"
+  },
+  "homepage": "https://github.com/brianmcculloh/spewnicorn#readme",
+  "devDependencies": {
+    "electron": "^29.2.0"
+  }
+}

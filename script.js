@@ -339,6 +339,48 @@ function stopMusic() {
 
 jQuery(document).ready(function($) {
 
+	const container = document.getElementById('mapContainer');
+	let j = 0;
+
+	for (let i = 1; i <= 100; i++) {
+		j++;
+		let classes = ['tile', 'tooltip']; // Start with the default classes
+
+		if (i === 1) classes.push('clickable');
+		if (j % 10 === 0) {
+			classes.push('last-col');
+		} else if ((j - 1) % 10 === 0) {
+			classes.push('first-col');
+		}
+		if (j <= 10) {
+			classes.push('odd-row');
+		} else {
+			classes.push('even-row');
+		}
+		if (i <= 10) {
+			classes.push('first-row');
+		} else if (i > 90) {
+			classes.push('last-row');
+		}
+		if (j === 20) j = 0;
+
+		// Create the tile
+		const tile = document.createElement('div');
+		tile.id = `tile-${i}`;
+		tile.className = classes.join(' ');
+		tile.setAttribute('data-powertip', 'Map Tile');
+		tile.setAttribute('data-shimmer', '0');
+		tile.setAttribute('data-sparkle', '0');
+		tile.setAttribute('data-aura', '0');
+
+		// Add the inner HTML content
+		const contentDiv = document.createElement('div');
+		tile.appendChild(contentDiv);
+
+		// Append the tile to the container
+		container.appendChild(tile);
+	}
+
 	if(game.dev) {
 		$('.starting-room, .choose-booster-pack').css('display', 'none');
 	}
