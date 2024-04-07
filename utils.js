@@ -347,12 +347,14 @@ export default class Util {
             let name = options[i].name;
             let entity = options[i].entity;
             let action = options[i].action;
+            let description = options[i].description;
             let attDom = att != undefined ? ' data-att="' + att + '"' : '';
             let amountDom = amount != undefined ? ' data-amount="' + amount + '"' : '';
             let keyDom = key != undefined ? ' data-key="' + key + '"' : '';
             let entityDom = entity != undefined ? ' data-entity="' + entity + '"' : '';
             let actionDom = action != undefined ? ' data-action="' + action + '"' : '';
-            $('<div class="button"' + attDom + amountDom + keyDom + entityDom + actionDom + '>' + name + '</div>')
+            let descriptionDom = description != undefined ? ' data-powertip="' + description + '"' : '';
+            $('<div class="button tooltip"' + attDom + amountDom + keyDom + entityDom + actionDom + descriptionDom + '>' + name + '</div>')
                 .appendTo('.starting-options');
         }
         util.setTooltips('.starting-options');

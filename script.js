@@ -402,20 +402,44 @@ jQuery(document).ready(function($) {
 
 	$('#splash .difficulty').click(function(e) {
 
-		$('#splash .difficulty').removeClass('toggled-on');
-		$(this).addClass('toggled-on');
-		game.difficulty = $(this).data('difficulty');
+		if(!$('body').hasClass('game-started')) {
+			$('#splash .difficulty').removeClass('toggled-on');
+			$(this).addClass('toggled-on');
+			game.difficulty = $(this).data('difficulty');
+		}
+
+	});
+
+	$('#quit').click(function(e) {
+
+		window.electronAPI.quitApp();
 
 	});
 
 	$('#splash .begin').click(function(e) {
 
-		if(game.overworld == 'frost') {
-			if(!musicOverworldFrost.playing() && game.playmusic) musicOverworldFrost.play();
-		} else if(game.overworld == 'flame') {
-			if(!musicOverworldFlame.playing() && game.playmusic) musicOverworldFlame.play();
-		} else {
-			if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
+		if(game.playmusic) {
+			if($('body').hasClass('combating')) {
+				if(game.mapType == 'normal') {
+					if(!musicBattles[game.floor % musicBattles.length].playing()) musicBattles[game.floor % musicBattles.length].play();
+				} else if(game.mapType == 'arena') {
+					if(!musicArena.playing()) musicArena.play();
+				} else if(game.mapType == 'ice_gate') {
+					if(!musicIceGate.playing()) musicIceGate.play();
+				} else if(game.mapType == 'fire_gate') {
+					if(!musicFireGate.playing()) musicFireGate.play();
+				} else if(game.mapType == 'singularity') {
+					if(!musicSingularity.playing()) musicSingularity.play();
+				}
+			} else {
+				if(game.overworld == 'frost') {
+					if(!musicOverworldFrost.playing()) musicOverworldFrost.play();
+				} else if(game.overworld == 'flame') {
+					if(!musicOverworldFlame.playing()) musicOverworldFlame.play();
+				} else {
+					if(!musicOverworld.playing()) musicOverworld.play();
+				}
+			}
 		}
 
 		$('#splash').removeClass('shown');
@@ -515,12 +539,22 @@ jQuery(document).ready(function($) {
 		//if(game.playsounds) sounds.play('clickButton');
 	});
 
-	$('.settings-panel .button:not(.difficulty)').click(function() {
+	$('.settings-panel .button.music, .settings-panel .button.sound').click(function() {
 		$(this).toggleClass('toggled-on');
 		if($(this).hasClass('toggled-on')) {
 			$(this).find('span').html('on');
 		} else {
 			$(this).find('span').html('off');
+		}
+	});
+	$('.settings-panel .button.tutorial').click(function() {
+		if(!$('body').hasClass('game-started')) {
+			$(this).toggleClass('toggled-on');
+			if($(this).hasClass('toggled-on')) {
+				$(this).find('span').html('on');
+			} else {
+				$(this).find('span').html('off');
+			}
 		}
 	});
 	$('.music').click(function() {
@@ -540,16 +574,19 @@ jQuery(document).ready(function($) {
 		}
 	});
 	$('.tutorial').click(function() {
-		if($(this).hasClass('toggled-on')) {
-			game.tutorial = true;
-		} else {
-			game.tutorial = false;
+		if(!$('body').hasClass('game-started')) {
+			if($(this).hasClass('toggled-on')) {
+				game.tutorial = true;
+			} else {
+				game.tutorial = false;
+			}
 		}
 	});
 
 	$('.settings').click(function(e) {
 		$('#splash').toggleClass('shown');
 		$('#splash .begin').html('Resume Game');
+		util.setSplashTooltips();
 	});
 
 
@@ -2866,8 +2903,8 @@ function visitFountain(visited) {
 	if(!musicFountain.playing() && game.playmusic) musicFountain.play();
 
 	if(game.difficulty=='nightmare') {
-		game.floor += 1;
-		updateAggro(1);
+		//game.floor += 1;
+		//updateAggro(1);
 	}
 
 	game.mapType = 'fountain';
@@ -2896,8 +2933,8 @@ function visitQuest(visited = false) {
 	$('.quest-screen').addClass('shown');
 
 	if(game.difficulty=='nightmare') {
-		game.floor += 1;
-		updateAggro(1);
+		//game.floor += 1;
+		//updateAggro(1);
 	}
 
 	let possibleQuests = quests.quests.filter(i => i.seen == false);

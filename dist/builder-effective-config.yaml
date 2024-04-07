@@ -1,0 +1,14 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.spewnicorn.theSpewnicorn
+mac:
+  target: dmg
+win:
+  target: nsis
+linux:
+  target:
+    - AppImage
+    - deb
+files: []
+electronVersion: 29.2.0

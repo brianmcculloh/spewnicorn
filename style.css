@@ -466,7 +466,6 @@ input[type="text"] {
 }
 #splash .panel .button.begin {
 	flex-basis:100%;
-	margin-bottom:10px;
 	scale:1;
 	animation: beginthrob 2.5s ease-in-out infinite;
 }
@@ -555,9 +554,6 @@ input[type="text"] {
 }
 body.game-started #splash .panel .tutorial,
 body.game-started #splash .panel .difficulties {
-	pointer-events:none;
-}
-body.game-started #splash .panel .tutorial {
 	filter:grayscale(1);
 }
 #game-loading.hidden {

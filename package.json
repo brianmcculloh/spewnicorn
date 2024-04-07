@@ -1,11 +1,11 @@
 {
   "name": "spewnicorn",
-  "version": "1.0.0",
-  "description": "A deck-builder with whimsy!",
+  "version": "0.57.0",
+  "description": "A deck-builder roguelike with whimsy!",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron . "
+    "start": "electron .",
+    "dist": "electron-builder"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,23 @@
   },
   "homepage": "https://github.com/brianmcculloh/spewnicorn#readme",
   "devDependencies": {
-    "electron": "^29.2.0"
+    "electron": "^29.2.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.spewnicorn.theSpewnicorn",
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    }
   }
+  
 }
