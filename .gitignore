@@ -64,7 +64,8 @@ build/
 # Specific large file or directory to ignore #
 ################################################
 # You can specify large files or directories that you don't want to track.
-"dist/mac-arm64/spewnicorn.app/Contents/Frameworks/Electron Framework.framework/Electron Framework"
-"dist/mac-arm64/spewnicorn.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework"
-"dist/mac-arm64/spewnicorn.app/Contents/Resources/app.asar"
-"dist/spewnicorn-0.57.0-arm64.dmg"
+dist/mac-arm64/spewnicorn.app/Contents/Frameworks/Electron Framework.framework/Electron Framework
+dist/mac-arm64/spewnicorn.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework
+dist/mac-arm64/spewnicorn.app/Contents/Resources/app.asar
+dist/spewnicorn-0.57.0-arm64.dmg
+
