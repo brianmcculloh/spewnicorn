@@ -1,8 +1,8 @@
 version: 0.57.0
 files:
   - url: spewnicorn-0.57.0-arm64.dmg
-    sha512: TDKBXQtiLwHYpYhECrM1bStKCMGoT5et2C0MrxFkwyfWSRGPBn4qnL23J9MZYkXptDaxpAGKL+HM+FJhRlLYJA==
-    size: 612720621
+    sha512: z85eDEqe+/oIRPin4/16BpQ3rnv1l+e8+ZY8Y5xAhFbOROrI8BTepWpyMJ6n2pB6a6FKCYBv2SPRsW17xNk+7w==
+    size: 612714400
 path: spewnicorn-0.57.0-arm64.dmg
-sha512: TDKBXQtiLwHYpYhECrM1bStKCMGoT5et2C0MrxFkwyfWSRGPBn4qnL23J9MZYkXptDaxpAGKL+HM+FJhRlLYJA==
-releaseDate: '2024-04-07T19:07:08.585Z'
+sha512: z85eDEqe+/oIRPin4/16BpQ3rnv1l+e8+ZY8Y5xAhFbOROrI8BTepWpyMJ6n2pB6a6FKCYBv2SPRsW17xNk+7w==
+releaseDate: '2024-04-11T19:22:59.512Z'
