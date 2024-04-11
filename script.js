@@ -114,10 +114,10 @@
  * Bug/Balance Testing playthroughs
  * Beaten: Hard Combine, Hard Rainbow, Hard Cycle
  * 
- * TODO: why do rainbow converter cards summon magic?
+ * TODO: on a very late combat, have lots of monsters summoned, i kill one of them and the incoming damage goes super high - way higher than actual incoming damage
  *	
  * Save progress
- * Record results - use Google Analytics for this?
+ * Run history
  * 
  * 
  * 
@@ -3711,6 +3711,8 @@ async function endTurn(checkRetain = true) {
 	await util.wait(1000);
 	$('.end-turn').removeClass('disabled');
 
+	checkBreakableRemoves();
+
 }
 
 function whichMoveSet(moveSet, pattern) {
@@ -4249,6 +4251,8 @@ function endCombat() {
 
 		// if rainbow is activated and kills all monsters it will still be activated at start of next combat
 		$('.magic-rainbow').removeClass('activated');
+
+		checkBreakableRemoves();
 
 	}
 
@@ -5384,6 +5388,19 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 	if(card.type == 'attack') updateCritChance(1);
 	monsterIntent();
 
+}
+
+function checkBreakableRemoves() {
+	for(let i = 0; i < combatDeck.allLiveCards(combatDeck).length; i++) {
+		let card = combatDeck.allLiveCards(combatDeck)[i];
+		let use = util.getCardAttribute(card, 'use');
+		let breakable = util.getCardAttribute(card, 'breakable');
+		if(breakable && (use < 0 || use == undefined)) {
+			removeCardFromDeck(card.guid);
+			let skipDead = true;
+			combatDeck.destroyCard(card, combatDeck, skipDead);
+		}
+	}
 }
 
 function reduceCardStat(card, stat, amount) {

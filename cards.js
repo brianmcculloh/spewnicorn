@@ -6347,11 +6347,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'beautiful_spell', name: 'Beautiful Spell', type: 'magic', mana: 1, weight: 2, tier: 'common', 
-        magic: [{type: 'elemental', amount: 7}], 
+        magic: [{type: 'elemental', amount: 10}], 
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'elemental', amount: 12}], 
+            magic: [{type: 'elemental', amount: 20}], 
         },
         sparkle: {
             magic: [{type: 'elemental', amount: 10}], 
@@ -6359,11 +6359,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'delightful_spell', name: 'Delightful Spell', type: 'magic', mana: 1, weight: 2, tier: 'common', 
-        magic: [{type: 'dark', amount: 7}], 
+        magic: [{type: 'dark', amount: 10}], 
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'dark', amount: 12}], 
+            magic: [{type: 'dark', amount: 20}], 
         },
         shimmer: {
             magic: [{type: 'dark', amount: 10}], 
@@ -6371,11 +6371,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'wonderful_spell', name: 'Wonderful Spell', type: 'magic', mana: 1, weight: 2, tier: 'common', 
-        magic: [{type: 'chaos', amount: 7}], 
+        magic: [{type: 'chaos', amount: 10}], 
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'chaos', amount: 12}], 
+            magic: [{type: 'chaos', amount: 20}], 
         },
         aura: {
             magic: [{type: 'chaos', amount: 10}], 
@@ -6383,11 +6383,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'sparkling_rainbow_spell', name: 'Sparkling Rainbow Spell', type: 'magic', mana: 1, weight: 1, tier: 'common', pack: 'rainbow',
-        magic: [{type: 'rainbow', amount: 8}], 
+        magic: [{type: 'rainbow', amount: 12}], 
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'rainbow', amount: 14}], 
+            magic: [{type: 'rainbow', amount: 24}], 
         },
         sparkle: {
             magic: [{type: 'rainbow', amount: 12}], 
@@ -6395,11 +6395,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'shimmering_rainbow_spell', name: 'Shimmering Rainbow Spell', type: 'magic', mana: 1, weight: 1, tier: 'common', pack: 'rainbow', 
-        magic: [{type: 'rainbow', amount: 8}], 
+        magic: [{type: 'rainbow', amount: 12}], 
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'rainbow', amount: 14}], 
+            magic: [{type: 'rainbow', amount: 24}], 
         },
         shimmer: {
             magic: [{type: 'rainbow', amount: 12}], 
@@ -6407,11 +6407,11 @@ const ALL_CARDS = [
     }),
     new Cards({
         id: 'luminous_rainbow_spell', name: 'Luminous Rainbow Spell', type: 'magic', mana: 1, weight: 1, tier: 'common', pack: 'rainbow',
-        magic: [{type: 'rainbow', amount: 8}], 
+        magic: [{type: 'rainbow', amount: 12}], 
         sound: 'magic3',
         slots: 1,
         shardUpgrades: {
-            magic: [{type: 'rainbow', amount: 14}], 
+            magic: [{type: 'rainbow', amount: 24}], 
         },
         aura: {
             magic: [{type: 'rainbow', amount: 12}], 
@@ -7199,7 +7199,7 @@ export function Deck() {
     let player = window.player;
 
     function buildDeck() {
-        addCard('jab');
+        /*addCard('jab');
         addCard('jab');
         addCard('jab');
         addCard('rainbow_orb');
@@ -7210,12 +7210,19 @@ export function Deck() {
         addCard('stun');
         if(game.difficulty == 'easy') {
             addCard('spewnicorn_spray');
-        }
+        }*/
+
+        addCard('unstable_attack');
+        addCard('unstable_attack');
+        addCard('unstable_attack');
+        addCard('unstable_attack');
+        addCard('unstable_attack');
+        addCard('unstable_attack');
 
 
         // this is how to add a shard on init - DEV MODE ONLY
-        //attachShard(util.getCardById('violent_rage', this.cards), 'flame');
-        //attachShard(util.getCardById('violent_rage', this.cards), 'flame');
+        //attachShard(util.getCardById('repel', this.cards), 'flame');
+        //attachShard(util.getCardById('cascade', this.cards), 'flame');
 
         
     }
