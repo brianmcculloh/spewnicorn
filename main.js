@@ -1,6 +1,16 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path'); // Import the path module
 
+/*
+const greenworks = require('greenworks');
+
+if (!greenworks.init()) {
+  console.log('Steam API has failed to initialize.');
+} else {
+  console.log('Steam API initialized successfully.');
+}
+*/
+
 function createWindow() {
     const mainWindow = new BrowserWindow({
         width: 1600,

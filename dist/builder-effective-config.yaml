@@ -2,13 +2,19 @@ directories:
   output: dist
   buildResources: build
 appId: com.spewnicorn.theSpewnicorn
+artifactName: spewnicorn.${ext}
 mac:
-  target: dmg
+  target:
+    - target: dir
+      arch:
+        - x64
 win:
-  target: nsis
+  target:
+    - target: portable
+      arch:
+        - x64
 linux:
   target:
     - AppImage
-    - deb
 files: []
 electronVersion: 29.2.0

@@ -1,0 +1,13 @@
+"appbuild"
+{
+  "appid" "2940260"  // Replace with your actual app ID
+  "desc" "Build description"  // Any description
+  "buildoutput" "./output/"
+  "contentroot" "./dist/"
+  "depots"
+  {
+    "2940261" "depot_build_mac.vdf"
+    "2940262" "depot_build_win.vdf"
+    "2940263" "depot_build_linux.vdf"
+  }
+}

@@ -1730,9 +1730,7 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 }
 
 /* debug */
-body.debug .debug-toggle {
-	display:flex;
-}
+body.debug .debug-toggle,
 body.debug .status-toggle {
 	display:flex;
 }

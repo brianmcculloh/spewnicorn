@@ -1,5 +1,10 @@
 /*********************************************
  * 
+ * Build command: sudo npm run dist
+ * Steamworks deploy: go to /Users/brian/Steam in terminal and run ./spewnicorn.sh
+ * --that will access spewnicorn.vdf which points to the mac/win/linux builds and uploads them to SteamPipe
+ * 
+ * 
  * PHASE I: GAME ENGINE PHASE
  * PHASE II: CREATE ALL EFFECTS, ABILITIES, AND ACTIONS
  * PHASE III: BALANCE PHASE - CREATE MAP/MONSTERS/TREASURES/CARDS/CANDY

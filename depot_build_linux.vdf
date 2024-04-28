@@ -1,0 +1,11 @@
+"DepotBuildConfig"
+{
+  "DepotID" "2940263"
+  "ContentRoot" "/Users/brian/Documents/Website Accounts/Brian McCulloh/spewnicorn/spewnicorn/dist/"
+  "FileMapping"
+  {
+    "LocalPath" "spewnicorn.AppImage"
+    "DepotPath" "."
+    "recursive" "0" 
+  }
+}
