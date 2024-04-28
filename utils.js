@@ -101,6 +101,7 @@ export default class Util {
         }
         return slots;
     }
+    /* this has been refactored below
     appendCard(card, to, cssClass = '') {
         if(!card) return;
         let slots = '';
@@ -293,6 +294,105 @@ export default class Util {
             });
             util.setTooltips(to);
     }
+    */
+
+    appendCard(card, to, cssClass = '') {
+        if (!card) return;
+    
+        let cardHtml = `<div class='card-wrapper drawing'><div class='card ${card.tier}${card.playable ? '' : ' unplayable'}${card.combine ? ' combinable' : ''}${card.pack ? ' ' + card.pack + '-pack' : ''} ${card.type} ${cssClass}' id='card-${card.id}' data-id='${card.id}' data-guid='${card.guid}'>`;
+    
+        // Attributes that appear outside the bubbles
+        const mana = util.getCardAttribute(card, 'mana');
+        if (mana !== undefined && mana !== -1) { // Ensure '0' is displayed but '-1' is not
+            let manaTip = "<span class='highlight'>Mana:</span> energy cost to play this card";
+            cardHtml += `<div class="card-mana tooltip" data-powertip="${manaTip}"><span class="mana amount" data-amount="${mana}">${mana}</span></div>`;
+        }
+    
+        const age = util.getCardAttribute(card, 'age');
+        if (age !== undefined && age !== -1) {
+            let plural = age === 1 ? '' : 's';
+            let ageTip = "<span class='highlight'>Age:</span> Card has been retained for " + age + " turn" + plural + " this combat";
+            cardHtml += `<div class="card-age tooltip" data-powertip="${ageTip}"><span class="age amount" data-amount="${age}">${age}</span></div>`;
+        }
+    
+        // Bubbles-left
+        cardHtml += '<div class="bubbles-left">';
+        ['use', 'expire', 'linger'].forEach(attr => {
+            let value = util.getCardAttribute(card, attr);
+            if (value !== undefined && value !== -1) { // Ensure '0' is displayed but '-1' is not
+                let plural = value === 1 ? '' : 's';
+                let tip = `<span class='highlight'>${util.getAttributeDisplayName(attr)}:</span> ${util.getAttributeDescription(attr, value, plural)}`;
+                cardHtml += `<span class="amount ${attr} tooltip" data-powertip="${tip}" data-amount="${value}">${value}</span>`;
+            }
+        });
+        cardHtml += '</div>';
+    
+        // Bubbles-right
+        cardHtml += '<div class="bubbles-right">';
+        ['vanish', 'retain', 'ephemeral', 'breakable', 'combinable', 'aura', 'shimmer', 'sparkle', 'trade', 'weapon'].forEach(attr => {
+            let value = util.getCardAttribute(card, attr);
+            if (value && value !== -1) {
+                let tip = `<span class='highlight'>${util.getAttributeDisplayName(attr)}:</span> ${util.getAttributeDescription(attr)}`;
+                cardHtml += `<div class="${attr} tooltip" data-powertip="${tip}"><span></span></div>`;
+            }
+        });
+        cardHtml += '</div>';
+    
+        // Finishing up the card HTML
+        cardHtml += `<div class='card-image'></div><div class='card-frame'></div><div class='card-type'>${card.type}</div><div class='card-rarity'></div><div class='name'>${card.name}</div><div class='desc'><div class='desc-inner'>${card.desc}</div></div><div class='slots tooltip' data-powertip='${card.slotDesc || ''}'>${util.buildCardSlots(card)}</div><div class='card-courage tooltip' data-amount='${card.courage}' data-powertip='Courage coins'>${card.courage}</div></div></div>`;
+    
+        $(cardHtml).appendTo(to).delay(1).queue(function() {
+            $(this).removeClass('drawing').dequeue();
+        });
+    
+        // Initialize tooltips once after all cards are added to reduce DOM manipulation
+        util.setTooltips(to);
+    }     
+    getAttributeDisplayName(attribute) {
+        const attributeNames = {
+            mana: 'Mana',
+            age: 'Age',
+            use: 'Use',
+            expire: 'Expire',
+            linger: 'Linger',
+            vanish: 'Vanish',
+            retain: 'Retain',
+            ephemeral: 'Ephemeral',
+            breakable: 'Breakable',
+            combinable: 'Combinable',
+            natural: 'Natural',
+            aura: 'Aura',
+            shimmer: 'Shimmer',
+            sparkle: 'Sparkle',
+            trade: 'Tradeable',
+            weapon: 'Weapon',
+            aoe: 'AOE'
+        };
+        return attributeNames[attribute] || attribute;
+    };
+    getAttributeDescription(attribute, value, plural) {
+        const descriptions = {
+            mana: `energy cost to play this card`,
+            age: `Card has been retained for ${value} turn${plural} this combat`,
+            use: `Number of times this card can be used before vanishing`,
+            expire: `Number of turns this card remains in your deck before vanishing`,
+            linger: `Number of times this card can be played before it leaves your hand`,
+            vanish: `Becomes a dead card when played`,
+            retain: `Does not discard at the end of your turn`,
+            ephemeral: `Becomes a dead card if drawn but not played`,
+            breakable: `When used up, card is permanently removed from your deck`,
+            combinable: `When in hand, this card can be combined with another identical card to create a new more powerful card.`,
+            natural: `This card starts on the top of your draw pile each combat`,
+            aura: `Triggers extra effects when in Aura stance`,
+            shimmer: `Triggers extra effects when in Shimmer stance`,
+            sparkle: `Triggers extra effects when in Sparkle stance`,
+            trade: `Can be traded at the market`,
+            weapon: `This is a weapon class card`,
+            aoe: `Targets all monsters`
+        };
+        return descriptions[attribute] || `Unknown attribute: ${attribute}`;
+    };
+
     animateShowCards() {
         $('.show-cards').addClass('shown');
         $('.show-cards .card')

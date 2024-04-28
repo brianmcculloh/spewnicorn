@@ -7162,10 +7162,21 @@ export function AllCards() {
     }
 
     function buildLibrary() {
-        for(let i = 0; i < this.getTotalCards(); i++) {
-            util.appendCard(this.getAllCards()[i], '.library-panel .cards');
+        let index = 0;
+        const cards = this.getAllCards();
+        const totalCards = cards.length;
+    
+        function loadCard() {
+            if (index < totalCards) {
+                util.appendCard(cards[index], '.library-panel .cards');
+                index++;
+                requestAnimationFrame(loadCard);
+            }
         }
+    
+        requestAnimationFrame(loadCard);
     }
+    
 
     function getWeapons() {
 

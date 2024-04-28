@@ -4858,6 +4858,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 .card .bubbles-left {
 	position:absolute;
+	z-index:1;
 	width:calc(50px * .8);
 	bottom: 146px;
     left: 6px;
@@ -4867,6 +4868,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 .card .bubbles-right {
 	position:absolute;
+	z-index:1;
 	width:calc(50px * .8);
 	bottom:146px;
 	right:6px;
