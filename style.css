@@ -5873,6 +5873,25 @@ body.tutorial #tutorial-overlay {
 }
 
 
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.treasure.pulse {
+    animation: pulse .5s;
+}
+
+
+
 /**
  * PowerTip
  * https://stevenbenner.github.io/jquery-powertip/

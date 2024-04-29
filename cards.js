@@ -7163,7 +7163,29 @@ export function AllCards() {
 
     function buildLibrary() {
         let index = 0;
-        const cards = this.getAllCards();
+        const typeOrder = ['attack', 'magic', 'tool', 'ability', 'clutter'];
+        const tierOrder = ['common', 'uncommon', 'rare', 'legendary'];
+        const cards = this.getAllCards().sort((a, b) => {
+            // Normalize types for special groups
+            let typeA = a.type === 'bottled' ? 'tool' : a.type === 'converter' ? 'magic' : a.type;
+            let typeB = b.type === 'bottled' ? 'tool' : b.type === 'converter' ? 'magic' : b.type;
+            
+            // Get indices for normalized types
+            let typeIndexA = typeOrder.indexOf(typeA);
+            let typeIndexB = typeOrder.indexOf(typeB);
+    
+            if (typeIndexA === typeIndexB) {
+                // If types are the same, sort by tier
+                let tierA = a.tier || 'common'; // Default to 'common' if not specified
+                let tierB = b.tier || 'common'; // Default to 'common' if not specified
+                let tierIndexA = tierOrder.indexOf(tierA);
+                let tierIndexB = tierOrder.indexOf(tierB);
+                return tierIndexA - tierIndexB;
+            }
+    
+            // Sort by type if different
+            return typeIndexA - typeIndexB;
+        });
         const totalCards = cards.length;
     
         function loadCard() {

@@ -1,8 +1,15 @@
 /*********************************************
  * 
- * Build command: sudo npm run dist
+ * To update on Steam:
+ * Update the Release Notes in the index.html file
+ * Update the version number in game.js (and make sure dev and debug are false)
+ * Update the version number in package.json
+ * Open terminal and run the build command: sudo npm run dist
  * Steamworks deploy: go to /Users/brian/Steam in terminal and run ./spewnicorn.sh
  * --that will access spewnicorn.vdf which points to the mac/win/linux builds and uploads them to SteamPipe
+ * Go to Steamworks >> SteamPipe >> Builds and set the default branch to the latest build
+ * Make sure to go to the Publish tab to publish the game
+ * Optionally add a version update announcement in Steamworks
  * 
  * 
  * PHASE I: GAME ENGINE PHASE
@@ -119,15 +126,23 @@
  * Bug/Balance Testing playthroughs
  * Beaten: Hard Combine, Hard Rainbow, Hard Cycle
  * 
+ * 
+ * ***************
+ * BUGS
+ * ***************
  * TODO: on a very late combat, have lots of monsters summoned, i kill one of them and the incoming damage goes super high - way higher than actual incoming damage
+ * TODO: when a card is retained the tooltips don't work until at least one card is drawn
+ * 
+ * 
  *	
- * Save progress
- * Run history
  * 
  * 
  * PHASE VI:
  * 
  * Fine Tuning, Quality of Life fixes, and New Features
+ * 
+ * Save Progress
+ * Run History
  * 
  * Monster hexes punch down but player buffs punch up. New damage amount is larger than original but damage amount color is red - should be green.
  * Question: if player has might, should draw damage effects have might applied?
@@ -3599,6 +3614,7 @@ async function monsterAction(action = 'perform') {
 							name = 'Die';
 							what = '';
 							type = '';
+							symbol = '';
 							value = '';
 							to = '';
 						} else {

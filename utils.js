@@ -303,7 +303,7 @@ export default class Util {
     
         // Attributes that appear outside the bubbles
         const mana = util.getCardAttribute(card, 'mana');
-        if (mana !== undefined && mana !== -1) { // Ensure '0' is displayed but '-1' is not
+        if (mana !== undefined && mana !== -1) {
             let manaTip = "<span class='highlight'>Mana:</span> energy cost to play this card";
             cardHtml += `<div class="card-mana tooltip" data-powertip="${manaTip}"><span class="mana amount" data-amount="${mana}">${mana}</span></div>`;
         }
@@ -319,7 +319,7 @@ export default class Util {
         cardHtml += '<div class="bubbles-left">';
         ['use', 'expire', 'linger'].forEach(attr => {
             let value = util.getCardAttribute(card, attr);
-            if (value !== undefined && value !== -1) { // Ensure '0' is displayed but '-1' is not
+            if (value !== undefined && value !== -1) {
                 let plural = value === 1 ? '' : 's';
                 let tip = `<span class='highlight'>${util.getAttributeDisplayName(attr)}:</span> ${util.getAttributeDescription(attr, value, plural)}`;
                 cardHtml += `<span class="amount ${attr} tooltip" data-powertip="${tip}" data-amount="${value}">${value}</span>`;
@@ -329,13 +329,41 @@ export default class Util {
     
         // Bubbles-right
         cardHtml += '<div class="bubbles-right">';
-        ['vanish', 'retain', 'ephemeral', 'breakable', 'combinable', 'aura', 'shimmer', 'sparkle', 'trade', 'weapon'].forEach(attr => {
+        const attrs = ['vanish', 'retain', 'ephemeral', 'breakable', 'aura', 'shimmer', 'sparkle', 'weapon'];
+        attrs.forEach(attr => {
             let value = util.getCardAttribute(card, attr);
-            if (value && value !== -1) {
+            if (value && !(Array.isArray(value) && value.length === 0)) {
                 let tip = `<span class='highlight'>${util.getAttributeDisplayName(attr)}:</span> ${util.getAttributeDescription(attr)}`;
-                cardHtml += `<div class="${attr} tooltip" data-powertip="${tip}"><span></span></div>`;
+                if (['aura', 'sparkle', 'shimmer'].includes(attr)) {
+                    tip = `<span class='highlight'>${attr.charAt(0).toUpperCase() + attr.slice(1)} Stance:</span> Triggers extra effects when in <span class='${attr}'>${attr.charAt(0).toUpperCase() + attr.slice(1)}</span> stance`;
+                    cardHtml += `<div class="${attr}-stance card-stance tooltip" data-powertip="${tip}"><span></span></div>`;
+                } else {
+                    cardHtml += `<div class="${attr} tooltip" data-powertip="${tip}"><span></span></div>`;
+                }
             }
         });
+    
+        // Trade bubble with correct class name
+        let trade = util.getCardAttribute(card, 'trade');
+        if (trade && !(Array.isArray(trade) && trade.length === 0)) {
+            let tradeTip = "<span class='highlight'>Tradeable:</span> Can be traded at the market";
+            cardHtml += `<div class="tradeable tooltip" data-powertip="${tradeTip}"><span></span></div>`;
+        }
+
+        // Additional bubble for combine if applicable
+        let combine = util.getCardAttribute(card, 'combine');
+        if (combine) {
+            let combineTip = "<span class='highlight'>Combine:</span> Can be combined with another identical card to create a new more powerful card.";
+            cardHtml += `<div class="combinable tooltip" data-powertip="${combineTip}"><span></span></div>`;
+        }
+    
+        // Handling AOE
+        let target = util.getCardAttribute(card, 'target');
+        if (target === 'all') {
+            let aoeTip = "<span class='highlight'>AOE:</span> Targets all monsters";
+            cardHtml += `<div class="aoe tooltip" data-powertip="${aoeTip}"><span></span></div>`;
+        }
+    
         cardHtml += '</div>';
     
         // Finishing up the card HTML
@@ -347,7 +375,10 @@ export default class Util {
     
         // Initialize tooltips once after all cards are added to reduce DOM manipulation
         util.setTooltips(to);
-    }     
+    }
+    
+    
+    
     getAttributeDisplayName(attribute) {
         const attributeNames = {
             mana: 'Mana',
@@ -419,10 +450,14 @@ export default class Util {
             trigger = "<span class='counter'>" + treasure.trigger.counter + "</span>";
         }
         let treasureName = '<span class="highlight">' + treasure.name + ':</span>';
-        $("<div class='treasure tooltip " + treasure.id + "' style='background-position:" + (treasure.x * 1.5) + "px " + (treasure.y * 1.5) + "px;' data-id='" + treasure.id + "' data-powertip='" + treasureName + "<br />" + treasure.desc + "'>" + trigger + "<div class='treasure-courage tooltip' data-amount='" + treasure.courage + "' data-powertip='Courage coins'>" + treasure.courage + "</div></div>")
-            .appendTo(to);
-            util.setTooltips(to);
+        $("<div class='treasure tooltip pulse " + treasure.id + "' style='background-position:" + (treasure.x * 1.5) + "px " + (treasure.y * 1.5) + "px;' data-id='" + treasure.id + "' data-powertip='" + treasureName + "<br />" + treasure.desc + "'>" + trigger + "<div class='treasure-courage tooltip' data-amount='" + treasure.courage + "' data-powertip='Courage coins'>" + treasure.courage + "</div></div>")
+            .appendTo(to)
+            .one('animationend', function() {
+                $(this).removeClass('pulse'); // Optionally remove class after animation
+            });
+        util.setTooltips(to);
     }
+    
     appendCandy(candy, to, clickable) {
         let css = 'trashable ';
         if(clickable) css += 'clickable ';
