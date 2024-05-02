@@ -329,7 +329,7 @@ export default class Util {
     
         // Bubbles-right
         cardHtml += '<div class="bubbles-right">';
-        const attrs = ['vanish', 'retain', 'ephemeral', 'breakable', 'aura', 'shimmer', 'sparkle', 'weapon'];
+        const attrs = ['vanish', 'retain', 'ephemeral', 'breakable', 'natural', 'aura', 'shimmer', 'sparkle', 'weapon'];
         attrs.forEach(attr => {
             let value = util.getCardAttribute(card, attr);
             if (value && !(Array.isArray(value) && value.length === 0)) {

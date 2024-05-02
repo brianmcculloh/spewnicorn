@@ -133,7 +133,6 @@
  * TODO: on a very late combat, have lots of monsters summoned, i kill one of them and the incoming damage goes super high - way higher than actual incoming damage
  * TODO: when a card is retained the tooltips don't work until at least one card is drawn
  * 
- * 
  *	
  * 
  * 
@@ -3445,12 +3444,13 @@ async function monsterAction(action = 'perform') {
 			if (attack.hasOwnProperty(key)) {
 
 				let attackAmount = attack[key];
+				let baseDamage = attackAmount;
 
 				if(game.difficulty=='hard' || game.difficulty=='expert' || game.difficulty=='nightmare') {
 					attackAmount += 2;
 				}
 				if(game.difficulty=='nightmare') {
-					attackAmount += attackAmount * .2;
+					attackAmount += baseDamage * .2;
 				}
 
 				attackAmount = applyAggro(attackAmount, thisMonster);
@@ -3459,7 +3459,7 @@ async function monsterAction(action = 'perform') {
 
 					if(attackAmount < 0) attackAmount = 0;
 					game.incomingDamage += attackAmount;
-					intent += '<span class="tooltip" data-powertip="Attack for ' + attackAmount + ' damage"><span class="intent-dmg intent-amount">' + attackAmount + '</span><span class="intent-dmg-icon intent-icon"></span></span>';
+					intent += '<span class="tooltip" data-powertip="Attack for ' + attackAmount + ' damage (' + baseDamage + ' base)"><span class="intent-dmg intent-amount">' + attackAmount + '</span><span class="intent-dmg-icon intent-icon"></span></span>';
 				
 				} else {
 
@@ -3491,6 +3491,7 @@ async function monsterAction(action = 'perform') {
 		for (var key in defend) {
 			if (defend.hasOwnProperty(key)) {
 				let a = defend[key];
+				let baseBlock = a;
 
 				if(game.difficulty=='hard' || game.difficulty=='expert' || game.difficulty=='nightmare') {
 					a += 5;
@@ -3503,7 +3504,7 @@ async function monsterAction(action = 'perform') {
 
 				if(action == 'query') {
 					a += thisMonster.solid.current;
-					intent += '<span class="tooltip" data-powertip="Gain ' + a + ' block"><span class="intent-blk intent-amount">' + a + '</span><span class="intent-blk-icon intent-icon"></span></span>';
+					intent += '<span class="tooltip" data-powertip="Gain ' + a + ' block (' + baseBlock + ' base)"><span class="intent-blk intent-amount">' + a + '</span><span class="intent-blk-icon intent-icon"></span></span>';
 				} else {
 					applyBlock(a, thisMonster, true);
 					await util.wait(300);
@@ -7280,15 +7281,17 @@ function applyArmor(arm, to) {
 }
 
 function applyAggro(dmg, monster) {
-	let aggroDmg = Math.round((dmg + monster.might.current) * monster.punch.current);
+	let aggroDmg = dmg;
 	if(monster.context == 'flame') {
-		// for each turn, 10 base damage would become: 15, 20, 25, 30, etc.
-		aggroDmg += Math.round(((player.aggro.level / 2) + .5) * aggroDmg);
+		// for each level, 10 base damage would become: 15, 20, 25, 30, etc.
+		//aggroDmg += Math.round(((player.aggro.level / 2) + .5) * aggroDmg);
+		aggroDmg += Math.round((Math.log(level + 1) + .5) * aggroDmg);
 	}
 	if((game.mapType == 'ice_gate' || game.mapType == 'fire_gate' || game.mapType == 'arena') || (game.difficulty=='nightmare' && game.mapType=='singularity')) {
 		// 10 base damage will increase by 5 per aggro level, starting at level 1
 		aggroDmg = Math.round(((player.aggro.level / 2) + 1) * aggroDmg);
 	}
+	aggroDmg = Math.round((dmg + monster.might.current) * monster.punch.current);
 	return aggroDmg;
 }
 
