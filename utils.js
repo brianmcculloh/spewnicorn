@@ -1088,8 +1088,8 @@ export default class Util {
         s = new Howl({
             src: ['audio/' + f],
             sprite: {
-                arenaRewards: [0, 7839],
-                rewards: [7839, 4540],
+                arenaRewards: [0, 7200],
+                rewards: [7839, 4200],
                 loot: [12379, 2405],
                 gainArmor: [14757, 839],
                 attackCard: [15596, 280],

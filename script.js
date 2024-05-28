@@ -76,6 +76,7 @@
  * Effect: apply x times max rainbow block each time you activate rainbow
  * Mechanic: wild combine: can be combined with any other combined card - and when combined, add the card that the other card adds.
  * --there could be multiple wild combine cards, each one doing a special thing when combined
+ * Mechanic: frost guardians should have damage caps so they can't be one-shotted
  * 
  * 
  * 
@@ -132,8 +133,7 @@
  * ***************
  * TODO: on a very late combat, have lots of monsters summoned, i kill one of them and the incoming damage goes super high - way higher than actual incoming damage
  * TODO: when a card is retained the tooltips don't work until at least one card is drawn
- * 
- *	
+ * TODO: add a cool dom animation on the spewnicorn sprite matching stance
  * 
  * 
  * PHASE VI:
@@ -258,6 +258,29 @@
  * 
 *********************************************/
 
+// Error Handling
+window.onerror = function(message, source, lineno, colno, error) {
+    console.log("An uncaught error occurred:");
+    console.log(message, "from", source, "at line", lineno, "column", colno);
+
+    // Check if the error is a PowerTip error
+    if (source.includes("jquery.powertip.min.js")) {
+        console.log("PowerTip error detected and suppressed.");
+        return true; // Prevent the browser from showing its own error messages
+    }
+
+    alert("What was that!? Something unexpected happened. Try again...\n\nError: " + error.message + "\nmessage\nfrom " + source + " at line " + lineno + " column " + colno);
+    return true; // Prevent the browser from showing its own error messages
+};
+
+function handleError(error) {
+    // Log the error
+    console.log("Handling error:", error);
+    // Feedback for the user
+    alert("What was that!? Something unexpected happened. Try again...\n\n(Error: " + error.message + ")");
+}
+
+// Imports
 import Util from './utils.js';
 const util = new Util();
 
@@ -286,7 +309,7 @@ import Quests from './quests.js';
 let quests = Quests();
 window.quests = quests;
 
-// audio
+// Audio
 //var musicOverworld = new Howl({src:['audio/overworld.mp3'],loop:true});
 var musicOverworld = util.music('overworld.mp3');
 var musicOverworldFrost = util.music('overworld-frost.mp3');
@@ -334,6 +357,49 @@ var musicQuests = [
 	util.music('quest7.mp3'),
 ];
 var sounds = util.sound('soundsprite.mp3');
+
+var soundIds = {};  // Object to store sound IDs by name
+
+function playSoundOnce(soundName) {
+    if (game.playsounds) {
+        // Check if there is an ID stored and if it is currently playing
+        if (!soundIds[soundName] || !sounds.playing(soundIds[soundName])) {
+            soundIds[soundName] = sounds.play(soundName);  // Play the sound and update the ID
+        }
+    }
+}
+
+function playOverworldMusic() {
+    if (game.playmusic && !isAnyMusicPlaying()) { // Check if no other music is playing
+		const initialVolume = 0;  // Start from silence
+        const finalVolume = 1;    // Target volume (adjust as needed)
+        const fadeInDuration = 1000; // Duration of the fade in milliseconds
+        if (game.overworld == 'frost') {
+            musicOverworldFrost.volume(initialVolume); // Set initial volume to 0
+            musicOverworldFrost.play();
+            musicOverworldFrost.fade(initialVolume, finalVolume, fadeInDuration);
+        } else if (game.overworld == 'flame') {
+            musicOverworldFlame.volume(initialVolume); // Set initial volume to 0
+            musicOverworldFlame.play();
+            musicOverworldFlame.fade(initialVolume, finalVolume, fadeInDuration);
+        } else if(game.mapType != 'singularity') {
+            musicOverworld.volume(initialVolume); // Set initial volume to 0
+            musicOverworld.play();
+            musicOverworld.fade(initialVolume, finalVolume, fadeInDuration);
+        }
+    }
+}
+
+function isAnyMusicPlaying() {
+    const allMusicTracks = [
+        musicOverworld, musicOverworldFrost, musicOverworldFlame, musicSingularity,
+        musicFountain, musicVictory, musicLoss, musicCourage, musicArena, musicIceGate,
+        musicFireGate
+    ].concat(musicBattles, musicQuests); // Include all battle and quest musics
+
+    return allMusicTracks.some(track => track.playing());
+}
+
 
 function stopMusic() {
 	musicOverworld.pause();
@@ -450,13 +516,7 @@ jQuery(document).ready(function($) {
 					if(!musicSingularity.playing()) musicSingularity.play();
 				}
 			} else {
-				if(game.overworld == 'frost') {
-					if(!musicOverworldFrost.playing()) musicOverworldFrost.play();
-				} else if(game.overworld == 'flame') {
-					if(!musicOverworldFlame.playing()) musicOverworldFlame.play();
-				} else {
-					if(!musicOverworld.playing()) musicOverworld.play();
-				}
+				playOverworldMusic()
 			}
 		}
 
@@ -521,6 +581,7 @@ jQuery(document).ready(function($) {
 		game.tutorial = false;
 		$('body').removeClass('tutorial');
 		$('.starting-room.game-panel').addClass('shown');
+		$('#story-panel').addClass('shown');
 	});
 	$('#step1 .next-button').click(function() {
 		$(this).parent().removeClass('shown');
@@ -1523,7 +1584,7 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('gift_of_conjuring'); // use this to manually add treasures
+	//addTreasure('opaque_charm'); // use this to manually add treasures
 	//addCandy('chocolate_bar'); // use this to manually add candies
 
 	if(game.debug) $('body').addClass('debug');
@@ -1597,11 +1658,7 @@ function init_map_2() {
 
 	game.overworld = game.mapType == 'ice_gate' ? 'frost' : 'flame';
 	musicOverworld.stop();
-	if(game.overworld == 'frost') {
-		if(!musicOverworldFrost.playing() && game.playmusic) musicOverworldFrost.play();
-	} else if(game.overworld == 'flame') {
-		if(!musicOverworldFlame.playing() && game.playmusic) musicOverworldFlame.play();
-	}
+	playOverworldMusic();
 	$('.map > h2').html('The ' + game.overworld.toUpperCase() + ' World');
 	$('.gate-screen').removeClass('shown');
 	$('body').css('background-image', 'url(./images/map_' + game.mapType + '.png');
@@ -1658,6 +1715,9 @@ function setDifficulty() {
 		game.questChance = 1.5;
 		game.fountainChance = 1.3;
 		game.arenasRequired = 3;
+		game.treasureIncrease = 0.375;
+		game.treasureIncreaseMin = 2;
+		game.treasureIncreaseMax = 10;
 		if(!game.debug) {
 			player.health.base = 55;
 			player.health.current = 55;
@@ -2316,6 +2376,7 @@ function setStatus(updateCards = true) {
 	$('.mana span').html(player.mana.current + '/' + player.mana.base);
 	$('.speed span').html(player.speed.current + '/' + player.speed.base);
 	$('.stance .icon-stance').attr('data-stance', player.stance);
+	$('.player-panel .sprite').attr('data-stance', player.stance);
 	$('.stance .icon-stance').data('powertip', "<span class='highlight'>Stance:</span> <span class='" + player.stance + "'>" + player.stance + "</span>");
 
 	$('.highest-damage-roll span').html(game.highestDmgRoll);
@@ -2991,11 +3052,11 @@ function visitQuest(visited = false) {
 function changeStance(stance) {
 	// check for stance
 	if(stance == 'sparkle') {
-		player.might.base += 3;
-		player.might.current += 3;
+		player.might.base += 4;
+		player.might.current += 4;
 	} else if(player.stance == 'sparkle') { // this mean's the player's previous stance was sparkle because it hasn't changed yet
-		player.might.base -= 3;
-		player.might.current -= 3;
+		player.might.base -= 4;
+		player.might.current -= 4;
 	}
 	// check for shapeshifter
 	if(player.shapeshifter.current > 0) {
@@ -3018,7 +3079,7 @@ async function updateEssenceLevels(essence, amount) {
 			await util.updateEssencePercentage(essence);
 		} else {
 			for(let i = 0; i < amount; i++) {
-				if(game.playsounds) sounds.play(essence + 'Amount');
+				playSoundOnce(essence + 'Amount');
 				player[essence].current += 1;
 				let current = player[essence].current;
 				if(game.essenceThresholds.includes(current) && player[essence].level == game.essenceThresholds.indexOf(current)) {
@@ -3103,7 +3164,7 @@ async function beginTurn() {
 			} else if(player.stance == 'aura') {
 				player.mana.current += Math.round(player.speed.current * player.aura.level);
 			} else if(player.stance == 'sparkle') {
-				let tempMight = Math.round(player.speed.current * player.sparkle.level * 3);
+				let tempMight = Math.round(player.speed.current * player.sparkle.level * 4);
 				if(tempMight > 0) {
 					//player.might.current += tempMight; // this was updated to use applyEffect instead
 					//player.might.temp.push(tempMight);
@@ -3368,7 +3429,9 @@ async function monsterAction(action = 'perform') {
 
 		if(currentMonsters[i].dead) continue; // ignore dead monsters
 
-		if(currentMonsters[i].frozen.enabled) continue; // skip frozen monsters
+		if(currentMonsters[i].frozen.enabled) continue; // skip frozen monsters\
+		
+		if(Player().dead(player)) return;
 
 		let intent = '';
 		let intentTooltip = '';
@@ -3387,7 +3450,8 @@ async function monsterAction(action = 'perform') {
 					tiers = [5];
 					actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers, context: 'upgraded'}];
 				} else if(game.difficulty=='nightmare') {
-					tiers = [6, 7];
+					//tiers = [6, 7]; // use this if we want super guardians
+					tiers = [6];
 					actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers}];
 				}
 				let update = processActions(actions, thisMonster);
@@ -3483,7 +3547,6 @@ async function monsterAction(action = 'perform') {
 						return;
 					}
 					await util.wait(game.animationGap);
-					
 				}
 			}
 		}
@@ -3499,6 +3562,9 @@ async function monsterAction(action = 'perform') {
 
 				// for frost context increase block based on aggro level
 				if(thisMonster.context == 'frost') {
+					a += Math.round(((player.aggro.level / 2) + .5) * a);
+				} else if(game.mapType == 'ice_gate' || game.mapType == 'fire_gate' || game.mapType == 'arena') {
+					// also increase block for map 1 arenas and guardians
 					a += Math.round(((player.aggro.level / 2) + .5) * a);
 				}
 
@@ -4214,23 +4280,23 @@ function endCombat() {
 		let aggroAmount = 1;
 
 		if(game.mapType == 'arena') {
-			if(game.playsounds) sounds.play('arenaRewards');
+			if (game.playsounds) {
+				var soundId = sounds.play('arenaRewards');  // Start playing and get the sound ID
+				sounds.on('end', function() {
+					playOverworldMusic();  // This will now properly trigger after the sound ends
+				}, soundId);
+			}
 			aggroAmount = game.arenasComplete;
 		} else {
-			if(game.playsounds) sounds.play('rewards');
+			if (game.playsounds) {
+				var soundId = sounds.play('rewards');  // Similarly, start playing and get the sound ID
+				sounds.on('end', function() {
+					playOverworldMusic();  // Trigger after the sound ends
+				}, soundId);
+			}
 		}
 		
 		if(game.mapType != 'singularity') {
-			//setTimeout(function() {
-				if(game.overworld == 'frost') {
-					if(!musicOverworldFrost.playing() && game.playmusic) musicOverworldFrost.play();
-				} else if(game.overworld == 'flame') {
-					if(!musicOverworldFlame.playing() && game.playmusic) musicOverworldFlame.play();
-				} else {
-					if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
-				}
-			//}, 3000);
-
 			setTimeout(function() {
 				// these should delay to happen after lingering combat effects
 				$('.combat, .show-cards, .message, .button-done').removeClass('shown'); 
@@ -4240,7 +4306,6 @@ function endCombat() {
 			}, 2000);
 		}
 
-		// don't put this in settimeout because it causes rewards screen candies to not be clickable
 		$('.candy').removeClass('clickable').addClass('trashable');
 
 		game.combatEndedFlag = true;
@@ -4390,19 +4455,13 @@ function loot(type, tier = 3) {
 
 	if(game.playsounds) sounds.play('loot');
 
-	//setTimeout(function() {
-		if(game.overworld == 'frost') {
-			if(!musicOverworldFrost.playing() && game.playmusic) musicOverworldFrost.play();
-		} else if(game.overworld == 'flame') {
-			if(!musicOverworldFlame.playing() && game.playmusic) musicOverworldFlame.play();
-		} else {
-			if(!musicOverworld.playing() && game.playmusic) musicOverworld.play();
-		}
-	//}, 1000);
+	playOverworldMusic();
 
 	$('.loot-screen').addClass('shown');
 	// for normal treasure screens, any tier 1 - 3
 	let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier <= tier);
+	let finalTreasure = treasures.treasures.filter(i => i.id == 'pewter_mug');
+	finalTreasure = finalTreasure[0];
 
 	switch(type) {
 		case 'shard':
@@ -4420,6 +4479,9 @@ function loot(type, tier = 3) {
 					treasure.desc = deck.buildDescription(treasure);
 					util.appendTreasure(treasure, '.loot-items');
 				}
+			} else {
+				finalTreasure.desc = deck.buildDescription(finalTreasure);
+				util.appendTreasure(finalTreasure, '.loot-items');
 			}
 			$('.loot-screen .message').html('Choose&nbsp;<span class="highlight">ONE</span>&nbsp;of these powerful treasures.');
 		break;
@@ -4433,6 +4495,9 @@ function loot(type, tier = 3) {
 					treasure.desc = deck.buildDescription(treasure);
 					util.appendTreasure(treasure, '.loot-items');
 				}
+			} else {
+				finalTreasure.desc = deck.buildDescription(finalTreasure);
+				util.appendTreasure(finalTreasure, '.loot-items');
 			}
 			$('.loot-screen .message').html('Choose&nbsp;<span class="highlight">ONE</span>&nbsp;legendary treasure.');
 		break;
@@ -4444,6 +4509,9 @@ function loot(type, tier = 3) {
 					treasure.desc = deck.buildDescription(treasure);
 					util.appendTreasure(treasure, '.loot-items');
 				//}
+			} else {
+				finalTreasure.desc = deck.buildDescription(finalTreasure);
+				util.appendTreasure(finalTreasure, '.loot-items');
 			}
 			// one or two essences
 			var numEssences = util.chance(75) ? 1 : 2;
@@ -4539,7 +4607,10 @@ function rewardsScreen() {
 
 function treasureScreen() {
 
-	game.treasureChance += Math.round(game.floor * .75);
+	let increase = Math.round(game.floor * game.treasureIncrease);
+	increase = Math.min(increase, game.treasureIncreaseMax);
+	increase = Math.max(increase, game.treasureIncreaseMin);
+	game.treasureChance += increase;
 
 	if(game.mapType == 'arena') {
 
@@ -4599,14 +4670,16 @@ function courageScreen() {
 		$('.courage-trade').removeClass('shown');
 	}
 
-	let theseTreasures = [];
 	let possibleTreasures = treasures.treasures.filter(i => i.owned == false);
+	let finalTreasure = treasures.treasures.filter(i => i.id == 'pewter_mug');
+	finalTreasure = finalTreasure[0];
 
 	for(let i = 0; i < game.courageTreasureAmount; i++) {
 		let thisTreasure = util.weightedRandom(possibleTreasures);
-		theseTreasures.push(thisTreasure);
 		possibleTreasures = possibleTreasures.filter(i => i.id !== thisTreasure.id);
-		if(thisTreasure == undefined) break;
+		if(thisTreasure == undefined) {
+			thisTreasure = finalTreasure;
+		}
 		thisTreasure.desc = deck.buildDescription(thisTreasure);
 		util.appendTreasure(thisTreasure, '.courage-items');
 	}
@@ -4923,84 +4996,6 @@ function selectCard(elem) {
 	}
 }
 
-// cursor arrow
-const line = $('#curve')[0];
-let startCoords = {x: 0, y: 0};
-let endCoords = {x: 0, y: 0};
-let startElement = null;
-function drawArrow(elem) {
-	$('#curve, #arrow').addClass('shown');
-	startElement = elem[0];
-    const rect = startElement.getBoundingClientRect();
-    setStartCoords({
-        x: rect.x + (rect.width / 2),
-        y: rect.y + (rect.height / 2),
-    });
-    setEndCoords({
-		x: rect.x + (rect.width / 2), 
-		y: rect.y + (rect.height / 2),
-	});
-}
-function removeArrow() {
-	startCoords = {x: 0, y: 0};
-	endCoords = {x: 0, y: 0};
-	$('#curve, #arrow').removeClass('shown');	
-}
-function draw() {
-
-	var p1x = parseFloat(startCoords.x);
-	var p1y = parseFloat(startCoords.y);
-	var p2x = parseFloat(endCoords.x);
-	var p2y = parseFloat(endCoords.y);
-
-	// mid-point of line:
-	var mpx = (p2x + p1x) * 0.5;
-	var mpy = (p2y + p1y) * 0.5;
-
-	// angle of perpendicular to line:
-	var theta = Math.atan2(p2y - p1y, p2x - p1x) - Math.PI / 2;
-
-	// distance of control point from mid-point of line:
-	var offset = 90;
-
-	// location of control point:
-	var c1x = mpx + offset * Math.cos(theta);
-	var c1y = mpy + offset * Math.sin(theta);
-
-	// show where the control point is:
-	var c1 = document.getElementById("cp");
-	c1.setAttribute("cx", c1x);
-	c1.setAttribute("cy", c1y);
-
-	// construct the command to draw a quadratic curve
-	var curve = "M" + p1x + " " + p1y + " Q " + c1x + " " + c1y + " " + p2x + " " + p2y;
-	var curveElement = document.getElementById("curve");
-	curveElement.setAttribute("d", curve);
-
-	var arrowElement = document.getElementById("arrow");
-	arrowElement.setAttribute("x", p2x - 40);
-	arrowElement.setAttribute("y", p2y - 40);
-
-}
-function setStartCoords(coords) {
-  startCoords = coords;
-  draw();
-}
-function setEndCoords(coords) {
-  endCoords = coords;
-  draw();
-}
-document.addEventListener('mousemove', event => {
-  if (!startElement) {
-    return;
-  }
-  setEndCoords({x: event.clientX, y: event.clientY});
-});
-
-
-
-
-
 function retainCard(elem) {
 
 	let card = util.getCardByGuid(elem.data('guid'), combatDeck.handCards);
@@ -5233,182 +5228,185 @@ function combineCards(elem) {
 }
 
 async function playCard(elem, monster = undefined, type = false, useMana = true) {
+	try {
+		$('body').removeClass('discarding selecting destroying');
+		$('.monster').removeClass('clickable');
+		$('.crit').removeClass('shown');
+		elem.removeClass('selected playable').addClass('playing');
+		removeArrow();
 
-	$('body').removeClass('discarding selecting destroying');
-	$('.monster').removeClass('clickable');
-	$('.crit').removeClass('shown');
-	elem.removeClass('selected playable').addClass('playing');
-	removeArrow();
+		let card = util.getCardByGuid(elem.data('guid'), combatDeck.handCards);
+		let deckCard = util.getCardByGuid(elem.data('guid'), deck.cards);
 
-	let card = util.getCardByGuid(elem.data('guid'), combatDeck.handCards);
-	let deckCard = util.getCardByGuid(elem.data('guid'), deck.cards);
+		if(card == undefined) return false;
 
-	if(card == undefined) return false;
+		card.playing = true;
 
-	card.playing = true;
+		let sound = card.sound ? card.sound : card.type + 'Card';
 
-	let sound = card.sound ? card.sound : card.type + 'Card';
+		if(game.playsounds) sounds.play(sound);
 
-	if(game.playsounds) sounds.play(sound);
-
-	let currentMonster = false;
-	if(monster != undefined && card.target !== 'all') {
-		if(monster == 'random') {
-			let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
-			currentMonster = [util.randFromArray(currentMonsters)];
-		} else {
-			currentMonster = game.currentMonsters.filter(i => i.guid == monster.data('guid'));
+		let currentMonster = false;
+		if(monster != undefined && card.target !== 'all') {
+			if(monster == 'random') {
+				let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
+				currentMonster = [util.randFromArray(currentMonsters)];
+			} else {
+				currentMonster = game.currentMonsters.filter(i => i.guid == monster.data('guid'));
+			}
 		}
-	}
 
-	let mana = util.getCardAttribute(card, 'mana');
-	let multiply = 1;
-	let numShards = util.getShardNum(card, 'any');
-	if(mana == '?' && useMana) {
-		/* not sure if this mechanic makes sense, especially since the shard upgrades add more power already
-		if(numShards==1) {
-			if(player.speed.current > player.mana.current) {
-				multiply = player.speed.current;
+		let mana = util.getCardAttribute(card, 'mana');
+		let multiply = 1;
+		let numShards = util.getShardNum(card, 'any');
+		if(mana == '?' && useMana) {
+			/* not sure if this mechanic makes sense, especially since the shard upgrades add more power already
+			if(numShards==1) {
+				if(player.speed.current > player.mana.current) {
+					multiply = player.speed.current;
+				} else {
+					multiply = player.mana.current;
+				}
+			} else if(numShards==2) {
+				multiply = player.speed.current + player.mana.current;
 			} else {
 				multiply = player.mana.current;
-			}
-		} else if(numShards==2) {
-			multiply = player.speed.current + player.mana.current;
-		} else {
+			}*/
+
 			multiply = player.mana.current;
-		}*/
 
-		multiply = player.mana.current;
-
-		// check for mystery
-		if(player.mystery.current > 0) {
-			multiply += player.mystery.current;
-		}
-	}
-
-	// reduce mana prior to processing card
-	if(mana == '?' && useMana) {
-		player.mana.current = 0;
-	} else if(useMana) {
-		player.mana.current -= mana;
-	}
-	if(player.mana.current <= 0) player.mana.current = 0;
-	if(player.speed.current <= 0) player.speed.current = 0;
-
-	// process per card effects
-	if(player.antimomentumAmount > 0) {
-		await doDamage(player.antimomentumAmount, monster, [player]);
-	}
-	// for marked we have to pass all this in because we want cardWasPlayed to be false so that marked doesn't trigger retaliate/spikes
-	if(player.marked.current > 0) {
-		await doDamage(player.marked.current, monster, [player], false, false, false, false, false, false);
-	}
-	for(let i = 0; i < game.currentMonsters.length; i++) {
-		if(game.currentMonsters[i].marked.current > 0) {
-			await doDamage(game.currentMonsters[i].marked.current, player, [game.currentMonsters[i]], false, false, false, false, false, false);
-		}
-		monsters.updateMonsterStats(game.currentMonsters[i]);
-	}
-	if(player.insulate.current > 0) {
-		applyBlock(player.insulate.current, player);
-	}
-	
-	// process the card
-	await processCard(card, currentMonster, type, multiply, true);
-
-	if(card.type == 'attack') {
-		player.momentumAmount += player.momentum.current;
-	}
-	player.antimomentumAmount += player.antimomentum.current;
-	
-	let linger = util.getCardAttribute(card, 'linger');
-	let breakable = util.getCardAttribute(card, 'breakable');
-	let use = util.getCardAttribute(card, 'use');
-
-	// figure out what to do with card
-	if(shouldDestroyCard(card)) {
-		// check for breakable
-		let skipDead = false;
-		if(breakable) {
-			removeCardFromDeck(elem.data('guid'));
-			skipDead = true;
-		}
-		if(type == 'combine') {
-			skipDead = true;
-		}
-		combatDeck.destroyCard(card, combatDeck, skipDead);
-		await processCard(card, false, 'vanishes');
-		if(player.replenish?.current > 0) {
-			let actions = [{action: 'draw', value: player.replenish.current}];
-			await processActions(actions);
-		}
-	} else if(activateCard(card)) {
-		combatDeck.activateCard(card, combatDeck);
-	} else if(linger < 1) {
-		combatDeck.discardCard(card, combatDeck, 'played');
-	}
-
-	if(use > 0) {
-		use -= 1;
-		reduceCardStat(card, 'use', 1);
-		if(breakable) {
-			// use needs to be permanently decreased
-			// it's possible we're decreasing use on a card added during combat (temp card) which will not be in the deck
-			if(deckCard==undefined) {
-				card.use -= 1;
-				card.shardUpgrades.use -= 1;
-			} else {
-				deckCard.use -= 1;
-				deckCard.shardUpgrades.use -= 1;
-			}
-			// in the future this might need to be dealt with more holistically, because perhaps breakable
-			// could be affected by shards (although it's not now)
-		}
-	}
-
-	if(linger > 0) {
-		linger -= 1;
-		reduceCardStat(card, 'linger', 1);
-	}
-
-	// check for bless
-	if(card.type == 'ability' && player.bless.enabled) {
-		let possibleCards = [];
-		for(let i = 0; i < combatDeck.handCards.length; i++) {
-			let mana = util.getCardAttribute(combatDeck.handCards[i], 'mana');
-			if(mana > 0) {
-				possibleCards.push(combatDeck.handCards[i]);
+			// check for mystery
+			if(player.mystery.current > 0) {
+				multiply += player.mystery.current;
 			}
 		}
-		let freeCard = util.randFromArray(possibleCards);
-		console.log('tried to bless', freeCard);
-		if(freeCard != undefined) {	
-			freeCard.mana = 0;
-			if(freeCard.shardUpgrades.mana != undefined) freeCard.shardUpgrades.mana = 0;
-			if(freeCard.bothShardUpgrades.mana != undefined) freeCard.bothShardUpgrades.mana = 0;
-			if(freeCard.iceShardUpgrades.mana != undefined) freeCard.iceShardUpgrades.mana = 0;
-			if(freeCard.fireShardUpgrades.mana != undefined) freeCard.fireShardUpgrades.mana = 0;
-			updateCardDescriptions('handCards');
+
+		// reduce mana prior to processing card
+		if(mana == '?' && useMana) {
+			player.mana.current = 0;
+		} else if(useMana) {
+			player.mana.current -= mana;
 		}
-	}
-	
-	combatDeck.updateCardPlayability(player, combatDeck);
+		if(player.mana.current <= 0) player.mana.current = 0;
+		if(player.speed.current <= 0) player.speed.current = 0;
 
-	elem.removeClass('playing');
-	card.playing = false;
+		// process per card effects
+		if(player.antimomentumAmount > 0) {
+			await doDamage(player.antimomentumAmount, monster, [player]);
+		}
+		// for marked we have to pass all this in because we want cardWasPlayed to be false so that marked doesn't trigger retaliate/spikes
+		if(player.marked.current > 0) {
+			await doDamage(player.marked.current, monster, [player], false, false, false, false, false, false);
+		}
+		for(let i = 0; i < game.currentMonsters.length; i++) {
+			if(game.currentMonsters[i].marked.current > 0) {
+				await doDamage(game.currentMonsters[i].marked.current, player, [game.currentMonsters[i]], false, false, false, false, false, false);
+			}
+			monsters.updateMonsterStats(game.currentMonsters[i]);
+		}
+		if(player.insulate.current > 0) {
+			applyBlock(player.insulate.current, player);
+		}
+		
+		// process the card
+		await processCard(card, currentMonster, type, multiply, true);
 
-	// it's possible draw-card button has been disabled, but this card added speed
-	if(player.speed.current > 0 && combatDeck.handCards.length < 10) $('.draw-card, .draw-all').removeClass('disabled');
+		if(card.type == 'attack') {
+			player.momentumAmount += player.momentum.current;
+		}
+		player.antimomentumAmount += player.antimomentum.current;
+		
+		let linger = util.getCardAttribute(card, 'linger');
+		let breakable = util.getCardAttribute(card, 'breakable');
+		let use = util.getCardAttribute(card, 'use');
 
-	monsters.updateStatusBar();
-	if(card.type == 'attack') updateTreasureTriggers('attackCardsPlayed');
-	if(card.type == 'tool') updateTreasureTriggers('toolCardsPlayed');
-	if(card.type == 'magic') updateTreasureTriggers('magicCardsPlayed');
-	updateTreasureTriggers('cardsPlayed');
-	setStatus();
-	if(card.type == 'attack') updateCritChance(1);
-	monsterIntent();
+		// figure out what to do with card
+		if(shouldDestroyCard(card)) {
+			// check for breakable
+			let skipDead = false;
+			if(breakable) {
+				removeCardFromDeck(elem.data('guid'));
+				skipDead = true;
+			}
+			if(type == 'combine') {
+				skipDead = true;
+			}
+			combatDeck.destroyCard(card, combatDeck, skipDead);
+			await processCard(card, false, 'vanishes');
+			if(player.replenish?.current > 0) {
+				let actions = [{action: 'draw', value: player.replenish.current}];
+				await processActions(actions);
+			}
+		} else if(activateCard(card)) {
+			combatDeck.activateCard(card, combatDeck);
+		} else if(linger < 1) {
+			combatDeck.discardCard(card, combatDeck, 'played');
+		}
 
+		if(use > 0) {
+			use -= 1;
+			reduceCardStat(card, 'use', 1);
+			if(breakable) {
+				// use needs to be permanently decreased
+				// it's possible we're decreasing use on a card added during combat (temp card) which will not be in the deck
+				if(deckCard==undefined) {
+					card.use -= 1;
+					card.shardUpgrades.use -= 1;
+				} else {
+					deckCard.use -= 1;
+					deckCard.shardUpgrades.use -= 1;
+				}
+				// in the future this might need to be dealt with more holistically, because perhaps breakable
+				// could be affected by shards (although it's not now)
+			}
+		}
+
+		if(linger > 0) {
+			linger -= 1;
+			reduceCardStat(card, 'linger', 1);
+		}
+
+		// check for bless
+		if(card.type == 'ability' && player.bless.enabled) {
+			let possibleCards = [];
+			for(let i = 0; i < combatDeck.handCards.length; i++) {
+				let mana = util.getCardAttribute(combatDeck.handCards[i], 'mana');
+				if(mana > 0) {
+					possibleCards.push(combatDeck.handCards[i]);
+				}
+			}
+			let freeCard = util.randFromArray(possibleCards);
+			console.log('tried to bless', freeCard);
+			if(freeCard != undefined) {	
+				freeCard.mana = 0;
+				if(freeCard.shardUpgrades.mana != undefined) freeCard.shardUpgrades.mana = 0;
+				if(freeCard.bothShardUpgrades.mana != undefined) freeCard.bothShardUpgrades.mana = 0;
+				if(freeCard.iceShardUpgrades.mana != undefined) freeCard.iceShardUpgrades.mana = 0;
+				if(freeCard.fireShardUpgrades.mana != undefined) freeCard.fireShardUpgrades.mana = 0;
+				updateCardDescriptions('handCards');
+			}
+		}
+		
+		combatDeck.updateCardPlayability(player, combatDeck);
+
+		elem.removeClass('playing');
+		card.playing = false;
+
+		// it's possible draw-card button has been disabled, but this card added speed
+		if(player.speed.current > 0 && combatDeck.handCards.length < 10) $('.draw-card, .draw-all').removeClass('disabled');
+
+		monsters.updateStatusBar();
+		if(card.type == 'attack') updateTreasureTriggers('attackCardsPlayed');
+		if(card.type == 'tool') updateTreasureTriggers('toolCardsPlayed');
+		if(card.type == 'magic') updateTreasureTriggers('magicCardsPlayed');
+		updateTreasureTriggers('cardsPlayed');
+		setStatus();
+		if(card.type == 'attack') updateCritChance(1);
+		monsterIntent();
+	} catch (error) {
+        console.error("Failed to playCard:", error);
+        handleError(error);
+    }
 }
 
 function checkBreakableRemoves() {
@@ -5582,6 +5580,12 @@ async function processDmg(dmg, currentMonster, multiply, card = false, type = fa
 					}
 				} else {
 					await attackPlayer(false, dmg[j]);
+					if(Player().dead(player)) {
+						await util.wait(1000);
+						endGame('loss');
+						return;
+					}
+				
 				}
 				await util.wait(game.animationDmg);
 				updateCritChance();
@@ -5682,284 +5686,152 @@ async function processMagic(magic, multiply, card = false, cardWasPlayed = false
 						magic[i].amount += card.age;
 					}
 				}
-				applyMagic(magic[i], player);
+				await applyMagic(magic[i], player);
 				await util.wait(game.animationGap);
 				setStatus();
 			}
 		}
 	}
 }
-//{action: 'addCard', select: 1, value: 7, type: 'bottled', to: 'drawCards'},
+
 async function processActions(actions, monster = false, multiply = 1, playedCard = false, cardWasPlayed = false) {
-	let update = true;
-	if(actions != undefined) {
-		for(let m = 0; m < multiply; m++) {
-			for(let e = 0; e < actions.length; e++) {
-				let gameAction = game.actions.find(({ id }) => id === actions[e].action);
-				if(gameAction !== undefined) {
-					if(game.playsounds && gameAction.sound !== undefined) sounds.play(gameAction.sound);
-				}
-				switch(actions[e].action) {
-					case 'addCard': {
+	try {
+		let update = true;
+		if(actions != undefined) {
+			for(let m = 0; m < multiply; m++) {
+				for(let e = 0; e < actions.length; e++) {
+					let gameAction = game.actions.find(({ id }) => id === actions[e].action);
+					if(gameAction !== undefined) {
+						if(game.playsounds && gameAction.sound !== undefined) sounds.play(gameAction.sound);
+					}
+					switch(actions[e].action) {
+						case 'addCard': {
 
-						let hex = actions[e].hex !== undefined ? actions[e].hex : false;
-						if(player.vex.current > 0 && hex) {
-							player.vex.current -= 1;
-							if(game.playsounds) sounds.play('vex');
-							break;
-						}
-						
-						//if(game.combatEndedFlag) return; //disabled this because it was not allowing the library quest to work
-						game.toShow = [];
-						let addCard = '';
-						let addThisCard = {};
-						let thisCard = {};
-						let possibleCards = [];
-						let modifiers = actions[e].modifiers != undefined ? actions[e].modifiers : {};
-						let shards = actions[e].with != undefined ? actions[e].with : [];
-						$('.player-panel .standard-message').html('').removeClass('shown');
+							let hex = actions[e].hex !== undefined ? actions[e].hex : false;
+							if(player.vex.current > 0 && hex) {
+								player.vex.current -= 1;
+								if(game.playsounds) sounds.play('vex');
+								break;
+							}
+							
+							//if(game.combatEndedFlag) return; //disabled this because it was not allowing the library quest to work
+							game.toShow = [];
+							let addCard = '';
+							let addThisCard = {};
+							let thisCard = {};
+							let possibleCards = [];
+							let modifiers = actions[e].modifiers != undefined ? actions[e].modifiers : {};
+							let shards = actions[e].with != undefined ? actions[e].with : [];
+							$('.player-panel .standard-message').html('').removeClass('shown');
 
-						let gameAction = game.actions.find(({ id }) => id === actions[e].action);
-						let sound = gameAction.sound ? gameAction.sound : false;
-						if(game.playsounds && sound) sounds.play(sound);
+							let gameAction = game.actions.find(({ id }) => id === actions[e].action);
+							let sound = gameAction.sound ? gameAction.sound : false;
+							if(game.playsounds && sound) sounds.play(sound);
 
-						if(actions[e].what != undefined) {
-							addCard = actions[e].what;
-						} else {
-							if(actions[e].type != undefined) {
-								if(actions[e].tier != undefined) {
-									if(actions[e].type == 'any') {
-										possibleCards = AllCards().cards.filter(i => i.addable == true && i.tier == actions[e].tier);
-									} else if(actions[e].type == 'converter' || actions[e].type == 'bottled' ) {
-										possibleCards = AllCards().cards.filter(i => i.type == actions[e].type && i.tier == actions[e].tier);
-									} else if(actions[e].type == 'weapon') {
-										possibleCards = AllCards().cards.filter(i => i.weapon == true && i.tier == actions[e].tier);
+							if(actions[e].what != undefined) {
+								addCard = actions[e].what;
+							} else {
+								if(actions[e].type != undefined) {
+									if(actions[e].tier != undefined) {
+										if(actions[e].type == 'any') {
+											possibleCards = AllCards().cards.filter(i => i.addable == true && i.tier == actions[e].tier);
+										} else if(actions[e].type == 'converter' || actions[e].type == 'bottled' ) {
+											possibleCards = AllCards().cards.filter(i => i.type == actions[e].type && i.tier == actions[e].tier);
+										} else if(actions[e].type == 'weapon') {
+											possibleCards = AllCards().cards.filter(i => i.weapon == true && i.tier == actions[e].tier);
+										} else {
+											possibleCards = AllCards().cards.filter(i => i.type == actions[e].type && i.tier == actions[e].tier && i.addable == true);
+										}
 									} else {
-										possibleCards = AllCards().cards.filter(i => i.type == actions[e].type && i.tier == actions[e].tier && i.addable == true);
+										if(actions[e].type == 'any') {
+											possibleCards = AllCards().cards.filter(i => i.addable == true);
+										} else if(actions[e].type == 'converter' || actions[e].type == 'bottled' || actions[e].type == 'clutter') {
+											possibleCards = AllCards().cards.filter(i => i.type == actions[e].type);
+										} else if(actions[e].type == 'weapon') {
+											possibleCards = AllCards().cards.filter(i => i.weapon == true);
+										} else {
+											possibleCards = AllCards().cards.filter(i => i.type == actions[e].type && i.addable == true);
+										}
 									}
 								} else {
-									if(actions[e].type == 'any') {
-										possibleCards = AllCards().cards.filter(i => i.addable == true);
-									} else if(actions[e].type == 'converter' || actions[e].type == 'bottled' || actions[e].type == 'clutter') {
-										possibleCards = AllCards().cards.filter(i => i.type == actions[e].type);
-									} else if(actions[e].type == 'weapon') {
-										possibleCards = AllCards().cards.filter(i => i.weapon == true);
-									} else {
-										possibleCards = AllCards().cards.filter(i => i.type == actions[e].type && i.addable == true);
+									if(actions[e].tier != undefined) {
+										possibleCards = AllCards().cards.filter(i => i.addable == true && i.tier == actions[e].tier);
 									}
 								}
-							} else {
-								if(actions[e].tier != undefined) {
-									possibleCards = AllCards().cards.filter(i => i.addable == true && i.tier == actions[e].tier);
-								}
 							}
-						}
 
-						// make sure we're in the correct pack
-						possibleCards = possibleCards.filter(i => i.pack == 'basic' || i.pack == game.boosterPack);
+							// make sure we're in the correct pack
+							possibleCards = possibleCards.filter(i => i.pack == 'basic' || i.pack == game.boosterPack);
 
-						// no legendaries (except weapons)
-						if(actions[e].type != 'weapon') {
-							possibleCards = possibleCards.filter(i => i.tier != 'legendary');
-						}
-						
-						for(let i = 0; i < actions[e].value; i++) {
-							thisCard = util.randFromArray(possibleCards);
-							possibleCards = possibleCards.filter(i => i.id !== thisCard.id);
+							// no legendaries (except weapons)
+							if(actions[e].type != 'weapon') {
+								possibleCards = possibleCards.filter(i => i.tier != 'legendary');
+							}
+							
+							for(let i = 0; i < actions[e].value; i++) {
+								thisCard = util.randFromArray(possibleCards);
+								possibleCards = possibleCards.filter(i => i.id !== thisCard.id);
 
-							addThisCard = addCard;
-							if(addCard == '') addThisCard = thisCard.id;
+								addThisCard = addCard;
+								if(addCard == '') addThisCard = thisCard.id;
 
-							if(actions[e].select != undefined) {
-								thisCard = combatDeck.initCard(thisCard, modifiers);
-								combatDeck.chooseCards.push(thisCard);
-								game.toPile = actions[e].to;
-								if(shards.length > 0) {
-									for(let i = 0; i < shards.length; i++) {
-										deck.attachShard(thisCard, shards[i]);
+								if(actions[e].select != undefined) {
+									thisCard = combatDeck.initCard(thisCard, modifiers);
+									combatDeck.chooseCards.push(thisCard);
+									game.toPile = actions[e].to;
+									if(shards.length > 0) {
+										for(let i = 0; i < shards.length; i++) {
+											deck.attachShard(thisCard, shards[i]);
+										}
+									}
+								} else {
+									// if we combined cards, aggregate ages
+									modifiers.age = game.combinedAge;
+
+									game.combinedAge = 0; // reset for the next set of combines
+
+									// we need to pass the guid in case the card is added during combat before the decks
+									// have a chance to sync. this is the only time currently that we're actually passing a guid in
+									let guid = util.randString();
+									if(actions[e].to != 'deck') {
+										combatDeck.addCard(addThisCard, combatDeck, actions[e].to, player, shards, guid, playedCard, modifiers);
+									}
+									if(actions[e].permanent) {
+										deck.addCard(addThisCard, guid);
+									}
+									thisCard = util.getCardById(addThisCard, AllCards().cards);
+									if(thisCard != undefined) {
+										let desc = deck.buildDescription(thisCard);
+										thisCard.desc = desc;
+										game.toShow.push(thisCard);
 									}
 								}
-							} else {
-								// if we combined cards, aggregate ages
-								modifiers.age = game.combinedAge;
-
-								game.combinedAge = 0; // reset for the next set of combines
-
-								// we need to pass the guid in case the card is added during combat before the decks
-								// have a chance to sync. this is the only time currently that we're actually passing a guid in
-								let guid = util.randString();
-								if(actions[e].to != 'deck') {
-									combatDeck.addCard(addThisCard, combatDeck, actions[e].to, player, shards, guid, playedCard, modifiers);
-								}
-								if(actions[e].permanent) {
-									deck.addCard(addThisCard, guid);
-								}
-								thisCard = util.getCardById(addThisCard, AllCards().cards);
-								if(thisCard != undefined) {
-									let desc = deck.buildDescription(thisCard);
-									thisCard.desc = desc;
-									game.toShow.push(thisCard);
-								}
 							}
-						}
 
-						if(combatDeck.chooseCards.length > 0 && actions[e].select != undefined) {
+							if(combatDeck.chooseCards.length > 0 && actions[e].select != undefined) {
+								game.toPick = actions[e].select;
+								viewChooseCards(util.sort(combatDeck.chooseCards));
+							} else {
+								deck.showModifiedCards(combatDeck, player, true);
+							}
+							break;
+						}
+						case 'remove': {
 							game.toPick = actions[e].select;
-							viewChooseCards(util.sort(combatDeck.chooseCards));
-						} else {
-							deck.showModifiedCards(combatDeck, player, true);
-						}
-						break;
-					}
-					case 'remove': {
-						game.toPick = actions[e].select;
-						var cards = deck.cards;
-						if(cards.length > 0) {
-							if(game.toPick > cards.length) game.toPick = cards.length;
-							viewChooseCards(cards, 'removable');
-						}
-						break; //{action: 'ensharden', type: 'frost', select: -1, from: 'handCards', random: true}
-					}
-					case 'ensharden': {
-						game.toPick = actions[e].select;
-						game.toPile = actions[e].from;
-						game.toShow = [];
-						var cards = [];
-						let shard = actions[e].type;
-						let thisShard = shard;
-						if(actions[e].from == 'handCards') {
-							if(playedCard) {
-								// don't include the card that was just played because it hasn't been discarded yet
-								cards = combatDeck.handCards.filter(i => i.guid !== playedCard.guid);
-							} else {
-								cards = combatDeck.handCards;
+							var cards = deck.cards;
+							if(cards.length > 0) {
+								if(game.toPick > cards.length) game.toPick = cards.length;
+								viewChooseCards(cards, 'removable');
 							}
-						} else if(actions[e].from == 'drawCards') {
-							cards = combatDeck.drawCards;
-						} else if(actions[e].from == 'discardCards') {
-							cards = combatDeck.discardCards;
-						} else if(actions[e].from == 'deck') {
-							cards = deck.cards;
-						} else {
-							cards = combatDeck.allLiveCards(combatDeck);
+							break; 
 						}
-						// make sure there are enough open slots
-						let totalOpenSlots = deck.numOpenSlots(cards);
-						for(let i = 0; i < cards.length; i++) {
-							if(deck.hasOpenSlot(cards[i])) {
-								//if(!actions[e].random) {
-									util.appendCard(cards[i], '.shard-cards-panel .cards');
-								//}
-								combatDeck.chooseCards.push(cards[i]);
-							}
-						}
-						if(combatDeck.chooseCards.length > 0) {
-							if(actions[e].random) {
-								let num = game.toPick;
-								if(num < 0) num = deck.numOpenSlots(combatDeck.chooseCards);
-								for(let i = 0; i < num; i++) {
-									if(shard == 'random') {
-										thisShard = util.randFromArray(treasures.shards);
-										thisShard = thisShard.id;
-									}
-									let card = util.randFromArray(combatDeck.chooseCards);
-									if(card != undefined) {
-										if(game.playsounds) sounds.play('attachShard');
-										deck.attachShard(card, thisShard);
-										game.toShow.push(card);
-										if(!deck.hasOpenSlot(card)) {
-											combatDeck.chooseCards = combatDeck.chooseCards.filter(i => i.guid !== card.guid);
-										}					
-									}
-								}	
-								updateCardDescriptions(game.toPile);
-							} else {
-								if(game.toPick > totalOpenSlots) game.toPick = totalOpenSlots;
-								if(totalOpenSlots > 0) {
-									chooseShardCard(shard, combatDeck.chooseCards);
-								}
-							}
-						}
-						
-						deck.showModifiedCards(combatDeck, player, true);
-						
-						break;
-					}
-					case 'draw': {
-						for(let i = 0; i < actions[e].value; i++) {
-							addCardTo('draw', null, 'handCards', true, cardWasPlayed);
-						}
-						break;
-					}
-					case 'discard': {
-						// currently only cards can invoke this action, so make sure invoking card isn't the only one in hand
-						if(combatDeck.handCards.length > 1) {
-							if(game.autoplay) {
-								for(let i = 0; i < actions[e].value; i++) {
-									let handCards = combatDeck.handCards;
-									handCards = handCards.filter(i => i.playing == false);
-									let randomCard = util.randFromArray(handCards);
-									if(randomCard !== undefined) {
-										let domCard = util.getDomCardByGuid(randomCard.guid);
-										await discardCard(domCard);
-									}
-								}
-							} else {
-								$('.discard-message').html('choose cards to <span>discard</span>').addClass('shown');
-								//$('.discard-done').addClass('shown');
-								$('.player-cards .card').addClass('discardable').removeClass('playable');
-								$('.draw-card, .draw-all').addClass('disabled');
-								$('body').addClass('discarding selecting');
-								game.toDiscard = actions[e].value;
-								update = false;
-							}
-						}
-						break;
-					}
-					case 'destroy': {
-						// currently only cards can invoke this action, so make sure invoking card isn't the only one in hand
-						if(combatDeck.handCards.length > 1) {
-							if(game.autoplay) {
-								for(let i = 0; i < actions[e].value; i++) {
-									let handCards = combatDeck.handCards;
-									handCards = handCards.filter(i => i.playing == false);
-									let randomCard = util.randFromArray(handCards);
-									if(randomCard !== undefined) {
-										let domCard = util.getDomCardByGuid(randomCard.guid);
-										await destroyCard(domCard);
-									}
-								}
-							} else {
-								$('.destroy-message').html('choose cards to <span>destroy</span>').addClass('shown');
-								if(actions[e].optional) {
-									game.destroyOptional = true;
-									$('.destroy-done').addClass('shown');
-								}
-								$('.player-cards .card').addClass('destroyable').removeClass('playable');
-								$('.draw-card, .draw-all').addClass('disabled');
-								$('body').addClass('destroying selecting');
-								game.toDestroy = actions[e].value;
-								update = false;
-							}
-						}
-						break;
-					}
-					case 'transmute': {
-						game.toPick = actions[e].select;
-						game.fromPile = actions[e].from;
-						if(game.autoplay) {
-							for(let i = 0; i < actions[e].select; i++) {
-								let handCards = combatDeck.handCards;
-								handCards = handCards.filter(i => i.playing == false);
-								let randomCard = util.randFromArray(handCards);
-								if(randomCard !== undefined) {
-									game.toTransmute.push(randomCard);
-								}
-							}
-							transmuteCards();
-						} else {
-							$('.choose-cards-panel .message').html('choose cards to transmute').addClass('shown');
+						case 'ensharden': {
+							game.toPick = actions[e].select;
+							game.toPile = actions[e].from;
+							game.toShow = [];
 							var cards = [];
+							let shard = actions[e].type;
+							let thisShard = shard;
 							if(actions[e].from == 'handCards') {
 								if(playedCard) {
 									// don't include the card that was just played because it hasn't been discarded yet
@@ -5971,376 +5843,513 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								cards = combatDeck.drawCards;
 							} else if(actions[e].from == 'discardCards') {
 								cards = combatDeck.discardCards;
-							} else {
+							} else if(actions[e].from == 'deck') {
 								cards = deck.cards;
+							} else {
+								cards = combatDeck.allLiveCards(combatDeck);
 							}
-							if(cards.length > 0) {
-								if(game.toPick > cards.length) game.toPick = cards.length;
-								viewChooseCards(cards, 'transmutable');
-								$('.choose-cards-panel .done').addClass('transmute');
+							// make sure there are enough open slots
+							let totalOpenSlots = deck.numOpenSlots(cards);
+							for(let i = 0; i < cards.length; i++) {
+								if(deck.hasOpenSlot(cards[i])) {
+									//if(!actions[e].random) {
+										util.appendCard(cards[i], '.shard-cards-panel .cards');
+									//}
+									combatDeck.chooseCards.push(cards[i]);
+								}
 							}
+							if(combatDeck.chooseCards.length > 0) {
+								if(actions[e].random) {
+									let num = game.toPick;
+									if(num < 0) num = deck.numOpenSlots(combatDeck.chooseCards);
+									for(let i = 0; i < num; i++) {
+										if(shard == 'random') {
+											thisShard = util.randFromArray(treasures.shards);
+											thisShard = thisShard.id;
+										}
+										let card = util.randFromArray(combatDeck.chooseCards);
+										if(card != undefined) {
+											playSoundOnce('attachShard');
+											deck.attachShard(card, thisShard);
+											game.toShow.push(card);
+											if(!deck.hasOpenSlot(card)) {
+												combatDeck.chooseCards = combatDeck.chooseCards.filter(i => i.guid !== card.guid);
+											}					
+										}
+									}	
+									updateCardDescriptions(game.toPile);
+								} else {
+									if(game.toPick > totalOpenSlots) game.toPick = totalOpenSlots;
+									if(totalOpenSlots > 0) {
+										chooseShardCard(shard, combatDeck.chooseCards);
+									}
+								}
+							}
+							
+							deck.showModifiedCards(combatDeck, player, true);
+							
+							break;
 						}
-						break;
-					}
-					case 'findDrawCard': {
-						if(combatDeck.drawCards.length > 0) {
+						case 'draw': {
+							for(let i = 0; i < actions[e].value; i++) {
+								addCardTo('draw', null, 'handCards', true, cardWasPlayed);
+							}
+							break;
+						}
+						case 'discard': {
+							// currently only cards can invoke this action, so make sure invoking card isn't the only one in hand
+							if(combatDeck.handCards.length > 1) {
+								if(game.autoplay) {
+									for(let i = 0; i < actions[e].value; i++) {
+										let handCards = combatDeck.handCards;
+										handCards = handCards.filter(i => i.playing == false);
+										let randomCard = util.randFromArray(handCards);
+										if(randomCard !== undefined) {
+											let domCard = util.getDomCardByGuid(randomCard.guid);
+											await discardCard(domCard);
+										}
+									}
+								} else {
+									$('.discard-message').html('choose cards to <span>discard</span>').addClass('shown');
+									//$('.discard-done').addClass('shown');
+									$('.player-cards .card').addClass('discardable').removeClass('playable');
+									$('.draw-card, .draw-all').addClass('disabled');
+									$('body').addClass('discarding selecting');
+									game.toDiscard = actions[e].value;
+									update = false;
+								}
+							}
+							break;
+						}
+						case 'destroy': {
+							// currently only cards can invoke this action, so make sure invoking card isn't the only one in hand
+							if(combatDeck.handCards.length > 1) {
+								if(game.autoplay) {
+									for(let i = 0; i < actions[e].value; i++) {
+										let handCards = combatDeck.handCards;
+										handCards = handCards.filter(i => i.playing == false);
+										let randomCard = util.randFromArray(handCards);
+										if(randomCard !== undefined) {
+											let domCard = util.getDomCardByGuid(randomCard.guid);
+											await destroyCard(domCard);
+										}
+									}
+								} else {
+									$('.destroy-message').html('choose cards to <span>destroy</span>').addClass('shown');
+									if(actions[e].optional) {
+										game.destroyOptional = true;
+										$('.destroy-done').addClass('shown');
+									}
+									$('.player-cards .card').addClass('destroyable').removeClass('playable');
+									$('.draw-card, .draw-all').addClass('disabled');
+									$('body').addClass('destroying selecting');
+									game.toDestroy = actions[e].value;
+									update = false;
+								}
+							}
+							break;
+						}
+						case 'transmute': {
+							game.toPick = actions[e].select;
+							game.fromPile = actions[e].from;
 							if(game.autoplay) {
-								for(let i = 0; i < actions[e].value; i++) {
+								for(let i = 0; i < actions[e].select; i++) {
+									let handCards = combatDeck.handCards;
+									handCards = handCards.filter(i => i.playing == false);
+									let randomCard = util.randFromArray(handCards);
+									if(randomCard !== undefined) {
+										game.toTransmute.push(randomCard);
+									}
+								}
+								transmuteCards();
+							} else {
+								$('.choose-cards-panel .message').html('choose cards to transmute').addClass('shown');
+								var cards = [];
+								if(actions[e].from == 'handCards') {
+									if(playedCard) {
+										// don't include the card that was just played because it hasn't been discarded yet
+										cards = combatDeck.handCards.filter(i => i.guid !== playedCard.guid);
+									} else {
+										cards = combatDeck.handCards;
+									}
+								} else if(actions[e].from == 'drawCards') {
+									cards = combatDeck.drawCards;
+								} else if(actions[e].from == 'discardCards') {
+									cards = combatDeck.discardCards;
+								} else {
+									cards = deck.cards;
+								}
+								if(cards.length > 0) {
+									if(game.toPick > cards.length) game.toPick = cards.length;
+									viewChooseCards(cards, 'transmutable');
+									$('.choose-cards-panel .done').addClass('transmute');
+								}
+							}
+							break;
+						}
+						case 'findDrawCard': {
+							if(combatDeck.drawCards.length > 0) {
+								if(game.autoplay) {
+									for(let i = 0; i < actions[e].value; i++) {
+										viewDrawCards();
+										await util.wait(500);
+										let drawCards = $('.draw-cards-panel .card');
+										if(drawCards.length > 0) {
+											let randomCard = $(util.randFromArray(drawCards));
+											addCardTo('drawCards', randomCard);
+										}
+										$('.draw-cards-panel').removeClass('shown');
+										$('.draw-cards-panel .card').removeClass('pickable');
+										$('.draw-cards-panel .message').html('');
+										await util.wait(250);
+									}
+								} else {
+									game.toPick = actions[e].value;
 									viewDrawCards();
-									await util.wait(500);
-									let drawCards = $('.draw-cards-panel .card');
-									if(drawCards.length > 0) {
-										let randomCard = $(util.randFromArray(drawCards));
-										addCardTo('drawCards', randomCard);
-									}
-									$('.draw-cards-panel').removeClass('shown');
-									$('.draw-cards-panel .card').removeClass('pickable');
-									$('.draw-cards-panel .message').html('');
-									await util.wait(250);
+									$('.draw-cards-panel .card').addClass('pickable');
+									$('.draw-cards-panel .message').html('Add cards to your hand');
+									$('.draw-cards').addClass('disabled');
 								}
-							} else {
-								game.toPick = actions[e].value;
-								viewDrawCards();
-								$('.draw-cards-panel .card').addClass('pickable');
-								$('.draw-cards-panel .message').html('Add cards to your hand');
-								$('.draw-cards').addClass('disabled');
 							}
+							break;
 						}
-						break;
-					}
-					case 'findDiscardCard': {
-						if(combatDeck.discardCards.length > 0) {
-							if(game.autoplay) {
-								for(let i = 0; i < actions[e].value; i++) {
+						case 'findDiscardCard': {
+							if(combatDeck.discardCards.length > 0) {
+								if(game.autoplay) {
+									for(let i = 0; i < actions[e].value; i++) {
+										viewDiscardCards();
+										await util.wait(500);
+										let discardCards = $('.discard-cards-panel .card');
+										if(discardCards.length > 0) {
+											let randomCard = $(util.randFromArray(discardCards));
+											addCardTo('discardCards', randomCard);
+										}
+										$('.discard-cards-panel').removeClass('shown');
+										$('.discard-cards-panel .card').removeClass('pickable');
+										$('.discard-cards-panel .message').html('');
+										await util.wait(250);
+									}
+								} else {
+									game.toPick = actions[e].value;
 									viewDiscardCards();
-									await util.wait(500);
-									let discardCards = $('.discard-cards-panel .card');
-									if(discardCards.length > 0) {
-										let randomCard = $(util.randFromArray(discardCards));
-										addCardTo('discardCards', randomCard);
-									}
-									$('.discard-cards-panel').removeClass('shown');
-									$('.discard-cards-panel .card').removeClass('pickable');
-									$('.discard-cards-panel .message').html('');
-									await util.wait(250);
+									$('.discard-cards-panel .card').addClass('pickable');
+									$('.discard-cards-panel .message').html('Add cards to your hand');
 								}
-							} else {
-								game.toPick = actions[e].value;
-								viewDiscardCards();
-								$('.discard-cards-panel .card').addClass('pickable');
-								$('.discard-cards-panel .message').html('Add cards to your hand');
 							}
+							break;
 						}
-						break;
-					}
-					case 'findDeadCard': {
-						if(combatDeck.deadCards.length > 0) {
-							if(game.autoplay) {
-								for(let i = 0; i < actions[e].value; i++) {
+						case 'findDeadCard': {
+							if(combatDeck.deadCards.length > 0) {
+								if(game.autoplay) {
+									for(let i = 0; i < actions[e].value; i++) {
+										viewDeadCards();
+										await util.wait(500);
+										let deadCards = $('.dead-cards-panel .card');
+										if(deadCards.length > 0) {
+											let randomCard = $(util.randFromArray(deadCards));
+											addCardTo('deadCards', randomCard);
+										}
+										$('.dead-cards-panel').removeClass('shown');
+										$('.dead-cards-panel .card').removeClass('pickable');
+										$('.dead-cards-panel .message').html('');
+										await util.wait(250);
+									}
+								} else {
+									game.toPick = actions[e].value;
 									viewDeadCards();
-									await util.wait(500);
-									let deadCards = $('.dead-cards-panel .card');
-									if(deadCards.length > 0) {
-										let randomCard = $(util.randFromArray(deadCards));
-										addCardTo('deadCards', randomCard);
+									$('.dead-cards-panel .card').addClass('pickable');
+									$('.dead-cards-panel .message').html('Add cards to your hand');
+								}
+							}
+							break;
+						}
+						case 'stat': {
+
+							// {action: 'stat', what: 'rainbow', key: 'type', value: 'dark'}
+							
+							let key = actions[e].key;
+							let what = actions[e].what;
+							let value = actions[e].value;
+							let additive = actions[e].additive !== undefined ? actions[e].additive : true;
+							let hex = actions[e].hex !== undefined ? actions[e].hex : false;
+
+							if(player.vex.current > 0 && hex) {
+								player.vex.current -= 1;
+								if(game.playsounds) sounds.play('vex');
+								break;
+							}
+
+							if(value==='double') {
+								value = player[what][key];
+								if((what==='punch' || what==='thunder')) {
+									if(value > 1) {
+										value = value - 1;
+									} else {
+										value = 0;
 									}
-									$('.dead-cards-panel').removeClass('shown');
-									$('.dead-cards-panel .card').removeClass('pickable');
-									$('.dead-cards-panel .message').html('');
-									await util.wait(250);
+								}
+							}
+
+							// if a card was played, check for age multiply effects only for certain stats
+							if(playedCard && what == 'health' && key == 'current') {
+								if(playedCard.age > 0) {
+									if(player.wisdom.current != 1) {
+										value += Math.round(playedCard.age * player.wisdom.current);
+									} else {
+										value += playedCard.age;
+									}
+								}
+							}
+							// check for changing stances
+							if(what == 'stance') {
+								if(value != player.stance) {
+									changeStance(value);
+								}
+							}
+							// if essence levels are maxed out, increase alternative stats
+							if((what == 'aura' && player.aura.level > game.essences.length)) {
+								what = 'mana'; // key is already 'current' and value is already 1
+							} else if ((what == 'sparkle' && player.sparkle.level > game.essences.length)) {
+								what = 'health'; // key is already 'current'
+								value = 5;
+							} else if ((what == 'shimmer' && player.shimmer.level > game.essences.length)) {
+								what = 'speed'; // key is already 'current' and value is already 1
+								value = 2;
+								// some other options would be increase raindow, increase courage, or decrease aggro
+								// armor and block won't work in the current state unless we account for them as we have courage below
+							}
+							
+							if(key == undefined) {
+								// hacky provision for courage :( - it's the only simple/single value stat that needs to change numerically
+								if(what == 'courage') {
+									gainCourage(value);
+									updateItemCost();
+								} else {
+									player[what] = value;
 								}
 							} else {
-								game.toPick = actions[e].value;
-								viewDeadCards();
-								$('.dead-cards-panel .card').addClass('pickable');
-								$('.dead-cards-panel .message').html('Add cards to your hand');
+								if(key == 'type') {
+									player[what][key] = value;
+								} else {
+									if(what == 'health') {
+										if(key == 'max') {
+											player.health.max += value;
+										} else {
+											heal(player, value);
+										}
+									} else if(what == 'courage') {
+										gainCourage(value);
+									} else if(what == 'aggro') {
+										updateAggro(value);
+									// we will actually increase the essence stats within the updateEssenceLevels function called below
+									} else if(what != 'aura' && what != 'sparkle' && what != 'shimmer') {
+										if(additive) {
+											if(what == 'rainbow' && key == 'base') {
+												player.rainbow.current += value;
+											}
+											player[what][key] += value;
+										} else {
+											player[what][key] = value;
+										}
+										// we don't ever want mana to go below 0
+										if(what == 'mana' && player.mana.current < 0) {
+											player.mana.current = 0;
+										}
+										// it's possible rainbow gets reduced below base value - don't let this happen
+										// we actually removed this because it didn't make sense
+										//if(player.rainbow.base > player.rainbow.max) player.rainbow.max = player.rainbow.base;
+									}
+									// if we increased speed we might need to re-enable draw card button
+									if(what == 'speed' && value > 0) {
+										$('.draw-card, .draw-all').removeClass('disabled');
+									}
+								}
 							}
+							// if we're changing the rainbow max stat, need to process possible rainbow activation & dom
+							if(what == 'rainbow') {
+								//updateRainbowDom(player);
+								if(player.rainbow.current >= player.rainbow.max) {
+
+								}
+								let magic = {type: player.rainbow.type, amount: 0}
+								let ignoreConjure = true;
+								await applyMagic(magic, player, ignoreConjure);
+							}
+							// if max health was reduced and current health was at full, need to reduce current health
+							if(player.health.max < player.health.current) player.health.current = player.health.max;
+							// it's possible we had full armor and reduced health, so armor needs to reduce to match health
+							if(player.armor > player.health.current) player.armor = player.health.current;
+							// if we're updating stats with UI, need to process
+							if(what == 'aura' || what == 'sparkle' || what == 'shimmer') {
+								updateEssenceLevels(what, value);
+							} else if(what != 'rainbow') {
+								if(game.playsounds) {
+									if(value > 0) {
+										if(what == 'courage') {
+											sounds.play('courage');
+										} else {
+											sounds.play('statUp');
+										}
+									} else {
+										sounds.play('statDown');
+									}
+								}
+							}
+							// player may have died from losing health to a quest
+							if(Player().dead(player)) {
+								endGame('loss');
+							}
+							break;
 						}
-						break;
-					}
-					case 'stat': {
-
-						// {action: 'stat', what: 'rainbow', key: 'type', value: 'dark'}
-						
-						let key = actions[e].key;
-						let what = actions[e].what;
-						let value = actions[e].value;
-						let additive = actions[e].additive !== undefined ? actions[e].additive : true;
-						let hex = actions[e].hex !== undefined ? actions[e].hex : false;
-
-						if(player.vex.current > 0 && hex) {
-							player.vex.current -= 1;
-							if(game.playsounds) sounds.play('vex');
+						case 'removeHexes': {
+							if(actions[e].to=='player') {
+								removeHexes(player);
+							} else if(actions[e].to=='self') {
+								removeHexes(monster);
+							}
+							break;
+						}
+						case 'removeBuffs': {
+							if(actions[e].to=='player') {
+								removeBuffs(player);
+							} else if(actions[e].to=='self' || actions[e].to=='target') {
+								removeBuffs(monster[0]);
+							}
+							break;
+						}
+						case 'playOldest': {
+							let card = combatDeck.getOldestPlayableCard(combatDeck.handCards, playedCard);
+							if(card) {
+								let domCard = util.getDomCardByGuid(card.guid);
+								playCard(domCard, 'random', false, false)
+							}
+							break;
+						}
+						case 'playHand': {
+							let theseCards = combatDeck.handCards;
+							game.autoplay = true;
+							$('body, .map-inner').addClass('unavailable');
+							$('body').removeClass('combating');
+							for(let i = 0; i < theseCards.length; i++) {
+								if(theseCards[i].guid != playedCard.guid) {
+									let domCard = util.getDomCardByGuid(theseCards[i].guid);
+									await playCard(domCard, 'random', false, false);
+									await util.wait(game.animationGap);
+								}
+							}
+							game.autoplay = false;
+							$('body, .map-inner').removeClass('unavailable');
+							$('body').addClass('combating');
+							break;
+						}
+						case 'discardHand': {
+							let theseCards = combatDeck.handCards;
+							game.autoplay = true;
+							$('body, .map-inner').addClass('unavailable');
+							$('body').removeClass('combating');
+							for(let i = 0; i < theseCards.length; i++) {
+								if(theseCards[i].guid != playedCard.guid) {
+									let domCard = util.getDomCardByGuid(theseCards[i].guid);
+									await discardCard(domCard);
+									await util.wait(300);
+								}
+							}
+							game.autoplay = false;
+							$('body, .map-inner').removeClass('unavailable');
+							$('body').addClass('combating');
+							break;
+						}
+						case 'destroyHand': {
+							let theseCards = combatDeck.handCards;
+							game.autoplay = true;
+							$('body, .map-inner').addClass('unavailable');
+							$('body').removeClass('combating');
+							for(let i = 0; i < theseCards.length; i++) {
+								if(theseCards[i].guid != playedCard.guid) {
+									let domCard = util.getDomCardByGuid(theseCards[i].guid);
+									await destroyCard(domCard);
+									await util.wait(300);
+								}
+							}
+							game.autoplay = false;
+							$('body, .map-inner').removeClass('unavailable');
+							$('body').addClass('combating');
+							break;
+						}
+						case 'summonMonster': {
+							let form = actions[e].form !== undefined ? actions[e].form : false;
+							let context = actions[e].context !== undefined ? actions[e].context : false;
+							if(actions[e].what.constructor === Array) {
+								for(let i = 0; i < actions[e].value; i++) {
+									let id = game.round + '-' + i;
+									let what = util.randFromArray(actions[e].what);
+									monsters.summonMonster(what, id, form);
+									await util.wait(game.animationGap);
+								}
+							} else if(actions[e].what == 'random') {
+								for(let i = 0; i < actions[e].value; i++) {
+									let id = game.round + '-' + i;
+									let possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost');
+									if(context === 'upgraded') {
+										possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context !== 'forest');
+									} else if(context !== false) {
+										possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context == context);
+									}
+									if(actions[e].tier !== undefined) {
+										if(actions[e].tier.constructor === Array) {
+											possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && actions[e].tier.includes(i.tier));
+											if(context === 'upgraded') {
+												possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context !== 'forest' && actions[e].tier.includes(i.tier));
+											} else if(context !== false) {
+												possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context == context && actions[e].tier.includes(i.tier));
+											}
+										}
+									}
+									let what = util.randFromArray(possibleMonsters);
+									monsters.summonMonster(what.id, id, form);
+									await util.wait(game.animationGap);
+								}
+							} else {
+								for(let i = 0; i < actions[e].value; i++) {
+									let id = game.round + '-' + i;
+									monsters.summonMonster(actions[e].what, id, form);
+									await util.wait(game.animationGap);
+								}
+							}
+							break;
+						}
+						case 'kill': {
+							if(actions[e].to=='player') {
+								kill(player);
+							} else if(actions[e].to=='self') {
+								kill(monster);
+							}
+							break;
+						}
+						case 'rainbowShield': {
+							var blk = Math.round(actions[e].value * player.rainbow.max);
+							applyBlock(blk, player);
+							break;
+						}
+						case 'chargedShield': {
+							var blk = Math.round(actions[e].value * player.rainbow.current);
+							applyBlock(blk, player);
 							break;
 						}
 
-						if(value==='double') {
-							value = player[what][key];
-							if((what==='punch' || what==='thunder')) {
-								if(value > 1) {
-									value = value - 1;
-								} else {
-									value = 0;
-								}
-							}
-						}
-
-						// if a card was played, check for age multiply effects only for certain stats
-						if(playedCard && what == 'health' && key == 'current') {
-							if(playedCard.age > 0) {
-								if(player.wisdom.current != 1) {
-									value += Math.round(playedCard.age * player.wisdom.current);
-								} else {
-									value += playedCard.age;
-								}
-							}
-						}
-						// check for changing stances
-						if(what == 'stance') {
-							if(value != player.stance) {
-								changeStance(value);
-							}
-						}
-						// if essence levels are maxed out, increase alternative stats
-						if((what == 'aura' && player.aura.level > game.essences.length)) {
-							what = 'mana'; // key is already 'current' and value is already 1
-						} else if ((what == 'sparkle' && player.sparkle.level > game.essences.length)) {
-							what = 'health'; // key is already 'current'
-							value = 5;
-						} else if ((what == 'shimmer' && player.shimmer.level > game.essences.length)) {
-							what = 'speed'; // key is already 'current' and value is already 1
-							value = 2;
-							// some other options would be increase raindow, increase courage, or decrease aggro
-							// armor and block won't work in the current state unless we account for them as we have courage below
-						}
-						
-						if(key == undefined) {
-							// hacky provision for courage :( - it's the only simple/single value stat that needs to change numerically
-							if(what == 'courage') {
-								gainCourage(value);
-								updateItemCost();
-							} else {
-								player[what] = value;
-							}
-						} else {
-							if(key == 'type') {
-								player[what][key] = value;
-							} else {
-								if(what == 'health') {
-									if(key == 'max') {
-										player.health.max += value;
-									} else {
-										heal(player, value);
-									}
-								} else if(what == 'courage') {
-									gainCourage(value);
-								} else if(what == 'aggro') {
-									updateAggro(value);
-								// we will actually increase the essence stats within the updateEssenceLevels function called below
-								} else if(what != 'aura' && what != 'sparkle' && what != 'shimmer') {
-									if(additive) {
-										if(what == 'rainbow' && key == 'base') {
-											player.rainbow.current += value;
-										}
-										player[what][key] += value;
-									} else {
-										player[what][key] = value;
-									}
-									// we don't ever want mana to go below 0
-									if(what == 'mana' && player.mana.current < 0) {
-										player.mana.current = 0;
-									}
-									// it's possible rainbow gets reduced below base value - don't let this happen
-									// we actually removed this because it didn't make sense
-									//if(player.rainbow.base > player.rainbow.max) player.rainbow.max = player.rainbow.base;
-								}
-								// if we increased speed we might need to re-enable draw card button
-								if(what == 'speed' && value > 0) {
-									$('.draw-card, .draw-all').removeClass('disabled');
-								}
-							}
-						}
-						// if we're changing the rainbow max stat, need to process possible rainbow activation & dom
-						if(what == 'rainbow') {
-							//updateRainbowDom(player);
-							if(player.rainbow.current >= player.rainbow.max) {
-
-							}
-							let magic = {type: player.rainbow.type, amount: 0}
-							let ignoreConjure = true;
-							await applyMagic(magic, player, ignoreConjure);
-						}
-						// if max health was reduced and current health was at full, need to reduce current health
-						if(player.health.max < player.health.current) player.health.current = player.health.max;
-						// it's possible we had full armor and reduced health, so armor needs to reduce to match health
-						if(player.armor > player.health.current) player.armor = player.health.current;
-						// if we're updating stats with UI, need to process
-						if(what == 'aura' || what == 'sparkle' || what == 'shimmer') {
-							updateEssenceLevels(what, value);
-						} else if(what != 'rainbow') {
-							if(game.playsounds) {
-								if(value > 0) {
-									if(what == 'courage') {
-										sounds.play('courage');
-									} else {
-										sounds.play('statUp');
-									}
-								} else {
-									sounds.play('statDown');
-								}
-							}
-						}
-						// player may have died from losing health to a quest
-						if(Player().dead(player)) {
-							endGame('loss');
-						}
-						break;
 					}
-					case 'removeHexes': {
-						if(actions[e].to=='player') {
-							removeHexes(player);
-						} else if(actions[e].to=='self') {
-							removeHexes(monster);
-						}
-						break;
-					}
-					case 'removeBuffs': {
-						if(actions[e].to=='player') {
-							removeBuffs(player);
-						} else if(actions[e].to=='self' || actions[e].to=='target') {
-							removeBuffs(monster[0]);
-						}
-						break;
-					}
-					case 'playOldest': {
-						let card = combatDeck.getOldestPlayableCard(combatDeck.handCards, playedCard);
-						if(card) {
-							let domCard = util.getDomCardByGuid(card.guid);
-							playCard(domCard, 'random', false, false)
-						}
-						break;
-					}
-					case 'playHand': {
-						let theseCards = combatDeck.handCards;
-						game.autoplay = true;
-						$('body, .map-inner').addClass('unavailable');
-						$('body').removeClass('combating');
-						for(let i = 0; i < theseCards.length; i++) {
-							if(theseCards[i].guid != playedCard.guid) {
-								let domCard = util.getDomCardByGuid(theseCards[i].guid);
-								await playCard(domCard, 'random', false, false);
-								await util.wait(game.animationGap);
-							}
-						}
-						game.autoplay = false;
-						$('body, .map-inner').removeClass('unavailable');
-						$('body').addClass('combating');
-						break;
-					}
-					case 'discardHand': {
-						let theseCards = combatDeck.handCards;
-						game.autoplay = true;
-						$('body, .map-inner').addClass('unavailable');
-						$('body').removeClass('combating');
-						for(let i = 0; i < theseCards.length; i++) {
-							if(theseCards[i].guid != playedCard.guid) {
-								let domCard = util.getDomCardByGuid(theseCards[i].guid);
-								await discardCard(domCard);
-								await util.wait(300);
-							}
-						}
-						game.autoplay = false;
-						$('body, .map-inner').removeClass('unavailable');
-						$('body').addClass('combating');
-						break;
-					}
-					case 'destroyHand': {
-						let theseCards = combatDeck.handCards;
-						game.autoplay = true;
-						$('body, .map-inner').addClass('unavailable');
-						$('body').removeClass('combating');
-						for(let i = 0; i < theseCards.length; i++) {
-							if(theseCards[i].guid != playedCard.guid) {
-								let domCard = util.getDomCardByGuid(theseCards[i].guid);
-								await destroyCard(domCard);
-								await util.wait(300);
-							}
-						}
-						game.autoplay = false;
-						$('body, .map-inner').removeClass('unavailable');
-						$('body').addClass('combating');
-						break;
-					}
-					case 'summonMonster': {
-						let form = actions[e].form !== undefined ? actions[e].form : false;
-						let context = actions[e].context !== undefined ? actions[e].context : false;
-						if(actions[e].what.constructor === Array) {
-							for(let i = 0; i < actions[e].value; i++) {
-								let id = game.round + '-' + i;
-								let what = util.randFromArray(actions[e].what);
-								monsters.summonMonster(what, id, form);
-								await util.wait(game.animationGap);
-							}
-						} else if(actions[e].what == 'random') {
-							for(let i = 0; i < actions[e].value; i++) {
-								let id = game.round + '-' + i;
-								let possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost');
-								if(context === 'upgraded') {
-									possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context !== 'forest');
-								} else if(context !== false) {
-									possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context == context);
-								}
-								if(actions[e].tier !== undefined) {
-									if(actions[e].tier.constructor === Array) {
-										possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && actions[e].tier.includes(i.tier));
-										if(context === 'upgraded') {
-											possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context !== 'forest' && actions[e].tier.includes(i.tier));
-										} else if(context !== false) {
-											possibleMonsters = monsters.monsters.filter(i => i.breed != 'ghost' && i.context == context && actions[e].tier.includes(i.tier));
-										}
-									}
-								}
-								let what = util.randFromArray(possibleMonsters);
-								monsters.summonMonster(what.id, id, form);
-								await util.wait(game.animationGap);
-							}
-						} else {
-							for(let i = 0; i < actions[e].value; i++) {
-								let id = game.round + '-' + i;
-								monsters.summonMonster(actions[e].what, id, form);
-								await util.wait(game.animationGap);
-							}
-						}
-						break;
-					}
-					case 'kill': {
-						if(actions[e].to=='player') {
-							kill(player);
-						} else if(actions[e].to=='self') {
-							kill(monster);
-						}
-						break;
-					}
-					case 'rainbowShield': {
-						var blk = Math.round(actions[e].value * player.rainbow.max);
-						applyBlock(blk, player);
-						break;
-					}
-					case 'chargedShield': {
-						var blk = Math.round(actions[e].value * player.rainbow.current);
-						applyBlock(blk, player);
-						break;
-					}
-
+					await util.wait(game.animationGap);
+					setStatus();
 				}
-				await util.wait(game.animationGap);
-				setStatus();
 			}
 		}
-	}
 
-	return update;
+		return update;
 
+	} catch (error) {
+        console.error("Failed to processActions:", error);
+        handleError(error);
+    }
 }
 
 async function processQuest(elem) {
@@ -6349,6 +6358,8 @@ async function processQuest(elem) {
 	let id = quest.id;
 	let option = elem.attr('data-option');
 	let subOptions = util.getQuestSubOptions(quest, option);
+	let finalTreasure = treasures.treasures.filter(i => i.id == 'pewter_mug');
+	finalTreasure = finalTreasure[0];
 
 	switch(id) {
 		case 'workshop':
@@ -6476,19 +6487,34 @@ async function processQuest(elem) {
 		case 'altar':
 			if(option == 'minor_sacrifice') {
 				let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 1);
-				let treasure = util.weightedRandom(possibleTreasures);
+				let treasure = {};
+				if(possibleTreasures.length > 0) {
+					treasure = util.weightedRandom(possibleTreasures);
+				} else {
+					treasure = finalTreasure;
+				}
 				addTreasure(treasure.id); 
 				let actions = [{action: 'stat', what: 'health', key: 'current', value: -4}];
 				await processActions(actions);
 			} else if(option == 'major_sacrifice') {
 				let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 2);
-				let treasure = util.weightedRandom(possibleTreasures);
+				let treasure = {};
+				if(possibleTreasures.length > 0) {
+					treasure = util.weightedRandom(possibleTreasures);
+				} else {
+					treasure = finalTreasure;
+				}
 				addTreasure(treasure.id); 
 				let actions = [{action: 'stat', what: 'health', key: 'current', value: -12}];
 				await processActions(actions);
 			} else if(option == 'ultimate_sacrifice') {
 				let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 3);
-				let treasure = util.weightedRandom(possibleTreasures);
+				let treasure = {};
+				if(possibleTreasures.length > 0) {
+					treasure = util.weightedRandom(possibleTreasures);
+				} else {
+					treasure = finalTreasure;
+				}
 				addTreasure(treasure.id); 
 				let actions = [{action: 'stat', what: 'health', key: 'current', value: -21}];
 				await processActions(actions);
@@ -6499,19 +6525,34 @@ async function processQuest(elem) {
 		case 'reliquary':
 			if(option == 'old_relic') {
 				let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 1);
-				let treasure = util.weightedRandom(possibleTreasures);
+				let treasure = {};
+				if(possibleTreasures.length > 0) {
+					treasure = util.weightedRandom(possibleTreasures);
+				} else {
+					treasure = finalTreasure;
+				}
 				addTreasure(treasure.id); 
 				let actions = [{action: 'stat', what: 'health', key: 'max', value: -2}];
 				await processActions(actions);
 			} else if(option == 'ancient_relic') {
 				let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 2);
-				let treasure = util.weightedRandom(possibleTreasures);
+				let treasure = {};
+				if(possibleTreasures.length > 0) {
+					treasure = util.weightedRandom(possibleTreasures);
+				} else {
+					treasure = finalTreasure;
+				}
 				addTreasure(treasure.id); 
 				let actions = [{action: 'stat', what: 'health', key: 'max', value: -5}];
 				await processActions(actions);
 			} else if(option == 'primeval_relic') {
 				let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 3);
-				let treasure = util.weightedRandom(possibleTreasures);
+				let treasure = {};
+				if(possibleTreasures.length > 0) {
+					treasure = util.weightedRandom(possibleTreasures);
+				} else {
+					treasure = finalTreasure;
+				}
 				addTreasure(treasure.id); 
 				let actions = [{action: 'stat', what: 'health', key: 'max', value: -9}];
 				await processActions(actions);
@@ -6642,7 +6683,12 @@ async function processQuest(elem) {
 			if(option == 'leap1') {
 				if(util.chance(25)) {
 					let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 1);
-					let treasure = util.weightedRandom(possibleTreasures);
+					let treasure = {};
+					if(possibleTreasures.length > 0) {
+						treasure = util.weightedRandom(possibleTreasures);
+					} else {
+						treasure = finalTreasure;
+					}
 					addTreasure(treasure.id); 
 					$('.quest-screen').removeClass('shown');
 					$('.quest-options').empty();
@@ -6653,7 +6699,12 @@ async function processQuest(elem) {
 			if(option == 'leap2') {
 				if(util.chance(35)) {
 					let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 1);
-					let treasure = util.weightedRandom(possibleTreasures);
+					let treasure = {};
+					if(possibleTreasures.length > 0) {
+						treasure = util.weightedRandom(possibleTreasures);
+					} else {
+						treasure = finalTreasure;
+					}
 					addTreasure(treasure.id); 
 					$('.quest-screen').removeClass('shown');
 					$('.quest-options').empty();
@@ -6664,7 +6715,12 @@ async function processQuest(elem) {
 			if(option == 'leap3') {
 				if(util.chance(45)) {
 					let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 1);
-					let treasure = util.weightedRandom(possibleTreasures);
+					let treasure = {};
+					if(possibleTreasures.length > 0) {
+						treasure = util.weightedRandom(possibleTreasures);
+					} else {
+						treasure = finalTreasure;
+					}
 					addTreasure(treasure.id); 
 					$('.quest-screen').removeClass('shown');
 					$('.quest-options').empty();
@@ -6675,7 +6731,12 @@ async function processQuest(elem) {
 			if(option == 'leap4') {
 				if(util.chance(55)) {
 					let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 1);
-					let treasure = util.weightedRandom(possibleTreasures);
+					let treasure = {};
+					if(possibleTreasures.length > 0) {
+						treasure = util.weightedRandom(possibleTreasures);
+					} else {
+						treasure = finalTreasure;
+					}
 					addTreasure(treasure.id); 
 					$('.quest-screen').removeClass('shown');
 					$('.quest-options').empty();
@@ -6686,7 +6747,12 @@ async function processQuest(elem) {
 			if(option == 'leap5') {
 				if(util.chance(65)) {
 					let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 1);
-					let treasure = util.weightedRandom(possibleTreasures);
+					let treasure = {};
+					if(possibleTreasures.length > 0) {
+						treasure = util.weightedRandom(possibleTreasures);
+					} else {
+						treasure = finalTreasure;
+					}
 					addTreasure(treasure.id); 
 					$('.quest-screen').removeClass('shown');
 					$('.quest-options').empty();
@@ -6697,7 +6763,12 @@ async function processQuest(elem) {
 			if(option == 'leap6') {
 				if(util.chance(75)) {
 					let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 1);
-					let treasure = util.weightedRandom(possibleTreasures);
+					let treasure = {};
+					if(possibleTreasures.length > 0) {
+						treasure = util.weightedRandom(possibleTreasures);
+					} else {
+						treasure = finalTreasure;
+					}
 					addTreasure(treasure.id); 
 					$('.quest-screen').removeClass('shown');
 					$('.quest-options').empty();
@@ -6708,7 +6779,12 @@ async function processQuest(elem) {
 			if(option == 'leap7') {
 				if(util.chance(85)) {
 					let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 1);
-					let treasure = util.weightedRandom(possibleTreasures);
+					let treasure = {};
+					if(possibleTreasures.length > 0) {
+						treasure = util.weightedRandom(possibleTreasures);
+					} else {
+						treasure = finalTreasure;
+					}
 					addTreasure(treasure.id); 
 					$('.quest-screen').removeClass('shown');
 					$('.quest-options').empty();
@@ -6719,7 +6795,12 @@ async function processQuest(elem) {
 			if(option == 'leap8') {
 				if(util.chance(95)) {
 					let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 1);
-					let treasure = util.weightedRandom(possibleTreasures);
+					let treasure = {};
+					if(possibleTreasures.length > 0) {
+						treasure = util.weightedRandom(possibleTreasures);
+					} else {
+						treasure = finalTreasure;
+					}
 					addTreasure(treasure.id); 
 					$('.quest-screen').removeClass('shown');
 					$('.quest-options').empty();
@@ -6729,7 +6810,12 @@ async function processQuest(elem) {
 			}
 			if(option == 'leap9') {
 				let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 1);
-				let treasure = util.weightedRandom(possibleTreasures);
+				let treasure = {};
+					if(possibleTreasures.length > 0) {
+						treasure = util.weightedRandom(possibleTreasures);
+					} else {
+						treasure = finalTreasure;
+					}
 				addTreasure(treasure.id); 
 				let actions = [{action: 'stat', what: 'health', key: 'current', value: -5}];
 				await processActions(actions);
@@ -6794,7 +6880,12 @@ async function processQuest(elem) {
 			if(option == 'right3221') {
 				if(util.chance(75)) {
 					let possibleTreasures = treasures.treasures.filter(i => i.owned == false && i.tier == 2);
-					let treasure = util.weightedRandom(possibleTreasures);
+					let treasure = {};
+					if(possibleTreasures.length > 0) {
+						treasure = util.weightedRandom(possibleTreasures);
+					} else {
+						treasure = finalTreasure;
+					}
 					addTreasure(treasure.id); 
 					loot('candy', 3);
 					gainCourage(9);
@@ -7142,6 +7233,8 @@ async function applyMagic(magic, to, ignoreConjure = false) {
 	// update rainbow dom
 	updateRainbowDom(player);
 
+	//await util.wait(game.animationGap);
+
 	game.message(to.name + '(' + to.guid + ') applies ' + totalAmount + ' ' + type + ' magic');
 
 }
@@ -7282,28 +7375,28 @@ function applyArmor(arm, to) {
 
 function applyAggro(dmg, monster) {
 	let aggroDmg = dmg;
+	// first, increase the base damage of flame monsters
 	if(monster.context == 'flame') {
 		// for each level, 10 base damage would become: 15, 20, 25, 30, etc.
 		//aggroDmg += Math.round(((player.aggro.level / 2) + .5) * aggroDmg);
-		aggroDmg += Math.round((Math.log(level + 1) + .5) * aggroDmg);
+		aggroDmg += Math.round((Math.log(player.aggro.level + 1) + .5) * aggroDmg);
 	}
+	// then apply aggro based on player level
 	if((game.mapType == 'ice_gate' || game.mapType == 'fire_gate' || game.mapType == 'arena') || (game.difficulty=='nightmare' && game.mapType=='singularity')) {
 		// 10 base damage will increase by 5 per aggro level, starting at level 1
 		aggroDmg = Math.round(((player.aggro.level / 2) + 1) * aggroDmg);
 	}
-	aggroDmg = Math.round((dmg + monster.might.current) * monster.punch.current);
+	aggroDmg = Math.round((aggroDmg + monster.might.current) * monster.punch.current);
 	return aggroDmg;
 }
 
 async function attackPlayer(monster, dmg) {
 
+	if(Player().dead(player)) return;
+
 	await doDamage(dmg, monster, [player]);
 
 	setStatus();
-
-	if(Player().dead(player)) {
-		endGame('loss');
-	}
 
 }
 
@@ -7322,220 +7415,298 @@ async function kill(to) {
 }
 
 async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false, fatalityHit = false, hypnotizeHit = false, criticalHit = false, cardWasPlayed = true) {
+	try {
+		if(to.length > 0) {
+			for (let i = 0; i < to.length; i++) {
 
-	if(to.length > 0) {
-		for (let i = 0; i < to.length; i++) {
-
-			// don't process this card if the targeted monster is dead
-			// this is possible when a card multi-hits
-			if(monsters.dead(to[i])) {
-				return
-			}
-
-			// stop combat if all monsters are dead
-			for(let i = 0; i < game.currentMonsters.length; i++) {
-				monsters.updateMonsterStats(game.currentMonsters[i]);
-				if(monsters.dying(game.currentMonsters[i])) {
-					if(game.playsounds) sounds.play('death');
+				// don't process this card if the targeted monster is dead
+				// this is possible when a card multi-hits
+				if(monsters.dead(to[i])) {
+					return
 				}
-				if(monsters.dead(game.currentMonsters[i])) {
-					util.removeMonster(game.currentMonsters[i]);
-				}
-				if(monsters.allDead()) {
-					endCombat();
-					return;
-				}
-			}
 
-			let thisTo = to[i] == false || to[i] == undefined ? player : to[i];
-
-			let thisDmg = dmg < 0 ? 0 : dmg;
-			let dmgTaken = 0;
-			let armorLost = 0;
-			let healthLost = 0;
-			let unreachable = false;
-			unreachable = thisTo.unreachable?.enabled;
-			let tank = thisTo.tank.enabled;
-
-			// check for panic
-			if(from?.panic?.enabled) {
-				thisDmg += from.block;
-				from.block = 0;
-			}
-
-			// is player unreachable?
-			if(unreachable) {
-				if(thisDmg > 0) {
-					thisDmg = 1;
-				}
-				tank = true;
-			}
-
-			let unblockedDmg = thisDmg;
-			if(!ignoreBlock) {
-				unblockedDmg = thisDmg - thisTo.block;
-			}
-
-			// full block
-			if(unblockedDmg <= 0) {
-				thisTo.block -= thisDmg;
-				dmgTaken += thisDmg;
-				if(game.playsounds) sounds.play('loseBlock');
-			} else {
-				if(!ignoreBlock) {
-					if(thisTo.block > 0 && game.playsounds) sounds.play('loseBlock');
-					dmgTaken += thisTo.block;
-					thisTo.block = 0;
-				}
-				// armor reduces damage by 50%
-				let armoredDmg = unblockedDmg;
-				let originalDmg = unblockedDmg;
-				// odd damage amounts should affect armor +1 more than health (unless no armor)
-				let odd = (armoredDmg % 2 == 0) || (thisTo.armor == 0) ? 0 : 1;
-				if(!ignoreArmor) {
-					armoredDmg = Math.floor(unblockedDmg / 2);
-					originalDmg = Math.ceil(originalDmg / 2);
-				}
-				// if we have enough armor, reduce armor and health by 50% of damage
-				if(!ignoreArmor && originalDmg <= thisTo.armor && thisTo.armor > 0) {
-					armorLost += (armoredDmg + odd);
-					dmgTaken += armorLost;
-					thisTo.armor -= (armoredDmg + odd);
-					// also reduce health if tank is not enabled
-					if(!tank) {
-						healthLost += armoredDmg;
-						dmgTaken += armoredDmg;
-						thisTo.health.current -= armoredDmg;
-						if(armoredDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && !criticalHit && thisTo.type=='monster') {
-							game.highestDmgRoll = armoredDmg;
-						}
+				// stop combat if all monsters are dead
+				for(let i = 0; i < game.currentMonsters.length; i++) {
+					monsters.updateMonsterStats(game.currentMonsters[i]);
+					if(monsters.dying(game.currentMonsters[i])) {
+						if(game.playsounds) sounds.play('death');
 					}
+					if(monsters.dead(game.currentMonsters[i])) {
+						util.removeMonster(game.currentMonsters[i]);
+					}
+					if(monsters.allDead()) {
+						endCombat();
+						return;
+					}
+				}
+
+				let thisTo = to[i] == false || to[i] == undefined ? player : to[i];
+
+				let thisDmg = dmg < 0 ? 0 : dmg;
+				let dmgTaken = 0;
+				let armorLost = 0;
+				let healthLost = 0;
+				let unreachable = false;
+				unreachable = thisTo.unreachable?.enabled;
+				let tank = thisTo.tank.enabled;
+
+				// check for panic
+				if(from?.panic?.enabled) {
+					thisDmg += from.block;
+					from.block = 0;
+				}
+
+				// is player unreachable?
+				if(unreachable) {
+					if(thisDmg > 0) {
+						thisDmg = 1;
+					}
+					tank = true;
+				}
+
+				let unblockedDmg = thisDmg;
+				if(!ignoreBlock) {
+					unblockedDmg = thisDmg - thisTo.block;
+				}
+
+				// full block
+				if(unblockedDmg <= 0) {
+					thisTo.block -= thisDmg;
+					dmgTaken += thisDmg;
+					if(game.playsounds) sounds.play('loseBlock');
 				} else {
-					if(ignoreArmor || thisTo.armor == 0) {
-						// full hit
-						healthLost += unblockedDmg;
-						dmgTaken += unblockedDmg;
-						thisTo.health.current -= unblockedDmg;
-						if(unblockedDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && !criticalHit && thisTo.type=='monster') {
-							game.highestDmgRoll = unblockedDmg;
-						}
-					} else {
-						// first reduce armored health, then full tank the rest	
-						let partialDmg = thisTo.armor;
-						let fullDmg = unblockedDmg - (thisTo.armor * 2);
-						// only hit remaining armor if tank enabled
-						if(!thisTo.tank.enabled) {
-							healthLost += partialDmg;
-							dmgTaken += partialDmg;
-							thisTo.health.current -= partialDmg;
-							if(partialDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && !criticalHit && thisTo.type=='monster') {
-								game.highestDmgRoll = partialDmg;
+					if(!ignoreBlock) {
+						if(thisTo.block > 0 && game.playsounds) sounds.play('loseBlock');
+						dmgTaken += thisTo.block;
+						thisTo.block = 0;
+					}
+					// armor reduces damage by 50%
+					let armoredDmg = unblockedDmg;
+					let originalDmg = unblockedDmg;
+					// odd damage amounts should affect armor +1 more than health (unless no armor)
+					let odd = (armoredDmg % 2 == 0) || (thisTo.armor == 0) ? 0 : 1;
+					if(!ignoreArmor) {
+						armoredDmg = Math.floor(unblockedDmg / 2);
+						originalDmg = Math.ceil(originalDmg / 2);
+					}
+					// if we have enough armor, reduce armor and health by 50% of damage
+					if(!ignoreArmor && originalDmg <= thisTo.armor && thisTo.armor > 0) {
+						armorLost += (armoredDmg + odd);
+						dmgTaken += armorLost;
+						thisTo.armor -= (armoredDmg + odd);
+						// also reduce health if tank is not enabled
+						if(!tank) {
+							healthLost += armoredDmg;
+							dmgTaken += armoredDmg;
+							thisTo.health.current -= armoredDmg;
+							if(armoredDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && !criticalHit && thisTo.type=='monster') {
+								game.highestDmgRoll = armoredDmg;
 							}
 						}
-						healthLost += fullDmg;
-						dmgTaken += fullDmg;
-						thisTo.health.current -= fullDmg;
-						if(fullDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && !criticalHit && thisTo.type=='monster') {
-							game.highestDmgRoll = fullDmg;
+					} else {
+						if(ignoreArmor || thisTo.armor == 0) {
+							// full hit
+							healthLost += unblockedDmg;
+							dmgTaken += unblockedDmg;
+							thisTo.health.current -= unblockedDmg;
+							if(unblockedDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && !criticalHit && thisTo.type=='monster') {
+								game.highestDmgRoll = unblockedDmg;
+							}
+						} else {
+							// first reduce armored health, then full tank the rest	
+							let partialDmg = thisTo.armor;
+							let fullDmg = unblockedDmg - (thisTo.armor * 2);
+							// only hit remaining armor if tank enabled
+							if(!thisTo.tank.enabled) {
+								healthLost += partialDmg;
+								dmgTaken += partialDmg;
+								thisTo.health.current -= partialDmg;
+								if(partialDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && !criticalHit && thisTo.type=='monster') {
+									game.highestDmgRoll = partialDmg;
+								}
+							}
+							healthLost += fullDmg;
+							dmgTaken += fullDmg;
+							thisTo.health.current -= fullDmg;
+							if(fullDmg > game.highestDmgRoll && !fatalityHit && !hypnotizeHit && !criticalHit && thisTo.type=='monster') {
+								game.highestDmgRoll = fullDmg;
+							}
+							armorLost += thisTo.armor;
+							dmgTaken += thisTo.armor;
+							thisTo.armor = 0;
 						}
-						armorLost += thisTo.armor;
-						dmgTaken += thisTo.armor;
-						thisTo.armor = 0;
 					}
 				}
-			}
 
-			if(thisTo.health.current <= 0) thisTo.health.current = 0;
-			if(thisTo.armor <= 0) thisTo.armor = 0;
-			if(thisTo.block <= 0) thisTo.block = 0;
-			if(thisTo.armor > thisTo.health.current) thisTo.armor = thisTo.health.current; // this can happen when ignoreArmor == true
+				if(thisTo.health.current <= 0) thisTo.health.current = 0;
+				if(thisTo.armor <= 0) thisTo.armor = 0;
+				if(thisTo.block <= 0) thisTo.block = 0;
+				if(thisTo.armor > thisTo.health.current) thisTo.armor = thisTo.health.current; // this can happen when ignoreArmor == true
 
-			let dmgTakenDom = $('.player .dmg-taken');
-			let armorLostDom = $('.player .armor-lost');
-			let healthLostDom = $('.player .health-lost');
-			if(thisTo.type=='monster') {
-				dmgTakenDom = $('.monster[data-guid=' + thisTo.guid + '] .dmg-taken');
-				armorLostDom = $('.monster[data-guid=' + thisTo.guid + '] .armor-lost');
-				healthLostDom = $('.monster[data-guid=' + thisTo.guid + '] .health-lost');
-			}
-			dmgTakenDom.attr('data-amount', dmgTaken);
-			armorLostDom.attr('data-amount', armorLost);
-			healthLostDom.attr('data-amount', healthLost);
+				let dmgTakenDom = $('.player .dmg-taken');
+				let armorLostDom = $('.player .armor-lost');
+				let healthLostDom = $('.player .health-lost');
+				if(thisTo.type=='monster') {
+					dmgTakenDom = $('.monster[data-guid=' + thisTo.guid + '] .dmg-taken');
+					armorLostDom = $('.monster[data-guid=' + thisTo.guid + '] .armor-lost');
+					healthLostDom = $('.monster[data-guid=' + thisTo.guid + '] .health-lost');
+				}
+				dmgTakenDom.attr('data-amount', dmgTaken);
+				armorLostDom.attr('data-amount', armorLost);
+				healthLostDom.attr('data-amount', healthLost);
 
-			if(dmgTaken > 0) {
-				game.blkAnimations({data: dmgTaken, to: dmgTakenDom});
-				game.message(thisTo.name + ' (' + thisTo.guid + ') takes ' + dmgTaken + ' total damage');
-				await util.wait(game.animationDmg);
-			}
-			if(armorLost > 0) {
-				game.dmgAnimations({data: armorLost, to: armorLostDom});
-				await util.wait(game.animationDmg);
-				// check for spikes
-				if(thisTo.spikes.current > 0 && from != undefined && cardWasPlayed) {
+				if(dmgTaken > 0) {
+					game.blkAnimations({data: dmgTaken, to: dmgTakenDom});
+					game.message(thisTo.name + ' (' + thisTo.guid + ') takes ' + dmgTaken + ' total damage');
+					await util.wait(game.animationDmg);
+				}
+				if(armorLost > 0) {
+					game.dmgAnimations({data: armorLost, to: armorLostDom});
+					await util.wait(game.animationDmg);
+					// check for spikes
+					if(thisTo.spikes.current > 0 && from != undefined && cardWasPlayed && !hypnotizeHit) {
 
-					let spikesDmg = Math.round(thisTo.spikes.current);
-					if(spikesDmg < 1) spikesDmg = 1;
+						let spikesDmg = Math.round(thisTo.spikes.current);
+						if(spikesDmg < 1) spikesDmg = 1;
 
-					await doDamage(spikesDmg, undefined, [from]);
+						await doDamage(spikesDmg, undefined, [from]);
+
+						setStatus(false);
+
+					}
+					game.message(thisTo.name + ' (' + thisTo.guid + ') loses ' + armorLost + ' armor');
+					if(game.playsounds) sounds.play('loseArmor');
+				}
+				if(healthLost > 0) {
+					if(game.playsounds) sounds.play('takeDmg');
+					game.dmgAnimations({data: healthLost, to: healthLostDom});
+					await util.wait(game.animationDmg);
+					// check for retaliate
+					if(thisTo.retaliate.current > 0 && from != undefined && cardWasPlayed && !hypnotizeHit) {
+
+						let retalDmg = Math.round(thisTo.retaliate.current);
+						if(retalDmg < 1) retalDmg = 1;
+						
+						await doDamage(retalDmg, undefined, [from]);
+
+					}
+					// check for resurrect
+					if(thisTo.resurrect.enabled) {
+						if(game.difficulty=='expert') {
+							game.toResurrect += 2;
+						} else {
+							game.toResurrect += 1;
+						}
+						if(game.playsounds) sounds.play('effect44');
+					}
+
+					// check for hardened
+					if(thisTo.hardened.current > 0) {
+						applyBlock(thisTo.hardened.current, thisTo);
+					}
 
 					setStatus(false);
-
+					game.message(thisTo.name + ' (' + thisTo.guid + ') loses ' + healthLost + ' health');
 				}
-				game.message(thisTo.name + ' (' + thisTo.guid + ') loses ' + armorLost + ' armor');
-				if(game.playsounds) sounds.play('loseArmor');
-			}
-			if(healthLost > 0) {
-				if(game.playsounds) sounds.play('takeDmg');
-				game.dmgAnimations({data: healthLost, to: healthLostDom});
-				await util.wait(game.animationDmg);
-				// check for retaliate
-				if(thisTo.retaliate.current > 0 && from != undefined && cardWasPlayed) {
 
-					let retalDmg = Math.round(thisTo.retaliate.current);
-					if(retalDmg < 1) retalDmg = 1;
-					
-					await doDamage(retalDmg, undefined, [from]);
-
-				}
-				// check for resurrect
-				if(thisTo.resurrect.enabled) {
-					if(game.difficulty=='expert' || game.difficulty=='nightmare') {
-						game.toResurrect += 2;
-					} else {
-						game.toResurrect += 1;
+				// check again because monster could have died from spikes/retaliate this hit
+				for(let i = 0; i < game.currentMonsters.length; i++) {
+					monsters.updateMonsterStats(game.currentMonsters[i]);
+					if(monsters.dying(game.currentMonsters[i])) {
+						if(game.playsounds) sounds.play('death');
 					}
-					if(game.playsounds) sounds.play('effect44');
+					if(monsters.dead(game.currentMonsters[i])) {
+						util.removeMonster(game.currentMonsters[i]);
+					}
+					if(monsters.allDead()) {
+						endCombat();
+						return;
+					}
+				}
+				// player may have died from spikes/retaliate
+				if(Player().dead(player)) {
+					endGame('loss');
 				}
 
-				// check for hardened
-				if(thisTo.hardened.current > 0) {
-					applyBlock(thisTo.hardened.current, thisTo);
-				}
-
-				setStatus(false);
-				game.message(thisTo.name + ' (' + thisTo.guid + ') loses ' + healthLost + ' health');
-			}
-
-			// check again because monster could have died from spikes/retaliate this hit
-			for(let i = 0; i < game.currentMonsters.length; i++) {
-				monsters.updateMonsterStats(game.currentMonsters[i]);
-				if(monsters.dying(game.currentMonsters[i])) {
-					if(game.playsounds) sounds.play('death');
-				}
-				if(monsters.dead(game.currentMonsters[i])) {
-					util.removeMonster(game.currentMonsters[i]);
-				}
-				if(monsters.allDead()) {
-					endCombat();
-					return;
-				}
-			}
-			// player may have died from spikes/retaliate
-			if(Player().dead(player)) {
-				endGame('loss');
 			}
 
 		}
-
-	}
+	} catch (error) {
+        console.error("Failed to doDamage:", error);
+        handleError(error);
+    }
 }
+
+// cursor arrow
+const line = $('#curve')[0];
+let startCoords = {x: 0, y: 0};
+let endCoords = {x: 0, y: 0};
+let startElement = null;
+function drawArrow(elem) {
+	$('#curve, #arrow').addClass('shown');
+	startElement = elem[0];
+    const rect = startElement.getBoundingClientRect();
+    setStartCoords({
+        x: rect.x + (rect.width / 2),
+        y: rect.y + (rect.height / 2),
+    });
+    setEndCoords({
+		x: rect.x + (rect.width / 2), 
+		y: rect.y + (rect.height / 2),
+	});
+}
+function removeArrow() {
+	startCoords = {x: 0, y: 0};
+	endCoords = {x: 0, y: 0};
+	$('#curve, #arrow').removeClass('shown');	
+}
+function draw() {
+
+	var p1x = parseFloat(startCoords.x);
+	var p1y = parseFloat(startCoords.y);
+	var p2x = parseFloat(endCoords.x);
+	var p2y = parseFloat(endCoords.y);
+
+	// mid-point of line:
+	var mpx = (p2x + p1x) * 0.5;
+	var mpy = (p2y + p1y) * 0.5;
+
+	// angle of perpendicular to line:
+	var theta = Math.atan2(p2y - p1y, p2x - p1x) - Math.PI / 2;
+
+	// distance of control point from mid-point of line:
+	var offset = 90;
+
+	// location of control point:
+	var c1x = mpx + offset * Math.cos(theta);
+	var c1y = mpy + offset * Math.sin(theta);
+
+	// show where the control point is:
+	var c1 = document.getElementById("cp");
+	c1.setAttribute("cx", c1x);
+	c1.setAttribute("cy", c1y);
+
+	// construct the command to draw a quadratic curve
+	var curve = "M" + p1x + " " + p1y + " Q " + c1x + " " + c1y + " " + p2x + " " + p2y;
+	var curveElement = document.getElementById("curve");
+	curveElement.setAttribute("d", curve);
+
+	var arrowElement = document.getElementById("arrow");
+	arrowElement.setAttribute("x", p2x - 40);
+	arrowElement.setAttribute("y", p2y - 40);
+
+}
+function setStartCoords(coords) {
+  startCoords = coords;
+  draw();
+}
+function setEndCoords(coords) {
+  endCoords = coords;
+  draw();
+}
+document.addEventListener('mousemove', event => {
+  if (!startElement) {
+    return;
+  }
+  setEndCoords({x: event.clientX, y: event.clientY});
+});

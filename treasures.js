@@ -1200,7 +1200,7 @@ const ALL_TREASURES = [
         weight: 6,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'sparkle', key: 'current', value: 5}
+            {action: 'stat', what: 'sparkle', key: 'current', value: 8}
         ],
         x: -192,
         y: -896
@@ -1212,7 +1212,7 @@ const ALL_TREASURES = [
         weight: 6,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'shimmer', key: 'current', value: 5}
+            {action: 'stat', what: 'shimmer', key: 'current', value: 8}
         ],
         x: -192,
         y: -1024
@@ -1224,7 +1224,7 @@ const ALL_TREASURES = [
         weight: 6,
         permanent: true,
         actions: [
-            {action: 'stat', what: 'aura', key: 'current', value: 5}
+            {action: 'stat', what: 'aura', key: 'current', value: 8}
         ],
         x: -192,
         y: -992

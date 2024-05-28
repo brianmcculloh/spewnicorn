@@ -3003,7 +3003,9 @@ body.arena .monster-panel {
 	background-position:center center;
 	z-index:12;
 }
-.player-panel img.sprite {
+
+
+.player-panel .sprite {
 	width:460px;
 	bottom:-45px;
 	left:-130px;
@@ -3012,7 +3014,49 @@ body.arena .monster-panel {
 	z-index:-1;
 	transition:all .3s;
 }
-.player-panel.damaged img.sprite {
+.player-panel .sprite img {
+	width:100%;
+	height:auto;
+	transition: filter 0.5s ease;
+}
+.sprite[data-stance="aura"] img {
+    filter: sepia(.85) saturate(3000%) hue-rotate(-30deg) brightness(1) contrast(1) drop-shadow(0 0 10px var(--aura_color)) drop-shadow(0 0 20px var(--aura_color));
+    animation: pulse-aura 8s infinite;
+}
+.sprite[data-stance="sparkle"] img {
+    filter: sepia(.85) saturate(10000%) hue-rotate(205deg) brightness(1.2) contrast(1) drop-shadow(0 0 10px var(--sparkle_color)) drop-shadow(0 0 20px var(--sparkle_color));
+    animation: pulse-sparkle 8s infinite;
+}
+.sprite[data-stance="shimmer"] img {
+    filter: sepia(.85) saturate(10000%) hue-rotate(275deg) brightness(1.1) contrast(1.2) drop-shadow(0 0 10px var(--shimmer_color)) drop-shadow(0 0 20px var(--shimmer_color));
+    animation: pulse-shimmer 8s infinite;
+}
+@keyframes pulse-aura {
+    0%, 20%, 40%, 60%, 80%, 100% {
+        filter: sepia(.85) saturate(3000%) hue-rotate(-30deg) brightness(1) contrast(1) drop-shadow(0 0 10px var(--aura_color)) drop-shadow(0 0 20px var(--aura_color));
+    }
+    10%, 30%, 50%, 70%, 90% {
+        filter: sepia(.92) saturate(6000%) hue-rotate(-5deg) brightness(1.5) contrast(1.1) drop-shadow(0 0 20px var(--aura_color)) drop-shadow(0 0 30px var(--aura_color));
+    }
+}
+@keyframes pulse-sparkle {
+    0%, 20%, 40%, 60%, 80%, 100% {
+        filter: sepia(.85) saturate(9000%) hue-rotate(205deg) brightness(1.4) contrast(1) drop-shadow(0 0 10px var(--sparkle_color)) drop-shadow(0 0 20px var(--sparkle_color));
+    }
+    10%, 30%, 50%, 70%, 90% {
+        filter: sepia(.92) saturate(3000%) hue-rotate(190deg) brightness(1.5) contrast(1.1) drop-shadow(0 0 20px var(--sparkle_color)) drop-shadow(0 0 30px var(--sparkle_color));
+    }
+}
+@keyframes pulse-shimmer {
+    0%, 20%, 40%, 60%, 80%, 100% {
+        filter: sepia(.85) saturate(9000%) hue-rotate(275deg) brightness(1.4) contrast(1) drop-shadow(0 0 10px var(--shimmer_color)) drop-shadow(0 0 20px var(--shimmer_color));
+    }
+    10%, 30%, 50%, 70%, 90% {
+        filter: sepia(.92) saturate(5000%) hue-rotate(260deg) brightness(1.5) contrast(1.1) drop-shadow(0 0 20px var(--shimmer_color)) drop-shadow(0 0 30px var(--shimmer_color));
+    }
+}
+
+.player-panel.damaged .sprite {
 	animation: rumble .1s infinite linear;
 }
 .player-panel .incoming-damage {

@@ -1633,7 +1633,9 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'resistance', amount: .8, turns: 2}
             ], dmg: [36], armor: [15], p: .25},
-            {dmg: [16], blk: [10], armor: [10], p: .25},
+            {effects: [
+                {effect: 'vigor', amount: 1, turns: -1},
+            ], dmg: [16], blk: [10], armor: [10], p: .25},
         ],
         vigor: {base: 1, current: 0, temp: [], turns: -1}
     }),
@@ -1779,7 +1781,9 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'resistance', amount: .8, turns: 2}
             ], dmg: [36], armor: [15], p: .25},
-            {dmg: [16], blk: [10], armor: [10], p: .25},
+            {effects: [
+                {effect: 'vigor', amount: 1, turns: -1},
+            ], dmg: [16], blk: [10], armor: [10], p: .25},
         ],
         vigor: {base: 1, current: 0, temp: [], turns: -1}
     }),
@@ -1927,7 +1931,9 @@ const ALL_MONSTERS = [
             {effects: [
                 {effect: 'resistance', amount: .8, turns: 2}
             ], dmg: [36], armor: [15], p: .25},
-            {dmg: [16], blk: [10], armor: [10], p: .25},
+            {effects: [
+                {effect: 'vigor', amount: 1, turns: -1},
+            ], dmg: [16], blk: [10], armor: [10], p: .25},
         ],
         vigor: {base: 1, current: 0, temp: [], turns: -1}
     }),
@@ -2526,7 +2532,7 @@ const ALL_MONSTERS = [
         id: 'flame_guardian', 
         breed: 'flame_guardian',
         name: 'Flame Guardian', 
-        health: {base: 350, current: 0, max: 350},
+        health: {base: 300, current: 0, max: 300},
         tier: 6,
         category: 'fire_guardian',
         pattern: 'fixed',
@@ -2568,7 +2574,7 @@ const ALL_MONSTERS = [
         id: 'super_frozen_flame_guardian', 
         breed: 'flame_guardian',
         name: 'Super Frozen Flame Guardian', 
-        health: {base: 700, current: 0, max: 700},
+        health: {base: 600, current: 0, max: 600},
         tier: 7,
         category: 'fire_guardian',
         pattern: 'fixed',
@@ -2610,7 +2616,7 @@ const ALL_MONSTERS = [
         id: 'super_burning_flame_guardian', 
         breed: 'flame_guardian',
         name: 'Super Burning Flame Guardian', 
-        health: {base: 350, current: 0, max: 350},
+        health: {base: 300, current: 0, max: 300},
         tier: 7,
         category: 'fire_guardian',
         pattern: 'fixed',
@@ -2655,7 +2661,7 @@ const ALL_MONSTERS = [
         id: 'frost_guardian', 
         breed: 'frost_guardian',
         name: 'Frost Guardian', 
-        health: {base: 500, current: 0, max: 500},
+        health: {base: 800, current: 0, max: 800},
         tier: 6,
         category: 'ice_guardian',
         pattern: 'fixed',
@@ -2704,7 +2710,7 @@ const ALL_MONSTERS = [
         id: 'super_frozen_frost_guardian', 
         breed: 'frost_guardian',
         name: 'Super Frozen Frost Guardian', 
-        health: {base: 1000, current: 0, max: 1000},
+        health: {base: 1600, current: 0, max: 1600},
         tier: 7,
         category: 'ice_guardian',
         pattern: 'fixed',
@@ -2753,7 +2759,7 @@ const ALL_MONSTERS = [
         id: 'super_burning_frost_guardian', 
         breed: 'frost_guardian',
         name: 'Super Burning Frost Guardian', 
-        health: {base: 500, current: 0, max: 500},
+        health: {base: 800, current: 0, max: 800},
         tier: 7,
         category: 'ice_guardian',
         pattern: 'fixed',
@@ -3147,9 +3153,10 @@ export function Monster() {
         let context = game.overworld;
         
         game.previousMonsters = [];
-        game.previousArena = [];
 
         if(game.mapType == 'arena') {
+
+            game.previousArena = [];
 
             if(game.map==1) {
                 for (let i = 0; i < 1; i++) {
@@ -3736,6 +3743,218 @@ export function Monster() {
                     }
 
                 break;
+                case 11:
+                    if(game.map==1) {
+                        // 3 Tier 4 monsters
+                        for (let i = 0; i < 3; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
+                        }
+                    } else {
+                        // 2 of each dragon color
+                        var thisMonster = createMonster(2, game, 'normal', [], context, 'fel_dragon');
+                        currentMonsters.push(thisMonster);
+                        thisMonster = createMonster(2, game, 'normal', [], context, 'cunning_dragon');
+                        currentMonsters.push(thisMonster);
+                        thisMonster = createMonster(2, game, 'normal', [], context, 'writhing_dragon');
+                        currentMonsters.push(thisMonster);
+                        thisMonster = createMonster(2, game, 'normal', [], context, 'darkness_dragon');
+                        currentMonsters.push(thisMonster);
+                    }
+
+                break;
+                case 12:
+                    if(game.map==1) {
+                        // 4 Tier 4 monsters
+                        for (let i = 0; i < 4; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
+                        }
+                    } else {
+                        // 3 of each dragon color
+                        var thisMonster = createMonster(3, game, 'normal', [], context, 'fel_dragon');
+                        currentMonsters.push(thisMonster);
+                        thisMonster = createMonster(3, game, 'normal', [], context, 'cunning_dragon');
+                        currentMonsters.push(thisMonster);
+                        thisMonster = createMonster(3, game, 'normal', [], context, 'writhing_dragon');
+                        currentMonsters.push(thisMonster);
+                        thisMonster = createMonster(3, game, 'normal', [], context, 'darkness_dragon');
+                        currentMonsters.push(thisMonster);
+                    }
+
+                break;
+
+                case 13:
+                    if(game.map==1) {
+                        // 5 Tier 4 monsters
+                        for (let i = 0; i < 5; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
+                        }
+                    } else {
+                        // 6 Tier 4 monsters
+                        for (let i = 0; i < 6; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', [], context);
+                            currentMonsters.push(thisMonster);
+                        }
+                    }
+
+                break;
+
+                case 14:
+                    if(game.map==1) {
+                        // 6 Tier 4 monsters
+                        for (let i = 0; i < 6; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
+                        }
+                    } else {
+                        // 7 Tier 4 monsters
+                        for (let i = 0; i < 7; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', [], context);
+                            currentMonsters.push(thisMonster);
+                        }
+                    }
+
+                break;
+
+                case 15:
+                    if(game.map==1) {
+                        // 8 Tier 4 monsters
+                        for (let i = 0; i < 8; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
+                        }
+                    } else {
+                        // 8 Tier 4 monsters
+                        for (let i = 0; i < 8; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', [], context);
+                            currentMonsters.push(thisMonster);
+                        }
+                    }
+
+                break;
+
+                case 16:
+                    if(game.map==1) {
+                        // 10 Tier 4 monsters
+                        for (let i = 0; i < 10; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
+                        }
+                    } else {
+                        // 10 Tier 4 monsters
+                        for (let i = 0; i < 10; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', [], context);
+                            currentMonsters.push(thisMonster);
+                        }
+                    }
+
+                break;
+
+                case 17:
+                    if(game.map==1) {
+                        // 15 Tier 4 monsters
+                        for (let i = 0; i < 15; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
+                        }
+                    } else {
+                        // 15 Tier 4 monsters
+                        for (let i = 0; i < 15; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', [], context);
+                            currentMonsters.push(thisMonster);
+                        }
+                    }
+
+                break;
+
+                case 18:
+                    if(game.map==1) {
+                        // 20 Tier 4 monsters
+                        for (let i = 0; i < 20; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
+                        }
+                    } else {
+                        // 20 Tier 4 monsters
+                        for (let i = 0; i < 20; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', [], context);
+                            currentMonsters.push(thisMonster);
+                        }
+                    }
+
+                break;
+
+                case 19:
+                    if(game.map==1) {
+                        // 25 Tier 4 monsters
+                        for (let i = 0; i < 25; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            currentMonsters.push(thisMonster);
+                        }
+                    } else {
+                        // 25 Tier 4 monsters
+                        for (let i = 0; i < 25; i++) {
+                            let thisMonster = createMonster(4, i, 'normal', [], context);
+                            currentMonsters.push(thisMonster);
+                        }
+                    }
+
+                break;
+
+                case 20:
+                    if(game.map==1) {
+                        // 10 Tier 5 monsters
+                        for (let i = 0; i < 10; i++) {
+                            let thisMonster = createMonster(5, i, 'boss', []);
+                            currentMonsters.push(thisMonster);
+                        }
+                    } else {
+                        // 10 Tier 5 monsters
+                        for (let i = 0; i < 10; i++) {
+                            let thisMonster = createMonster(5, i, 'boss', []);
+                            currentMonsters.push(thisMonster);
+                        }
+                    }
+
+                break;
+
+                case 21:
+                    if(game.map==1) {
+                        // 15 Tier 5 monsters
+                        for (let i = 0; i < 15; i++) {
+                            let thisMonster = createMonster(5, i, 'boss', []);
+                            currentMonsters.push(thisMonster);
+                        }
+                    } else {
+                        // 15 Tier 5 monsters
+                        for (let i = 0; i < 15; i++) {
+                            let thisMonster = createMonster(5, i, 'boss', []);
+                            currentMonsters.push(thisMonster);
+                        }
+                    }
+
+                break;
+
+                case 22:
+                    if(game.map==1) {
+                        // 20 Tier 5 monsters
+                        for (let i = 0; i < 20; i++) {
+                            let thisMonster = createMonster(5, i, 'boss', []);
+                            currentMonsters.push(thisMonster);
+                        }
+                    } else {
+                        // 20 Tier 5 monsters
+                        for (let i = 0; i < 20; i++) {
+                            let thisMonster = createMonster(5, i, 'boss', []);
+                            currentMonsters.push(thisMonster);
+                        }
+                    }
+
+                break;
+
+
             }
         }
 
@@ -3962,10 +4181,33 @@ export function Monster() {
             game.monsterGroup = 8;
         } else if(game.floor < 30) {
             game.monsterGroup = 9;
-        } else {
+        } else if(game.floor < 33) {
             game.monsterGroup = 10;
+        } else if(game.floor < 36) {
+            game.monsterGroup = 11;
+        } else if(game.floor < 39) {
+            game.monsterGroup = 12;
+        } else if(game.floor < 42) {
+            game.monsterGroup = 13;
+        } else if(game.floor < 45) {
+            game.monsterGroup = 14;
+        } else if(game.floor < 48) {
+            game.monsterGroup = 15;
+        } else if(game.floor < 51) {
+            game.monsterGroup = 16;
+        } else if(game.floor < 54) {
+            game.monsterGroup = 17;
+        } else if(game.floor < 57) {
+            game.monsterGroup = 18;
+        } else if(game.floor < 60) {
+            game.monsterGroup = 19;
+        } else if(game.floor < 63) {
+            game.monsterGroup = 20;
+        } else if(game.floor < 66) {
+            game.monsterGroup = 21;
+        } else if(game.floor < 69) {
+            game.monsterGroup = 22;
         }
-
     }
 
     return {

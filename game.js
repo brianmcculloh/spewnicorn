@@ -5,9 +5,9 @@ const ALL_STARTING_OPTIONS = [
     {att: 'courage', name: '+8 Courage Coins', amount: 8},
     {att: 'armor', name: '+40 Armor', amount: 40},
     {att: 'health', key: 'max', name: '+20 Max Health', amount: 20},
-    {att: 'aura', key: 'current', name: '+5 Aura essence', amount: 5},
-    {att: 'sparkle', key: 'current', name: '+5 Sparkle essence', amount: 5},
-    {att: 'shimmer', key: 'current', name: '+5 Shimmer essence', amount: 5},
+    {att: 'aura', key: 'current', name: '+8 Aura essence', amount: 8},
+    {att: 'sparkle', key: 'current', name: '+8 Sparkle essence', amount: 8},
+    {att: 'shimmer', key: 'current', name: '+8 Shimmer essence', amount: 8},
     {att: 'rainbow', key: 'base', name: '+12 Rainbow Base', amount: 12, description: 'Charges your magic rainbow +12 at the start of each combat'},
     {att: 'aggro', key: 'current', name: '-5 Aggro', entity: 'game', amount: -5},
     {action: 'addRare', name: 'Add a random rare card, lose 12 health'},
@@ -563,7 +563,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '1.0.1';
+    let version = '1.0.2';
     let seed = false;
     let difficulty = 'medium';
     let floor = 0; // TODO: set to 0
@@ -578,6 +578,9 @@ export default function Game() {
     let questsVisited = 0;
     let fountainChance = 1.4;
     let questChance = 1.6;
+    let treasureIncrease = 0.5;
+    let treasureIncreaseMin = 3;
+    let treasureIncreaseMax = 15;
     let treasureChance = 0; // TODO: set to 0
     let candyChance = 50; // TODO: set to 50
     let shardChance = 0; // TODO: set to 0
@@ -773,6 +776,9 @@ export default function Game() {
         questsVisited,
         fountainChance,
         questChance,
+        treasureIncrease,
+        treasureIncreaseMin,
+        treasureIncreaseMax,
         treasureChance,
         candyChance,
         shardChance,

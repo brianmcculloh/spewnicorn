@@ -52,7 +52,7 @@
           <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="<ul><li>1 arena required per map</li><li>Start with a <span class='highlight'>Spewnicorn Spray</span> card</li><li>Reduced aggro</li><li>Heal to full after gates</li><li>Extra magic fountains and quests</li><li>Start with 100 max health</li></ul>">Easy</span></div>
           <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="<ul><li>2 arenas required per map</li><li>Do not start with a <span class='highlight'>Spewnicorn Spray</span> card</li><li>Standard amount of magic fountains and quests</li><li>Start with 75 max health</li></ul>">Medium</span></div>
           <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="<ul><li>No healing after gates</li><li>+5 to all enemy block</li><li>+2 damage to all enemy attacks</li><li>Reduced number of magic fountains and quests</li><li><span class='highlight'>The Singularity</span> summons Frost and Flame <span class='highlight'>Arena Bosses</span></li><li>Start with 65 max health</li></ul>">Hard</span></div>
-          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="<ul><li>3 arenas required per map</li><li>Shards and candies are less common</li><li><span class='highlight'>The Singularity</span>'s Resurrect effect is doubled</li><li>Start with 55 max health</li></ul>">Expert</span></div>
+          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="<ul><li>3 arenas required per map</li><li>Shards, candies, and treasures are less common</li><li><span class='highlight'>The Singularity</span>'s Resurrect effect is doubled</li><li>Start with 55 max health</li></ul>">Expert</span></div>
           <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="<ul><li>+20% damage to all enemy attacks</li><li>Aggro affects <span class='highlight'>The Singularity</span> fight</li><li><span class='highlight'>The Singularity</span> summons <span class='highlight'>Guardians</span></li></ul>">Nightmare</span></div>
         </div>
 
@@ -89,7 +89,7 @@
 
           <p>Along the way you will fight enemies that will increase your <span class="sparkle">Sparkle</span>, <span class="shimmer">Shimmer</span>, or <span class="aura">Aura</span> essence. Once you reach level 1, a <span class="highlight">Stance</span> card of that essence will be automatically added to your deck, and the higher your essence level, the stronger the <span class="highlight">Stance</span> effects will be.</p>
 
-          <p>If you are not in a stance, unused speed will be converted to 3x block next turn. If you are in <span class="sparkle">Sparkle</span> <span class="highlight">Stance</span>, gain +3 might per turn, and unused speed will convert to 3x might next turn. If you are in <span class="shimmer">Shimmer</span> <span class="highlight">Stance</span>, gain +10 block and +1 armor per turn, and unused speed will convert to 4x block and 1x armor next turn. If you are in <span class="aura">Aura</span> <span class="highlight">Stance</span>, gain +1 mana per turn, and unused speed will convert to mana next turn.</p>
+          <p>If you are not in a stance, unused speed will be converted to 4x block next turn. If you are in <span class="sparkle">Sparkle</span> <span class="highlight">Stance</span>, gain +4 might per turn, and unused speed will convert to 4x might next turn. If you are in <span class="shimmer">Shimmer</span> <span class="highlight">Stance</span>, gain +10 block and +1 armor per turn, and unused speed will convert to 3x block and 1x armor next turn. If you are in <span class="aura">Aura</span> <span class="highlight">Stance</span>, gain +1 mana per turn, and unused speed will convert to mana next turn.</p>
 
           <p>You will also come across <span class="highlight">Magic Fountains</span> and <span class="highlight">Quests</span> that will aid you in your journey. You must prove your worth and unlock the Gates by fighting at least two <span class="highlight">Arenas</span> with powerful enemies.</p>
 
@@ -131,7 +131,34 @@
 
           <h2>RELEASE NOTES</h2>
 
-          <p>1.0.1 (5/xx/2024)</p>
+          <p>1.0.2 (5/28/2024)</p>
+
+          <ul>
+            <li>The same enemy can no longer appear in consecutive arenas</li>
+            <li>Fixed super loud layering of multiple simultaneous sound effects</li>
+            <li>Improved music queues</li>
+            <li>Hypnotized enemies with retaliate/spikes no longer damage player when attacking themselves</li>
+            <li>Game now ends properly when player dies</li>
+            <li>Singularity now only summons one normal guardian per resurrect on Nightmare difficulty</li>
+            <li>Buffed sparkle stance</li>
+            <li>Buffed the Purge card</li>
+            <li>Improved error handling</li>
+            <li>Buffed essence relics</li>
+            <li>Buffed the Neigh and Whinny cards</li>
+            <li>Guardian balancing</li>
+            <li>Buffed various cards created by combining</li>
+            <li>Buffed all level III and higher weapons</li>
+            <li>Buffed starting essence bonus amounts</li>
+            <li>Fixed mana amount for ? cost cards when added via Weaponry</li>
+            <li>Fixed issue with double-sharded Aura Stance card not switching correctly to Aura stance</li>
+            <li>Aggro level now affects block gained by Arenas and Guardians on map 1</li>
+            <li>Buffed the Legion card</li>
+            <li>Buffed the Hind Kick card</li>
+            <li>If you obtain every treasure in the game, future treasures will always be Pewter Mugs</li>
+            <li>Normal fights continue to scale up instead of capping at floor 33</li>
+          </ul>
+
+          <p>1.0.1 (5/2/2024)</p>
 
           <ul>
             <li>Sorted card library into card types</li>
@@ -548,7 +575,7 @@
       <div class="dead-cards icon-button tooltip" data-powertip="Dead cards"><div class="icon"></div><span class="counter"></span></div>
 
       <div class="stance">
-        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> gain +10 block and +1 armor, and unused speed converts to 3x block and 1x armor next turn.<br /><br /><span class='sparkle'>Sparkle:</span> gain +3 might, and unused speed converts to 3x might next turn.<br /><br /><span class='aura'>Aura:</span> gain +1 mana, and unused speed converts to mana next turn.<br /><br />None: unused speed converts to 4x block next turn."></div>
+        <div class="icon-label tooltip" data-powertip="<span class='highlight'>Stance:</span> <span class='shimmer'>Shimmer</span>, <span class='sparkle'>Sparkle</span>, <span class='aura'>Aura</span>, None.<br /><br /><span class='shimmer'>Shimmer:</span> gain +10 block and +1 armor, and unused speed converts to 3x block and 1x armor next turn.<br /><br /><span class='sparkle'>Sparkle:</span> gain +4 might, and unused speed converts to 4x might next turn.<br /><br /><span class='aura'>Aura:</span> gain +1 mana, and unused speed converts to mana next turn.<br /><br />None: unused speed converts to 4x block next turn."></div>
         <div class="icon-stance tooltip" data-stance="none" data-powertip="<span class='highlight'>Stance:</span> None"></div>
       </div>
 
@@ -996,7 +1023,7 @@
 
         <div class="crit">crit! <span></span></div>
 
-        <img class="sprite" src="./images/spewnicorn808.png" />
+        <div class="sprite" data-stance="none"><img src="./images/spewnicorn808.png" /></div>
 
         <div class="incoming-damage">Incoming Damage: <span></span></div>
 
