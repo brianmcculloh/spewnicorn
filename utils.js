@@ -314,6 +314,12 @@ export default class Util {
             let ageTip = "<span class='highlight'>Age:</span> Card has been retained for " + age + " turn" + plural + " this combat";
             cardHtml += `<div class="card-age tooltip" data-powertip="${ageTip}"><span class="age amount" data-amount="${age}">${age}</span></div>`;
         }
+
+        const pack = util.getCardAttribute(card, 'pack');
+        if (pack !== undefined && pack !== 'basic') {
+            let packTip = "From the <span class='highlight'>" + pack + "</span> Pack";
+            cardHtml += '<div class="pack tooltip" data-powertip="' + packTip + '"><span></span></div>';
+        }
     
         // Bubbles-left
         cardHtml += '<div class="bubbles-left">';
@@ -1139,6 +1145,9 @@ export default class Util {
                 jester: [22990, 1000],
                 trade: [320737, 1408],
                 gate: [330767, 10837],
+                interrupt: [385262, 2475],
+                intercept: [378245, 3313],
+                interception: [381558, 3704],
 
                 available: [23990, 964],
                 
@@ -1220,8 +1229,14 @@ export default class Util {
                 tool25: [259480, 2164],
                 tool26: [261644, 2387],
                 tool27: [264031, 3998],
-                tool29: [268029, 4850],
                 tool28: [272829, 3424],
+                tool29: [268029, 4850],
+                tool30: [342924, 3460],
+                tool31: [346375, 4302],
+                tool32: [350677, 5207],
+                tool33: [355884, 7481],
+                tool34: [374229, 4021], // roar
+                tool35: [363362, 10870], // surge
 
 
                 // specific effects
@@ -1313,6 +1328,7 @@ export default class Util {
                 fnt_ui_magic_book_page_flip_02
                 fnt_ui_magic_book_page_flip_11
                 
+                Fantasy_UI (33)
                 Fantasy_UI (34)
                 Fantasy_UI (35)
                 Fantasy_UI (42)
@@ -1320,6 +1336,7 @@ export default class Util {
                 Fantasy_UI (55)
 
                 SkywardHero_UI (1)
+                SkywardHero_UI (3)
                 SkywardHero_UI (4)
                 SkywardHero_UI (8)
                 SkywardHero_UI (13)
@@ -1332,6 +1349,8 @@ export default class Util {
                 SkywardHero_UI (35)
                 SkywardHero_UI (38)
                 SkywardHero_UI (39)
+                SkywardHero_UI (43)
+                SkywardHero_UI (44)
 
                 ESM_Fantasy_Game_...
                 Magic_Ice_Instant_Cast_Spell_A
@@ -1452,7 +1471,13 @@ export default class Util {
                 UI_Magic_Confirm_A_Spell_Cast
                 Loading_Gear_Crafting_Table
 
-
+                WAV_Magic_Spell_Casting109
+                02.Thunder Strike
+                04.Thunder Strike
+                06.Thunder Strike
+                08.Thunder Strike
+                15.Thunder Strike
+                
 
 
                 */

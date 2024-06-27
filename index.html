@@ -50,7 +50,7 @@
 
         <div class="difficulties">
           <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="<ul><li>1 arena required per map</li><li>Start with a <span class='highlight'>Spewnicorn Spray</span> card</li><li>Reduced aggro</li><li>Heal to full after gates</li><li>Extra magic fountains and quests</li><li>Start with 100 max health</li></ul>">Easy</span></div>
-          <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="<ul><li>2 arenas required per map</li><li>Do not start with a <span class='highlight'>Spewnicorn Spray</span> card</li><li>Standard amount of magic fountains and quests</li><li>Start with 75 max health</li></ul>">Medium</span></div>
+          <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="<ul><li>2 arenas required per map</li><li>Do not start with a <span class='highlight'>Spewnicorn Spray</span> card</li><li>Standard amount of magic fountains and quests</li><li>Start with 75 max health</li><li><span class='highlight'>The Singularity</span> summons only <span class='highlight'>Arena Bosses</span></li></ul>">Medium</span></div>
           <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="<ul><li>No healing after gates</li><li>+5 to all enemy block</li><li>+2 damage to all enemy attacks</li><li>Reduced number of magic fountains and quests</li><li><span class='highlight'>The Singularity</span> summons Frost and Flame <span class='highlight'>Arena Bosses</span></li><li>Start with 65 max health</li></ul>">Hard</span></div>
           <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="<ul><li>3 arenas required per map</li><li>Shards, candies, and treasures are less common</li><li><span class='highlight'>The Singularity</span>'s Resurrect effect is doubled</li><li>Start with 55 max health</li></ul>">Expert</span></div>
           <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="<ul><li>+20% damage to all enemy attacks</li><li>Aggro affects <span class='highlight'>The Singularity</span> fight</li><li><span class='highlight'>The Singularity</span> summons <span class='highlight'>Guardians</span></li></ul>">Nightmare</span></div>
@@ -130,6 +130,45 @@
 
 
           <h2>RELEASE NOTES</h2>
+
+          <p>1.0.3 (6/xx/2024)</p>
+
+          <ul>
+            <li>Bug fix: arenas wouldn't load bosses after floor 50</li>
+            <li>Arena Bosses in regular fights are now affected by aggro (happens only after floor 50)</li>
+            <li>Amulet now only adds protection once per turn</li>
+            <li>Frost Guardians now have the Throttle ability</li>
+            <li>Flame Guardians now have the Punish ability</li>
+            <li>Nerfed the Mystical Energy card</li>
+            <li>Void Fairies now hex Unreachable every turn</li>
+            <li>Only one card remove per shop allowed</li>
+            <li>Unmakers now hex Marked on turn 1</li>
+            <li>You can no longer interact with draw card buttons when magic rainbow is activating</li>
+            <li>Nerfed the Surge and Roar cards</li>
+            <li>The Dark Rift treasure now triggers on turn 2 instead of turn 1</li>
+            <li>Fixed a bug allowing wield effects to trigger when no cards are in the draw or discard pile</li>
+            <li>5 new card sound effects</li>
+            <li>The Forbid card no longer removes the Frozen status from the target</li>
+            <li>Buffed the Sparks card</li>
+            <li>The Delayed Spell, Sacrificial Spell, Delayed Charge, and Sacrificial Charge cards upgrade to double magic/damage rather than retain</li>
+            <li>Buffed the Radioactive card</li>
+            <li>Fixed bug that allowed drawing cards immediately after ending turn before the start of player's next turn</li>
+            <li>Fixed bug that caused monsters to not load correctly on floors 30 through 32</li>
+            <li>Capped max health and block at 9999</li>
+            <li>Buffed the Colossus card</li>
+            <li>Added the Interrupt effect and four new interruption cards: Block Interruption, Armor Interruption, Speed Interruption, and Mana Interruption</li>
+            <li>Lots of small balancing tweaks to attack cards</li>
+            <li>Bug fix: when multiple cards that add more cards to hand are played at the same time, you can now choose the correct amount (e.g. Blitzkrieg plays Disavow and Weaponry)</li>
+            <li>Buffed the Recaster card</li>
+            <li>Nerfed the Mystical Protection card</li>
+            <li>Buffed the Stun card</li>
+            <li>Bug fix: deck cycle effects like Wield now correctly proc only once each deck cycle, and only when deck actually cycles</li>
+            <li>Buffed the Gears of War card</li>
+            <li>Reworked the Explode effect so that it is calculated after all other damage increases are calculated, truly doubling the attack damage</li>
+            <li>Nerfed the Frost Armor and Flame Armor cards</li>
+            <li>Buffed the Maelstrom card</li>
+            <li>Irradiate no longer procs damage from spikes/retaliate</li>
+          </ul>
 
           <p>1.0.2 (5/28/2024)</p>
 
@@ -593,7 +632,7 @@
 
       </div>
 
-      <div class="highest-damage-roll tooltip" data-powertip="Your highest unblocked damage hit of the run.">
+      <div class="highest-damage-roll tooltip" data-powertip="<span class='highlight'>Heaviest Hit:</span> Your highest unblocked, non-fatality, non-critical damage hit of the run.">
         <div class="icon"></div>
         <span></span>
       </div>

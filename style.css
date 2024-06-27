@@ -2159,7 +2159,8 @@ body.selecting .combat .overlay {
 }
 .monster-panel-wrapper {
 	position:relative;
-	overflow:auto;
+	overflow-x:auto;
+	overflow-y:hidden;
 	display:flex;
 	background-size:cover;
 	background-position:bottom center;
@@ -2175,7 +2176,7 @@ body.selecting .combat .overlay {
 	align-items:center;
 	justify-content:center;
 	margin:0 auto;
-	padding:50px 50px 35px 180px;
+	padding:50px 50px 35px 140px;
 	/*width:100vw;*/
 }
 body.arena .monster-panel {
@@ -4527,6 +4528,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-cycle_barrier .card-image {
 	background-position:calc(-780px * .92) calc(-9006px * .92);
 }
+#card-veto .card-image {
+	background-position:calc(-975px * .92) calc(-9006px * .92);
+}
 
 
 
@@ -4771,6 +4775,20 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	background-position:calc(-585px * .92) calc(-5544px * .92);
 }
 
+/* INTERRUPT CARDS */
+#card-block_interrupt .card-image {
+	background-position:calc(-780px * .92) calc(-5544px * .92);
+}
+#card-armor_interrupt .card-image {
+	background-position:calc(-975px * .92) calc(-5544px * .92);
+}
+#card-speed_interrupt .card-image {
+	background-position:calc(-1170px * .92) calc(-5544px * .92);
+}
+#card-mana_interrupt .card-image {
+	background-position:calc(-1365px * .92) calc(-5544px * .92);
+}
+
 
 .card .play-card {
 	position:absolute;
@@ -4803,7 +4821,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card.magic, .card.converter {
 	background-position:calc(-1080px * .92) calc(-414px * .92);
 }
-.card.clutter {
+.card.clutter, .card.interrupt {
 	background-position:0 calc(-414px * .92);
 }
 .card.attack .card-type {
@@ -4818,7 +4836,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card.magic .card-type, .card.converter .card-type {
 	background:#301140;
 }
-.card.clutter .card-type {
+.card.clutter .card-type, .card.interrupt .card-type {
 	background:#9E9D98;
 }
 .card-mana {
@@ -4938,6 +4956,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	display:flex;
 	align-items:center;
 	justify-content:center;
+	position:absolute;
+	bottom:11px;
+	left:6px;
 }
 .card.combine-pack .pack {
 	background-position:calc(-1296px * .9) calc(-930px * .9);
@@ -5932,6 +5953,22 @@ body.tutorial #tutorial-overlay {
 
 .treasure.pulse {
     animation: pulse .8s;
+}
+
+@keyframes icon-pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.icon-button.pulse {
+    animation: icon-pulse .25s;
 }
 
 

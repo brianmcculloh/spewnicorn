@@ -63,6 +63,8 @@ class Creatures {
         cover = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         preserve = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
         veil = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        interrupt = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
+        intercept = {base: 0, current: 0, temp: [], turns: 0, persist: false, hexed: false},
 
         // abilities
         protection = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
@@ -84,6 +86,8 @@ class Creatures {
         supernatural = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         eternal = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         frozen = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
+        throttle = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
+        punish = {enabled: false, baseTurns: 0, turns: 0, persist: false, permanent: false},
         
         // monster specific
         id, 
@@ -94,6 +98,7 @@ class Creatures {
         tier = 1, 
         context = 'forest', // forest, frost, or flame - this is matched with the game.overworld value to query for creatures
         category = 'normal', // normal, boss, ice_guardian, or fire_guardian
+        hexes = [], // this is so monsters can hex player on turn 1
 
         // player specific
         courage = 0, // TODO: reset this to 0
@@ -163,6 +168,8 @@ class Creatures {
         this.cover = cover;
         this.preserve = preserve;
         this.veil = veil;
+        this.interrupt = interrupt;
+        this.intercept = intercept;
         this.effectsDom = '';
 
         // abilities
@@ -185,6 +192,8 @@ class Creatures {
         this.supernatural = supernatural;
         this.eternal = eternal;
         this.frozen = frozen;
+        this.throttle = throttle;
+        this.punish = punish;
         this.abilitiesDom = '';
 
         // monster specific
@@ -197,6 +206,7 @@ class Creatures {
         this.tier = tier;
         this.context = context;
         this.category = category;
+        this.hexes = hexes;
 
         // player specific
         this.stance = 'none'; // TODO: reset to 'none'
@@ -762,24 +772,37 @@ const ALL_MONSTERS = [
         moveSet: [
             {dmg: [12], effects: [
                 {effect: 'resistance', amount: .5, turns: 2}
+            ], abilities: [
+                {ability: 'unreachable', hex: true},
             ]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
+                {ability: 'unreachable', hex: true},
             ]},
-            {dmg: [11, 11]},
+            {dmg: [11, 11], abilities: [
+                {ability: 'unreachable', hex: true},
+            ]},
             {abilities: [
                 {ability: 'unreachable', hex: true},
             ], dmg: [1, 1, 1, 1, 1, 1, 1, 1]},
-            {blk: [12]},
-            {dmg: [25], blk: [5]},
+            {blk: [12], abilities: [
+                {ability: 'unreachable', hex: true},
+            ]},
+            {dmg: [25], blk: [5], abilities: [
+                {ability: 'unreachable', hex: true},
+            ]},
             {effects: [
                 {effect: 'punch', amount: -.4, turns: 3, hex: true},
+            ], abilities: [
+                {ability: 'unreachable', hex: true},
             ]},
             {abilities: [
                 {ability: 'unreachable', hex: true},
                 {ability: 'tank', hex: true}
             ], dmg: [2, 2, 2, 2, 2]},
-            {dmg: [35]},
+            {dmg: [35], abilities: [
+                {ability: 'unreachable', hex: true},
+            ]},
         ],
         vex: {base: 1, current: 0, temp: [], turns: -1},
     }),
@@ -895,24 +918,37 @@ const ALL_MONSTERS = [
         moveSet: [
             {dmg: [12], effects: [
                 {effect: 'resistance', amount: .5, turns: 2}
+            ], abilities: [
+                {ability: 'unreachable', hex: true},
             ]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
+                {ability: 'unreachable', hex: true},
             ]},
-            {dmg: [11, 11]},
+            {dmg: [11, 11], abilities: [
+                {ability: 'unreachable', hex: true},
+            ]},
             {abilities: [
                 {ability: 'unreachable', hex: true},
             ], dmg: [1, 1, 1, 1, 1, 1, 1, 1]},
-            {blk: [12]},
-            {dmg: [25], blk: [5]},
+            {blk: [12], abilities: [
+                {ability: 'unreachable', hex: true},
+            ]},
+            {dmg: [25], blk: [5], abilities: [
+                {ability: 'unreachable', hex: true},
+            ]},
             {effects: [
                 {effect: 'punch', amount: -.4, turns: 3, hex: true},
+            ], abilities: [
+                {ability: 'unreachable', hex: true},
             ]},
             {abilities: [
                 {ability: 'unreachable', hex: true},
                 {ability: 'tank', hex: true}
             ], dmg: [2, 2, 2, 2, 2]},
-            {dmg: [35]},
+            {dmg: [35], abilities: [
+                {ability: 'unreachable', hex: true},
+            ]},
         ],
         vex: {base: 1, current: 0, temp: [], turns: -1},
     }),
@@ -1031,24 +1067,37 @@ const ALL_MONSTERS = [
         moveSet: [
             {dmg: [12], effects: [
                 {effect: 'resistance', amount: .5, turns: 2}
+            ], abilities: [
+                {ability: 'unreachable', hex: true},
             ]},
             {abilities: [
                 {ability: 'unreachable', turns: 1, enabled: true},
+                {ability: 'unreachable', hex: true},
             ]},
-            {dmg: [11, 11]},
+            {dmg: [11, 11], abilities: [
+                {ability: 'unreachable', hex: true},
+            ]},
             {abilities: [
                 {ability: 'unreachable', hex: true},
             ], dmg: [1, 1, 1, 1, 1, 1, 1, 1]},
-            {blk: [12]},
-            {dmg: [25], blk: [5]},
+            {blk: [12], abilities: [
+                {ability: 'unreachable', hex: true},
+            ]},
+            {dmg: [25], blk: [5], abilities: [
+                {ability: 'unreachable', hex: true},
+            ]},
             {effects: [
                 {effect: 'punch', amount: -.4, turns: 3, hex: true},
+            ], abilities: [
+                {ability: 'unreachable', hex: true},
             ]},
             {abilities: [
                 {ability: 'unreachable', hex: true},
                 {ability: 'tank', hex: true}
             ], dmg: [2, 2, 2, 2, 2]},
-            {dmg: [35]},
+            {dmg: [35], abilities: [
+                {ability: 'unreachable', hex: true},
+            ]},
         ],
         vex: {base: 1, current: 0, temp: [], turns: -1},
     }),
@@ -2002,14 +2051,13 @@ const ALL_MONSTERS = [
             {blk: [25], abilities: [
                 {ability: 'protection', turns: -1, enabled: true},
             ], effects: [
-                {effect: 'marked', amount: 1, turns: 5, hex: true},
                 {effect: 'might', amount: 0, turns: 2, hex: true},
                 {effect: 'punch', amount: 0, turns: 2, hex: true},
             ], actions: [
                 //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
                 //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
-            {actions: [
+            {dmg: [20], actions: [
                 {action: 'summonMonster', what: 'seer', value: 2},
                 //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
                 //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
@@ -2043,6 +2091,7 @@ const ALL_MONSTERS = [
                 //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
         ],
+        vex: {base: 1, current: 0, temp: [], turns: -1},
     }),
     new Creatures({
         type: 'monster',
@@ -2095,7 +2144,7 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: 10, turn: 1},
             ]},
         ],
-        vex: {base: 1, current: 0, temp: [], turns: -1},
+        hexes: [{effect: 'marked', amount: 3, turns: -1, hex: true}]
     }),
     new Creatures({
         type: 'monster',
@@ -2161,7 +2210,7 @@ const ALL_MONSTERS = [
                 //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
         ],
-        resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
+        resistance: {base: .75, current: 0, temp: [], turns: -1, persist: false},
     }),
 
 
@@ -2180,14 +2229,13 @@ const ALL_MONSTERS = [
             {blk: [25], abilities: [
                 {ability: 'protection', turns: -1, enabled: true},
             ], effects: [
-                {effect: 'marked', amount: 1, turns: 5, hex: true},
                 {effect: 'might', amount: 0, turns: 2, hex: true},
                 {effect: 'punch', amount: 0, turns: 2, hex: true},
             ], actions: [
                 //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
                 //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
-            {actions: [
+            {dmg: [20], actions: [
                 {action: 'summonMonster', what: 'seer', value: 2},
                 //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
                 //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
@@ -2221,6 +2269,7 @@ const ALL_MONSTERS = [
                 //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
         ],
+        vex: {base: 1, current: 0, temp: [], turns: -1},
     }),
     new Creatures({
         type: 'monster',
@@ -2274,7 +2323,7 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: 10, turn: 1},
             ]},
         ],
-        vex: {base: 1, current: 0, temp: [], turns: -1},
+        hexes: [{effect: 'marked', amount: 3, turns: -1, hex: true}]
     }),
     new Creatures({
         type: 'monster',
@@ -2341,7 +2390,7 @@ const ALL_MONSTERS = [
                 //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
         ],
-        resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
+        resistance: {base: .75, current: 0, temp: [], turns: -1, persist: false},
     }),
 
     // FLAME
@@ -2365,7 +2414,7 @@ const ALL_MONSTERS = [
                 //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
                 //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
-            {actions: [
+            {dmg: [20], actions: [
                 {action: 'summonMonster', what: 'seer', value: 2},
                 //{action: 'stat', what: 'might', key: 'current', value: 0, desc: 'Remove might', additive: false, hex: true},
                 //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
@@ -2399,6 +2448,7 @@ const ALL_MONSTERS = [
                 //{action: 'stat', what: 'punch', key: 'current', value: 1, desc: 'Remove punch', additive: false, hex: true},
             ]},
         ],
+        vex: {base: 1, current: 0, temp: [], turns: -1},
     }),
     new Creatures({
         type: 'monster',
@@ -2452,7 +2502,7 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: 10, turn: 1},
             ]},
         ],
-        vex: {base: 1, current: 0, temp: [], turns: -1},
+        hexes: [{effect: 'marked', amount: 3, turns: -1, hex: true}]
     }),
     new Creatures({
         type: 'monster',
@@ -2519,7 +2569,7 @@ const ALL_MONSTERS = [
                 //{action: 'stat', what: 'lightning', key: 'current', value: 0, desc: 'Remove lightning', additive: false, hex: true},
             ]},
         ],
-        resistance: {base: .5, current: 0, temp: [], turns: -1, persist: false},
+        resistance: {base: .75, current: 0, temp: [], turns: -1, persist: false},
     }),
     
 
@@ -2532,7 +2582,7 @@ const ALL_MONSTERS = [
         id: 'flame_guardian', 
         breed: 'flame_guardian',
         name: 'Flame Guardian', 
-        health: {base: 300, current: 0, max: 300},
+        health: {base: 350, current: 0, max: 350},
         tier: 6,
         category: 'fire_guardian',
         pattern: 'fixed',
@@ -2564,7 +2614,8 @@ const ALL_MONSTERS = [
             ], effects: [
                 {effect: 'might', amount: 3, turns: -1}
             ]},
-        ]
+        ],
+        punish: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
     }),
 
     // FROST
@@ -2574,7 +2625,7 @@ const ALL_MONSTERS = [
         id: 'super_frozen_flame_guardian', 
         breed: 'flame_guardian',
         name: 'Super Frozen Flame Guardian', 
-        health: {base: 600, current: 0, max: 600},
+        health: {base: 700, current: 0, max: 700},
         tier: 7,
         category: 'fire_guardian',
         pattern: 'fixed',
@@ -2606,7 +2657,8 @@ const ALL_MONSTERS = [
             ], effects: [
                 {effect: 'might', amount: 3, turns: -1}
             ]},
-        ]
+        ],
+        punish: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
     }),
 
     // FLAME
@@ -2616,7 +2668,7 @@ const ALL_MONSTERS = [
         id: 'super_burning_flame_guardian', 
         breed: 'flame_guardian',
         name: 'Super Burning Flame Guardian', 
-        health: {base: 300, current: 0, max: 300},
+        health: {base: 350, current: 0, max: 350},
         tier: 7,
         category: 'fire_guardian',
         pattern: 'fixed',
@@ -2648,7 +2700,8 @@ const ALL_MONSTERS = [
             ], effects: [
                 {effect: 'might', amount: 3, turns: -1}
             ]},
-        ]
+        ],
+        punish: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
     }),
 
 
@@ -2693,14 +2746,15 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: 2, turns: -1}
             ]},
             {effects: [
-                {effect: 'heal', amount: 300, turns: 2},
                 {effect: 'retaliate', amount: 1, turns: -1}
             ], actions: [
-                {action: 'removeHexes', to: 'self'}
+                {action: 'removeHexes', to: 'self'},
+                {action: 'stat', what: 'health', key: 'current', to: 'self', value: 300},
             ]},
         ],
         vex: {base: 2, current: 0, temp: [], turns: -1},
         retaliate: {base: 2, current: 0, temp: [], turns: -1},
+        throttle: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
     }),
 
     // FROST
@@ -2742,14 +2796,15 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: 2, turns: -1}
             ]},
             {effects: [
-                {effect: 'heal', amount: 300, turns: 2},
                 {effect: 'retaliate', amount: 1, turns: -1}
             ], actions: [
-                {action: 'removeHexes', to: 'self'}
+                {action: 'removeHexes', to: 'self'},
+                {action: 'stat', what: 'health', key: 'current', to: 'self', value: 300},
             ]},
         ],
         vex: {base: 2, current: 0, temp: [], turns: -1},
         retaliate: {base: 2, current: 0, temp: [], turns: -1},
+        throttle: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
     }),
 
     // FLAME
@@ -2791,14 +2846,15 @@ const ALL_MONSTERS = [
                 {effect: 'might', amount: 2, turns: -1}
             ]},
             {effects: [
-                {effect: 'heal', amount: 300, turns: 2},
                 {effect: 'retaliate', amount: 1, turns: -1}
             ], actions: [
-                {action: 'removeHexes', to: 'self'}
+                {action: 'removeHexes', to: 'self'},
+                {action: 'stat', what: 'health', key: 'current', to: 'self', value: 300},
             ]},
         ],
         vex: {base: 2, current: 0, temp: [], turns: -1},
         retaliate: {base: 2, current: 0, temp: [], turns: -1},
+        throttle: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
     }),
 
     // THE SINGULARITY
@@ -2837,6 +2893,7 @@ const ALL_MONSTERS = [
         eternal: {enabled: true, baseTurns: 0, turns: -1, persist: true, permanent: true},
         vex: {base: 15, current: 0, temp: [], turns: -1},
         veil: {base: .5, current: 0, temp: [], turns: -1},
+        interrupt: {base: 4, current: 0, temp: [], turns: -1},
     }),
 
 
@@ -3085,7 +3142,7 @@ export function Monster() {
 
 
     function dead(monster) {
-        if(monster === undefined) return true;
+        if(monster === undefined || monster.health === undefined) return true;
         if(monster.health.current == 0 || monster.dead) {
             monster.dead = true;
             return true;
@@ -3136,7 +3193,7 @@ export function Monster() {
     }
 
     function summonMonster(monster, id, form) {
-        let aliveMonsters = game.currentMonsters.filter(i => i.dead == false);
+        //let aliveMonsters = game.currentMonsters.filter(i => i.dead == false);
         //if(aliveMonsters.length < 7) {
             let thisMonster = createMonster(false, id, false, false, false, false, monster, form);
             game.currentMonsters.push(thisMonster);
@@ -3165,7 +3222,7 @@ export function Monster() {
                 }
             } else {
                 for (let i = 0; i < 1; i++) {
-                    let thisMonster = createMonster(5, i, 'boss', excludedArena);
+                    let thisMonster = createMonster(5, i, 'boss', excludedArena, context);
                     currentMonsters.push(thisMonster);
                 }
             }
@@ -3709,7 +3766,7 @@ export function Monster() {
                         let chance = util.monsterNumChance(initial, increase);
                         if(util.chance(chance)) {
                             for (let i = 0; i < 2; i++) {
-                                let thisMonster = createMonster(3, i, 'normal', excluded);
+                                let thisMonster = createMonster(3, i, 'normal', []);
                                 currentMonsters.push(thisMonster);
                             }
                             for (let i = 0; i < 2; i++) {
@@ -3721,7 +3778,7 @@ export function Monster() {
                                 let thisMonster = createMonster(4, i, 'normal', excluded);
                                 currentMonsters.push(thisMonster);
                             }
-                            let thisMonster = createMonster(3, game, 'normal', excluded);
+                            let thisMonster = createMonster(3, game, 'normal', []);
                             currentMonsters.push(thisMonster);
                             thisMonster = createMonster(2, game, 'normal', excluded);
                             currentMonsters.push(thisMonster);
@@ -3747,7 +3804,7 @@ export function Monster() {
                     if(game.map==1) {
                         // 3 Tier 4 monsters
                         for (let i = 0; i < 3; i++) {
-                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            let thisMonster = createMonster(4, i, 'normal', []);
                             currentMonsters.push(thisMonster);
                         }
                     } else {
@@ -3767,7 +3824,7 @@ export function Monster() {
                     if(game.map==1) {
                         // 4 Tier 4 monsters
                         for (let i = 0; i < 4; i++) {
-                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            let thisMonster = createMonster(4, i, 'normal', []);
                             currentMonsters.push(thisMonster);
                         }
                     } else {
@@ -3788,7 +3845,7 @@ export function Monster() {
                     if(game.map==1) {
                         // 5 Tier 4 monsters
                         for (let i = 0; i < 5; i++) {
-                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            let thisMonster = createMonster(4, i, 'normal', []);
                             currentMonsters.push(thisMonster);
                         }
                     } else {
@@ -3805,7 +3862,7 @@ export function Monster() {
                     if(game.map==1) {
                         // 6 Tier 4 monsters
                         for (let i = 0; i < 6; i++) {
-                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            let thisMonster = createMonster(4, i, 'normal', []);
                             currentMonsters.push(thisMonster);
                         }
                     } else {
@@ -3822,7 +3879,7 @@ export function Monster() {
                     if(game.map==1) {
                         // 8 Tier 4 monsters
                         for (let i = 0; i < 8; i++) {
-                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            let thisMonster = createMonster(4, i, 'normal', []);
                             currentMonsters.push(thisMonster);
                         }
                     } else {
@@ -3839,7 +3896,7 @@ export function Monster() {
                     if(game.map==1) {
                         // 10 Tier 4 monsters
                         for (let i = 0; i < 10; i++) {
-                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                            let thisMonster = createMonster(4, i, 'normal', []);
                             currentMonsters.push(thisMonster);
                         }
                     } else {
@@ -3854,15 +3911,15 @@ export function Monster() {
 
                 case 17:
                     if(game.map==1) {
-                        // 15 Tier 4 monsters
-                        for (let i = 0; i < 15; i++) {
-                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                        // 3 Tier 5 monsters
+                        for (let i = 0; i < 3; i++) {
+                            let thisMonster = createMonster(5, i, 'boss', []);
                             currentMonsters.push(thisMonster);
                         }
                     } else {
-                        // 15 Tier 4 monsters
-                        for (let i = 0; i < 15; i++) {
-                            let thisMonster = createMonster(4, i, 'normal', [], context);
+                        // 3 Tier 5 monsters
+                        for (let i = 0; i < 3; i++) {
+                            let thisMonster = createMonster(5, i, 'boss', []);
                             currentMonsters.push(thisMonster);
                         }
                     }
@@ -3871,15 +3928,15 @@ export function Monster() {
 
                 case 18:
                     if(game.map==1) {
-                        // 20 Tier 4 monsters
-                        for (let i = 0; i < 20; i++) {
-                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                        // 5 Tier 5 monsters
+                        for (let i = 0; i < 5; i++) {
+                            let thisMonster = createMonster(5, i, 'boss', []);
                             currentMonsters.push(thisMonster);
                         }
                     } else {
-                        // 20 Tier 4 monsters
-                        for (let i = 0; i < 20; i++) {
-                            let thisMonster = createMonster(4, i, 'normal', [], context);
+                        // 5 Tier 5 monsters
+                        for (let i = 0; i < 5; i++) {
+                            let thisMonster = createMonster(5, i, 'boss', []);
                             currentMonsters.push(thisMonster);
                         }
                     }
@@ -3888,18 +3945,19 @@ export function Monster() {
 
                 case 19:
                     if(game.map==1) {
-                        // 25 Tier 4 monsters
-                        for (let i = 0; i < 25; i++) {
-                            let thisMonster = createMonster(4, i, 'normal', excluded);
+                        // 7 Tier 5 monsters
+                        for (let i = 0; i < 7; i++) {
+                            let thisMonster = createMonster(5, i, 'boss', []);
                             currentMonsters.push(thisMonster);
                         }
                     } else {
-                        // 25 Tier 4 monsters
-                        for (let i = 0; i < 25; i++) {
-                            let thisMonster = createMonster(4, i, 'normal', [], context);
+                        // 7 Tier 5 monsters
+                        for (let i = 0; i < 7; i++) {
+                            let thisMonster = createMonster(5, i, 'boss', []);
                             currentMonsters.push(thisMonster);
                         }
                     }
+
 
                 break;
 
@@ -3963,6 +4021,7 @@ export function Monster() {
     
     }
 
+    // createMonster(false, id, false, false, false, false, monster, form);
     function createMonster(tier, i = 0, category = 'normal', excluded = [], context = 'forest', breed = false, id = false, form = false) {
 
         let monster = undefined;
@@ -3985,7 +4044,7 @@ export function Monster() {
         if(monster == undefined) return;
 
         game.previousMonsters.push(monster);
-        if(category == 'boss') {
+        if(game.mapType == 'arena') {
             game.previousArena.push(monster);
         }
 
@@ -4087,12 +4146,16 @@ export function Monster() {
 
                     let turns = to[game.effects[i].id].turns > 0 ? '<span class="turns">' + to[game.effects[i].id].turns + '</span>' : '';
                     let effectText = to[game.effects[i].id].current;
-                    if(game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery' || game.effects[i].id == 'resistance' || game.effects[i].id == 'thunder') {
+                    if(game.effects[i].id == 'punch' || game.effects[i].id == 'sorcery' || game.effects[i].id == 'resistance' || game.effects[i].id == 'thunder' || game.effects[i].id == 'vigor' || game.effects[i].id == 'fatality') {
                         effectText = Math.round((effectText + Number.EPSILON) * 100);
                         // resistance should top out at 100, when in reality it can actually go higher with no effect
                         if(game.effects[i].id == 'resistance' && effectText > 100) {
                             effectText = 100;
                         }
+                        effectText += '%';
+                    }
+                    if(game.effects[i].id == 'mastery') {
+                        effectText = Math.round((effectText + Number.EPSILON) * 10);
                         effectText += '%';
                     }
                     let amount = '<span class="amount">' + effectText + '</span>';
@@ -4130,6 +4193,9 @@ export function Monster() {
                 let counter = '';
                 if(game.abilities[i].id == 'resurrect') {
                     counter = '<span class="counter">' + game.toResurrect + '</span>';
+                }
+                if(game.abilities[i].id == 'throttle') {
+                    counter = '<span class="counter">' + game.cardsPlayed + '</span>';
                 }
 
                 dom += "<div class='single-status status-ability tooltip' style='background-position:" + x + "px " + y + "px;' data-id='" + game.abilities[i].id + "' data-powertip='" + desc + "'>" + turns + counter + "</div>";
@@ -4244,7 +4310,7 @@ export function Player() {
         speed: {base: 5, current: 0, temp: [], turns: 0}, // TODO: reset base to 5
         mana: {base: 3, current: 0, temp: 0}, // TODO: reset to base 3
         rainbow: {base: 0, current: 0, temp: [], turns: 0, max: 20, type: 'rainbow'},
-        //retain: {base: 2, current: 2, temp: [], turns: 0, persist: false, hexed: false}, // how to add a default effect
+        //intercept: {base: 4, current: 4, temp: [], turns: 0, persist: false, hexed: false}, // how to add a default effect
         //stockpile: {enabled: true, baseTurns: 0, turns: 10, persist: false, permanent: true}, // how to add a default ability
     });
 

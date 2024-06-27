@@ -897,7 +897,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         effects: [
-            {effect: 'summon', base: 4}
+            {effect: 'summon', base: 5}
         ],
         x: -416,
         y: -3008
@@ -909,7 +909,7 @@ const ALL_TREASURES = [
         starting: true,
         owned: true,
         effects: [
-            {effect: 'lightning', base: 4}
+            {effect: 'lightning', base: 6}
         ],
         x: -416,
         y: -3072
@@ -1184,12 +1184,12 @@ const ALL_TREASURES = [
     new Treasure({
         id:'amulet', 
         name: "Amulet", 
-        weight: 1,
-        descOverride: 'Each turn, when you play at least as many cards as your maximum speed, gain protection for 1 turn.',
+        weight: .5,
+        descOverride: 'Each turn, when you play at least as many cards as your maximum speed, gain protection.',
         abilities: [
             {ability: 'protection', turns: 1, enabled: true}
         ],
-        trigger: {counter: 0, when: 'cardsPlayed', at: -1, per: 'turn', once: false, activated: false},
+        trigger: {counter: 0, when: 'cardsPlayed', at: -1, per: 'turn', oncePerTurn: true, activated: false},
         x: -224,
         y: -10498
     }),
@@ -1396,6 +1396,18 @@ const ALL_TREASURES = [
         y: -766
     }),
     new Treasure({
+        id:'cross_of_coronado', 
+        name: "Cross of Coronado", 
+        courage: 13,
+        tier: 2,
+        weight: 2,
+        effects: [
+            {effect: 'intercept', amount: 10, turns: -1}
+        ],
+        x: -320,
+        y: -5760
+    }),
+    new Treasure({
         id:'black_vial', 
         name: "Black Vial", 
         courage: 15,
@@ -1416,7 +1428,7 @@ const ALL_TREASURES = [
         weight: 2,
         permanent: true,
         effects: [
-            {effect: 'mystery', base: 1}
+            {effect: 'mystery', base: 2}
         ],
         x: -448,
         y: -352
@@ -1439,11 +1451,11 @@ const ALL_TREASURES = [
         name: "Dark Rift", 
         courage: 13,
         tier: 2,
-        weight: 3,
+        weight: 1,
         abilities: [
             {ability: 'unreachable', turns: 1, enabled: true}
         ],
-        trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: true, activated: false},
+        trigger: {counter: 0, when: 'turns', at: 2, per: 'combat', once: true, activated: false},
         x: -384,
         y: -5728
     }),
@@ -1880,7 +1892,7 @@ const ALL_TREASURES = [
         courage: 15,
         permanent: true,
         effects: [
-            {effect: 'stout', amount: 1, turns: -1, persist: false}
+            {effect: 'stout', amount: 2, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -384,
@@ -1894,7 +1906,7 @@ const ALL_TREASURES = [
         courage: 15,
         permanent: true,
         effects: [
-            {effect: 'muster', amount: 1, turns: -1, persist: false}
+            {effect: 'muster', amount: 2, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -480,
@@ -1908,7 +1920,7 @@ const ALL_TREASURES = [
         courage: 15,
         permanent: true,
         effects: [
-            {effect: 'summon', amount: 1, turns: -1, persist: false}
+            {effect: 'summon', amount: 2, turns: -1, persist: false}
         ],
         trigger: {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
         x: -288,
