@@ -31,7 +31,6 @@
  * Future ideas: 
  * Peek: draw the next x cards and retain them for one turn. cards cannot be played this turn
  * Ability: if you end your turn with unused mana, do something cool - like charge rainbow or something
- * Card: Consolodate: do dmg plus block plus armor to enemy and lose block and armor
  * Effect: Frost Mage: when you play a card with an ice shard, do x times number of ice shards attached to card played to all enemies
  * Effect: Flame Mage: same as frost mage but with flame
  * Magic Type Attack - does [magic type] stuff to monster, and adds [magic type] magic if matches current magic type
@@ -76,7 +75,6 @@
  * Effect: apply x times max rainbow block each time you activate rainbow
  * Mechanic: wild combine: can be combined with any other combined card - and when combined, add the card that the other card adds.
  * --there could be multiple wild combine cards, each one doing a special thing when combined
- * Mechanic: frost guardians should have damage caps so they can't be one-shotted
  * 
  * 
  * 
@@ -112,7 +110,7 @@
  * Create and balance treasure - DONE
  * Create and balance candy - DONE
  * Create quests - DONE
- * Current card counts: 99 total non-pack cards and 46 pack cards (non-legendary, addable, including addable weapons)
+ * Current card counts: 115 total non-pack cards and 49 pack cards (non-legendary, addable, including addable weapons)
  * 
  * 
  * PHASE IV:
@@ -134,6 +132,7 @@
  * TODO
  * *************************************************
  * TODO: when a card is retained the tooltips don't work until at least one card is drawn
+ * 
  * 
  * 
  * PHASE VI:
@@ -163,6 +162,7 @@
  * Card: 0 cost vanishing card that adds 1 mana and loses 10 armor - shard upgrade adds 2 mana (rare)
  * Card: 0 cost vanishing card that adds 1 speed and loses 10 armor - shard upgrade adds 2 mana (rare)
  * Card: attack/tool/magic cards that add might/punch/lightning/thunder
+ * Card: Consolodate: do dmg plus block plus armor to enemy and lose block and armor
  * Card: add a random power to hand
  * Card: add multiple turns of -might/-punch. currently Stun is the only one that does this.
  * Card: 2 cost smaller damage attack that adds a large attack 0 cost retain vanishing card
@@ -237,6 +237,12 @@
  * Treasure: +1 speed but can no longer do one of the four options at the fountain
  * Candy: add cards to hand
  * Candy: increase max health
+ * 
+ * 
+ * NEW DECK TYPE: Meta Deck
+ * Has cards that improve stats each time they're played (like genetic algorithm)
+ * Use the game.cardsPlayed counter somehow, and possibly the game.round and game.combat counters
+ * Has cards that do different things for each of the three stances
  * 
  * 
  * 
@@ -843,18 +849,20 @@ jQuery(document).ready(function($) {
 	});
 
 	$(document).on('click', '.rewards-cards .card', function(e) {
-	
-		if(game.playsounds) sounds.play('drawCard');
+
+		if (game.playsounds) sounds.play('drawCard');
 		addCardToDeck($(this).data('id'));
 		$('.rewards-cards').addClass('unavailable');
+	
+		$(this).addClass('disappearing');
 		
-		$(this).addClass('disappearing')
-			.delay(1000)
-			.queue(function() {
-				$('.rewards-cards').removeClass('unavailable').empty().dequeue();
-			});
-
+		// Using setTimeout for more predictable timing
+		setTimeout(function() {
+			$('.rewards-cards').removeClass('unavailable').empty();
+		}, 1000);
+	
 	});
+	
 
 	$(document).on('click', '.rewards-skip', function(e) {
 
@@ -926,7 +934,7 @@ jQuery(document).ready(function($) {
 					$('.monster').removeClass('candy-target');
 				} else {
 					$(this).addClass('selected');
-					$('.monster').addClass('candy-target');
+					$('.monster:not(.dead)').addClass('candy-target');
 				}
 			} else {
 				eatCandy($(this).data('guid'));
@@ -1587,8 +1595,8 @@ function init() {
 
 	console.clear();
 
-	//addTreasure('glowing_sludge'); // use this to manually add treasures
-	//addCandy('chocolate_chips'); // use this to manually add candies
+	//addTreasure('brilliant_tiara'); // use this to manually add treasures
+	//addCandy('white_chocolate_bar'); // use this to manually add candies
 
 	if(game.debug) $('body').addClass('debug');
 	if(game.tutorial) {
@@ -1697,8 +1705,8 @@ function setDifficulty() {
 			player.health.max = 100;
 		}
 	} else if(game.difficulty=='medium') {
-		game.questChance = 1.8;
-		game.fountainChance = 1.6;
+		game.questChance = 1.9;
+		game.fountainChance = 1.7;
 		game.arenasRequired = 2;
 		if(!game.debug) {
 			player.health.base = 75;
@@ -1706,8 +1714,8 @@ function setDifficulty() {
 			player.health.max = 75;
 		}
 	} else if(game.difficulty=='hard') {
-		game.questChance = 1.5;
-		game.fountainChance = 1.3;
+		game.questChance = 1.7;
+		game.fountainChance = 1.5;
 		game.arenasRequired = 2;
 		if(!game.debug) {
 			player.health.base = 65;
@@ -1715,8 +1723,8 @@ function setDifficulty() {
 			player.health.max = 65;
 		}
 	} else if(game.difficulty=='expert') {
-		game.questChance = 1.5;
-		game.fountainChance = 1.3;
+		game.questChance = 1.7;
+		game.fountainChance = 1.5;
 		game.arenasRequired = 3;
 		game.treasureIncrease = 0.375;
 		game.treasureIncreaseMin = 2;
@@ -1727,10 +1735,10 @@ function setDifficulty() {
 			player.health.max = 55;
 		}
 	} else if(game.difficulty=='nightmare') {
-		game.questChance = 1.5;
-		game.fountainChance = 1.3;
+		game.questChance = 1.7;
+		game.fountainChance = 1.5;
 		game.arenasRequired = 3;
-		game.candyChance = 0;
+		//game.candyChance = 0;
 		if(!game.debug) {
 			player.health.base = 55;
 			player.health.current = 55;
@@ -2817,6 +2825,7 @@ async function startCombat(tile = false) {
 	$('.combat').addClass('shown');
 	$('.candy').removeClass('trashable').addClass('clickable');
 	$('.player-cards').removeClass('unavailable').empty();
+	$('.draw-card, .draw-all').removeClass('unavailable');
 	$('body').removeClass('discarding');
 	$('.discard-done').removeClass('shown');
 	$('.card').removeClass('discard discardable');
@@ -2878,13 +2887,22 @@ async function startCombat(tile = false) {
 	
 }
 
-async function processInitialHexes() {
-	for(let i = 0; i < game.currentMonsters.length; i++) {
-		let hexes = game.currentMonsters[i].hexes;
+async function processInitialHexes(summonedMonster = false) {
+	if(summonedMonster) {
+		let hexes = summonedMonster.hexes;
 		for(let h = 0; h < hexes.length; h++) {
 			let turns = hexes[h].turns == undefined ? -1 : hexes[h].turns;
 			applyEffect(hexes[h], player, turns);
 			await util.wait(300);
+		}
+	} else {
+		for(let i = 0; i < game.currentMonsters.length; i++) {
+			let hexes = game.currentMonsters[i].hexes;
+			for(let h = 0; h < hexes.length; h++) {
+				let turns = hexes[h].turns == undefined ? -1 : hexes[h].turns;
+				applyEffect(hexes[h], player, turns);
+				await util.wait(300);
+			}
 		}
 	}
 }
@@ -3269,7 +3287,7 @@ async function beginTurn() {
 
 	applyArmor(player.muster.current, player);
 
-	combatDeck.updateCardPlayability(player, combatDeck, isThrottled()); // necessary for cards that were retained
+	combatDeck.updateCardPlayability(player, combatDeck, util.isThrottled()); // necessary for cards that were retained
 
 	updateTreasureTriggers('turns'); 
 
@@ -3416,7 +3434,7 @@ async function drawAll() {
 	}
 }
 
-//addCardTo('draw', null, 'handCards', true, cardWasPlayed);
+//addCardTo('deadCards', $(this));
 async function addCardTo(type, domCard = null, to = 'handCards', ignoreSpeed = false, cardPlayed = false) {
 
 	let drawCard = false;
@@ -3440,7 +3458,7 @@ async function addCardTo(type, domCard = null, to = 'handCards', ignoreSpeed = f
 				let magic = {type: player.rainbow.type, amount: amount}
 				await applyMagic(magic, player);
 			}
-			if(isPunished()) {
+			if(util.isPunished()) {
 				let effect = {effect: 'antimomentum', amount: combatDeck.drawCards.length, turns: 1, hex: true};
 				await applyEffect(effect, player, 1);
 			}
@@ -3462,8 +3480,8 @@ async function addCardTo(type, domCard = null, to = 'handCards', ignoreSpeed = f
 
 	if(card) { // sometimes total deck size can be smaller than hand size
 		// only process the card if it's added to hand (i.e. it's drawn)
-		if(type=='draw') {
-			// if this is a clutter card and the player has intercept, don't process it
+		if(type=='draw' && card['draw']) {
+			// if this is a clutter card with draw effects and the player has intercept, don't process it
 			if(card.type=='clutter' || card.type=='interrupt') {
 				if(player.intercept.current > 0) {
 					player.intercept.current -= 1;
@@ -4078,6 +4096,25 @@ function clearCombatTreasureCounters() {
 	}
 }
 
+function isHexed(effect, to) {
+	let isHexed = false;
+	let isHex = effect.hex;
+	if(effect.id == 'sorcery' || effect.id == 'punch' || effect.id == 'thunder') {
+		if(to[effect.id].current < 1) {
+			isHexed = true;
+		} else {
+			isHexed = false;
+		}
+	} else {
+		if(to[effect.id].current < 0 || isHex) {
+			isHexed = true;
+		} else {
+			isHexed = false;
+		}
+	}
+	return isHexed;
+}
+
 function removeHexes(to) {
 	for(let i = 0; i < game.effects.length; i++) {
 		// we don't want to reset rainbow back to 0
@@ -4089,22 +4126,7 @@ function removeHexes(to) {
 			// it's possible a monster hexed an effect and then a player buffed the same effect but not to the extent it was previously hexed
 			// e.g. monster hexes might -2 and player buffs might +1 resulting in "hexed" flag getting set to false but might is still at -1
 			//let isHexed = to[game.effects[i].id].hexed; // this isn't really used because we're figuring out hexed logic below
-			let isHexed = false;
-			let isHex = game.effects[i].hex;
-			if(game.effects[i].id == 'sorcery' || game.effects[i].id == 'punch' || game.effects[i].id == 'thunder') {
-				if(to[game.effects[i].id].current < 1) {
-					isHexed = true;
-				} else {
-					isHexed = false;
-				}
-			} else {
-				if(to[game.effects[i].id].current < 0 || isHex) {
-					isHexed = true;
-				} else {
-					isHexed = false;
-				}
-			}
-			if(isHexed) {
+			if(isHexed(game.effects[i], to)) {
 				let current = game.effects[i].id == 'sorcery' || game.effects[i].id == 'punch' || game.effects[i].id == 'thunder' ? 1 : 0;
 				to[game.effects[i].id].temp = [];
 				to[game.effects[i].id].turns = 0;
@@ -4113,14 +4135,15 @@ function removeHexes(to) {
 			}
 		}
 	}
+	// one-off resets
+	to.antimomentumAmount = 0;
 }
 
 function removeBuffs(to) {
 	if(!to.eternal.enabled) {
 		for(let i = 0; i < game.effects.length; i++) {
 			if(game.effects[i].id != 'rainbow' && to[game.effects[i].id]!==undefined) {
-				let isHex = game.effects[i].hex;
-				if(to[game.effects[i].id].hexed!==true && !isHex) {
+				if(isHexed(game.effects[i], to)==false) {
 					let current = game.effects[i].id == 'sorcery' || game.effects[i].id == 'punch' || game.effects[i].id == 'thunder' ? 1 : 0;
 					to[game.effects[i].id].temp = [];
 					to[game.effects[i].id].turns = 0;
@@ -4370,7 +4393,10 @@ function applyAbility(ability, to, turns = -1) {
 
 function endCombat() {
 
-	if(Player().dead(player)) return;
+	if(Player().dead(player)) {
+		endGame('loss');
+		return;
+	}
 
 	if(!game.combatEndedFlag) {
 
@@ -4929,7 +4955,7 @@ async function eatCandy(add, monster = false) {
 	let actions = candy.actions;
 	if(actions != undefined) {
 		let update = await processActions(actions);
-		if(update) combatDeck.updateCardPlayability(player, combatDeck, isThrottled());
+		if(update) combatDeck.updateCardPlayability(player, combatDeck, util.isThrottled());
 	}
 	let magic = candy.magic;
 	if(magic != undefined) {
@@ -5063,7 +5089,7 @@ function selectCard(elem) {
 	if(elem.hasClass('selected')) {
 		deselectCard(elem);
 		$('.card.combinable').removeClass('combine-compatible');
-		combatDeck.updateCardPlayability(player, combatDeck, isThrottled());
+		combatDeck.updateCardPlayability(player, combatDeck, util.isThrottled());
 		elem.find('.button.play-card').remove();
 	} else {
 		//let card = util.getCardById(elem.data('id'), allCards); // was this wrong?
@@ -5158,7 +5184,7 @@ async function discardCards() {
 		$('.discard-message').removeClass('shown');
 		if(player.speed.current > 0) $('.draw-card, .draw-all').removeClass('disabled');
 		game.toDiscard = 0;
-		combatDeck.updateCardPlayability(player, combatDeck, isThrottled());
+		combatDeck.updateCardPlayability(player, combatDeck, util.isThrottled());
 		setStatus();
 
 		if(!$('body').hasClass('destroying') || combatDeck.handCards.length == 0) {
@@ -5200,7 +5226,7 @@ async function destroyCards() {
 		if(player.speed.current > 0) $('.draw-card, .draw-all').removeClass('disabled');
 		game.toDestroy = 0;
 		game.destroyOptional = false;
-		combatDeck.updateCardPlayability(player, combatDeck, isThrottled());
+		combatDeck.updateCardPlayability(player, combatDeck, util.isThrottled());
 		setStatus();
 
 		if(!$('body').hasClass('discarding') || combatDeck.handCards.length == 0) {
@@ -5318,7 +5344,9 @@ async function combineCards(elem) {
 
 			$('.card.combinable').removeClass('combine-compatible');
 
-			combatDeck.updateCardPlayability(player, combatDeck, isThrottled());
+			if(player.speed.current > 0) $('.draw-card, .draw-all').removeClass('disabled');
+
+			combatDeck.updateCardPlayability(player, combatDeck, util.isThrottled());
 
 			setStatus();
 			
@@ -5327,28 +5355,6 @@ async function combineCards(elem) {
 	});
 }
 
-function isThrottled() {
-	let throttlerExists = false;
-	if(player.speed.base <= game.cardsPlayed) {
-		let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
-		for(let i = 0; i < currentMonsters.length; i++) {
-			if(currentMonsters[i].throttle.enabled) {
-				throttlerExists = true;
-			}
-		}
-	}
-	return throttlerExists;
-}
-function isPunished() {
-	let punisherExists = false;
-	let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
-	for(let i = 0; i < currentMonsters.length; i++) {
-		if(currentMonsters[i].punish.enabled) {
-			punisherExists = true;
-		}
-	}
-	return punisherExists;
-}
 function interruption() {
 	let interruption = 0;
 	let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
@@ -5373,7 +5379,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 		if(card == undefined) return false;
 
 		card.playing = true;
-		game.cardsPlayed += 1;
+		if(type != 'combine') game.cardsPlayed += 1;
 
 		let sound = card.sound ? card.sound : card.type + 'Card';
 
@@ -5423,32 +5429,37 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 		if(player.mana.current <= 0) player.mana.current = 0;
 		if(player.speed.current <= 0) player.speed.current = 0;
 
-		// process per card effects
-		if(player.antimomentumAmount > 0) {
-			await doDamage(player.antimomentumAmount, monster, [player]);
-		}
-		// for marked we have to pass all this in because we want cardWasPlayed to be false so that marked doesn't trigger retaliate/spikes
-		if(player.marked.current > 0) {
-			await doDamage(player.marked.current, monster, [player], false, false, false, false, false, false);
-		}
-		for(let i = 0; i < game.currentMonsters.length; i++) {
-			if(game.currentMonsters[i].marked.current > 0) {
-				await doDamage(game.currentMonsters[i].marked.current, player, [game.currentMonsters[i]], false, false, false, false, false, false);
+		// effects that shouldn't proc when combining cards
+		if(type != 'combine') {
+			if(player.antimomentumAmount > 0) {
+				await doDamage(player.antimomentumAmount, monster, [player]);
 			}
-			monsters.updateMonsterStats(game.currentMonsters[i]);
-		}
-		if(player.insulate.current > 0) {
-			applyBlock(player.insulate.current, player);
+			// for marked we have to pass all this in because we want cardWasPlayed to be false so that marked doesn't trigger retaliate/spikes
+			if(player.marked.current > 0) {
+				await doDamage(player.marked.current, monster, [player], false, false, false, false, false, false);
+			}
+			for(let i = 0; i < game.currentMonsters.length; i++) {
+				if(game.currentMonsters[i].marked.current > 0) {
+					await doDamage(game.currentMonsters[i].marked.current, player, [game.currentMonsters[i]], false, false, false, false, false, false);
+				}
+				monsters.updateMonsterStats(game.currentMonsters[i]);
+			}
+			if(player.insulate.current > 0) {
+				applyBlock(player.insulate.current, player);
+			}
 		}
 		
 		// process the card
 		await processCard(card, currentMonster, type, multiply, true);
 
-		if(card.type == 'attack') {
-			player.momentumAmount += player.momentum.current;
+		// effects that shouldn't proc when combining cards
+		if(type != 'combine') {
+			if(card.type == 'attack') {
+				player.momentumAmount += player.momentum.current;
+			}
+			player.antimomentumAmount += player.antimomentum.current;
 		}
-		player.antimomentumAmount += player.antimomentum.current;
-		
+			
 		let linger = util.getCardAttribute(card, 'linger');
 		let breakable = util.getCardAttribute(card, 'breakable');
 		let use = util.getCardAttribute(card, 'use');
@@ -5500,7 +5511,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 		}
 
 		// check for bless
-		if(card.type == 'ability' && player.bless.enabled) {
+		if(card.type == 'ability' && player.bless.enabled && type != 'combine') {
 			let possibleCards = [];
 			for(let i = 0; i < combatDeck.handCards.length; i++) {
 				let mana = util.getCardAttribute(combatDeck.handCards[i], 'mana');
@@ -5522,7 +5533,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 
 		$('.card.combinable').removeClass('combine-compatible');
 		
-		combatDeck.updateCardPlayability(player, combatDeck, isThrottled(), type);
+		combatDeck.updateCardPlayability(player, combatDeck, util.isThrottled(), type);
 
 		elem.removeClass('playing');
 		card.playing = false;
@@ -5651,7 +5662,7 @@ async function processCard(card, currentMonster, type, multiply = 1, cardWasPlay
 
 	}
 
-	combatDeck.updateCardPlayability(player, combatDeck, isThrottled());
+	combatDeck.updateCardPlayability(player, combatDeck, util.isThrottled());
 
 }
 
@@ -5664,7 +5675,7 @@ async function processDmg(dmg, currentMonster, multiply, card = false, type = fa
 				if(currentMonster) {
 					// handle effects and abilities that last per card rather than per turn and are not triggered by draw/discard/destroy effects
 					let fatalityHit = false;
-					if(card.type == 'attack' && type != 'draw' && type != 'discard' && type != 'destroy') {
+					if(util.hasAttribute(card, 'dmg') && type != 'draw' && type != 'discard' && type != 'destroy') {
 						// fatality
 						if(player.fatality.current > 0 && (game.highestDmgRoll * player.fatality.current) > thisDmg) {
 							fatalityHit = true;
@@ -5821,6 +5832,7 @@ async function processMagic(magic, multiply, card = false, cardWasPlayed = false
 	}
 }
 
+//{action: 'addCard', select: 2, value: 10, type: 'any', to: 'handCards'}
 async function processActions(actions, monster = false, multiply = 1, playedCard = false, cardWasPlayed = false) {
 	try {
 		let update = true;
@@ -5952,6 +5964,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							}
 							break; 
 						}
+						//{action: 'ensharden', type: 'random', select: 1, from: 'deck', random: false}
 						case 'ensharden': {
 							game.toPick = actions[e].select;
 							game.toPile = actions[e].from;
@@ -5988,6 +6001,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							if(combatDeck.chooseCards.length > 0) {
 								if(actions[e].random) {
 									let num = game.toPick;
+									game.toPick = 0;
 									if(num < 0) num = deck.numOpenSlots(combatDeck.chooseCards);
 									for(let i = 0; i < num; i++) {
 										if(shard == 'random') {
@@ -6405,11 +6419,13 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 						case 'summonMonster': {
 							let form = actions[e].form !== undefined ? actions[e].form : false;
 							let context = actions[e].context !== undefined ? actions[e].context : false;
+							let summonedMonster = false;
 							if(actions[e].what.constructor === Array) {
 								for(let i = 0; i < actions[e].value; i++) {
 									let id = game.round + '-' + i;
 									let what = util.randFromArray(actions[e].what);
-									monsters.summonMonster(what, id, form);
+									summonedMonster = monsters.summonMonster(what, id, form);
+									await processInitialHexes(summonedMonster);
 									await util.wait(game.animationGap);
 								}
 							} else if(actions[e].what == 'random') {
@@ -6432,17 +6448,18 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 										}
 									}
 									let what = util.randFromArray(possibleMonsters);
-									monsters.summonMonster(what.id, id, form);
+									summonedMonster = monsters.summonMonster(what.id, id, form);
+									await processInitialHexes(summonedMonster);
 									await util.wait(game.animationGap);
 								}
 							} else {
 								for(let i = 0; i < actions[e].value; i++) {
 									let id = game.round + '-' + i;
-									monsters.summonMonster(actions[e].what, id, form);
+									summonedMonster = monsters.summonMonster(actions[e].what, id, form);
+									await processInitialHexes(summonedMonster);
 									await util.wait(game.animationGap);
 								}
 							}
-							await processInitialHexes();
 							break;
 						}
 						case 'kill': {
@@ -7320,10 +7337,10 @@ async function applyMagic(magic, to, ignoreConjure = false) {
 	}
 
 	// apply Magick effects
-	let dmg = 2;
-	let blk = 3;
-	let armor = 2;
-	let dmgChaos = 10;
+	let dmg = 4;
+	let blk = 6;
+	let armor = 4;
+	let dmgChaos = 20;
 	if(to.amplify?.enabled) {
 		dmg = dmg * 2;
 		blk = blk * 2;

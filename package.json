@@ -1,6 +1,6 @@
 {
   "name": "spewnicorn",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "A deck-builder roguelike with whimsy!",
   "main": "main.js",
   "scripts": {

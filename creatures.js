@@ -1221,11 +1221,10 @@ const ALL_MONSTERS = [
         moveSet: [
             {effects: [
                 {effect: 'conjure', amount: -4, turns: 4, hex: true},
-            ]},
-            {dmg: [8, 8]},
-            {blk: [10], effects: [
                 {effect: 'stifled', amount: 1, turns: -1, hex: true},
             ]},
+            {dmg: [8, 8]},
+            {blk: [10]},
             {dmg: [9, 9]},
             {blk: [10], dmg: [10, 10]},
             {dmg: [10, 10]},
@@ -1353,11 +1352,10 @@ const ALL_MONSTERS = [
         moveSet: [
             {effects: [
                 {effect: 'conjure', amount: -4, turns: 4, hex: true},
-            ]},
-            {dmg: [8, 8]},
-            {blk: [10], effects: [
                 {effect: 'stifled', amount: 1, turns: -1, hex: true},
             ]},
+            {dmg: [8, 8]},
+            {blk: [10]},
             {dmg: [9, 9]},
             {blk: [10], dmg: [10, 10]},
             {dmg: [10, 10]},
@@ -1488,11 +1486,10 @@ const ALL_MONSTERS = [
         moveSet: [
             {effects: [
                 {effect: 'conjure', amount: -4, turns: 4, hex: true},
-            ]},
-            {dmg: [8, 8]},
-            {blk: [10], effects: [
                 {effect: 'stifled', amount: 1, turns: -1, hex: true},
             ]},
+            {dmg: [8, 8]},
+            {blk: [10]},
             {dmg: [9, 9]},
             {blk: [10], dmg: [10, 10]},
             {dmg: [10, 10]},
@@ -3197,6 +3194,7 @@ export function Monster() {
         //if(aliveMonsters.length < 7) {
             let thisMonster = createMonster(false, id, false, false, false, false, monster, form);
             game.currentMonsters.push(thisMonster);
+            return thisMonster;
         //}
     }
 
@@ -3330,9 +3328,9 @@ export function Monster() {
                     } else {
                         switch(game.floor) {
                             case 4:
-                                // 4 super sludges, 2 standard sludges
-                                var numStandard = 2;
-                                var numSuper = 4;
+                                // 4/3 super sludges, 2/1 standard sludges
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 4 : 3;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'sludge');
                                     currentMonsters.push(thisMonster);
@@ -3343,9 +3341,9 @@ export function Monster() {
                                 }
                             break;
                             case 5:
-                                // 4 super imps, 2 standard imps
-                                var numStandard = 2;
-                                var numSuper = 4;
+                                // 4/3 super imps, 2/1 standard imps
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 4 : 3;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'imp');
                                     currentMonsters.push(thisMonster);
@@ -3356,9 +3354,9 @@ export function Monster() {
                                 }
                             break;
                             case 6:
-                                // 4 super shatters, 2 standard shatters
-                                var numStandard = 2;
-                                var numSuper = 4;
+                                // 4/3 super shatters, 2/1 standard shatters
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 4 : 3;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'shatter');
                                     currentMonsters.push(thisMonster);
@@ -3382,9 +3380,9 @@ export function Monster() {
                     } else {
                         switch(game.floor) {
                             case 7:
-                                // 4 super void fairies, 2 standard void fairies
-                                var numStandard = 2;
-                                var numSuper = 4;
+                                // 4/3 super void fairies, 2/1 standard void fairies
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 4 : 3;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'void_fairy');
                                     currentMonsters.push(thisMonster);
@@ -3395,9 +3393,9 @@ export function Monster() {
                                 }
                             break;
                             case 8:
-                                // 4 super enchantresses, 2 standard enchantresses
-                                var numStandard = 2;
-                                var numSuper = 4;
+                                // 4/3 super enchantresses, 2/1 standard enchantresses
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 4 : 3;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'enchantress');
                                     currentMonsters.push(thisMonster);
@@ -3408,9 +3406,9 @@ export function Monster() {
                                 }
                             break;
                             case 9:
-                                // 4 super power liches, 2 standard power liches
-                                var numStandard = 2;
-                                var numSuper = 4;
+                                // 4/3 super power liches, 2/1 standard power liches
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 4 : 3;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'power_liche');
                                     currentMonsters.push(thisMonster);
@@ -3432,9 +3430,9 @@ export function Monster() {
                     } else {
                         switch(game.floor) {
                             case 10:
-                                // 4 super iron walkers, 2 standard iron walkers
-                                var numStandard = 2;
-                                var numSuper = 4;
+                                // 4/3 super iron walkers, 2/1 standard iron walkers
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 4 : 3;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'iron_walker');
                                     currentMonsters.push(thisMonster);
@@ -3445,9 +3443,9 @@ export function Monster() {
                                 }
                             break;
                             case 11:
-                                // 2 super swarms, 3 standard swarms
-                                var numStandard = 3;
-                                var numSuper = 2;
+                                // 3/2 super swarms, 2/1 standard swarms
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 3 : 2;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'swarm');
                                     currentMonsters.push(thisMonster);
@@ -3458,9 +3456,9 @@ export function Monster() {
                                 }
                             break;
                             case 12:
-                                // 3 super sorcerer, 2 standard sorcerers
-                                var numStandard = 2;
-                                var numSuper = 3;
+                                // 3/2 super sorcerer, 2/1 standard sorcerers
+                                var numStandard = util.chance(75) ? 2 : 1;
+                                var numSuper = util.chance(75) ? 3 : 2;
                                 for (let i = 0; i < numStandard; i++) {
                                     let thisMonster = createMonster(1, i, 'normal', [], 'forest', 'sorcerer');
                                     currentMonsters.push(thisMonster);

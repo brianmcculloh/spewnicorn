@@ -587,7 +587,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '1.0.3';
+    let version = '1.0.4';
     let seed = false;
     let difficulty = 'medium';
     let floor = 0; // TODO: set to 0

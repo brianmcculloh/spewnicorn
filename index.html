@@ -52,7 +52,7 @@
           <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="<ul><li>1 arena required per map</li><li>Start with a <span class='highlight'>Spewnicorn Spray</span> card</li><li>Reduced aggro</li><li>Heal to full after gates</li><li>Extra magic fountains and quests</li><li>Start with 100 max health</li></ul>">Easy</span></div>
           <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="<ul><li>2 arenas required per map</li><li>Do not start with a <span class='highlight'>Spewnicorn Spray</span> card</li><li>Standard amount of magic fountains and quests</li><li>Start with 75 max health</li><li><span class='highlight'>The Singularity</span> summons only <span class='highlight'>Arena Bosses</span></li></ul>">Medium</span></div>
           <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="<ul><li>No healing after gates</li><li>+5 to all enemy block</li><li>+2 damage to all enemy attacks</li><li>Reduced number of magic fountains and quests</li><li><span class='highlight'>The Singularity</span> summons Frost and Flame <span class='highlight'>Arena Bosses</span></li><li>Start with 65 max health</li></ul>">Hard</span></div>
-          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="<ul><li>3 arenas required per map</li><li>Shards, candies, and treasures are less common</li><li><span class='highlight'>The Singularity</span>'s Resurrect effect is doubled</li><li>Start with 55 max health</li></ul>">Expert</span></div>
+          <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="<ul><li>3 arenas required per map</li><li><span class='highlight'>The Singularity</span>'s Resurrect effect is doubled</li><li>Start with 55 max health</li><li>Reduced chance of finding shards, candies, and treasures after battles.</li></ul>">Expert</span></div>
           <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="<ul><li>+20% damage to all enemy attacks</li><li>Aggro affects <span class='highlight'>The Singularity</span> fight</li><li><span class='highlight'>The Singularity</span> summons <span class='highlight'>Guardians</span></li></ul>">Nightmare</span></div>
         </div>
 
@@ -131,7 +131,36 @@
 
           <h2>RELEASE NOTES</h2>
 
-          <p>1.0.3 (6/xx/2024)</p>
+          <p>1.0.4 (7/15/2024)</p>
+
+          <ul>
+            <li>Bug fix: unresponsive screen glitch after showing cards to player</li>
+            <li>Bug Fix: initial enemy hexes incorrectly got activated every time they summoned a monster</li>
+            <li>Bug Fix: combining cards no longer procs marked or antimomentum</li>
+            <li>Bug fix: the Unearth card now adheres to the Throttle effect</li>
+            <li>Bug fix: you can no longer target dead monsters with candies</li>
+            <li>Bug fix: game properly ends when enemy kills player and dies to retaliate/spikes at the same time</li>
+            <li>Bug fix: combining cards when you have a full hand of 10 cards now re-enables the draw card buttons if you have any speed</li>
+            <li>Bug fix: the Forbid card no longer removes hexes from enemies</li>
+            <li>Bug fix: non-attack cards that deal direct damage (e.g. Master of All) now proc fatality</li>
+            <li>Buffed the Blacksmith card</li>
+            <li>Buffed the Burning Strike card</li>
+            <li>Nerfed the Self-Fulfill card</li>
+            <li>Unreachable no longer persists between combats</li>
+            <li>Combining cards no longer increases Throttle count</li>
+            <li>Doubled Magick effects</li>
+            <li>Clutter cards only proc Veto if they have draw effects</li>
+            <li>Purify now correctly removes Antimomentum</li>
+            <li>Buffed the Cryptic Rune card</li>
+            <li>Buffed the Auxiliary Kill card</li>
+            <li>New Card: Invoke (Rainbow pack)</li>
+            <li>New Card: Astral Call (Rainbow pack)</li>
+            <li>Moved the Fleeting Shelter card to the Cycle pack</li>
+            <li>The Fleeting Shield card no longer upgrades to retain, and now has two shard slots</li>
+            <li>Various Magic cards had magic amounts increased</li>
+          </ul>
+
+          <p>1.0.3 (6/27/2024)</p>
 
           <ul>
             <li>Bug fix: arenas wouldn't load bosses after floor 50</li>
@@ -1066,7 +1095,7 @@
 
         <div class="incoming-damage">Incoming Damage: <span></span></div>
 
-        <div class="magic-rainbow tooltip" data-type="rainbow" data-powertip="<div class='tooltip-magic'><span class='rainbow'>Rainbow Magic: </span>Does damage to all monsters (Magick: does 2 damage to all enemies).</div><div class='tooltip-magic'><span class='elemental'>Elemental Magic: </span>Does damage to all monsters ignoring block (Magick: gain 3 block).</div><div class='tooltip-magic'><span class='dark'>Dark Magic: </span>Does damage to all monsters ignorning armor (Magick: gain 2 armor).</div><div class='tooltip-magic'><span class='chaos'>Chaos Magic: </span>Does triple damage to a random monster (Magick: does 10 damage to a random monster).</div><div class='tooltip-magic'><span class='muddled'>Muddled Magic: </span>Does damage to a random monster.</div>">
+        <div class="magic-rainbow tooltip" data-type="rainbow" data-powertip="<div class='tooltip-magic'><span class='rainbow'>Rainbow Magic: </span>Does damage to all monsters (Magick: does 4 damage to all enemies).</div><div class='tooltip-magic'><span class='elemental'>Elemental Magic: </span>Does damage to all monsters ignoring block (Magick: gain 6 block).</div><div class='tooltip-magic'><span class='dark'>Dark Magic: </span>Does damage to all monsters ignorning armor (Magick: gain 4 armor).</div><div class='tooltip-magic'><span class='chaos'>Chaos Magic: </span>Does triple damage to a random monster (Magick: does 20 damage to a random monster).</div><div class='tooltip-magic'><span class='muddled'>Muddled Magic: </span>Does damage to a random monster.</div>">
 
           <div class="rainbow-power-amount"><span class="rainbow-power-current"></span>/<span class="rainbow-power-max"></span></div>
 

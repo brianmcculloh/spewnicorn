@@ -1400,9 +1400,9 @@ const ALL_TREASURES = [
         name: "Cross of Coronado", 
         courage: 13,
         tier: 2,
-        weight: 2,
+        weight: 1,
         effects: [
-            {effect: 'intercept', amount: 10, turns: -1}
+            {effect: 'intercept', amount: 4, turns: -1}
         ],
         x: -320,
         y: -5760

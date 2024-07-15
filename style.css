@@ -4735,6 +4735,12 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-magic_burst .card-image {
 	background-position:calc(-1365px * .92) calc(-8377px * .92);
 }
+#card-invoke .card-image {
+	background-position:calc(-1170px * .92) calc(-9006px * .92);
+}
+#card-astral_call .card-image {
+	background-position:calc(-1365px * .92) calc(-9006px * .92);
+}
 
 
 /* CLUTTER */

@@ -434,15 +434,22 @@ export default class Util {
         $('.show-cards').addClass('shown');
         $('.show-cards .card')
             .delay(1000)
-            .queue(function() {
-                $(this).addClass('disappearing')
-                .delay(500)
-                .queue(function() {
-                    $('.show-cards').removeClass('shown');
-                    $(this).parent().remove().dequeue();
-                }).dequeue();
+            .queue(function(next) {
+                $(this).addClass('disappearing');
+                next();
+            })
+            .delay(500)
+            .queue(function(next) {
+                $(this).parent().remove();
+                next();
             });
+    
+        // Ensure removal of 'shown' class after the entire animation
+        setTimeout(function() {
+            $('.show-cards').removeClass('shown');
+        }, 1500); // 1000ms delay + 500ms delay
     }
+    
     appendMonster(monster, id) {
         $('<div class="monster ' + monster.id + ' ' + monster.breed + '" data-id="' + id + '" data-guid="' + monster.guid + '" data-tier="' + monster.tier + '"><div class="monster-stats">' + monster.statsDom + '</div><div class="sprite"></div><div class="combat-log"><div class="dmg-taken" data-amount="0"></div><div class="armor-lost" data-amount="0"></div><div class="health-gained" data-amount="0"></div><div class="health-lost" data-amount="0"></div><div class="status-text"></div></div><div class="monster-health creature-health"><div class="health-amount"><div class="armor-amount"><div class="armor-number"></div></div><div class="health-number"></div></div><div class="block-amount"><div class="block-number">' + monster.block + '</div></div></div><div class="status-bar"></div></div>')
             .appendTo('.monster-panel')
@@ -966,6 +973,28 @@ export default class Util {
             percentage = 100;
         }
         $('.aggro-bar .aggro-bar-inner').css('width', percentage + '%');
+    }
+    isThrottled() {
+        let throttlerExists = false;
+        if(player.speed.base <= game.cardsPlayed) {
+            let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
+            for(let i = 0; i < currentMonsters.length; i++) {
+                if(currentMonsters[i].throttle.enabled) {
+                    throttlerExists = true;
+                }
+            }
+        }
+        return throttlerExists;
+    }
+    isPunished() {
+        let punisherExists = false;
+        let currentMonsters = game.currentMonsters.filter(i => i.dead == false);
+        for(let i = 0; i < currentMonsters.length; i++) {
+            if(currentMonsters[i].punish.enabled) {
+                punisherExists = true;
+            }
+        }
+        return punisherExists;
     }
     setInitialTooltips() {
         $('.top-bar .tooltip').powerTip({
