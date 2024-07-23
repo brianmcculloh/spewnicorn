@@ -1118,6 +1118,15 @@ export default class Util {
         return text;
     }
 
+    getTransformedWidth(critChance) {
+        // Parameters for the transformation, you can adjust these
+        const maxWidth = 100; // Maximum width percentage
+        const scale = 1; // Scaling factor to adjust the transformation curve
+        
+        // Apply logarithmic transformation
+        return Math.log(critChance * scale + 1) / Math.log(101 * scale) * maxWidth;
+    }
+
     sound(f) {
         var s = false
         s = new Howl({

@@ -1698,6 +1698,28 @@ const ALL_TREASURES = [
         x: -320,
         y: -320
     }),
+    new Treasure({
+        id:'golden_fishing_rod', 
+        name: 'Golden Fishing Rod', 
+        courage: 15,
+        weight: 1,
+        actions: [
+            {action: 'mechanic', value: true, what: 'allPacks', desc: 'Cards from all booster packs are available'}
+        ],
+        x: -64,
+        y: -3232
+    }),
+    new Treasure({
+        id:'lucky_lure', 
+        name: 'Lucky Lure', 
+        courage: 18,
+        weight: 1,
+        actions: [
+            {action: 'mechanic', value: true, what: 'excludeBasics', desc: 'Card rewards and markets exclusively contain booster pack cards'}
+        ],
+        x: -224,
+        y: -3360
+    }),
 
 
     // TIER 3

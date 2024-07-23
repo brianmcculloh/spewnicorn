@@ -3,12 +3,12 @@ const util = new Util();
 
 const ALL_STARTING_OPTIONS = [
     {att: 'courage', name: '+8 Courage Coins', amount: 8},
-    {att: 'armor', name: '+40 Armor', amount: 40},
+    {att: 'armor', name: '+55 Armor', amount: 55},
     {att: 'health', key: 'max', name: '+20 Max Health', amount: 20},
     {att: 'aura', key: 'current', name: '+8 Aura essence', amount: 8},
     {att: 'sparkle', key: 'current', name: '+8 Sparkle essence', amount: 8},
     {att: 'shimmer', key: 'current', name: '+8 Shimmer essence', amount: 8},
-    {att: 'rainbow', key: 'base', name: '+12 Rainbow Base', amount: 12, description: 'Charges your magic rainbow +12 at the start of each combat'},
+    {att: 'rainbow', key: 'base', name: '+17 Rainbow Base', amount: 17, description: 'Charges your magic rainbow +17 at the start of each combat'},
     {att: 'aggro', key: 'current', name: '-5 Aggro', entity: 'game', amount: -5},
     {action: 'addRare', name: 'Add a random rare card, lose 12 health'},
     {action: 'addCommonTreasure', name: 'Add a random common treasure'},
@@ -533,6 +533,10 @@ const ALL_ACTIONS = [
     {id: 'stat', name: 'Stat', desc: 'Increase/decrease specific stat by x amount'},
 
     // Usage:
+    // {action: 'mechanic', value: true, what: 'allPacks'}
+    {id: 'mechanic', name: 'Mechanic', desc: 'Change a core gameplay mechanic'},
+
+    // Usage:
     // {action: 'removeHexes', to: 'player'}
     {id: 'removeHexes', name: 'Remove Hexes', desc: 'Remove all hexes', sound: 'effect41'},
 
@@ -587,7 +591,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '1.0.4';
+    let version = '1.0.5';
     let seed = false;
     let difficulty = 'medium';
     let floor = 0; // TODO: set to 0
@@ -652,6 +656,8 @@ export default function Game() {
     let animationGap = 100;
     let animationDelay = 500;
     let animationDmg = 100;
+    let allPacks = false;
+    let excludeBasics = false;
     let playsounds = true;
     let playmusic = true;
     let tutorial = false; // TODO: set to false
@@ -851,6 +857,8 @@ export default function Game() {
         animationGap,
         animationDelay,
         animationDmg,
+        allPacks,
+        excludeBasics,
         debug,
         dev,
         scenario,

@@ -45,7 +45,6 @@
  * Ability: mix and match combineable cards which results in a random combined card
  * Mechanic: increase all card use/expire/linger values
  * Effect: retrofit resistance so that it can be hexed and go above 1 so specific monsters can be targeted to take more magic damage
- * Ability: card rewards are now booster pack agnostic (like a prismatic shard)
  * Action: do damage equal to floor + turn
  * Ability: heal the current floor number health at the start of arenas and guardians
  * Ability: languish - take damage each time a card is played equal to number of cards played this combat - have a unique enemy hex this, and also have a really good card have this as its downside
@@ -62,7 +61,6 @@
  * Ability: Luck - small chance to improve all kinds of things - dmg, blk, armor, courage, crit chance, health gain
  * Ability: (attune? shrewd? studential?) gain random effect/ability at the start of each combat
  * Action: (card Vulgar Display) gain block equal to your highest damage roll
- * Mechanic: improve card stat, either permanently (genetic algorithm) or per combat play (claw)
  * Effect: hex that disallows certain types of cards being played
  * Action: wild card - percentage chance of doing a bunch of different things
  * -low chance to have a negative effect and powerful effect, higher chances of things in between happening
@@ -132,7 +130,11 @@
  * TODO
  * *************************************************
  * TODO: when a card is retained the tooltips don't work until at least one card is drawn
+ * TODO: fleeting refuge expire is not ticking down when upgraded
+ * TODO: view map button always viewable
+ * TODO: deck modals always on top
  * 
+ *  
  * 
  * 
  * PHASE VI:
@@ -2381,7 +2383,7 @@ function setStatus(updateCards = true) {
 	$('.player-health .max-health-number').html(player.health.max);
 	$('.player-health .armor-number').html(player.armor);
 	$('.player-health .block-number').html(player.block);
-	$('.crit-bar .crit-bar-inner').css('width', game.critChance + '%');
+	$('.crit-bar .crit-bar-inner').css('width', util.getTransformedWidth(game.critChance) + '%');
 	$('.crit-bar .level').html(game.critChance + '%');
 
 	$('.mana span').html(player.mana.current + '/' + player.mana.base);
@@ -3291,7 +3293,7 @@ async function beginTurn() {
 
 	updateTreasureTriggers('turns'); 
 
-	monsterIntent();
+	await monsterIntent();
 
 	updateCritChance();
 
@@ -3505,10 +3507,10 @@ async function addCardTo(type, domCard = null, to = 'handCards', ignoreSpeed = f
 	setStatus(false);
 }
 
-function monsterIntent() {
+async function monsterIntent() {
 
 	game.incomingDamage = 0;
-	monsterAction('query');
+	await monsterAction('query');
 
 }
 
@@ -3554,8 +3556,11 @@ async function monsterAction(action = 'perform') {
 					actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers, context: 'upgraded'}];
 				} else if(game.difficulty=='nightmare') {
 					//tiers = [6, 7]; // use this if we want super guardians
-					tiers = [6];
-					actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: tiers}];
+					if(util.chance(25)) {
+						actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: [6]}];
+					} else {
+						actions = [{action: 'summonMonster', what: 'random', value: game.toResurrect, tier: [5], context: 'upgraded'}];
+					}
 				}
 				let update = processActions(actions, thisMonster);
 			}
@@ -3814,6 +3819,8 @@ async function monsterAction(action = 'perform') {
 							intent += '<span class="intent-buff action-buff intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
 						} else if(id == 'summonMonster') {
 							intent += '<span class="intent-summon action-hex intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
+						} else if(id == 'removeBuffs') {
+							intent += '<span class="intent-removeBuffs action-removeBuffs intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
 						} else {
 							intent += '<span class="intent-hex action-hex intent-icon tooltip" data-powertip="' + intentTooltip + '"></span>';
 						}
@@ -3838,6 +3845,7 @@ async function monsterAction(action = 'perform') {
 		
 	}
 
+	await util.wait(100);
 	setStatus();
 
 }
@@ -4140,7 +4148,10 @@ function removeHexes(to) {
 }
 
 function removeBuffs(to) {
-	if(!to.eternal.enabled) {
+	if(to.eternal.enabled) {
+		if(game.playsounds) sounds.play('vex');
+		return false;
+	} else {
 		for(let i = 0; i < game.effects.length; i++) {
 			if(game.effects[i].id != 'rainbow' && to[game.effects[i].id]!==undefined) {
 				if(isHexed(game.effects[i], to)==false) {
@@ -4183,10 +4194,15 @@ async function applyEffect(effect, to, turns = -1) {
 		if(effect.amount != undefined) {
 			// if amount is 0 that means we're clearing whatever the current value is
 			if(effect.amount == 0) {
-				if(effect.effect == 'punch' || effect.effect == 'thunder' || effect.effect == 'sorcery') {
-					effect.amount = -(to[effect.effect].current - 1);
+				if(to.eternal.enabled) {
+					// eternal is enabled, so don't "remove" the buff - yes, this is hacky
+					return false;
 				} else {
-					effect.amount = -to[effect.effect].current;
+					if(effect.effect == 'punch' || effect.effect == 'thunder' || effect.effect == 'sorcery') {
+						effect.amount = -(to[effect.effect].current - 1);
+					} else {
+						effect.amount = -to[effect.effect].current;
+					}
 				}
 			}
 			// conjure should never go below 0 because if it does then when player applies any magic it will decrease rather than increase rainbow
@@ -4971,7 +4987,7 @@ async function eatCandy(add, monster = false) {
 	// we now have at least one candy slot open, so re-enable clickability
 	$('.loot-items .candy').addClass('clickable');
 
-	monsterIntent(); // this calls setStatus()
+	await monsterIntent(); // this calls setStatus()
 
 }
 
@@ -5520,7 +5536,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 				}
 			}
 			let freeCard = util.randFromArray(possibleCards);
-			console.log('tried to bless', freeCard);
+			//console.log('tried to bless', freeCard);
 			if(freeCard != undefined) {	
 				freeCard.mana = 0;
 				if(freeCard.shardUpgrades.mana != undefined) freeCard.shardUpgrades.mana = 0;
@@ -5548,7 +5564,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 		updateTreasureTriggers('cardsPlayed');
 		setStatus();
 		if(card.type == 'attack') updateCritChance(1);
-		monsterIntent();
+		await monsterIntent();
 	} catch (error) {
         console.error("Failed to playCard:", error);
         handleError(error);
@@ -6339,6 +6355,12 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							if(Player().dead(player)) {
 								endGame('loss');
 							}
+							break;
+						}
+						case 'mechanic': {
+							let what = actions[e].what;
+							let value = actions[e].value;
+							game[what] = value;
 							break;
 						}
 						case 'removeHexes': {
@@ -7467,6 +7489,9 @@ async function activateRainbow(type, to) {
 	let whichMonster = to.rainbow.type == 'muddled' || to.rainbow.type == 'chaos' ? [util.randFromArray(currentMonsters)] : currentMonsters;
 
 	for (let i = 0; i < whichMonster.length; i++) {
+		// make sure this monster exists
+		if(whichMonster[i] == undefined) return;
+
 		// check for magic resistance
 		let thisDmg = dmg;
 		thisDmg = Math.round(thisDmg - (thisDmg * whichMonster[i].resistance.current));
@@ -7509,7 +7534,7 @@ async function activateRainbow(type, to) {
 		}
 	}
 
-	monsterIntent();
+	await monsterIntent();
 
 	return magicPower;
 }

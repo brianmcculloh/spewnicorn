@@ -3661,7 +3661,7 @@ const ALL_CARDS = [
     new Cards({
         id: 'fleeting_shield', name: 'Fleeting Shield', type: 'tool', mana: 0, expire: 3, linger: 2, use: 2, pack: 'cycle', weight: 2,
         blk: [12],
-        slots: 1,
+        slots: 2,
         shardUpgrades: {
             natural: true,
             blk: [16]
@@ -3670,6 +3670,19 @@ const ALL_CARDS = [
             expire: 6,
             use: 4,
             linger: 4
+        },
+    }),
+    new Cards({
+        id: 'fleeting_refuge', name: 'Fleeting Refuge', type: 'tool', mana: 2, expire: 3, use: 2, weight: 2, natural: true,
+        blk: [7, 7, 7],
+        slots: 2,
+        shardUpgrades: {
+            blk: [10, 10, 10],
+            expire: 4
+        },
+        bothShardUpgrades: {
+            blk: [13, 13, 13],
+            mana: 1
         },
     }),
     new Cards({
@@ -4965,6 +4978,23 @@ const ALL_CARDS = [
                 {action: 'addCard', value: 1, type: 'magic', tier: 'common', to: 'drawCards', modifiers: {mana: 0, vanish: true}, with: ['frost', 'flame']},
                 {action: 'addCard', value: 1, type: 'magic', tier: 'uncommon', to: 'drawCards', modifiers: {mana: 0, vanish: true}, with: ['frost', 'flame']},
                 {action: 'addCard', value: 1, type: 'magic', tier: 'rare', to: 'drawCards', modifiers: {mana: 0, vanish: true}, with: ['frost', 'flame']},
+            ],
+        },
+    }),
+    new Cards({
+        id: 'divine_chalice', name: 'Divine Chalice', type: 'tool', mana: 2, vanish: true, tier: 'rare', weight: .5, courage: 6, 
+        abilities: [
+            {ability: 'eternal', turns: 2, enabled: true}
+        ],
+        slots: 2,
+        shardUpgrades: {
+            abilities: [
+                {ability: 'eternal', turns: 3, enabled: true}
+            ],
+        },
+        bothShardUpgrades: {
+            abilities: [
+                {ability: 'eternal', turns: 4, enabled: true}
             ],
         },
     }),
@@ -6873,10 +6903,27 @@ export function AllCards() {
         } else if(type) {
             items = items.filter(i => i.type == type);
         }
+        // deal with booster packs
         if(pack) {
+            // filter to only cards in the passed-in booster pack
             items = items.filter(i => i.pack == pack);
         } else {
-            items = items.filter(i => i.pack == 'basic' || i.pack == game.boosterPack);
+            if(game.allPacks == false) {
+                if(game.excludeBasics) {
+                    // filter to only cards in the current booster pack
+                    items = items.filter(i => i.pack == game.boosterPack);
+                } else {
+                    // filter to all basic cards plus the current booster pack
+                    items = items.filter(i => i.pack == 'basic' || i.pack == game.boosterPack);
+                }
+            } else {
+                if(game.excludeBasics) {
+                    // filter to only cards in all booster packs
+                    items = items.filter(i => i.pack != 'basic');
+                } else {
+                    // do nothing - do not filter out any booster packs
+                }
+            }
         }
         items = items.filter(i => i.addable == true);
         items = items.filter(i => !exclude.includes(i.id));
@@ -6987,10 +7034,9 @@ export function Deck() {
             addCard('spewnicorn_spray');
         }
 
-
         // this is how to add a shard on init - DEV MODE ONLY
-        //attachShard(util.getCardById('stomp', this.cards), 'frost');
-        //attachShard(util.getCardById('new_card', this.cards), 'frost');
+        //attachShard(util.getCardById('divine_chalice', this.cards), 'frost');
+        //attachShard(util.getCardById('divine_chalice', this.cards), 'frost');
 
         
     }
@@ -7519,6 +7565,7 @@ export function Deck() {
                     let action = game.actions.find(o => o.id === id);
                     let name = action.name;
                     let description = action.desc; // future use
+                    let descriptionOverride = actions[e].desc;
                     let what = actions[e].what;
                     let key = actions[e].key;
                     let whatCard = util.getCardById(what, AllCards().cards);
@@ -7535,101 +7582,105 @@ export function Deck() {
                     let modifiers = actions[e].modifiers != undefined ? actions[e].modifiers : {};
                     let modified = '';
                     let plural = value == 1 ? '' : 's';
-                    if(id == 'stat') {
-                        name = whatName.toUpperCase();
-                        name = key != undefined ? key.toUpperCase() + ' ' + name : name;
-                        let symbol = (typeof value === 'number' && value > 0) ? '+' : '';
-                        name = value == 'double' ? 'Double ' + name : name;
-                        key = key != undefined ? key : 'stat';
-                        value = value != undefined && value != 'double' ? ' ' + symbol + '<span class="amount ' + key + '-' + what + '-amount" data-amount="' + value + '">' + value + '</span>': '';
-                        // this would be redundant to display
-                        what = '';
+                    if(descriptionOverride !== undefined && descriptionOverride !== false) {
+                        actionsDesc += descriptionOverride + '. ';
                     } else {
-                        what = what != undefined ? ' <span class="whatname">' + whatName + '</span>' : '';
-                        optional = optional == true ? ' up to ' : '';
-                        if(name == 'Find Draw Card' || name == 'Find Discard Card' || name == 'Find Dead Card') {
-                            value = value != undefined ? optional + ' (&times;' + value + ')' : '';
+                        if(id == 'stat' || id == 'mechanic') {
+                            name = whatName.toUpperCase();
+                            name = key != undefined ? key.toUpperCase() + ' ' + name : name;
+                            let symbol = (typeof value === 'number' && value > 0) ? '+' : '';
+                            name = value == 'double' ? 'Double ' + name : name;
+                            key = key != undefined ? key : id;
+                            value = value != undefined && value != 'double' ? ' ' + symbol + '<span class="amount ' + key + '-' + what + '-amount" data-amount="' + value + '">' + value + '</span>': '';
+                            // this would be redundant to display
+                            what = '';
                         } else {
-                            value = value != undefined ? optional + ' ' + value : '';
-                        }
-                    }
-                    if(id == 'removeHexes' || id == 'removeBuffs') {
-                        to = to != undefined ? ' from ' + util.getFromDisplay(to) : '';
-                    } else {
-                        to = to != undefined ? ' to ' + util.getFromDisplay(to) : '';
-                    }    
-                    select = select != undefined ? ' ' + select : '';
-                    select = select == -1 ? ' all' : select;
-                    type = type != undefined ? ' ' + type : '';
-                    tier = tier != undefined ? ' ' + tier : '';
-                    from = from != undefined ? ' ' + util.getFromDisplay(from) : '';
-                    select = from == ' all cards' ? '' : select;
-                    if(id == 'transmute') {
-                        select = ' up to ' + select;
-                    }
-                    name = name == 'Add Card' ? 'Add' : name;
-                    if(cardWith != undefined) {
-                        if(cardWith.length > 1) {
-                            cardWith = ' with ' + cardWith[0] + ' and ' + cardWith[1] + ' shards';
-                        } else {
-                            cardWith = ' with ' + cardWith + ' shard';
-                        }
-                    } else {
-                        cardWith = '';
-                    }
-                    // process modifiers
-                    if(!$.isEmptyObject(modifiers)) {
-                        modified += ' with modifiers: '
-                        for (var att in modifiers) {
-                            if (modifiers.hasOwnProperty(att)) {
-                                modified += att + '&mdash;' + modifiers[att] + ', ';
+                            what = what != undefined ? ' <span class="whatname">' + whatName + '</span>' : '';
+                            optional = optional == true ? ' up to ' : '';
+                            if(name == 'Find Draw Card' || name == 'Find Discard Card' || name == 'Find Dead Card') {
+                                value = value != undefined ? optional + ' (&times;' + value + ')' : '';
+                            } else {
+                                value = value != undefined ? optional + ' ' + value : '';
                             }
                         }
-                        modified = modified.slice(0, -2);
-                    }
-                    if(select != '' && type != '' && value != '') {
-                        to = to != '' ? ' and add ' + to : '';
-                        if(type == ' any') {
-                            actionsDesc += 'Choose ' + select + ' of ' + value + tier + ' card' + plural + ' ' + to + cardWith + modified + '. ';
+                        if(id == 'removeHexes' || id == 'removeBuffs') {
+                            to = to != undefined ? ' from ' + util.getFromDisplay(to) : '';
                         } else {
-                            actionsDesc += 'Choose ' + select + ' of ' + value + tier + type + ' card' + plural + ' ' + to + cardWith + modified + '. ';
+                            to = to != undefined ? ' to ' + util.getFromDisplay(to) : '';
+                        }    
+                        select = select != undefined ? ' ' + select : '';
+                        select = select == -1 ? ' all' : select;
+                        type = type != undefined ? ' ' + type : '';
+                        tier = tier != undefined ? ' ' + tier : '';
+                        from = from != undefined ? ' ' + util.getFromDisplay(from) : '';
+                        select = from == ' all cards' ? '' : select;
+                        if(id == 'transmute') {
+                            select = ' up to ' + select;
                         }
-                    } else {
-                        if(type == ' any') {
-                            type = type != '' ? tier + ' card' + plural + ' ' : '';
-                        } else if(type == ' attack' || type == ' tool' || type == ' ability' || type == ' magic' || type == ' weapon') {
-                            type = type != '' ? tier + type + ' card' + plural + ' ' : '';
-                        } else if(type == ' clutter') {
-                            type = type != '' ? type : '';
+                        name = name == 'Add Card' ? 'Add' : name;
+                        if(cardWith != undefined) {
+                            if(cardWith.length > 1) {
+                                cardWith = ' with ' + cardWith[0] + ' and ' + cardWith[1] + ' shards';
+                            } else {
+                                cardWith = ' with ' + cardWith + ' shard';
+                            }
                         } else {
-                            type = type != '' ? ' with' + type : '';
+                            cardWith = '';
                         }
-                        
-                        // one-offs
-                        if(name == 'Ensharden') {
-                            what = from == ' draw pile' ? ' cards in your draw pile' : from;
-                            from = '';
-                            type = type == ' with random' ? ' with random shards' : type;
-                        } else if(name == 'Destroy' || name == 'Discard' || name == 'Draw') {
-                            what = value == 1 || value == ' up to 1' ? ' card' : ' cards';
-                        } else if(name == 'TYPE RAINBOW') {
-                            name = 'Change magic type to';
-                        } else if(name == 'COURAGE') {
-                            name = 'Courage Coin';
+                        // process modifiers
+                        if(!$.isEmptyObject(modifiers)) {
+                            modified += ' with modifiers: '
+                            for (var att in modifiers) {
+                                if (modifiers.hasOwnProperty(att)) {
+                                    modified += att + '&mdash;' + modifiers[att] + ', ';
+                                }
+                            }
+                            modified = modified.slice(0, -2);
                         }
+                        if(select != '' && type != '' && value != '') {
+                            to = to != '' ? ' and add ' + to : '';
+                            if(type == ' any') {
+                                actionsDesc += 'Choose ' + select + ' of ' + value + tier + ' card' + plural + ' ' + to + cardWith + modified + '. ';
+                            } else {
+                                actionsDesc += 'Choose ' + select + ' of ' + value + tier + type + ' card' + plural + ' ' + to + cardWith + modified + '. ';
+                            }
+                        } else {
+                            if(type == ' any') {
+                                type = type != '' ? tier + ' card' + plural + ' ' : '';
+                            } else if(type == ' attack' || type == ' tool' || type == ' ability' || type == ' magic' || type == ' weapon') {
+                                type = type != '' ? tier + type + ' card' + plural + ' ' : '';
+                            } else if(type == ' clutter') {
+                                type = type != '' ? type : '';
+                            } else {
+                                type = type != '' ? ' with' + type : '';
+                            }
+                            
+                            // one-offs
+                            if(name == 'Ensharden') {
+                                what = from == ' draw pile' ? ' cards in your draw pile' : from;
+                                from = '';
+                                type = type == ' with random' ? ' with random shards' : type;
+                            } else if(name == 'Destroy' || name == 'Discard' || name == 'Draw') {
+                                what = value == 1 || value == ' up to 1' ? ' card' : ' cards';
+                            } else if(name == 'TYPE RAINBOW') {
+                                name = 'Change magic type to';
+                            } else if(name == 'COURAGE') {
+                                name = 'Courage Coin';
+                            }
 
-                        actionsDesc += 
-                        '<div class="desc-item">' 
-                            + '<span class="desc-item-name">' + name + '</span>'
-                            + '<span class="desc-item-select">' + select + '</span>' 
-                            + '<span class="desc-item-value">' + value + '</span>' 
-                            + '<span class="desc-item-what">' + what + '</span>' 
-                            + '<span class="desc-item-type">' + type + '</span>' 
-                            + '<span class="desc-item-to">' + to + '</span>' 
-                            + '<span class="desc-item-from">' + from + '</span>' 
-                            + '<span class="desc-item-cardWith">' + cardWith + '</span>' 
-                            + '<span class="desc-item-modifiers">' + modified + '</span>'
-                        + '</div>';
+                            actionsDesc += 
+                            '<div class="desc-item">' 
+                                + '<span class="desc-item-name">' + name + '</span>'
+                                + '<span class="desc-item-select">' + select + '</span>' 
+                                + '<span class="desc-item-value">' + value + '</span>' 
+                                + '<span class="desc-item-what">' + what + '</span>' 
+                                + '<span class="desc-item-type">' + type + '</span>' 
+                                + '<span class="desc-item-to">' + to + '</span>' 
+                                + '<span class="desc-item-from">' + from + '</span>' 
+                                + '<span class="desc-item-cardWith">' + cardWith + '</span>' 
+                                + '<span class="desc-item-modifiers">' + modified + '</span>'
+                            + '</div>';
+                        }
                     }
                 }
             }
