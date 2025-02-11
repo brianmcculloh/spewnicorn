@@ -1209,7 +1209,7 @@ const ALL_QUESTS = [
         desc: 'You come across a hooded figure offering a special item in exchange for hauling away some of his junk.',
         weight: 2,
         options: [
-            {id: 'accept_offer', name: 'Accept Offer', desc: 'Receive a random weapon and 3 clutter'},
+            {id: 'accept_offer', name: 'Accept Offer', desc: 'Receive 2 random weapons and 2 clutter'},
             {id: 'reject_offer', name: 'Reject Offer'},
         ]
     }),

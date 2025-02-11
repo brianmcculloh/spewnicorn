@@ -48,7 +48,7 @@ const ALL_EFFECTS = [
 
     // this doesn't really belong here but it doesn't hurt anything
     // creature {base: 5, current: 0, temp: 0, turns: 0, max: 20, type: 'rainbow'},
-    {id: 'rainbow', name: 'Rainbow', desc: 'Base rainbow magic at the start of each combat', x: -384, y: -4992, hex: false},
+    {id: 'rainbow', name: 'Rainbow', desc: 'Base rainbow magic summoned at the start of each combat', x: -384, y: -4992, hex: false},
 
     // Usage:
     // creature {base: 5, current: 0, temp: 0, turns: 0}
@@ -58,31 +58,31 @@ const ALL_EFFECTS = [
     // creature {base: 1, current: 0, temp: 0, turns: 0, persist: false}
     // buff     {effect: 'solid', amount: 2, turns: -1}
     // hex      {effect: 'solid', amount: -1, hex: true, turns: 2}
-    {id: 'solid', name: 'Solid', desc: 'Gain x extra block each time this creature gains block from cards', x: -256, y: -4672, sound: 'effect5', hex: false},
+    {id: 'solid', name: 'Solid', desc: 'Gain x extra block each time block is gained from cards', x: -32, y: -14784, sound: 'effect5', hex: false},
 
     // Usage:
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'might', amount: 5, turns: -1}
     // hex      {effect: 'might', amount: -8, hex: true}
-    {id: 'might', name: 'Might', desc: 'Attack damage modifier', x: -288, y: -4960, sound: 'effect30', hex: false},
+    {id: 'might', name: 'Might', desc: 'Attack damage bonus', x: -416, y: -6432, sound: 'effect30', hex: false},
 
     // Usage:
     // creature {base: 1.1, current: 0, temp: 0, turns: -1, persist: false}, // value should range from 0 (0%) to 2 (200%) - haven't tested higher
     // buff     {effect: 'punch', amount: .1, turns: 3} // value should increment by .1 and will be added to base
     // hex     {effect: 'punch', amount: -.1, turns: -1, hex: true}
-    {id: 'punch', name: 'Punch', desc: 'Attack damage multiplier', x: -482, y: -7072, sound: 'effect26', hex: false},
+    {id: 'punch', name: 'Punch', desc: 'Attack damage multiplier', x: -192, y: -6624, sound: 'effect26', hex: false},
 
     // Usage:
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'mend', amount: 2, turns: -1}
     // hex      {effect: 'mend', amount: -2, hex: true}
-    {id: 'mend', name: 'Mend', desc: 'Gain x extra health each time this creature heals', x: -224, y: -6720, sound: 'effect25', hex: false},
+    {id: 'mend', name: 'Mend', desc: 'Healing amount bonus', x: -224, y: -6720, sound: 'effect25', hex: false},
 
     // Usage:
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'craft', amount: 2, turns: -1}
     // hex      {effect: 'craft', amount: -2, hex: true}
-    {id: 'craft', name: 'Craft', desc: 'Gain x extra armor each time this creature gains armor', x: -288, y: -6048, sound: 'effect9', hex: false},
+    {id: 'craft', name: 'Craft', desc: 'Armor gained bonus', x: -480, y: -6016, sound: 'effect9', hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 1, turns: 2, persist: false}
@@ -125,19 +125,19 @@ const ALL_EFFECTS = [
     // buff     {effect: 'mastery', amount: 5, turns: -1}
     // hex      {effect: 'mastery', amount: -5, hex: true}
     // Gets added to the base crit multiplier of 5 (150%). range is -15 (0%) to +5 (200%);
-    {id: 'mastery', name: 'Mastery', desc: 'Crit damage multiplier (added to base of 150%)', x: -320, y: -7200, sound: 'effect22', hex: false},
+    {id: 'mastery', name: 'Mastery', desc: 'Crit damage multiplier (added to base of 150%)', x: -192, y: -7744, sound: 'effect22', hex: false},
 
     // Usage:
     // creature {base: 3, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'heal', amount: 3, turns: -1}
     // hex      {effect: 'heal', amount: -3, hex: true}
-    {id: 'heal', name: 'Heal', desc: 'Health gained at the end of combat', x: -32, y: -6592, sound: 'effect7', hex: false},
+    {id: 'heal', name: 'Heal', desc: 'Health gained at the end of combat', x: 0, y: -5664, sound: 'effect7', hex: false},
 
     // Usage:
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'conjure', amount: 2, turns: -1}
     // hex      {effect: 'conjure', amount: -2, hex: true}
-    {id: 'conjure', name: 'Conjure', desc: 'Magic rainbow charge modifier', x: -288, y: -4672, sound: 'effect27', hex: false},
+    {id: 'conjure', name: 'Conjure', desc: 'Magic rainbow charge bonus', x: -448, y: -5632, sound: 'effect27', hex: false},
 
     // Usage: 
     // creature {base: 1.5, current: 0, temp: 0, turns: -1, persist: false} // base is default 1 (100%), so 1.5 would be 150%
@@ -160,7 +160,7 @@ const ALL_EFFECTS = [
     // creature {base: .9, current: 0, temp: 0, turns: -1, persist: false}, // value should range from .1 (10%) to .9 (90%) - does NOT work exactly the same as punch!
     // buff     {effect: 'resistance', amount: .9, turns: 2}
     // hex     {effect: 'resistance', amount: -.1, hex: true} // untested
-    {id: 'resistance', name: 'Resistance', desc: 'Resists magic damage', x: -32, y: -5152, sound: 'effect35', delay: true, hex: false},
+    {id: 'resistance', name: 'Resistance', desc: 'Resists all damage from magic', x: -96, y: -6912, sound: 'effect35', delay: true, hex: false},
 
     // Usage:
     // creature {base: 5, current: 0, temp: 0, turns: -1, persist: false}
@@ -172,7 +172,7 @@ const ALL_EFFECTS = [
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'spikes', amount: 1, turns: -1}
     // hex      {effect: 'spikes', amount: -1, hex: true}
-    {id: 'spikes', name: 'Spikes', desc: 'Any armor lost as a result of attack damage does x dmg back to attacker', x: -384, y: -5184, sound: 'effect15', delay: true, hex: false},
+    {id: 'spikes', name: 'Spikes', desc: 'Any armor lost as a result of attack damage does x damage back to attacker', x: -384, y: -5184, sound: 'effect15', delay: true, hex: false},
 
     // Usage:
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
@@ -184,13 +184,13 @@ const ALL_EFFECTS = [
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'mage', amount: 2, turns: -1}
     // hex     {effect: 'mage', amount: -2, hex: true}
-    {id: 'mage', name: 'Mage', desc: 'Each time this creature cycles rainbow, gain x lightning', x: -448, y: -6498, sound: 'effect33', hex: false},
+    {id: 'mage', name: 'Mage', desc: 'Gain x lightning each time rainbow activates', x: -448, y: -6498, sound: 'effect33', hex: false},
 
     // Usage:
     // creature {base: 5, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'enchanter', amount: 5, turns: -1}
     // hex      {effect: 'enchanter', amount: -5, hex: true}
-    {id: 'enchanter', name: 'Enchanter', desc: 'Each time this creature charges magic rainbow without activating it, gain x% thunder', x: -448, y: -6466, sound: 'effect34', hex: false},
+    {id: 'enchanter', name: 'Enchanter', desc: 'Gain x% thunder each time magic rainbow is charged but not activated', x: -448, y: -6466, sound: 'effect34', hex: false},
 
     // Usage:
     // creature {base: 5, current: 0, temp: 0, turns: -1, persist: false}
@@ -202,7 +202,7 @@ const ALL_EFFECTS = [
     // creature {base: 5, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'arcane', amount: 5, turns: -1}
     // hex      {effect: 'arcane', amount: -5, hex: true}
-    {id: 'arcane', name: 'Arcane', desc: 'Whenever this creature muddles their magic or summoms muddled magic, charge rainbow x amount more', x: 0, y: -5408, sound: 'effect31', hex: false},
+    {id: 'arcane', name: 'Arcane', desc: 'Rainbow charge bonus whenever magic rainbow becomes muddled or muddled magic is summoned', x: 0, y: -5408, sound: 'effect31', hex: false},
 
     // Usage:
     // creature {base: 0, current: 2, temp: 2, turns: 2, persist: false}
@@ -213,7 +213,7 @@ const ALL_EFFECTS = [
     // creature {base: 0, current: 0, temp: 1, turns: 2, persist: false}
     // buff     {effect: 'retaliate', amount: 1, turns: -1}
     // hex      {effect: 'retaliate', amount: -1, hex: true}
-    {id: 'retaliate', name: 'Retaliate', desc: 'Any attack damage taken does x dmg back to attacker', x: -256, y: -6784, delay: true, hex: false},
+    {id: 'retaliate', name: 'Retaliate', desc: 'Any attack damage taken does x damage back to attacker', x: -256, y: -6784, delay: true, hex: false},
 
     // Usage:
     // creature {base: 0, current: 0, temp: 1, turns: 2, persist: false}
@@ -237,13 +237,13 @@ const ALL_EFFECTS = [
     // creature {base: 2, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'lightning', amount: 5, turns: -1}
     // hex      {effect: 'lightning', amount: -8, hex: true}
-    {id: 'lightning', name: 'Lightning', desc: 'Magic rainbow damage modifier', x: -160, y: -6496, sound: 'effect37', hex: false},
+    {id: 'lightning', name: 'Lightning', desc: 'Magic rainbow damage bonus', x: -160, y: -6496, sound: 'effect37', hex: false},
 
     // Usage:
     // creature {base: 1.1, current: 0, temp: 0, turns: -1, persist: false}, // value should range from 0 (0%) to 2 (200%) - haven't tested higher
     // buff     {effect: 'thunder', amount: .1, turns: 3} // value should increment by .1 and will be added to base
     // hex     {effect: 'thunder', amount: -.1, turns: -1, hex: true}
-    {id: 'thunder', name: 'Thunder', desc: 'Magic rainbow damage multiplier', x: -160, y: -6528, sound: 'effect36', hex: false},
+    {id: 'thunder', name: 'Thunder', desc: 'Magic rainbow damage multiplier', x: -64, y: -6272, sound: 'effect36', hex: false},
 
     // Usage:
     // creature {base: 1, current: 1, temp: 0, turns: -1, persist: false}
@@ -253,18 +253,18 @@ const ALL_EFFECTS = [
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // hex      {effect: 'antimomentum', amount: 2, hex: true}
-    {id: 'antimomentum', name: 'Anti-Momentum', desc: 'Receive x damage and increase it by x for every card played this turn', x: -480, y: -5440, hex: true},
+    {id: 'antimomentum', name: 'Anti-Momentum', desc: 'Receive x damage and increase it by x any time a card is played this turn', x: -480, y: -5440, hex: true},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // hex      {effect: 'marked', amount: 2, hex: true}
-    {id: 'marked', name: 'Marked', desc: 'Receive x damage for every card played', x: -384, y: -6528, hex: true},
+    {id: 'marked', name: 'Marked', desc: 'Receive x damage each time a card is played', x: -384, y: -6528, hex: true},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'insulate', amount: 5, turns: -1}
     // hex      {effect: 'insulate', amount: -8, hex: true}
-    {id: 'insulate', name: 'Insulate', desc: 'Gain x block each time you play a card', x: -256, y: -6880, hex: false},
+    {id: 'insulate', name: 'Insulate', desc: 'Gain x block each time a card is played', x: -192, y: -6752, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
@@ -276,13 +276,13 @@ const ALL_EFFECTS = [
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'replenish', amount: 5, turns: -1}
     // hex      {effect: 'replenish', amount: -8, hex: true}
-    {id: 'replenish', name: 'Replenish', desc: 'Draw x cards every time you destroy a card', x: -416, y: -385, hex: false},
+    {id: 'replenish', name: 'Replenish', desc: 'Draw x cards every time you destroy a card', x: -320, y: -385, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'cmobiner', amount: 5, turns: -1}
     // hex      {effect: 'combiner', amount: -8, hex: true}
-    {id: 'combiner', name: 'Combiner', desc: 'Draw x cards every time you combine a card', x: -162, y: -4672, hex: false},
+    {id: 'combiner', name: 'Combiner', desc: 'Draw x cards when you combine cards', x: -162, y: -4640, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
@@ -303,61 +303,81 @@ const ALL_EFFECTS = [
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'angered', amount: 2, turns: -1}
     // hex      {effect: 'angered', amount: 1, hex: true}
-    {id: 'angered', name: 'Angered', desc: 'This creature gains x might each time it is hexed', x: 0, y: -5024, hex: false},
+    {id: 'angered', name: 'Angered', desc: 'Gain x might when hexed', x: 0, y: -5024, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'hardened', amount: 2, turns: -1}
     // hex      {effect: 'hardened', amount: 1, hex: true}
-    {id: 'hardened', name: 'Hardened', desc: 'This creature gains x block each time it takes damage', x: -448, y: -6560, hex: false},
+    {id: 'hardened', name: 'Hardened', desc: 'Gain x block when damage is taken', x: -448, y: -6560, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'shapeshifter', amount: 2, turns: -1}
     // hex      {effect: 'shapeshifter', amount: 1, hex: true}
-    {id: 'shapeshifter', name: 'Shapeshifter', desc: 'Gain x block each time you change stances', x: -32, y: -5984, hex: false},
+    {id: 'shapeshifter', name: 'Shapeshifter', desc: 'Gain x block when you change stances', x: -128, y: -6656, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'fend', amount: 2, turns: -1}
     // hex      {effect: 'fend', amount: 1, hex: true}
-    {id: 'fend', name: 'Fend', desc: 'Gain x block each time you combine cards', x: -320, y: -5856, hex: false},
+    {id: 'fend', name: 'Fend', desc: 'Gain x block when you combine cards', x: -290, y: -5856, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'ward', amount: 2, turns: -1}
     // hex      {effect: 'ward', amount: 1, hex: true}
-    {id: 'ward', name: 'Ward', desc: 'Gain x block each time you destroy a card', x: -162, y: -5856, hex: false},
+    {id: 'ward', name: 'Ward', desc: 'Gain x block when you destroy a card', x: -162, y: -5856, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'cover', amount: 2, turns: -1}
     // hex      {effect: 'cover', amount: 1, hex: true}
-    {id: 'cover', name: 'Cover', desc: 'Gain x block each time you activate your magic rainbow', x: -64, y: -5856, hex: false},
+    {id: 'cover', name: 'Cover', desc: 'Gain x block when your magic rainbow activates', x: -64, y: -5856, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'preserve', amount: 2, turns: -1}
     // hex      {effect: 'preserve', amount: 1, hex: true}
-    {id: 'preserve', name: 'Preserve', desc: 'Gain x block each time you discard a card', x: -96, y: -7712, hex: false},
+    {id: 'preserve', name: 'Preserve', desc: 'Gain x block when you discard a card', x: -192, y: -5856, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'veil', amount: .5, turns: -1}
     // hex      {effect: 'veil', amount: -.5, hex: true}
-    {id: 'veil', name: 'Veil', desc: 'This creature gains x% resistance each time it receives magic damage', x: -384, y: -6240, hex: false},
+    {id: 'veil', name: 'Veil', desc: 'Gain x% resistance when receiving magic damage', x: -384, y: -6240, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'interrupt', amount: 4, turns: -1}
     // hex      {effect: 'interrupt', amount: -4, hex: true}
-    {id: 'interrupt', name: 'Interrupt', desc: 'Every deck cycle adds (x / current turn) number of random interrupt cards to the discard pile', x: -352, y: -6336, hex: false},
+    {id: 'interrupt', name: 'Interrupt', desc: 'Every deck cycle adds [x / current turn] number of random interrupt cards to the discard pile', x: -352, y: -6336, hex: false},
 
     // Usage:
     // creature {base: 1, current: 0, temp: 0, turns: -1, persist: false}
     // buff     {effect: 'intercept', amount: 4, turns: -1}
     // hex      {effect: 'intercept', amount: -4, hex: true}
     {id: 'intercept', name: 'Intercept', desc: 'Block the draw effects of the next x clutter cards', x: -160, y: -5760, hex: false, sound: 'intercept'},
+
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'feral', baseTurns: -1, enabled: true}
+    {id: 'feral', name: 'Feral', desc: 'Gain x might for 1 turn when summoning wild magic', x: -32, y: -5792, hex: false},
+
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'beast', baseTurns: -1, enabled: true}
+    {id: 'beast', name: 'Beast', desc: 'Gain x solid for 1 turn when summoning wild magic', x: -64, y: -5792, hex: false},
+
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'buttress', baseTurns: -1, enabled: true}
+    {id: 'buttress', name: 'Buttress', desc: 'Gain x block when gaining might', x: -480, y: -5728, hex: false},
+
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'channel', baseTurns: -1, enabled: true}
+    {id: 'channel', name: 'Channel', desc: 'Summon x wild magic when gaining might', x: -96, y: -7456, hex: false},
 
 ];
 /*********************************************
@@ -389,7 +409,7 @@ const ALL_ABILITIES = [
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
     // buff     {ability: 'tank', turns: 2, enabled: true}
     // hex      {ability: 'tank', enabled: false, hex: true}
-    {id: 'tank', name: 'Tank', desc: 'Damage only applies to armor', context: 'turn', x: -224, y: -5856, sound: 'effect11', delay: true},
+    {id: 'tank', name: 'Tank', desc: 'Damage only applies to armor', context: 'turn', x: -320, y: -5856, sound: 'effect11', delay: true},
 
     // Usage:
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
@@ -407,7 +427,7 @@ const ALL_ABILITIES = [
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'bless', enabled: true, baseTurns: -1}
     // hex     {ability: 'bless', enabled: false, hex: true}
-    {id: 'bless', name: 'Bless', desc: 'Whenever you play an ability a random card becomes free for the rest of combat', context: 'turn', x: -256, y: -5696, sound: 'effect16'},
+    {id: 'bless', name: 'Bless', desc: 'Whenever you play an ability, a random card becomes free for the rest of combat', context: 'turn', x: -256, y: -5696, sound: 'effect16'},
 
     // Usage:
     // creature {enabled: true, baseTurns: 2, turns: 0, persist: false}
@@ -417,17 +437,17 @@ const ALL_ABILITIES = [
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'stockpile', turns: -1, enabled: true}
-    {id: 'stockpile', name: 'Stockpile', desc: 'Any block at the end of turn converts to armor', context: 'turn', x: -160, y: -1118, sound: 'effect14', delay: true},
+    {id: 'stockpile', name: 'Stockpile', desc: 'Any block at the end of your turn converts to armor', context: 'turn', x: -160, y: -1118, sound: 'effect14', delay: true},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'sift', turns: -1, enabled: true}
-    {id: 'sift', name: 'Sift', desc: 'Clutter cards become ephemeral', context: 'turn', x: -96, y: -1632, sound: 'effect18'},
+    {id: 'sift', name: 'Sift', desc: 'All clutter cards become ephemeral', context: 'turn', x: -96, y: -1632, sound: 'effect18'},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'panic', baseTurns: -1, enabled: true}
-    {id: 'panic', name: 'Panic', desc: 'Deal damage + block but lose block', context: 'turn', x: -416, y: -7136, sound: 'effect21'},
+    {id: 'panic', name: 'Panic', desc: 'Deal damage + block and then lose all block', context: 'turn', x: -416, y: -7136, sound: 'effect21'},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
@@ -442,12 +462,12 @@ const ALL_ABILITIES = [
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'amplify', baseTurns: -1, enabled: true}
-    {id: 'amplify', name: 'Amplify', desc: 'Magick, Lightning, and Thunder effects are doubled', context: 'turn', x: -224, y: -5728, sound: 'effect40'},
+    {id: 'amplify', name: 'Amplify', desc: 'Magick, lightning, and thunder effects are doubled', context: 'turn', x: -224, y: -5728, sound: 'effect40'},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'explode', baseTurns: -1, enabled: true}
-    {id: 'explode', name: 'Explode', desc: 'This creature&apos;s next attack does double damage', context: 'card', x: -384, y: -7200, sound: 'tool33'},
+    {id: 'explode', name: 'Explode', desc: 'The next attack will do double damage', context: 'card', x: -384, y: -7200, sound: 'tool33'},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
@@ -457,12 +477,12 @@ const ALL_ABILITIES = [
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'resurrect', baseTurns: -1, enabled: true}
-    {id: 'resurrect', name: 'Resurrect', desc: 'Each time this creature receives damage, it summons one or more random monsters next turn (based on game difficulty.)', context: 'turn', x: -416, y: -6592, offset: true},
+    {id: 'resurrect', name: 'Resurrect', desc: 'Whenever any health is lost, summon one or more random monsters next turn (based on game difficulty)', context: 'turn', x: -416, y: -6592, offset: true},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
     // buff     {ability: 'supernatural', baseTurns: -1, enabled: true}
-    {id: 'supernatural', name: 'Supernatural', desc: 'Natural cards are always drawn first', context: 'turn', x: -96, y: -5760},
+    {id: 'supernatural', name: 'Supernatural', desc: 'Natural cards are always put on top of the draw pile when the deck cycles', context: 'turn', x: -96, y: -5760},
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
@@ -480,7 +500,29 @@ const ALL_ABILITIES = [
 
     // Usage:
     // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
-    {id: 'punish', name: 'Punish', desc: 'Each time the deck cycles, you are hexed Antimomentum equal to the number of cards cycled', context: 'turn', x: -224, y: -10048, offset: true},
+    {id: 'punish', name: 'Punish', desc: 'Each time the deck cycles, the player receives antimomentum equal to the number of cards cycled', context: 'turn', x: -224, y: -10048, offset: true},
+
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'reaper', baseTurns: -1, enabled: true}
+    {id: 'reaper', name: 'Reaper', desc: 'Whenever an enemy loses might or punch, gain that amount of might or punch for 1 turn', context: 'turn', x: -32, y: -4992},
+
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'electromancy', baseTurns: -1, enabled: true}
+    {id: 'electromancy', name: 'Electromancy', desc: 'Whenever you gain might, gain an equal amount of lightning for 1 turn', context: 'turn', x: -320, y: -4992},
+
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'scout', enabled: true, baseTurns: -1}
+    // hex     {ability: 'scout', enabled: false, hex: true}
+    {id: 'scout', name: 'Scout', desc: 'Whenever you play an ability, add a sharded Acquire to your hand', context: 'turn', x: -64, y: -6560},
+
+    // Usage:
+    // creature {enabled: true, baseTurns: -1, turns: 0, persist: false}
+    // buff     {ability: 'gravity', enabled: true, baseTurns: -1}
+    // hex     {ability: 'gravity', enabled: false, hex: true}
+    {id: 'gravity', name: 'Gravity', desc: 'Cards age twice as fast', context: 'turn', x: -320, y: -5568},
 
 ];
 /*********************************************
@@ -556,7 +598,7 @@ const ALL_ACTIONS = [
 
     // Usage:
     // {action: 'playOldest'}
-    {id: 'playOldest', name: 'Play Oldest', desc: 'Play your oldest card in hand for free'},
+    {id: 'playOldest', name: 'Play the oldest card in your hand for free', desc: 'Play the oldest card in your hand for free'},
 
     // Usage:
     // {action: 'playHand'}
@@ -591,7 +633,7 @@ const ALL_ACTIONS = [
 
 export default function Game() {
 
-    let version = '1.0.5';
+    let version = '1.0.13';
     let seed = false;
     let difficulty = 'medium';
     let floor = 0; // TODO: set to 0
@@ -644,6 +686,7 @@ export default function Game() {
     let tradeCardCost = 1;
     let tradeExpired = false;
     let candySlots = 3;
+    let maxHandSize = 10;
     let cardRewardNumber = 3;
     let essenceThresholds = [10, 19, 29, 40]; // TODO: set this to 10, 19, 29, 40
     let aggroThresholds = [10, 15, 19, 22, 25, 28, 31, 33, 36, 39]; // TODO: set this to 10, 15, 19, 22, 25, 28, 31, 33, 36, 39
@@ -653,11 +696,15 @@ export default function Game() {
     let previousMonsters = [];
     let previousArena = [];
     let monsterGroup = 1;
-    let animationGap = 100;
-    let animationDelay = 500;
-    let animationDmg = 100;
+    let animationGap = 80;
+    let animationDelay = 300;
+    let animationLong = 800;
     let allPacks = false;
     let excludeBasics = false;
+    let drinkActive = true;
+    let batheActive = true;
+    let searchActive = true;
+    let frolicActive = true;
     let playsounds = true;
     let playmusic = true;
     let tutorial = false; // TODO: set to false
@@ -845,6 +892,7 @@ export default function Game() {
         tradeCardCost,
         tradeExpired,
         candySlots,
+        maxHandSize,
         cardRewardNumber,
         essenceThresholds,
         aggroThresholds,
@@ -856,9 +904,13 @@ export default function Game() {
         monsterGroup,
         animationGap,
         animationDelay,
-        animationDmg,
+        animationLong,
         allPacks,
         excludeBasics,
+        drinkActive,
+        batheActive,
+        searchActive,
+        frolicActive,
         debug,
         dev,
         scenario,

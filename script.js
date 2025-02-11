@@ -1,6 +1,7 @@
 /*********************************************
  * 
  * To update on Steam:
+ * Make sure the deck is reset and there are no treasures or candies manually added
  * Update the Release Notes in the index.html file
  * Update the version number in game.js (and make sure dev and debug are false)
  * Update the version number in package.json
@@ -73,6 +74,8 @@
  * Effect: apply x times max rainbow block each time you activate rainbow
  * Mechanic: wild combine: can be combined with any other combined card - and when combined, add the card that the other card adds.
  * --there could be multiple wild combine cards, each one doing a special thing when combined
+ * Effect: heal x amount whenever wild magic is summoned - or do some other syngergistic stuff wihen wild magic is summoned
+ * Mechanic: new game setting to amplify the maps to more than 10x10 - easily change tile size with one css change (.tile width of 100px)
  * 
  * 
  * 
@@ -88,8 +91,7 @@
  * Gain courage
  * Choose a card from the current booster pack
  * Either heal or do something cool (don't think any quests currently heal)
- * Quests that permanently add clutter to deck (maybe in trade for good things, or just bad quests)
- * Quest that lets you trade all jabs and blocks for x courage/health/maxhealth per card
+ * Quest: trade all jabs and blocks for x courage/health/maxhealth per card
  * Quest: trade increasingly more health to choose one common weapon, or one uncommon weapon, or one rare weapon, or one legendary weapon
  * Quest: heal to full health, heal to full armor, or gamble for courage
  * Quest: next combat is peaceful, meaning enemies do half damage
@@ -99,6 +101,8 @@
  * Quest: lose all armor and gain something
  * Quest: lose all courage coins and gain something
  * Quest: lose all but 1 hit point and select any one level 7 weapon
+ * Quest: choose between ensharden all stance cards, common cards, or abilities in exchange for health
+ * Quest: add a clutter card of your choosing
  * 
  * 
  * PHASE III:
@@ -116,7 +120,7 @@
  * Graphics - DONE
  * UI Animations - DONE
  * Music - DONE	
- * SFX - DONE
+ * SFX - DONE	
  * Card Prices - DONE
  * 
  * 
@@ -130,12 +134,7 @@
  * TODO
  * *************************************************
  * TODO: when a card is retained the tooltips don't work until at least one card is drawn
- * TODO: fleeting refuge expire is not ticking down when upgraded
- * TODO: view map button always viewable
- * TODO: deck modals always on top
- * 
- *  
- * 
+ * TODO: when obtaining falcon feather and you only have 1 health, it lets you go negative in health
  * 
  * PHASE VI:
  * 
@@ -179,7 +178,6 @@
  * Card: Cycle pack - draw 2 cards (vanish) - just a straightforward utility card 
  * Card: Big dmg but reduce summon/solid/etc. (like hyperbeam)
  * Card: Add a random card from the current booster pack to hand
- * Card: ? card that adds x might
  * Card: ? card that applies x armor
  * Card: ? card that heals x amount
  * Card: ? card that applies x turns of punch hex
@@ -194,13 +192,13 @@
  * Card: low dmg attack card that heals for amount of hp target monster loses
  * Card: cycle pack - discard entire hand and draw max speed num of cards
  * Card: combine pack - destroy entire hand and add 4 battle moves
- * Card: magic pack - destroy entire hand and summon x aligned magic per card destroyed
+ * Card: magic pack - destroy entire hand and summon x wild magic per card destroyed
  * Card: non pack - destroy entire hand and do x dmg to target per card destroyed
  * Card: non pack - destroy entire hand and gain x block per card destroyed
  * Card: rainbow pack tool card - double your lightning (high cost rare)
  * Card: rainbow pack tool card - add 2 lightning 0 cost 1 use 1 expire
  * Card: there are no cards that add clutter other than lemonade type cards - need other cards that are strong but add clutter as a downside
- * Card: magical slash - summons 1 aligned magic
+ * Card: magical slash - summons 1 wild magic
  * Card: like reprogram - increase might and solid but decrease magic stuff like conjure/summon (does not vanish)
  * Card: blank card - becomes a permanent copy of the next card that's played
  * Card: increase rowdy to 100% chance for one turn - upgraded to 2 turns
@@ -220,31 +218,12 @@
  * Card: do damage equal to total armor
  * Card: deal x damage to enemy for each enemy in combat. sharded could either add more damage or turn into aoe
  * Card: "fodder": when destroyed, do something like dmg/blk and add a copy to your draw pile
- * Card: Bottle Might, Bottled Solid, and Bottled Lightning
- * Treasure: 3 magic cards per turn adds lightning/thunder
- * Treasure: 3 attack cards per turn adds punch
- * Treasure: 3 tool cards per turn adds stout
- * Treasure: 5 attack cards per turn adds momentum
- * Treasure: 10 attack cards per combat adds momentum
- * Treasure: 5 tool cards per turn adds wisdom
- * Treasure: 5 tool cards per turn adds tank (1 turn)
- * Treasure: add one random attack/tool/ability/magic card to hand per turn
- * Treasure: increase momentum every x cards played per turn or combat
- * Treasure: increase mystery every x cards played per turn or combat
- * Treasure: common treasure that adds 1 or 2 wisdom
- * Treasure: +1 mana per turn but add mired and lethargy to draw pile at the beginning of each combat
- * Treasure: +5 irradiate
- * Treasure: +20 irradiate on turn 1
- * Treasure: add Spewnicorn Spray on turn 20 with modifier vanish
- * Treasure: +1 speed but can no longer do one of the four options at the fountain
- * Candy: add cards to hand
- * Candy: increase max health
  * 
  * 
  * NEW DECK TYPE: Meta Deck
  * Has cards that improve stats each time they're played (like genetic algorithm)
  * Use the game.cardsPlayed counter somehow, and possibly the game.round and game.combat counters
- * Has cards that do different things for each of the three stances
+ * Has cards that do different things for each of the three stances (when in aura do something, when in sparkle do something different, or when in shimmer do another thing)
  * 
  * 
  * 
@@ -483,6 +462,8 @@ jQuery(document).ready(function($) {
 		$('.end-combat').addClass('shown');
 	}
 
+	createGlossary();
+
 	$('.game-loading-progress').addClass('loaded');
 	stopMusic();
 
@@ -544,7 +525,7 @@ jQuery(document).ready(function($) {
 
 			let gameseed = $('input#custom-seed').val();
 			if(gameseed == '') {
-				gameseed = (Math.random() + 1).toString(36).substring(2);
+				gameseed = (Math.random() + 1).toString(36).substring(2); // this needs to be math.random instead of util.rand so the seed is different every time
 			}
 			game.seed = gameseed;
 			util.setGameSeed(gameseed);
@@ -694,17 +675,15 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click', '.view-map', function(e) {
 
-		$(this).closest('.game-panel').removeClass('shown');
 		$('.view-map-done-wrapper').addClass('shown');
-		$('.view-map-done').attr('data-target', $(this).attr('data-game-panel'));
+		$('.map-wrapper').addClass('preview');
 
 	});
 
 	$(document).on('click', '.view-map-done', function(e) {
 
-		$(this).closest('.view-map-done-wrapper').removeClass('shown');
-		let target = $(this).attr('data-target');
-		$('.' + target).addClass('shown');
+		$('.view-map-done-wrapper').removeClass('shown');
+		$('.map-wrapper').removeClass('preview');
 
 	});
 
@@ -1138,7 +1117,6 @@ jQuery(document).ready(function($) {
 	$(document).on('click', '.draw-cards-panel .done', function(e) {
 
 		if(game.playsounds) sounds.play('doneCards');
-		game.toPick = 0;
 		$('.draw-cards-panel').removeClass('shown');
 		$('.draw-cards-panel .card').removeClass('pickable');
 		$('.draw-cards-panel .message').html('');
@@ -1149,7 +1127,6 @@ jQuery(document).ready(function($) {
 	$(document).on('click', '.discard-cards-panel .done', function(e) {
 
 		if(game.playsounds) sounds.play('doneCards');
-		game.toPick = 0;
 		$('.discard-cards-panel').removeClass('shown');
 		$('.discard-cards-panel .card').removeClass('pickable');
 		$('.discard-cards-panel .message').html('');
@@ -1159,7 +1136,6 @@ jQuery(document).ready(function($) {
 	$(document).on('click', '.dead-cards-panel .done', function(e) {
 
 		if(game.playsounds) sounds.play('doneCards');
-		game.toPick = 0;
 		$('.dead-cards-panel').removeClass('shown');
 		$('.dead-cards-panel .card').removeClass('pickable');
 		$('.dead-cards-panel .message').html('');
@@ -1593,12 +1569,29 @@ jQuery(document).ready(function($) {
 
 });
 
+function createGlossary() {
+	let glossary = '';
+
+    // Loop through all effects
+    game.effects.forEach(effect => {
+        glossary += `<div${effect.hex ? ' class="hex"' : ''}><div class="single-status status-effect" style="background-position:${effect.x}px ${effect.y}px"></div><div class="info"><span class="highlight">${effect.name}${effect.hex ? ' (HEX)' : ''}:</span> ${effect.desc}.</div></div>`;
+    });
+
+    // Loop through all abilities
+    game.abilities.forEach(ability => {
+        glossary += `<div${ability.hex ? ' class="hex"' : ''}><div class="single-status status-effect" style="background-position:${ability.x}px ${ability.y}px"></div><div class="info"><span class="highlight">${ability.name}${ability.hex ? ' (HEX)' : ''}:</span> ${ability.desc}.</div></div>`;
+    });
+
+    // Insert the glossary into the DOM
+    document.querySelector('.glossary').innerHTML = glossary;
+}
+
 function init() {
 
 	console.clear();
 
-	//addTreasure('brilliant_tiara'); // use this to manually add treasures
-	//addCandy('white_chocolate_bar'); // use this to manually add candies
+	//addTreasure('glaring_skull'); // use this to manually add treasures
+	//addCandy('white_chocolate_chips'); // use this to manually add candies
 
 	if(game.debug) $('body').addClass('debug');
 	if(game.tutorial) {
@@ -2586,7 +2579,7 @@ function updateCardDescription(elem, cards) {
 		$(this).addClass(css);
 	});*/
 	let use = util.getCardAttribute(card, 'use');
-	elem.find('.use').html(use);
+	elem.find('.use').html(use + 1);
 	let linger = util.getCardAttribute(card, 'linger');
 	elem.find('.linger').html(linger);
 	let expire = util.getCardAttribute(card, 'expire');
@@ -2786,7 +2779,8 @@ async function startCombat(tile = false) {
 		if(tile.hasClass('arena')) {
 			if(game.playsounds) sounds.play('aggroLevel');
 			game.mapType = 'arena';
-			backgroundImage = './images/arena' + (game.arenasComplete + 1) + '.png';
+			let arenaNumber = (game.arenasComplete % 7) + 1;
+			backgroundImage = './images/arena' + arenaNumber + '.png';
 			$('body').addClass('arena');
 			game.arenasComplete += 1;
 			setTimeout(function() {
@@ -2842,6 +2836,7 @@ async function startCombat(tile = false) {
 	for(let i = 0; i < player.treasures.length; i++) {
 		if(player.treasures[i].trigger.counter < 0 && player.treasures[i].permanent == false) {
 			activateTreasure(player.treasures[i]);
+			await util.wait(game.animationDelay);
 		}
 	}
 
@@ -2860,7 +2855,7 @@ async function startCombat(tile = false) {
 	// setup rainbow
 	player.rainbow.current = player.rainbow.base;
 	if(player.rainbow.current >= player.rainbow.max && player.rainbow.max > 0) {
-		await util.wait(1500);
+		await util.wait(game.animationLong);
 		await activateRainbow(player.rainbow.type, player);
 		updateRainbowDom(player);
 	}
@@ -2875,9 +2870,9 @@ async function startCombat(tile = false) {
 	$('.magic-rainbow .magic-type span').attr('data-type', player.rainbow.type);
 	$('.magic-rainbow .semi-circle--mask').css('transform', 'rotate(' + (magicPower * 1.8) + 'deg) translate3d(0, 0, 0)').removeClass('activated'); 
 
-	await util.wait(1200);
+	await util.wait(game.animationLong);
 	$('.combat-text .draw-cards-arrow').addClass('shown');
-	await util.wait(400);
+	await util.wait(game.animationDelay);
 	$('.combat-text h2.begin-combat').removeClass('shown');
 
 	$('body').addClass('combating');
@@ -2895,7 +2890,7 @@ async function processInitialHexes(summonedMonster = false) {
 		for(let h = 0; h < hexes.length; h++) {
 			let turns = hexes[h].turns == undefined ? -1 : hexes[h].turns;
 			applyEffect(hexes[h], player, turns);
-			await util.wait(300);
+			await util.wait(game.animationDelay);
 		}
 	} else {
 		for(let i = 0; i < game.currentMonsters.length; i++) {
@@ -2903,7 +2898,7 @@ async function processInitialHexes(summonedMonster = false) {
 			for(let h = 0; h < hexes.length; h++) {
 				let turns = hexes[h].turns == undefined ? -1 : hexes[h].turns;
 				applyEffect(hexes[h], player, turns);
-				await util.wait(300);
+				await util.wait(game.animationDelay);
 			}
 		}
 	}
@@ -2942,7 +2937,8 @@ function startingBonus(elem) {
 	} else if(action != undefined) {
 		if(action == 'addRare') {
 			let possibleCards = AllCards().cards.filter(i => i.addable == true && i.tier == 'rare');
-			let card = util.randFromArray(possibleCards);
+			//let card = util.randFromArray(possibleCards);
+			let card = util.weightedRandom(possibleCards);
 			deck.addCard(card.id);
 			let addedCard = util.getCardById(card.id, deck.cards);
 			game.toShow.push(addedCard);
@@ -3028,6 +3024,28 @@ function visitFountain(visited) {
 	if(game.difficulty=='nightmare') {
 		//game.floor += 1;
 		//updateAggro(1);
+	}
+
+	// enable/disable options
+	if(game.drinkActive) {
+		$('.fountain-drink').removeClass('disabled');
+	} else {
+		$('.fountain-drink').addClass('disabled');
+	}
+	if(game.batheActive) {
+		$('.fountain-bathe').removeClass('disabled');
+	} else {
+		$('.fountain-bathe').addClass('disabled');
+	}
+	if(game.searchActive) {
+		$('.fountain-search').removeClass('disabled');
+	} else {
+		$('.fountain-search').addClass('disabled');
+	}
+	if(game.frolicActive) {
+		$('.fountain-frolic').removeClass('disabled');
+	} else {
+		$('.fountain-frolic').addClass('disabled');
 	}
 
 	game.mapType = 'fountain';
@@ -3132,7 +3150,7 @@ async function updateEssenceLevels(essence, amount) {
 					$('.essence-bar.shimmer span.level').html(player.shimmer.level);
 					$('.essence-bar.aura span.level').html(player.aura.level);
 					$('.essence-bar.' + essence).addClass('level-up');
-					await util.wait(1200);
+					await util.wait(game.animationLong);
 					if(game.playsounds) sounds.play('essenceLevel');
 					$('.essence-bar.' + essence).removeClass('level-up');
 					// we only need to add the stance card the first time we level up
@@ -3304,7 +3322,7 @@ async function beginTurn() {
 
 	setStatus();
 
-	await util.wait(1000);
+	await util.wait(game.animationLong);
 	$('.combat-text, .combat-text h2, .combat-text .draw-cards-arrow').removeClass('shown');
 	$('.card.retained:not(.unplayable').addClass('playable');
 	$('.card').removeClass('retain');
@@ -3567,6 +3585,9 @@ async function monsterAction(action = 'perform') {
 
 			game.toResurrect = 0;
 
+			// scroll to the monster if needed
+			util.scrollToMonsterByGuid(thisMonster.guid);
+
 			// visually indicate which monster is taking their turn
 			$('.monster[data-guid=' + thisMonster.guid + ']').addClass('taking-turn');
 
@@ -3650,7 +3671,7 @@ async function monsterAction(action = 'perform') {
 						break;
 					}
 					if(monsters.allDead()) {
-						await util.wait(800);
+						await util.wait(game.animationLong);
 						endCombat();
 						return;
 					}
@@ -3682,7 +3703,7 @@ async function monsterAction(action = 'perform') {
 					intent += '<span class="tooltip" data-powertip="Gain ' + a + ' block (' + baseBlock + ' base)"><span class="intent-blk intent-amount">' + a + '</span><span class="intent-blk-icon intent-icon"></span></span>';
 				} else {
 					applyBlock(a, thisMonster, true);
-					await util.wait(300);
+					await util.wait(game.animationDelay);
 				}
 			}
 		}
@@ -3694,7 +3715,7 @@ async function monsterAction(action = 'perform') {
 					intent += '<span class="tooltip" data-powertip="Gain ' + a + ' armor"><span class="intent-armor intent-amount">' + a + '</span><span class="intent-armor-icon intent-icon"></span></span>';
 				} else {
 					applyArmor(armor[key], thisMonster);
-					await util.wait(300);
+					await util.wait(game.animationDelay);
 				}
 			}
 		}
@@ -3726,7 +3747,7 @@ async function monsterAction(action = 'perform') {
 				} else {
 					let turns = effects[e].turns == undefined ? -1 : effects[e].turns;
 					applyEffect(effects[e], to, turns);
-					await util.wait(300);
+					await util.wait(game.animationDelay);
 				}
 			}
 		}
@@ -3752,7 +3773,7 @@ async function monsterAction(action = 'perform') {
 					}
 				} else {
 					applyAbility(abilities[e], to, turns);
-					await util.wait(300);
+					await util.wait(game.animationDelay);
 				}
 			}
 		}
@@ -3827,7 +3848,7 @@ async function monsterAction(action = 'perform') {
 					}
 				} else {
 					let update = processActions(actions, currentMonsters[i]);
-					await util.wait(300);
+					await util.wait(game.animationDelay);
 				}
             }
         }
@@ -3841,11 +3862,11 @@ async function monsterAction(action = 'perform') {
 			$('.monster[data-guid=' + thisMonster.guid + ']').removeClass('taking-turn');
 		}
 
-		await util.wait(100); // add this if we want a bit more time between monsters
+		await util.wait(game.animationGap); // add this if we want a bit more time between monsters
 		
 	}
 
-	await util.wait(100);
+	await util.wait(game.animationGap);
 	setStatus();
 
 }
@@ -3882,7 +3903,7 @@ async function endTurn(checkRetain = true) {
 		combatDeck.destroyExpiredCards(combatDeck);
 	}
 	// increment expiries after destroying
-	combatDeck.incrementExpiredCards(combatDeck);
+	incrementExpiredCards(combatDeck);
 
 	combatDeck.chooseCards = [];
 	game.toPile = 'handCards';
@@ -3909,7 +3930,7 @@ async function endTurn(checkRetain = true) {
 	// if rainbow is activated and kills all monsters it will still be activated at start of next combat
 	$('.magic-rainbow').removeClass('activated');
 
-	await util.wait(1000);
+	await util.wait(game.animationLong);
 	$('.end-turn').removeClass('disabled');
 
 	checkBreakableRemoves();
@@ -3931,9 +3952,9 @@ function whichMoveSet(moveSet, pattern) {
 async function monsterTurn() {
 
 	$('.combat-text, .combat-text h2.enemy-turn').addClass('shown');
-	await util.wait(1000);
+	await util.wait(game.animationLong);
 	$('.combat-text, .combat-text h2').removeClass('shown');
-	await util.wait(800);
+	await util.wait(game.animationLong);
 
 	await monsterAction();
 
@@ -4174,7 +4195,10 @@ function removeBuffs(to) {
 	}
 }
 
-async function applyEffect(effect, to, turns = -1) {
+async function applyEffect(effect, to, turns = -1, context = {}) {
+	
+	context.processedEffects = context.processedEffects || {};
+
 	let gameEffect = game.effects.find(({ id }) => id === effect.effect);
 	let isHex = false;
 	if(gameEffect!==undefined) {
@@ -4271,20 +4295,51 @@ async function applyEffect(effect, to, turns = -1) {
 				amtShow = Math.round((amtShow + Number.EPSILON) * 10);
 				amtShow += '%';
 			}
+			let statusIcon = `<div class="single-status status-effect" style="background-position:${gameEffect.x}px ${gameEffect.y}px"></div>`;
+			let showStatus = `<div class="status-animation"><div class="status-details">${amtShow} ${effect.effect}</div>${statusIcon}</div>`;
 			if(isHex) {
 				//to[effect.effect].hexed = true;
 				if(game.playsounds) sounds.play('hex');
-				game.statusAnimations({data: amtShow + ' ' + effect.effect, to: statusDom, hex: true});
+				game.statusAnimations({data: showStatus, to: statusDom, hex: true});
 				// deal with angered effect
 				if(to.angered.current > 0) {
 					let angeredEffect = {effect: 'might', amount: to.angered.current, turns: -1};
 					applyEffect(angeredEffect, to);
 				}
+				if(player.reaper?.enabled) {
+					let turns = 1;
+					if(effect.effect == 'might') {
+						let reaperEffect = {effect: 'might', amount: -effect.amount};
+						applyEffect(reaperEffect, player, turns);
+					}
+					if(effect.effect == 'punch') {
+						let reaperEffect = {effect: 'punch', amount: -effect.amount};
+						applyEffect(reaperEffect, player, turns);
+					}
+				}
 			} else {
 				//to[effect.effect].hexed = false;
 				let sound = gameEffect.sound ? gameEffect.sound : 'applyEffect';
 				if(game.playsounds) sounds.play(sound);
-				game.statusAnimations({data: amtShow + ' ' + effect.effect, to: statusDom, hex: false});
+				game.statusAnimations({data: showStatus, to: statusDom, hex: false});
+				if(effect.effect == 'might') {
+					if(player.buttress?.current > 0) {
+						applyBlock(player.buttress.current, to);
+					}
+					if(player.channel?.current > 0 && !context.processedEffects['channel']) {
+						let magic = {type: 'wild', amount: player.channel.current};
+						let ignoreConjure = true;
+						// Mark "channel" as processed
+						context.processedEffects['channel'] = true;
+						applyMagic(magic, to, ignoreConjure, context);
+					}
+					if(player.electromancy?.enabled) {
+						let turns = 1;
+						let electromancyEffect = {effect: 'lightning', amount: effect.amount};
+						applyEffect(electromancyEffect, player, turns);
+						
+					}
+				}
 			}
 		} else if(effect.base != undefined) {
 			to[effect.effect].base += effect.base;
@@ -4305,7 +4360,9 @@ async function applyEffect(effect, to, turns = -1) {
 				amtShow = Math.round((amtShow + Number.EPSILON) * 10);
 				amtShow += '%';
 			}
-			game.statusAnimations({data: amtShow + ' ' + effect.effect, to: statusDom, hex: false});
+			let statusIcon = `<div class="single-status status-effect" style="background-position:${gameEffect.x}px ${gameEffect.y}px"></div>`;
+			let showStatus = `<div class="status-animation"><div class="status-details">${amtShow} ${effect.effect}</div>${statusIcon}</div>`;
+			game.statusAnimations({data: showStatus, to: statusDom, hex: false});
 		}
 		if(effect.effect == 'rainbow') {
 			updateRainbowDom(to);
@@ -4369,11 +4426,13 @@ function applyAbility(ability, to, turns = -1) {
 				to[ability.ability].baseTurns = ability.baseTurns;
 			}
 		}
+		let statusIcon = `<div class="single-status status-effect" style="background-position:${gameAbility.x}px ${gameAbility.y}px"></div>`;
+		let showStatus = `<div class="status-animation"><div class="status-details">${gameAbility.name}</div>${statusIcon}</div>`;
 		if(ability.hex) {
 			to[ability.ability].turns = 0;
 			to[ability.ability].enabled = false;
 			if(game.playsounds) sounds.play('hex');
-			game.statusAnimations({data: gameAbility.name, to: statusDom, hex: true});
+			game.statusAnimations({data: showStatus, to: statusDom, hex: true});
 			// deal with angered effect
 			if(to.angered.current > 0) {
 				let angeredEffect = {effect: 'might', amount: to.angered.current, turns: -1};
@@ -4390,7 +4449,7 @@ function applyAbility(ability, to, turns = -1) {
 			let gameAbility = game.abilities.find(({ id }) => id === ability.ability);
 			let sound = gameAbility.sound ? gameAbility.sound : 'applyAbility';
 			if(game.playsounds) sounds.play(sound);
-			game.statusAnimations({data: gameAbility.name, to: statusDom, hex: false});
+			game.statusAnimations({data: showStatus, to: statusDom, hex: false});
 		}
 		if(to[ability.ability].baseTurns < -1) to[ability.ability].baseTurns = -1;
 		if(to[ability.ability].turns < -1) to[ability.ability].turns = -1;
@@ -4559,7 +4618,7 @@ async function updateAggro(amount) {
 					$('.aggro-bar span.level').html(player.aggro.level);
 					$('.aggro-bar span.current').html(player.aggro.current);
 					$('.aggro-bar').addClass('level-up');
-					await util.wait(1100);
+					await util.wait(game.animationLong);
 					$('.aggro-bar').removeClass('level-up');
 				}
 			}
@@ -4574,17 +4633,18 @@ async function updateAggro(amount) {
 					$('.aggro-bar span.level').html(player.aggro.level);
 					$('.aggro-bar span.current').html(player.aggro.current);
 					$('.aggro-bar').addClass('level-up');
-					await util.wait(1100);
+					await util.wait(game.animationLong);
 					$('.aggro-bar').removeClass('level-up');
 				}
 			}
 		}
 
 	}
-
+	let showThreshold = whichThresholds[player.aggro.level];
+	if(showThreshold == undefined) showThreshold = player.aggro.current + 1;
 	$('.aggro-bar span.level').html(player.aggro.level);
 	$('.aggro-bar span.current').html(player.aggro.current);
-	$('.aggro-bar span.threshold').html(whichThresholds[player.aggro.level]);
+	$('.aggro-bar span.threshold').html(showThreshold);
 	util.updateAggroPercentage();
 	setStatus();
 
@@ -5012,6 +5072,11 @@ function addTreasure(add) {
 		activateTreasure(treasure);
 	}
 
+	// if treasure added a weapon we need to show trade button
+	if(deck.getTradeableCards() && !game.tradeExpired) {
+		$('.courage-trade').addClass('shown');
+	}
+
 }
 
 function buyTreasure(id) {
@@ -5021,6 +5086,11 @@ function buyTreasure(id) {
 	let treasure = util.getTreasureById(id, treasures.treasures);
 	player.courage -= treasure.courage;
 	updateItemCost();
+
+	// if treasure added a weapon we need to show trade button
+	if(deck.getTradeableCards() && !game.tradeExpired) {
+		$('.courage-trade').addClass('shown');
+	}
 		
 }
 
@@ -5445,6 +5515,9 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 		if(player.mana.current <= 0) player.mana.current = 0;
 		if(player.speed.current <= 0) player.speed.current = 0;
 
+		// process the card
+		await processCard(card, currentMonster, type, multiply, true);
+
 		// effects that shouldn't proc when combining cards
 		if(type != 'combine') {
 			if(player.antimomentumAmount > 0) {
@@ -5464,9 +5537,6 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 				applyBlock(player.insulate.current, player);
 			}
 		}
-		
-		// process the card
-		await processCard(card, currentMonster, type, multiply, true);
 
 		// effects that shouldn't proc when combining cards
 		if(type != 'combine') {
@@ -5527,7 +5597,7 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 		}
 
 		// check for bless
-		if(card.type == 'ability' && player.bless.enabled && type != 'combine') {
+		if(card.type == 'ability' && player.bless?.enabled && type != 'combine') {
 			let possibleCards = [];
 			for(let i = 0; i < combatDeck.handCards.length; i++) {
 				let mana = util.getCardAttribute(combatDeck.handCards[i], 'mana');
@@ -5542,9 +5612,15 @@ async function playCard(elem, monster = undefined, type = false, useMana = true)
 				if(freeCard.shardUpgrades.mana != undefined) freeCard.shardUpgrades.mana = 0;
 				if(freeCard.bothShardUpgrades.mana != undefined) freeCard.bothShardUpgrades.mana = 0;
 				if(freeCard.iceShardUpgrades.mana != undefined) freeCard.iceShardUpgrades.mana = 0;
+				if(freeCard.iceShardUpgrades.mana_2 != undefined) freeCard.iceShardUpgrades.mana_2 = 0;
 				if(freeCard.fireShardUpgrades.mana != undefined) freeCard.fireShardUpgrades.mana = 0;
+				if(freeCard.fireShardUpgrades.mana_2 != undefined) freeCard.fireShardUpgrades.mana_2 = 0;
 				updateCardDescriptions('handCards');
 			}
+		}
+		// check for scout
+		if(card.type == 'ability' && player.scout?.enabled && type != 'combine') {
+			await processActions([{action: 'addCard', value: 1, what: 'acquire', to: 'handCards', with: ['random']}]);
 		}
 
 		$('.card.combinable').removeClass('combine-compatible');
@@ -5595,6 +5671,16 @@ function reduceCardStat(card, stat, amount) {
 	if(card.fireShardUpgrades[stat2] != undefined) card.fireShardUpgrades[stat2] -= amount;
 	if(card.bothShardUpgrades[stat] != undefined) card.bothShardUpgrades[stat] -= amount;
 
+}
+
+function incrementExpiredCards() {
+	for(let i = 0; i < combatDeck.allLiveCards(combatDeck).length; i++) {
+		let thisCard = combatDeck.allLiveCards(combatDeck)[i];
+		let expire = util.getCardAttribute(thisCard, 'expire');
+		if(expire != undefined && expire > 0) {
+			reduceCardStat(thisCard, 'expire', 1);
+		}
+	}
 }
 
 async function processCard(card, currentMonster, type, multiply = 1, cardWasPlayed = false) {
@@ -5650,7 +5736,7 @@ async function processCard(card, currentMonster, type, multiply = 1, cardWasPlay
 
 	if(cardWasPlayed && util.hasAttribute(card, player.stance)) {
 
-		await util.wait(300);
+		await util.wait(game.animationDelay);
 
 		if(game.playsounds) sounds.play(player.stance + 'Amount');
 		game.statusAnimations({data: '<span class="' + player.stance + '-text">' + player.stance + '</span> Effect', to: '.stance-text', hex: false});
@@ -5727,7 +5813,7 @@ async function processDmg(dmg, currentMonster, multiply, card = false, type = fa
 							game.attackCardsPlayed += 1;
 						}
 						if(monsters.allDead()) {
-							await util.wait(800);
+							await util.wait(game.animationLong);
 							endCombat();
 							return;
 						}
@@ -5735,13 +5821,13 @@ async function processDmg(dmg, currentMonster, multiply, card = false, type = fa
 				} else {
 					await attackPlayer(false, dmg[j]);
 					if(Player().dead(player)) {
-						await util.wait(1000);
+						await util.wait(game.animationLong);
 						endGame('loss');
 						return;
 					}
 				
 				}
-				await util.wait(game.animationDmg);
+				await util.wait(game.animationGap);
 				updateCritChance();
 			}
 		}
@@ -5798,7 +5884,7 @@ async function processEffects(effects, currentMonster = false, multiply = 1, car
 					}
 					let turns = effects[e].turns == undefined ? -1 : effects[e].turns;
 					applyEffect(effects[e], to, turns);
-					await util.wait(game.animationGap);
+					await util.wait(game.animationDelay);
 				}
 			}
 		}
@@ -5823,7 +5909,7 @@ async function processAbilities(abilities, currentMonster = false, card = false,
 					to = currentMonster[k];
 				}
 				applyAbility(abilities[e], to, turns);
-				await util.wait(game.animationGap);
+				await util.wait(game.animationDelay);
 			}
 		}
 	}
@@ -5848,8 +5934,8 @@ async function processMagic(magic, multiply, card = false, cardWasPlayed = false
 	}
 }
 
-//{action: 'addCard', select: 2, value: 10, type: 'any', to: 'handCards'}
 async function processActions(actions, monster = false, multiply = 1, playedCard = false, cardWasPlayed = false) {
+	if($('body').hasClass('combating') && monsters.allDead()) return;
 	try {
 		let update = true;
 		if(actions != undefined) {
@@ -5861,7 +5947,6 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 					}
 					switch(actions[e].action) {
 						case 'addCard': {
-
 							let hex = actions[e].hex !== undefined ? actions[e].hex : false;
 							if(player.vex.current > 0 && hex) {
 								player.vex.current -= 1;
@@ -5924,7 +6009,8 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 							}
 							
 							for(let i = 0; i < actions[e].value; i++) {
-								thisCard = util.randFromArray(possibleCards);
+								// thisCard = util.randFromArray(possibleCards); // cards should always be chosen by weight
+								thisCard = util.weightedRandom(possibleCards);
 								possibleCards = possibleCards.filter(i => i.id !== thisCard.id);
 
 								addThisCard = addCard;
@@ -5936,7 +6022,9 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 									game.toPile = actions[e].to;
 									if(shards.length > 0) {
 										for(let i = 0; i < shards.length; i++) {
-											deck.attachShard(thisCard, shards[i]);
+											let thisShard = shards[i];
+											if(thisShard=='random') thisShard = util.chance(50) ? 'frost' : 'flame';
+											deck.attachShard(thisCard, thisShard);
 										}
 									}
 								} else {
@@ -5949,7 +6037,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 									// have a chance to sync. this is the only time currently that we're actually passing a guid in
 									let guid = util.randString();
 									if(actions[e].to != 'deck') {
-										combatDeck.addCard(addThisCard, combatDeck, actions[e].to, player, shards, guid, playedCard, modifiers);
+										combatDeck.addCard(addThisCard, combatDeck, actions[e].to, player, shards, guid, cardWasPlayed, modifiers);
 									}
 									if(actions[e].permanent) {
 										deck.addCard(addThisCard, guid);
@@ -6149,7 +6237,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								if(game.autoplay) {
 									for(let i = 0; i < actions[e].value; i++) {
 										viewDrawCards();
-										await util.wait(500);
+										await util.wait(game.animationDelay);
 										let drawCards = $('.draw-cards-panel .card');
 										if(drawCards.length > 0) {
 											let randomCard = $(util.randFromArray(drawCards));
@@ -6158,7 +6246,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 										$('.draw-cards-panel').removeClass('shown');
 										$('.draw-cards-panel .card').removeClass('pickable');
 										$('.draw-cards-panel .message').html('');
-										await util.wait(250);
+										await util.wait(game.animationDelay);
 									}
 								} else {
 									game.toPick = actions[e].value;
@@ -6175,7 +6263,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								if(game.autoplay) {
 									for(let i = 0; i < actions[e].value; i++) {
 										viewDiscardCards();
-										await util.wait(500);
+										await util.wait(game.animationDelay);
 										let discardCards = $('.discard-cards-panel .card');
 										if(discardCards.length > 0) {
 											let randomCard = $(util.randFromArray(discardCards));
@@ -6184,7 +6272,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 										$('.discard-cards-panel').removeClass('shown');
 										$('.discard-cards-panel .card').removeClass('pickable');
 										$('.discard-cards-panel .message').html('');
-										await util.wait(250);
+										await util.wait(game.animationDelay);
 									}
 								} else {
 									game.toPick = actions[e].value;
@@ -6200,7 +6288,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								if(game.autoplay) {
 									for(let i = 0; i < actions[e].value; i++) {
 										viewDeadCards();
-										await util.wait(500);
+										await util.wait(game.animationDelay);
 										let deadCards = $('.dead-cards-panel .card');
 										if(deadCards.length > 0) {
 											let randomCard = $(util.randFromArray(deadCards));
@@ -6209,7 +6297,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 										$('.dead-cards-panel').removeClass('shown');
 										$('.dead-cards-panel .card').removeClass('pickable');
 										$('.dead-cards-panel .message').html('');
-										await util.wait(250);
+										await util.wait(game.animationDelay);
 									}
 								} else {
 									game.toPick = actions[e].value;
@@ -6413,7 +6501,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								if(theseCards[i].guid != playedCard.guid) {
 									let domCard = util.getDomCardByGuid(theseCards[i].guid);
 									await discardCard(domCard);
-									await util.wait(300);
+									await util.wait(game.animationDelay);
 								}
 							}
 							game.autoplay = false;
@@ -6430,7 +6518,7 @@ async function processActions(actions, monster = false, multiply = 1, playedCard
 								if(theseCards[i].guid != playedCard.guid) {
 									let domCard = util.getDomCardByGuid(theseCards[i].guid);
 									await destroyCard(domCard);
-									await util.wait(300);
+									await util.wait(game.animationDelay);
 								}
 							}
 							game.autoplay = false;
@@ -7230,8 +7318,8 @@ async function processQuest(elem) {
 		case 'market_of_arms':
 			if(option == 'accept_offer') {
 				let actions = [
-					{action: 'addCard', value: 1, type: 'weapon', to: 'deck', permanent: true},
-					{action: 'addCard', value: 3, type: 'clutter', to: 'deck', permanent: true},
+					{action: 'addCard', value: 2, type: 'weapon', to: 'deck', permanent: true},
+					{action: 'addCard', value: 2, type: 'clutter', to: 'deck', permanent: true},
 				];
 				await processActions(actions);
 			}
@@ -7316,12 +7404,14 @@ function applyBlock(blk, to, solid = false) {
 	}
 }
 
-async function applyMagic(magic, to, ignoreConjure = false) {
+async function applyMagic(magic, to, ignoreConjure = false, context = {}) {
+
+	context.processedEffects = context.processedEffects || {};
 
 	let type = magic.type;
 	let types = ['rainbow', 'chaos', 'dark', 'elemental'];
 
-	if(magic.type == 'aligned') {
+	if(magic.type == 'wild') {
 		type = to.rainbow.type;
 	} else if(magic.type == 'random') {
 		type = util.randFromArray(types);
@@ -7395,6 +7485,23 @@ async function applyMagic(magic, to, ignoreConjure = false) {
 				endCombat();
 				return;
 			}
+		}
+	}
+
+	// check for feral and beast
+	if(magic.type == 'wild') {
+		let turns = 1;
+		if(to.feral.current > 0 && !context.processedEffects['feral']) {
+			let feralEffect = {effect: 'might', amount: to.feral.current};
+			// Mark "feral" as processed
+			context.processedEffects['feral'] = true;
+			applyEffect(feralEffect, to, turns, context);
+			await util.wait(game.animationDelay);
+		}
+		if(to.beast.current > 0) {
+			let beastEffect = {effect: 'solid', amount: to.beast.current};
+			applyEffect(beastEffect, to, turns);
+			await util.wait(game.animationDelay);
 		}
 	}
 
@@ -7756,11 +7863,11 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 				if(dmgTaken > 0) {
 					game.blkAnimations({data: dmgTaken, to: dmgTakenDom});
 					game.message(thisTo.name + ' (' + thisTo.guid + ') takes ' + dmgTaken + ' total damage');
-					await util.wait(game.animationDmg);
+					await util.wait(game.animationGap);
 				}
 				if(armorLost > 0) {
 					game.dmgAnimations({data: armorLost, to: armorLostDom});
-					await util.wait(game.animationDmg);
+					await util.wait(game.animationGap);
 					// check for spikes
 					if(thisTo.spikes.current > 0 && from != undefined && cardWasPlayed && !hypnotizeHit) {
 
@@ -7778,7 +7885,7 @@ async function doDamage(dmg, from, to, ignoreBlock = false, ignoreArmor = false,
 				if(healthLost > 0) {
 					if(game.playsounds) sounds.play('takeDmg');
 					game.dmgAnimations({data: healthLost, to: healthLostDom});
-					await util.wait(game.animationDmg);
+					await util.wait(game.animationGap);
 					// check for retaliate
 					if(thisTo.retaliate.current > 0 && from != undefined && cardWasPlayed && !hypnotizeHit) {
 

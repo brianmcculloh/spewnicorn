@@ -7,6 +7,7 @@
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="robots" content="noindex" data-sj-noindex />
 
 <title>The Spewnicorn | Spewnicorn Games</title>
 
@@ -49,8 +50,8 @@
         <div class="button tutorial">Tutorial<span>Off</span></div>
 
         <div class="difficulties">
-          <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="<ul><li>1 arena required per map</li><li>Start with a <span class='highlight'>Spewnicorn Spray</span> card</li><li>Reduced aggro</li><li>Heal to full after gates</li><li>Extra magic fountains and quests</li><li>Start with 100 max health</li></ul>">Easy</span></div>
-          <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="<ul><li>2 arenas required per map</li><li>Do not start with a <span class='highlight'>Spewnicorn Spray</span> card</li><li>Standard amount of magic fountains and quests</li><li>Start with 75 max health</li><li><span class='highlight'>The Singularity</span> summons only <span class='highlight'>Arena Bosses</span></li></ul>">Medium</span></div>
+          <div class="button difficulty tooltip easy" data-difficulty="easy" data-powertip="<ul><li>1 arena required per map</li><li>Reduced aggro</li><li>Heal to full after gates</li><li>Extra magic fountains and quests</li><li>Start with 100 max health</li><li>Start with a <span class='highlight'>Spewnicorn Spray</span> in your deck</li></ul>">Easy</span></div>
+          <div class="button difficulty tooltip medium toggled-on" data-difficulty="medium" data-powertip="<ul><li>2 arenas required per map</li><li>Standard amount of magic fountains and quests</li><li>Start with 75 max health</li><li><span class='highlight'>The Singularity</span> summons only <span class='highlight'>Arena Bosses</span></li></ul>">Medium</span></div>
           <div class="button difficulty tooltip hard" data-difficulty="hard" data-powertip="<ul><li>No healing after gates</li><li>+5 to all enemy block</li><li>+2 damage to all enemy attacks</li><li>Reduced number of magic fountains and quests</li><li><span class='highlight'>The Singularity</span> summons Frost and Flame <span class='highlight'>Arena Bosses</span></li><li>Start with 65 max health</li></ul>">Hard</span></div>
           <div class="button difficulty tooltip expert" data-difficulty="expert" data-powertip="<ul><li>3 arenas required per map</li><li><span class='highlight'>The Singularity</span>'s Resurrect effect is doubled</li><li>Start with 55 max health</li><li>Reduced chance of finding shards, candies, and treasures after battles.</li></ul>">Expert</span></div>
           <div class="button difficulty tooltip nightmare" data-difficulty="nightmare" data-powertip="<ul><li>+20% damage to all enemy attacks</li><li>Aggro affects <span class='highlight'>The Singularity</span> fight</li><li><span class='highlight'>The Singularity</span> summons <span class='highlight'>Guardians</span></li></ul>">Nightmare</span></div>
@@ -124,12 +125,104 @@
 
           <p><span class="highlight">COMBINING CARDS:</span> click a combinable card and then click another identical card to combine them. This will destroy both cards and create a new, more powerful card.</p>
 
+          <p><span class="highlight">CARD DRAW EFFECTS:</span> these effects activate only when explicitly drawing cards from the draw pile. Draw effects do not activate when cards are added to your hand via other means.</p>
+
+          <p><span class="highlight">CARD DISCARD EFFECTS:</span> these effects activate only when explicitly discarding cards from your hand. Discard effects do not activate when cards leave your hand at the end of your turn.</p>
+
+          <p><span class="wild">WILD MAGIC:</span> summon magic matching the current type.</p>
+
+          <p><span class="wild">RANDOM MAGIC:</span> summon a randomly selected type of magic from one of the four schools of magic (rainbow, elemental, dark, and chaos).</p>
+
+          <p><span class="wild">MUDDLED MAGIC:</span> when you mix magic types within one rainbow charge, your magic type becomes muddled, and is thus not in any of the four schools of magic.</p>
+
+          <p>&nbsp;</p><p>&nbsp;</p>
+
+
+
+
+          <h2>Glossary</h2>
+          
+          <div class="glossary"></div>
+
           <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 
 
 
 
           <h2>RELEASE NOTES</h2>
+
+          <p>1.0.13 (12/20/2024)</p>
+
+          <ul>
+            <li>Fixed an infinite loop interaction between the feral and channel effects.</li>
+          </ul>
+
+
+          <p>1.0.12 (10/16/2024)</p>
+
+          <ul>
+            <li>Reinstated the Spewnicorn Spray card</li>
+            <li>The Mantleblight weapon card had an incorrect shard upgrade mana value</li>
+          </ul>
+
+          <p>1.0.11 (8/22/2024)</p>
+
+          <ul>
+            <li>Added visual cue for scrollbar when monster panels are wider than viewport</li>
+            <li>Monster panel now auto-scrolls to visually show each monster taking their turn</li>
+          </ul>
+
+          <p>1.0.10 (8/22/2024)</p>
+
+          <ul>
+            <li>Bug Fix: you can no longer rapidly click candies to get multiple copies.</li>
+          </ul>
+
+          <p>1.0.9 (8/22/2024)</p>
+
+          <ul>
+            <li>Fixed issue with having to scroll to see the button to leave the market</li>
+          </ul>
+
+          <p>1.0.8 (8/22/2024)</p>
+
+          <ul>
+            <li>Tweaked difficulty settings</li>
+          </ul>
+
+          <p>1.0.7 (8/21/2024)</p>
+
+          <ul>
+            <li>Bug fix: disabled redundant user mouse drag selection</li>
+          </ul>
+
+          <p>1.0.6 (8/14/2024)</p>
+
+          <ul>
+            <li>Bug fix: cards with upgrades that increased Expire were not ticking down correctly</li>
+            <li>Played cards are processed before buffs/debuffs are applied (i.e. playing a block card when marked results in gaining block before taking marked damage)</li>
+            <li>Added an overworld map button to view the map at any time</li>
+            <li>When certain card selection screens are active and you view the draw/discard/dead cards, they no longer hide behind the card selection screen</li>
+            <li>Bug fix: various random values were not seeded</li>
+            <li>Bug fix: Bless didn't work on cards that were double-enshardened such that their mana costs were reduced.</li>
+            <li>22 new candies added</li>
+            <li>44 new treasures added</li>
+            <li>3 new Bottled cards added: Bottled Might, Bottled Lightning, and Bottled Solid</li>
+            <li>10 other new cards added: Crazed, Wild Strength, Wild Protection, Collector, Anomaly, Dragon Kin, Sorcerer Kin, Throwing Knives, Flashbang, Evermagic, and Swarmstrike</li>
+            <li>Reworked how many bottled cards you can choose from with Make Ready, Disavow, and Ruin</li>
+            <li>Card rarities are now considered more often when the game is deciding random cards</li>
+            <li>Bug fix: cards with draw effects that added more cards to hand could result in 11 cards in hand</li>
+            <li>Added the Glossary</li>
+            <li>Renamed "aligned" magic to "wild" magic</li>
+            <li>Added the Feral, Beast, Channel, and Buttress effects</li>
+            <li>Added the Reaper, Electromancy, Gravity, and Scout abilities</li>
+            <li>Added status graphics to the status animations</li>
+            <li>Bug fix: the Magical Lantern treasure was not applying the Amplify ability correctly</li>
+            <li>Bug fix: card actions now correctly halt immediately upon combat ending</li>
+            <li>Widesweeping tweaks and reworks of cards and shard upgrades</li>
+            <li>Various card art updated</li>
+            <li>Reworked Stone Walker moveset</li>
+          </ul>
 
           <p>1.0.5 (7/22/2024)</p>
 
@@ -592,11 +685,13 @@
 
       </div>
 
+      <div class="view-map icon-button tooltip" data-powertip="Overworld map"><span class="icon"></span></div>
+
       <div class="all-cards icon-button tooltip" data-powertip="Cards in your deck"><span class="icon"></span><span class="counter"></span></div>
 
       <div class="library icon-button tooltip" data-powertip="<span class='highlight'>Library: </span>All possible cards, treasures, and candies in the game"><span class="icon"></span><span class="counter"></span></div>
 
-      <div class="settings icon-button tooltip" data-powertip="Settings"><span class="icon"></span></div>
+      <div class="settings icon-button tooltip" data-powertip="Settings, How To Play, &amp; Glossary"><span class="icon"></span></div>
 
     </div>
 
@@ -689,21 +784,27 @@
 
     </div>
 
-    <div class="map">
+    <div class="map-wrapper">
 
-      <h2>The Dark Forest</h2>
+      <div class="map-background"><div class="map-background-inner"></div></div>
 
-      <div class="start-arrow">
-        <svg width="1200pt" height="1200pt" version="1.1" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
-          <path d="m1131.5 673.39c-99.613-64.078-169.92-160.05-201.66-274.11-2.3516-8.4492-9.7188-13.055-18.023-13.727-43.453-3.4805-86.914-6.8047-130.38-10.188-14.09-1.0938-23.16 16.609-16.055 27.984 23.555 37.703 44.398 76.547 62.688 116.79-241.81-128.45-554.66-100.38-763.64 80.676-8.4727 7.3438-3.4922 17.316 4.5703 20.566 27.133 69.527 66.516 129.45 120.64 181.04 9.0469 8.6289 24.828 7.4023 31.176-4.0195 125.03-225.01 408.36-294.41 623.04-161.59-42.996 22.117-87.254 41.102-133.14 56.891-12.434 4.2734-17.711 17.027-11.723 28.812 15.707 30.875 31.414 61.754 47.125 92.629 6.3594 12.492 21.828 11.387 31.141 4.0078 98.207-77.797 219.98-116.52 344.99-111.59 19.016 0.78516 23.852-24.785 9.2617-34.172zm-361.39 101.82c-8.9023-17.328-17.809-34.668-26.723-51.996 50.891-19.078 99.973-41.531 147.73-67.883 13.668-7.5352 11.09-25.105 0-33.168-227.14-165.34-544.7-100.49-691.48 134.06-40.512-42.84-71.723-91.621-93.238-147.32-0.74219-1.9336-1.7383-3.5508-2.8438-5.0391 218.36-158.65 525.97-172.04 753.66-24.023 12.719 8.2695 32.809-5.6875 26.988-20.746-19.246-49.824-41.953-97.656-68.426-143.79 27.301 2.1953 54.59 4.3789 81.887 6.5156 30.492 98.902 88.559 184.43 168.02 248.88-107.12 4.9336-208.15 40.887-295.58 104.51z"/>
-        </svg>
+      <div class="map">
+
+        <h2>The Dark Forest</h2>
+
+        <div class="start-arrow">
+          <svg width="1200pt" height="1200pt" version="1.1" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
+            <path d="m1131.5 673.39c-99.613-64.078-169.92-160.05-201.66-274.11-2.3516-8.4492-9.7188-13.055-18.023-13.727-43.453-3.4805-86.914-6.8047-130.38-10.188-14.09-1.0938-23.16 16.609-16.055 27.984 23.555 37.703 44.398 76.547 62.688 116.79-241.81-128.45-554.66-100.38-763.64 80.676-8.4727 7.3438-3.4922 17.316 4.5703 20.566 27.133 69.527 66.516 129.45 120.64 181.04 9.0469 8.6289 24.828 7.4023 31.176-4.0195 125.03-225.01 408.36-294.41 623.04-161.59-42.996 22.117-87.254 41.102-133.14 56.891-12.434 4.2734-17.711 17.027-11.723 28.812 15.707 30.875 31.414 61.754 47.125 92.629 6.3594 12.492 21.828 11.387 31.141 4.0078 98.207-77.797 219.98-116.52 344.99-111.59 19.016 0.78516 23.852-24.785 9.2617-34.172zm-361.39 101.82c-8.9023-17.328-17.809-34.668-26.723-51.996 50.891-19.078 99.973-41.531 147.73-67.883 13.668-7.5352 11.09-25.105 0-33.168-227.14-165.34-544.7-100.49-691.48 134.06-40.512-42.84-71.723-91.621-93.238-147.32-0.74219-1.9336-1.7383-3.5508-2.8438-5.0391 218.36-158.65 525.97-172.04 753.66-24.023 12.719 8.2695 32.809-5.6875 26.988-20.746-19.246-49.824-41.953-97.656-68.426-143.79 27.301 2.1953 54.59 4.3789 81.887 6.5156 30.492 98.902 88.559 184.43 168.02 248.88-107.12 4.9336-208.15 40.887-295.58 104.51z"/>
+          </svg>
+        </div>
+
+        <div class="map-inner" id="mapContainer">
+
+        </div>
+
+        <h3>Tip: you can right-click map tiles to mark your intended path.</h3>
+
       </div>
-
-      <div class="map-inner" id="mapContainer">
-
-      </div>
-
-      <h3>Tip: you can right-click map tiles to mark your intended path.</h3>
 
     </div>
 
@@ -848,7 +949,6 @@
       <div class="buttons-wrapper">
 
         <div class="button done">Done</div>
-        <div class="button view-map" data-game-panel="starting-room">View Map</div>
 
       </div>
 
@@ -878,7 +978,6 @@
       <div class="buttons-wrapper">
 
         <div class="button done">Done</div>
-        <div class="button view-map" data-game-panel="starting-treasure">View Map</div>
 
       </div>
 
@@ -908,8 +1007,7 @@
       <div class="buttons-wrapper">
 
         <div class="button done tooltip" data-powertip="Skip booster pack and play with only basic cards">Done</div>
-        <div class="button view-map" data-game-panel="choose-booster-pack">View Map</div>
-        <div class="button view-basic tooltip" data-powertip="All basic cards plus selected booster pack cards">Available Cards</div>
+        <div class="button view-basic tooltip" data-powertip="All the basic cards plus the selected booster pack cards (if one is selected)">Available Card Rewards</div>
 
       </div>
 
@@ -1112,7 +1210,7 @@
 
         <div class="incoming-damage">Incoming Damage: <span></span></div>
 
-        <div class="magic-rainbow tooltip" data-type="rainbow" data-powertip="<div class='tooltip-magic'><span class='rainbow'>Rainbow Magic: </span>Does damage to all monsters (Magick: does 4 damage to all enemies).</div><div class='tooltip-magic'><span class='elemental'>Elemental Magic: </span>Does damage to all monsters ignoring block (Magick: gain 6 block).</div><div class='tooltip-magic'><span class='dark'>Dark Magic: </span>Does damage to all monsters ignorning armor (Magick: gain 4 armor).</div><div class='tooltip-magic'><span class='chaos'>Chaos Magic: </span>Does triple damage to a random monster (Magick: does 20 damage to a random monster).</div><div class='tooltip-magic'><span class='muddled'>Muddled Magic: </span>Does damage to a random monster.</div>">
+        <div class="magic-rainbow tooltip" data-type="rainbow" data-powertip="<div class='tooltip-magic'><span class='rainbow'>Rainbow Magic: </span>Does damage to all monsters (Magick: does 4 damage to all enemies).</div><div class='tooltip-magic'><span class='elemental'>Elemental Magic: </span>Does damage to all monsters ignoring block (Magick: gain 6 block).</div><div class='tooltip-magic'><span class='dark'>Dark Magic: </span>Does damage to all monsters ignorning armor (Magick: gain 4 armor).</div><div class='tooltip-magic'><span class='chaos'>Chaos Magic: </span>Does triple damage to a random monster (Magick: does 20 damage to a random monster).</div><div class='tooltip-magic'><span class='muddled'>Muddled Magic: </span>Does damage to a random monster.</div><div class='tooltip-magic'>(Summoning <span class='wild'>Wild Magic</span> will summon magic matching the current type)</div>">
 
           <div class="rainbow-power-amount"><span class="rainbow-power-current"></span>/<span class="rainbow-power-max"></span></div>
 

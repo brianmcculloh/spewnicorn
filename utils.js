@@ -65,16 +65,16 @@ export default class Util {
         return Math.floor(util.rand() * arr.length);
     }
     randString() {
-        return (Math.random() + 1).toString(36).substring(2);
+        return (util.rand() + 1).toString(36).substring(2);
     }
     shuffle(arr) {
-        let currentIndex = arr.length,  randomIndex;
+        let currentIndex = arr.length, randomIndex;
       
         // While there remain elements to shuffle.
         while (currentIndex != 0) {
       
           // Pick a remaining element.
-          randomIndex = Math.floor(Math.random() * currentIndex);
+          randomIndex = Math.floor(util.rand() * currentIndex);
           currentIndex--;
       
           // And swap it with the current element.
@@ -327,6 +327,7 @@ export default class Util {
             let value = util.getCardAttribute(card, attr);
             if (value !== undefined && value !== -1) {
                 let plural = value === 1 ? '' : 's';
+                if(attr == 'use') value += 1;
                 let tip = `<span class='highlight'>${util.getAttributeDisplayName(attr)}:</span> ${util.getAttributeDescription(attr, value, plural)}`;
                 cardHtml += `<span class="amount ${attr} tooltip" data-powertip="${tip}" data-amount="${value}">${value}</span>`;
             }
@@ -457,13 +458,18 @@ export default class Util {
             .fadeIn(1500);
             util.setTooltips('.monster-panel');
     }
+    // {counter: 0, when: 'turns', at: 1, per: 'combat', once: false, activated: false},
     appendTreasure(treasure, to) {
         let trigger = '';
-        if(treasure.trigger.counter > -1) {
+        let everyTurn = false;
+        if(treasure.trigger.when == 'turns' && treasure.trigger.at == 1 && treasure.trigger.per == 'combat' && treasure.trigger.once == false) everyTurn = true;
+        if(treasure.trigger.counter > -1 && !everyTurn) {
             trigger = "<span class='counter'>" + treasure.trigger.counter + "</span>";
         }
         let treasureName = '<span class="highlight">' + treasure.name + ':</span>';
-        $("<div class='treasure tooltip pulse " + treasure.id + "' style='background-position:" + (treasure.x * 1.5) + "px " + (treasure.y * 1.5) + "px;' data-id='" + treasure.id + "' data-powertip='" + treasureName + "<br />" + treasure.desc + "'>" + trigger + "<div class='treasure-courage tooltip' data-amount='" + treasure.courage + "' data-powertip='Courage coins'>" + treasure.courage + "</div></div>")
+        let rarity = treasure.tier == 1 ? 'common' : treasure.tier == 2 ? 'uncommon' : treasure.tier == 3 ? 'rare' : 'legendary';
+        let treasureRarity = 'Rarity: <span class="treasure-rarity ' + rarity + '"> ' + rarity + '</span>';
+        $("<div class='treasure tooltip pulse " + treasure.id + "' style='background-position:" + (treasure.x * 1.5) + "px " + (treasure.y * 1.5) + "px;' data-id='" + treasure.id + "' data-powertip='" + treasureName + "<br />" + treasureRarity + "<br />" + treasure.desc + "'>" + trigger + "<div class='treasure-courage tooltip' data-amount='" + treasure.courage + "' data-powertip='Courage coins'>" + treasure.courage + "</div></div>")
             .appendTo(to)
             .one('animationend', function() {
                 $(this).removeClass('pulse'); // Optionally remove class after animation
@@ -930,7 +936,7 @@ export default class Util {
     // accepts any positive numeric value including decimals as the 'weight' value
     weightedRandom(weightedArray) {
         const totalWeight = weightedArray.reduce((sum, element) => sum + element.weight, 0);
-        const randomWeight = Math.random() * totalWeight;
+        const randomWeight = util.rand() * totalWeight;
         let weightSum = 0;
 
         for (const element of weightedArray) {
@@ -1126,6 +1132,21 @@ export default class Util {
         // Apply logarithmic transformation
         return Math.log(critChance * scale + 1) / Math.log(101 * scale) * maxWidth;
     }
+
+    scrollToMonsterByGuid(guid) {
+        // Use querySelector to select the monster by its data-guid attribute
+        const monsterElement = document.querySelector(`[data-guid="${guid}"]`);
+        
+        if (monsterElement) {
+          // Scroll the monster into view within the container
+          monsterElement.scrollIntoView({
+            behavior: 'smooth', // Smooth scrolling
+            block: 'nearest',   // Align to the nearest edge
+            inline: 'center'    // Scroll horizontally to center the monster
+          });
+        }
+      }
+      
 
     sound(f) {
         var s = false

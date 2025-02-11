@@ -14,6 +14,11 @@
 	--dark_color: rgba(160,23,198,1);
 	--chaos_color: rgba(218,30,103,1);
 	--muddled_color: rgba(38,148,214,1);
+	--wild_color: hsl(26, 100%, 56%, 1);
+	--common_color: rgba(242, 255, 0, 1);
+	--uncommon_color: rgba(3, 252, 53, 1);
+	--rare_color: rgba(0, 145, 255, 1);
+	--legendary_color: rgba(252, 3, 90, 1);
 }
 
 body {
@@ -38,6 +43,10 @@ body {
 	/*position:relative;*/
 	text-transform:capitalize;
 	image-rendering: pixelated;
+	-webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Standard syntax */
 }
 body::-webkit-scrollbar {
 	display:none;
@@ -511,7 +520,7 @@ input[type="text"] {
 	text-align:left;
 	text-transform:none;
 }
-#splash .instructions::-webkit-scrollbar {
+#splash .instructions::-webkit-scrollbar, .monster-panel-wrapper::-webkit-scrollbar {
 	width: 11px;
 }
 #splash .instructions {
@@ -699,7 +708,7 @@ body.game-started #splash .panel .difficulties {
 .booster-pack span {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .6) calc(9321px * .6);
+	background-size:calc(1620px * .6) calc(9637px * .6);
 	width:calc(50px * .6);
 	height:calc(50px * .6);
 	display:flex;
@@ -1055,6 +1064,10 @@ body.game-started #splash .panel .difficulties {
 	top:329px;
 	right:5px;
 }
+.top-bar .view-map {
+	top:147px;
+	right:5px;
+}
 .top-bar .all-cards span.icon {
 	background-position:-96px -15296px;
 }
@@ -1063,6 +1076,9 @@ body.game-started #splash .panel .difficulties {
 }
 .top-bar .settings span.icon {
 	background-position:-192px -0px;
+}
+.top-bar .view-map span.icon {
+	background-position:-224px -32px;
 }
 .top-bar span.counter {
 	font-size:12px;
@@ -1388,6 +1404,41 @@ body.combating .bottom-bar .draw-cards, body.combating .bottom-bar .discard-card
 }
 
 /* map */
+.map-wrapper {
+	position:relative;
+}
+.map-wrapper.preview {
+	z-index:9999;
+}
+.map-wrapper.preview .map-inner {
+	pointer-events:none;
+}
+.map-wrapper.preview h3 {
+	display:none;
+}
+.map-background {
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	display:none;
+	background-size:cover;
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-image:url('./images/map1.png');
+}
+.map-background-inner {
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background:rgba(0,0,0,.4);
+}
+.map-wrapper.preview .map-background {
+	display:block;
+}
 .map {
 	display:flex;
 	--s: 100px;  /* size  */
@@ -1762,7 +1813,7 @@ body.debug .status-toggle {
 	left:0;
 	right:0;
 	bottom:0;
-	z-index:40;
+	z-index:99999;
 	opacity:0;
 	transition:opacity .5s;
 	background:rgba(0,0,0,0);
@@ -1898,6 +1949,10 @@ body.debug .status-toggle {
 .magic-fountain .fountain-visited.shown {
 	display:block;
 }
+.fountain-options .button.disabled {
+	pointer-events:none;
+	filter: grayscale(1);
+}
 
 /* quest screen */
 .quest-options {
@@ -1996,6 +2051,10 @@ body.debug .status-toggle {
 }
 .courage-screen .button.courage-trade.shown {
 	display:block;
+}
+.courage-screen .buttons-wrapper {
+	position:sticky;
+	bottom:0;
 }
 .cards-panel.trade-cards-panel.shown .done {
 	display:none;
@@ -2167,9 +2226,19 @@ body.selecting .combat .overlay {
 	background-repeat:no-repeat;
 	flex-basis: calc(100% - 300px);
 }
-.monster-panel-wrapper::-webkit-scrollbar {
-	display:none;
+.monster-panel-wrapper {
+	scrollbar-width: thin;
+	scrollbar-color: #666666 black;
 }
+.monster-panel-wrapper::-webkit-scrollbar-track {
+	background: black;
+}
+.monster-panel-wrapper::-webkit-scrollbar-thumb {
+	background-color: black ;
+	border-radius: 6px;
+	border: 3px solid black;
+}
+
 .monster-panel {
 	display:flex;
 	gap:10px;
@@ -2982,6 +3051,12 @@ body.arena .monster-panel {
 	color:rgba(27, 224, 73, 1);
 	transform:translateY(-50px);
 }
+.status-text {
+	pointer-events:none;
+}
+.monster-panel .combat-log .status-text span {
+	top:200px;
+}
 .combat-log .status-text span {
 	color:yellow;
 	display:block;
@@ -2992,6 +3067,22 @@ body.arena .monster-panel {
 }
 .combat-log .status-text span.hex {
 	color:red;
+}
+.combat-log .status-animation {
+	position:relative;
+}
+.combat-log .status-animation .status-details {
+	position:relative;
+	z-index:1;
+}
+.combat-log .status-animation .single-status {
+	position:absolute;
+	scale:5;
+	z-index:0;
+	opacity:.8;
+	top:-50px;
+	left:50%;
+	margin-left:-16px;
 }
 .player-health .combat-log {
 	position:absolute;
@@ -3267,7 +3358,7 @@ body.arena .monster-panel {
 	flex-wrap:wrap;
 	gap:6px;
 }
-.status-bar .single-status {
+.single-status {
 	width:32px;
 	height:32px;
 	position:relative;
@@ -3282,20 +3373,20 @@ body.arena .monster-panel {
 		drop-shadow(-1px -1px 0 black)
 		drop-shadow(0 0 5px black);*/
 }
-.status-bar .single-status span.turns, .status-bar .single-status span.amount, .status-bar .single-status span.counter {
+.single-status span.turns, .single-status span.amount, .single-status span.counter {
 	position:absolute;
 	bottom:-5px;
 	right:0;
 	font-size:14px;
 }
-.status-bar .single-status span.amount {
+.single-status span.amount {
 	right:auto;
 	left:0;
 	top:-5px;
 	bottom:auto;
 	color:lime;
 }
-.status-bar .single-status span.counter {
+.single-status span.counter {
 	top:-5px;
 	bottom:auto;
 	color:yellow;
@@ -3478,7 +3569,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(9321px * .92);
+	background-size:calc(1620px * .92) calc(9637px * .92);
 	background-position:0 calc(-414px * .92);
 	width:calc(270px * .92);
 	height:calc(414px * .92);
@@ -3501,7 +3592,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	height:calc(157px * .92);
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(9321px * .92);
+	background-size:calc(1620px * .92) calc(9637px * .92);
 	background-position:calc(-1364px * .92) calc(-5545px * .92);
 	position:absolute;
 	top:68px;
@@ -3512,7 +3603,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	height:calc(164px * .92);
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(9321px * .92);
+	background-size:calc(1620px * .92) calc(9637px * .92);
 	background-position:0 calc(-828px * .92);
 	position:absolute;
 	top:66px;
@@ -3531,7 +3622,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	height:calc(33px * 1);
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * 1) calc(9321px * 1);
+	background-size:calc(1620px * 1) calc(9637px * 1);
 	background-position:calc(-800px * 1) calc(-828px * 1);
 	position:absolute;
 	top:321px;
@@ -4004,6 +4095,15 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-thrash .card-image {
 	background-position:calc(-1365px * .92) calc(-8848px * .92);
 }
+#card-throwing_knives .card-image {
+	background-position:calc(-390px * .92) calc(-9322px * .92);
+}
+#card-swarmstrike .card-image {
+	background-position:calc(-1365px * .92) calc(-9322px * .92);
+}
+
+
+
 
 /* TOOL */
 #card-shield .card-image {
@@ -4260,6 +4360,15 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 }
 #card-bottled_magic .card-image {
 	background-position:calc(-195px * .92) calc(-3502px * .92);
+}
+#card-bottled_might .card-image {
+	background-position:calc(-390px * .92) calc(-9164px * .92);
+}
+#card-bottled_lightning .card-image {
+	background-position:calc(-780px * .92) calc(-9164px * .92);
+}
+#card-bottled_solid .card-image {
+	background-position:calc(-585px * .92) calc(-9164px * .92);
 }
 #card-jester .card-image {
 	background-position:calc(-585px * .92) calc(-3502px * .92);
@@ -4541,7 +4650,21 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-veto .card-image {
 	background-position:calc(-975px * .92) calc(-9006px * .92);
 }
-
+#card-crazed .card-image {
+	background-position:calc(-975px * .92) calc(-9164px * .92);
+}
+#card-collector .card-image {
+	background-position:0 calc(-9322px * .92);
+}
+#card-anomaly .card-image {
+	background-position:calc(-195px * .92) calc(-9322px * .92);
+}
+#card-dragon_kin .card-image {
+	background-position:calc(-585px * .92) calc(-9322px * .92);
+}
+#card-sorcerer_kin .card-image {
+	background-position:calc(-780px * .92) calc(-9322px * .92);
+}
 
 
 
@@ -4562,7 +4685,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-risky_charge .card-image {
 	background-position:calc(-780px * .92) calc(-4288px * .92);
 }
-#card-aligned_charge .card-image {
+#card-wild_charge .card-image {
 	background-position:calc(-975px * .92) calc(-4288px * .92);
 }
 #card-delayed_charge .card-image {
@@ -4583,7 +4706,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-elemental_charm .card-image {
 	background-position:calc(-585px * .92) calc(-4446px * .92);
 }
-#card-aligned_charm .card-image {
+#card-wild_charm .card-image {
 	background-position:calc(-780px * .92) calc(-4446px * .92);
 }
 #card-risky_charm .card-image {
@@ -4751,6 +4874,19 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 #card-astral_call .card-image {
 	background-position:calc(-1365px * .92) calc(-9006px * .92);
 }
+#card-wild_strength .card-image {
+	background-position:calc(-1170px * .92) calc(-9164px * .92);
+}
+#card-wild_protection .card-image {
+	background-position:calc(-1365px * .92) calc(-9164px * .92);
+}
+#card-flashbang .card-image {
+	background-position:calc(-975px * .92) calc(-9322px * .92);
+}
+#card-evermagic .card-image {
+	background-position:calc(-1170px * .92) calc(-9322px * .92);
+}
+
 
 
 
@@ -4866,7 +5002,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	font-size:28px;
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(9321px * .92);
+	background-size:calc(1620px * .92) calc(9637px * .92);
 	background-position:calc(-800px * .92) calc(-861px * .92);
 	width:calc(74px * .92);
 	height:calc(102px * .92);
@@ -4928,7 +5064,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card.unplayable .card-age {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .6) calc(9321px * .6);
+	background-size:calc(1620px * .6) calc(9637px * .6);
 	background-position:calc(-1096px * .6) calc(-861px * .6);
 	width:calc(50px * .6);
 	height:calc(50px * .6);
@@ -4967,7 +5103,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .pack {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .9) calc(9321px * .9);
+	background-size:calc(1620px * .9) calc(9637px * .9);
 	width:calc(66px * .9);
 	height:calc(69px * .9);
 	display:flex;
@@ -4989,7 +5125,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .linger, .card .use, .card .expire {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .8) calc(9321px * .8);
+	background-size:calc(1620px * .8) calc(9637px * .8);
 	width:calc(50px * .8);
 	height:calc(50px * .8);
 	display:flex;
@@ -5008,7 +5144,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .card .vanish, .card .retain:not(.amount), .card .ephemeral, .card .breakable, .card .combinable, .card .card-stance, .card .tradeable, .card .weapon, .card .aoe, .card .unaddable, .card .natural {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .8) calc(9321px * .8);
+	background-size:calc(1620px * .8) calc(9637px * .8);
 	width:calc(50px * .8);
 	height:calc(50px * .8);
 	display:flex;
@@ -5411,7 +5547,7 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .pack-button {
 	background-image:url('./images/cards_spritesheet.png');
 	background-repeat:no-repeat;
-	background-size:calc(1620px * .92) calc(9321px * .92);
+	background-size:calc(1620px * .92) calc(9637px * .92);
 	width:calc(270px * .92);
 	height:calc(414px * .92);
 	scale:1;
@@ -5687,6 +5823,9 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 	transform:translateY(0);
 	opacity:1;
 }
+.draw-cards-panel, .discard-cards-panel, .dead-cards-panel, .all-cards-panel, .library-panel {
+	z-index:999;
+}
 .library-loader {
 	display:none;
 }
@@ -5745,12 +5884,14 @@ body.selecting .end-turn, body.selecting .end-combat, body.selecting .candy, bod
 .show-cards .card.disappearing {
 	scale:.8;
 	opacity:0;
+	pointer-events:none;
 }
 .rewards-cards .card.disappearing, .courage-screen .card.disappearing, .all-cards-panel .card.disappearing, .courage-items .treasure.disappearing, .disappearing {
 	scale:2;
 	opacity:0;
 	transform:translateY(-50px);
 	transition:all 1s;
+	pointer-events:none;
 }
 
 /* STORY PANEL */
@@ -5867,6 +6008,33 @@ body.tutorial #tutorial-overlay {
 }
 #splash .instructions .muddled {
 	color:var(--muddled_color);
+}
+#splash .instructions .wild {
+	color:var(--wild_color);
+}
+#splash .glossary {
+	text-align:left;
+	text-transform:none;
+}
+#splash .glossary > div {
+	position:relative;
+	padding:10px 0;
+	display:flex;
+	gap:10px;
+	align-items:center;
+}
+#splash .glossary .single-status {
+	flex-basis:32px;
+}
+#splash .glossary .info {
+	flex-basis:calc(100% - 50px);
+}
+#splash .glossary .highlight {
+	text-transform:uppercase;
+}
+#splash .glossary .hex .highlight {
+	color:black;
+	text-shadow: none;
 }
 #tutorial-overlay .step svg.arrow {
 	width:100px;
@@ -6075,12 +6243,30 @@ body.tutorial #tutorial-overlay {
 #powerTip span.muddled {
 	color:var(--muddled_color);
 }
+#powerTip span.wild {
+	color:var(--wild_color);
+}
+#powerTip span.common {
+	color:var(--common_color);
+}
+#powerTip span.uncommon {
+	color:var(--uncommon_color);
+}
+#powerTip span.rare {
+	color:var(--rare_color);
+}
+#powerTip span.legendary {
+	color:var(--legendary_color);
+}
 #powerTip ul, #powerTip li {
 	margin:0;
 	padding:0 0 0 15px;
 }
 #powerTip li {
 	padding:5px 0;
+}
+#powerTip span.treasure-rarity {
+	text-transform:capitalize;
 }
 
 
